@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Ressources\Images\logoCinema.png" />
-    <None Remove="Ressources\Images\logoCinemaWithoutText.png" />
+    <None Remove="Ressources\images\logoCinema.png" />
+    <None Remove="Ressources\images\logoCinemaWithoutText.png" />
     <None Remove="Ressources\images\projections.png" />
     <None Remove="Ressources\images\users.png" />
   </ItemGroup>
@@ -21,8 +21,8 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<Resource Include="Ressources\Images\logoCinema.png" />
-		<Resource Include="Ressources\Images\logoCinemaWithoutText.png">
+		<Resource Include="Ressources\images\logoCinema.png" />
+		<Resource Include="Ressources\images\logoCinemaWithoutText.png">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Ressources\images\projections.png">

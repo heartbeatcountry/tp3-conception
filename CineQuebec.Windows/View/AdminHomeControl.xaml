@@ -13,7 +13,7 @@
                 Grid.Column="0">
             <StackPanel>
                 <Image Height="100"
-                       Source="/Ressources/Images/users.png" />
+                       Source="/Ressources/images/users.png" />
                 <Label HorizontalAlignment="Center"
                        Content="{x:Static rs:Resource.admin_users}"
                        Style="{StaticResource defautLabel}" />
@@ -24,7 +24,7 @@
                 Grid.Column="1">
             <StackPanel>
                 <Image Height="100"
-                       Source="/Ressources/Images/projections.png" />
+                       Source="/Ressources/images/projections.png" />
                 <Label HorizontalAlignment="Center"
                        Content="{x:Static rs:Resource.admin_films}"
                        Style="{StaticResource defautLabel}" />
