@@ -3,29 +3,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CineQuebec.Windows"
         xmlns:rs="clr-namespace:CineQuebec.Windows.Ressources.i18n"
         mc:Ignorable="d"
-        Title="{x:Static rs:Resource.app_name}" 
+        Title="{x:Static rs:Resource.app_name}"
         ResizeMode="NoResize"
         Height="450" Width="800"
-         Icon="/Ressources/images/logoCinemaWithoutText.png">
-   
-    <Grid >
+        Icon="/Ressources/images/logoCinemaWithoutText.png">
+
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
         <Image Grid.Row="0"
-               HorizontalAlignment="Center" 
-               Margin="10,10,10,10" 
+               HorizontalAlignment="Center"
+               Margin="10,10,10,10"
                VerticalAlignment="Center"
-               Source="/Ressources/images/logoCinema.png"/>
-        <ContentControl x:Name="mainContentControl" 
-                        Grid.Row="1" 
-                        HorizontalAlignment="Center" 
-                        VerticalAlignment="Center" 
-                        />
+               Source="/Ressources/images/logoCinema.png" />
+        <ContentControl x:Name="mainContentControl"
+                        Grid.Row="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center" />
 
 
     </Grid>

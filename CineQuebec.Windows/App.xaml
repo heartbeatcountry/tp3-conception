@@ -1,9 +1,8 @@
 ﻿<Application x:Class="CineQuebec.Windows.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:CineQuebec.Windows"
              StartupUri="View/MainWindow.xaml">
     <Application.Resources>
-        <ResourceDictionary Source="Ressources/RessourcesDictionary.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="Ressources/RessourcesDictionary.xaml" />
     </Application.Resources>
 </Application>

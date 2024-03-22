@@ -1,52 +1,14 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows.Controls;
 
+namespace CineQuebec.Windows.View;
 
-namespace CineQuebec.Windows.View
+/// <summary>
+///     Logique d'interaction pour AdminHomeControl.xaml
+/// </summary>
+public partial class AdminHomeControl : UserControl
 {
-    /// <summary>
-    /// Logique d'interaction pour AdminHomeControl.xaml
-    /// </summary>
-    public partial class AdminHomeControl : UserControl
+    public AdminHomeControl()
     {
-        public AdminHomeControl()
-        {
-            InitializeComponent();
-        }
-
-        private void btnAjoutFilm_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnVoirAbonnes_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnReprogFilm_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnDeconnecter_Click(object sender, RoutedEventArgs e)
-        {
-            
-
-            
-        }
+        InitializeComponent();
     }
 }

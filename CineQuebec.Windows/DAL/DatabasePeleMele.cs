@@ -1,64 +1,63 @@
 ﻿using CineQuebec.Windows.DAL.Data;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CineQuebec.Windows.DAL
+namespace CineQuebec.Windows.DAL;
+
+public class DatabasePeleMele
 {
-    public class DatabasePeleMele
+    private readonly IMongoClient mongoDBClient;
+    private readonly IMongoDatabase database;
+
+    public DatabasePeleMele(IMongoClient client = null)
     {
-        private IMongoClient mongoDBClient;
-        private IMongoDatabase database;
+        mongoDBClient = client ?? OuvrirConnexion();
+        database = ConnectDatabase();
+    }
 
-        public DatabasePeleMele(IMongoClient client = null)
+    private IMongoClient OuvrirConnexion()
+    {
+        MongoClient dbClient = null;
+        try
         {
-            mongoDBClient = client ?? OuvrirConnexion();
-            database = ConnectDatabase();
+            dbClient = new MongoClient("mongodb://localhost:27017/");
         }
-        private IMongoClient OuvrirConnexion()
+        catch (Exception ex)
         {
-            MongoClient dbClient = null;
-            try
-            {
-                dbClient = new MongoClient("mongodb://localhost:27017/");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Impossible de se connecter à la base de données " + ex.Message, "Erreur");
-            }
-            return dbClient;
+            Console.WriteLine("Impossible de se connecter à la base de données " + ex.Message, "Erreur");
         }
 
-        private IMongoDatabase ConnectDatabase()
-        {
-            IMongoDatabase db = null;
-            try
-            {
-                db = mongoDBClient.GetDatabase("TP2DB");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Impossible de se connecter à la base de données " + ex.Message, "Erreur");
-            }
-            return db;
-        }
-        public List<Abonne> ReadAbonnes()
-        {
-            var abonnes = new List<Abonne>();
+        return dbClient;
+    }
 
-            try
-            {
-                var collection = database.GetCollection<Abonne>("Abonnes");
-                abonnes = collection.Aggregate().ToList();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Impossible d'obtenir la collection " + ex.Message, "Erreur");
-            }
-            return abonnes;
+    private IMongoDatabase ConnectDatabase()
+    {
+        IMongoDatabase db = null;
+        try
+        {
+            db = mongoDBClient.GetDatabase("TP2DB");
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Impossible de se connecter à la base de données " + ex.Message, "Erreur");
+        }
+
+        return db;
+    }
+
+    public List<Abonne> ReadAbonnes()
+    {
+        var abonnes = new List<Abonne>();
+
+        try
+        {
+            var collection = database.GetCollection<Abonne>("Abonnes");
+            abonnes = collection.Aggregate().ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Impossible d'obtenir la collection " + ex.Message, "Erreur");
+        }
+
+        return abonnes;
     }
 }
