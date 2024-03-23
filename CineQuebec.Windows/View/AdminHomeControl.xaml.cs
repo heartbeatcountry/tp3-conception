@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace CineQuebec.Windows.View
 {
     /// <summary>
@@ -23,6 +25,28 @@ namespace CineQuebec.Windows.View
         public AdminHomeControl()
         {
             InitializeComponent();
+        }
+
+        private void btnAjoutFilm_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnVoirAbonnes_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnReprogFilm_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnDeconnecter_Click(object sender, RoutedEventArgs e)
+        {
+            
+
+            
         }
     }
 }

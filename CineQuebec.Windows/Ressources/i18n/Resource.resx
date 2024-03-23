@@ -117,11 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="admin.ajout_film" xml:space="preserve">
+    <value>Ajouter un film à l'affiche</value>
+  </data>
+  <data name="admin.deconnection" xml:space="preserve">
+    <value>Se déconnecter</value>
+  </data>
   <data name="admin.films" xml:space="preserve">
     <value>Films</value>
   </data>
+  <data name="admin.reprog_film" xml:space="preserve">
+    <value>Reprogrammer un film</value>
+  </data>
   <data name="admin.users" xml:space="preserve">
     <value>Utilisateurs</value>
+  </data>
+  <data name="admin.visualise_abonnes" xml:space="preserve">
+    <value>Voir la liste des abonnés</value>
   </data>
   <data name="app_name" xml:space="preserve">
     <value>Ciné Québec</value>

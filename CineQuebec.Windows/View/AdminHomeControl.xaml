@@ -7,30 +7,75 @@
              xmlns:rs="clr-namespace:CineQuebec.Windows.Ressources.i18n">
 
     <Grid Background="White" Height="250" Width="300">
+
+        <Grid.RowDefinitions>
+            <RowDefinition  Height="10" />
+            <RowDefinition  />
+            <RowDefinition />
+            <RowDefinition Height="75"/>
+            <RowDefinition Height="75"/>
+            <RowDefinition />
+            <RowDefinition Height="10" />
+        </Grid.RowDefinitions>
+        
+        
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="10*"/>
         </Grid.ColumnDefinitions>
 
-        <Button Style="{StaticResource defautButton}" 
-                Grid.Column="0">
-            <StackPanel >
-                <Image Height="100" 
-                       Source="/Ressources/Images/users.png" />
-                <Label HorizontalAlignment="Center"
-                       Content="{x:Static rs:Resource.admin_users}" 
-                    Style="{StaticResource defautLabel}" />
+        <Image  Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Left" 
+        Source="/Ressources/Images/logoCinema.png" MaxWidth="40px" />
+
+
+        <Button x:Name="btnDeconnecter"   Content="{x:Static rs:Resource.admin_deconnection}" Grid.Column="5" Grid.Row="1"  Style="{StaticResource menuButton}" Click="btnDeconnecter_Click" >
+    
+           
+        </Button>
+
+        <Button x:Name="btnAjouterFilm" Style="{StaticResource defautButton}" Click="btnAjoutFilm_Click"
+        Grid.Column="1" Grid.Row="3" Grid.RowSpan="2"  Background="Aqua">
+            <StackPanel Height="134" Width="92"   >
+                <Image Height="65" 
+                       Source="/Ressources/Images/projections.png" Width="68" />
+
+                <Label Grid.Column="1" Grid.Row="2"   Style="{StaticResource defautLabel}"  >
+                    <Label.Content>
+                        <AccessText   TextAlignment="Center"  TextWrapping="Wrap" Text="{x:Static rs:Resource.admin_ajout_film}"  />
+                    </Label.Content>
+                </Label>
+
             </StackPanel>
         </Button>
 
-        <Button Style="{StaticResource defautButton}" 
-        Grid.Column="1">
-            <StackPanel>
-                <Image Height="100"
-                       Source="/Ressources/Images/projections.png" />
-                <Label HorizontalAlignment="Center"
-                       Content="{x:Static rs:Resource.admin_films}" 
-            Style="{StaticResource defautLabel}" />
+        <Button x:Name="btnVoirAbonnes" Style="{StaticResource defautButton}" Click="btnVoirAbonnes_Click" 
+                Grid.Column="3" Grid.Row="3" Grid.RowSpan="2" Background="Aqua">
+            <StackPanel Height="134" Width="92" >
+                <Image Height="58" 
+                       Source="/Ressources/Images/users.png" Width="75" />
+                <Label Grid.Column="1" Grid.Row="2"  Style="{StaticResource defautLabel}"  >
+                    <Label.Content>
+                        <AccessText   TextAlignment="Center"  TextWrapping="Wrap" Text="{x:Static rs:Resource.admin_visualise_abonnes}"  />
+                    </Label.Content>
+                </Label>
+            </StackPanel>
+        </Button>
+
+        <Button x:Name="btnReprogFilm" Style="{StaticResource defautButton}" Click="btnReprogFilm_Click"
+        Grid.Column="5" Grid.Row="3" Grid.RowSpan="2" Background="Aqua">
+            <StackPanel Height="134" Width="92" >
+                <Image Height="65"
+                       Source="/Ressources/Images/projections.png" Width="68" />
+                <Label Grid.Column="1" Grid.Row="2"  Style="{StaticResource defautLabel}"  >
+                    <Label.Content>
+                        <AccessText   TextAlignment="Center"  TextWrapping="Wrap" Text="{x:Static rs:Resource.admin_reprog_film}"  />
+                    </Label.Content>
+                </Label>
             </StackPanel>
         </Button>
 
