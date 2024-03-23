@@ -10,7 +10,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition  Height="10" />
-            <RowDefinition  />
+            <RowDefinition Height="40"/>
             <RowDefinition />
             <RowDefinition Height="75"/>
             <RowDefinition Height="75"/>
@@ -29,14 +29,12 @@
             <ColumnDefinition Width="10*"/>
         </Grid.ColumnDefinitions>
 
-        <Image  Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Left" 
+        <Image  Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Left"  
         Source="/Ressources/Images/logoCinema.png" MaxWidth="40px" />
 
 
-        <Button x:Name="btnDeconnecter"   Content="{x:Static rs:Resource.admin_deconnection}" Grid.Column="5" Grid.Row="1"  Style="{StaticResource menuButton}" Click="btnDeconnecter_Click" >
-    
-           
-        </Button>
+        <Button x:Name="btnDeconnecter"   Content="{x:Static rs:Resource.admin_menu_deconnection}" Grid.Column="5" Grid.Row="1"  Style="{StaticResource menuButton}" Click="btnDeconnecter_Click" />
+
 
         <Button x:Name="btnAjouterFilm" Style="{StaticResource defautButton}" Click="btnAjoutFilm_Click"
         Grid.Column="1" Grid.Row="3" Grid.RowSpan="2"  Background="Aqua">
@@ -60,7 +58,7 @@
                        Source="/Ressources/Images/users.png" Width="75" />
                 <Label Grid.Column="1" Grid.Row="2"  Style="{StaticResource defautLabel}"  >
                     <Label.Content>
-                        <AccessText   TextAlignment="Center"  TextWrapping="Wrap" Text="{x:Static rs:Resource.admin_visualise_abonnes}"  />
+                        <AccessText   TextAlignment="Center"  TextWrapping="Wrap" Text="{x:Static rs:Resource.admin_visualiser_abonnes}"  />
                     </Label.Content>
                 </Label>
             </StackPanel>

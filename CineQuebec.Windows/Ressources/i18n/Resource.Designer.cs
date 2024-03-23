@@ -61,6 +61,60 @@ namespace CineQuebec.Windows.Ressources.i18n {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Acteurs :.
+        /// </summary>
+        public static string admin_ajout_acteurs_film {
+            get {
+                return ResourceManager.GetString("admin.ajout_acteurs_film", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Annuler.
+        /// </summary>
+        public static string admin_ajout_annuler_film {
+            get {
+                return ResourceManager.GetString("admin.ajout_annuler_film", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Catégorie :.
+        /// </summary>
+        public static string admin_ajout_categorie_film {
+            get {
+                return ResourceManager.GetString("admin.ajout_categorie_film", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Date de sortie :.
+        /// </summary>
+        public static string admin_ajout_date_sorti_film {
+            get {
+                return ResourceManager.GetString("admin.ajout_date_sorti_film", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Durée :.
+        /// </summary>
+        public static string admin_ajout_duree_film {
+            get {
+                return ResourceManager.GetString("admin.ajout_duree_film", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Enregistrer.
+        /// </summary>
+        public static string admin_ajout_enregistrer_film {
+            get {
+                return ResourceManager.GetString("admin.ajout_enregistrer_film", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Ajouter un film à l&apos;affiche.
         /// </summary>
         public static string admin_ajout_film {
@@ -70,11 +124,38 @@ namespace CineQuebec.Windows.Ressources.i18n {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Se déconnecter.
+        ///   Recherche une chaîne localisée semblable à Affiche du film :.
         /// </summary>
-        public static string admin_deconnection {
+        public static string admin_ajout_image_film {
             get {
-                return ResourceManager.GetString("admin.deconnection", resourceCulture);
+                return ResourceManager.GetString("admin.ajout_image_film", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Parcourir....
+        /// </summary>
+        public static string admin_ajout_parcourir_film {
+            get {
+                return ResourceManager.GetString("admin.ajout_parcourir_film", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Réalisateurs :.
+        /// </summary>
+        public static string admin_ajout_realisateurs_film {
+            get {
+                return ResourceManager.GetString("admin.ajout_realisateurs_film", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Titre du film :.
+        /// </summary>
+        public static string admin_ajout_titre_film {
+            get {
+                return ResourceManager.GetString("admin.ajout_titre_film", resourceCulture);
             }
         }
         
@@ -84,6 +165,33 @@ namespace CineQuebec.Windows.Ressources.i18n {
         public static string admin_films {
             get {
                 return ResourceManager.GetString("admin.films", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Abonnés.
+        /// </summary>
+        public static string admin_menu_abonnes {
+            get {
+                return ResourceManager.GetString("admin.menu_abonnes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Accueil.
+        /// </summary>
+        public static string admin_menu_accueil {
+            get {
+                return ResourceManager.GetString("admin.menu_accueil", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Se déconnecter.
+        /// </summary>
+        public static string admin_menu_deconnection {
+            get {
+                return ResourceManager.GetString("admin.menu_deconnection", resourceCulture);
             }
         }
         
@@ -108,9 +216,9 @@ namespace CineQuebec.Windows.Ressources.i18n {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Voir la liste des abonnés.
         /// </summary>
-        public static string admin_visualise_abonnes {
+        public static string admin_visualiser_abonnes {
             get {
-                return ResourceManager.GetString("admin.visualise_abonnes", resourceCulture);
+                return ResourceManager.GetString("admin.visualiser_abonnes", resourceCulture);
             }
         }
         
