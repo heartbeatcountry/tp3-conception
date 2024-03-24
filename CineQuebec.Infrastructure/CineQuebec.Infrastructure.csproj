@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\CineQuebec.Application\CineQuebec.Application.csproj"/>
+        <ProjectReference Include="..\CineQuebec.Domain\CineQuebec.Domain.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.2.24128.4"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.0-preview.2.24128.4"/>
+        <PackageReference Include="MongoDB.EntityFrameworkCore" Version="7.0.0-preview.1"/>
+    </ItemGroup>
+
+</Project>

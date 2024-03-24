@@ -1,7 +1,4 @@
-﻿using System.Windows;
-using CineQuebec.Windows.View;
-
-namespace CineQuebec.Windows;
+﻿namespace CineQuebec.Windows.View;
 
 /// <summary>
 ///     Interaction logic for MainWindow.xaml
