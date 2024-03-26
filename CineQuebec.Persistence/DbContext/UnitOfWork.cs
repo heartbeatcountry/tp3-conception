@@ -1,8 +1,9 @@
-using CineQuebec.Application.Interfaces;
+using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Domain.Entities.Projections;
 using CineQuebec.Domain.Entities.Utilisateurs;
 using CineQuebec.Domain.Interfaces;
+using CineQuebec.Domain.Interfaces.Repositories;
 using CineQuebec.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;

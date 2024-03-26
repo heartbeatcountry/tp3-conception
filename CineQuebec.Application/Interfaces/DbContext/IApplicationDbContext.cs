@@ -2,7 +2,7 @@ using CineQuebec.Domain.Entities.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace CineQuebec.Application.Interfaces;
+namespace CineQuebec.Application.Interfaces.DbContext;
 
 public interface IApplicationDbContext
 {

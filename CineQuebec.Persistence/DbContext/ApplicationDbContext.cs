@@ -1,6 +1,5 @@
 using System.Reflection;
-
-using CineQuebec.Application.Interfaces;
+using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Entities.Utilisateurs;
 using Microsoft.EntityFrameworkCore;

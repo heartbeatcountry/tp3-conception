@@ -2,7 +2,7 @@ using System.Collections.Immutable;
 using System.Linq.Expressions;
 using CineQuebec.Domain.Entities.Abstract;
 
-namespace CineQuebec.Domain.Interfaces;
+namespace CineQuebec.Domain.Interfaces.Repositories;
 
 public interface IRepository<TEntite> where TEntite : Entite
 {

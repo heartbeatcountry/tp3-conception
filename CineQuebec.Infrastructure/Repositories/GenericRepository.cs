@@ -1,8 +1,9 @@
 using System.Collections.Immutable;
 using System.Linq.Expressions;
-using CineQuebec.Application.Interfaces;
+using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces;
+using CineQuebec.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace CineQuebec.Infrastructure.Repositories;

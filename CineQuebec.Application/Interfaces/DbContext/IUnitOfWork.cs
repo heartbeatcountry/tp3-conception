@@ -2,8 +2,9 @@ using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Domain.Entities.Projections;
 using CineQuebec.Domain.Entities.Utilisateurs;
 using CineQuebec.Domain.Interfaces;
+using CineQuebec.Domain.Interfaces.Repositories;
 
-namespace CineQuebec.Application.Interfaces;
+namespace CineQuebec.Application.Interfaces.DbContext;
 
 public interface IUnitOfWork : IDisposable
 {
