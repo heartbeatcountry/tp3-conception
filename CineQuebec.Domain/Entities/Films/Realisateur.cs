@@ -1,24 +1,25 @@
 using System.Collections.Immutable;
 using CineQuebec.Domain.Entities.Abstract;
+using CineQuebec.Domain.Interfaces.Entities.Films;
 
 namespace CineQuebec.Domain.Entities.Films;
 
-public class Realisateur : Personne
+public class Realisateur : Personne, IRealisateur
 {
-	private readonly HashSet<Film> _realiseFilms = [];
+	private readonly HashSet<IFilm> _realiseFilms = [];
 
 	public Realisateur(string prenom, string nom) : base(prenom, nom)
 	{
 	}
 
-	public ImmutableArray<Film> RealiseFilms => _realiseFilms.ToImmutableArray();
+	public ImmutableArray<IFilm> RealiseFilms => _realiseFilms.ToImmutableArray();
 
-	private void AjouterFilm(Film film)
+	public void AjouterFilm(IFilm film)
 	{
 		_realiseFilms.Add(film);
 	}
 
-	private void AjouterFilms(IEnumerable<Film> films)
+	public void AjouterFilms(IEnumerable<IFilm> films)
 	{
 		foreach (var film in films)
 		{
@@ -26,7 +27,7 @@ public class Realisateur : Personne
 		}
 	}
 
-	private void RetirerFilm(Film film)
+	public void RetirerFilm(IFilm film)
 	{
 		_realiseFilms.Remove(film);
 	}

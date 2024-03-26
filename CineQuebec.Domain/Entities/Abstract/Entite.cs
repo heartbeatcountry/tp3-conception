@@ -1,6 +1,8 @@
-﻿namespace CineQuebec.Domain.Entities.Abstract;
+﻿using CineQuebec.Domain.Interfaces.Entities;
 
-public abstract class Entite : IEquatable<Entite>
+namespace CineQuebec.Domain.Entities.Abstract;
+
+public abstract class Entite : IEquatable<Entite>, IEntite
 {
 	public Guid Id { get; private set; } = Guid.Empty;
 

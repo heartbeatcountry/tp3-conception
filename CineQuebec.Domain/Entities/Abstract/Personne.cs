@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using CineQuebec.Domain.Interfaces.Entities;
 
 namespace CineQuebec.Domain.Entities.Abstract;
 
-public abstract class Personne : Entite, IComparable<Personne>
+public abstract class Personne : Entite, IComparable<Personne>, IPersonne
 {
 	protected Personne(string prenom, string nom)
 	{
@@ -37,7 +38,7 @@ public abstract class Personne : Entite, IComparable<Personne>
 			                              StringComparison.OrdinalIgnoreCase));
 	}
 
-	private void SetPrenom(string prenom)
+	public void SetPrenom(string prenom)
 	{
 		if (string.IsNullOrWhiteSpace(prenom))
 		{
@@ -47,7 +48,7 @@ public abstract class Personne : Entite, IComparable<Personne>
 		Prenom = prenom.Trim();
 	}
 
-	private void SetNom(string nom)
+	public void SetNom(string nom)
 	{
 		if (string.IsNullOrWhiteSpace(nom))
 		{

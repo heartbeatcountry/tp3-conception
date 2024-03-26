@@ -1,12 +1,13 @@
 using System.Collections.Immutable;
 using CineQuebec.Domain.Entities.Abstract;
+using CineQuebec.Domain.Interfaces.Entities.Films;
 
 namespace CineQuebec.Domain.Entities.Films;
 
-public class Film : Entite, IComparable<Film>
+public class Film : Entite, IComparable<Film>, IFilm
 {
-	private readonly HashSet<Acteur> _acteurs = [];
-	private readonly HashSet<Realisateur> _realisateurs = [];
+	private readonly HashSet<IActeur> _acteurs = [];
+	private readonly HashSet<IRealisateur> _realisateurs = [];
 
 	public Film(string titre, string description, CategorieFilm categorie, DateTime dateSortieInternationale,
 		IEnumerable<Acteur> acteurs, IEnumerable<Realisateur> realisateurs, ushort duree)
@@ -24,8 +25,8 @@ public class Film : Entite, IComparable<Film>
 	public string Description { get; private set; } = string.Empty;
 	public CategorieFilm Categorie { get; private set; } = null!;
 	public DateTime DateSortieInternationale { get; private set; } = DateTime.MinValue;
-	public ImmutableArray<Acteur> Acteurs => _acteurs.ToImmutableArray();
-	public ImmutableArray<Realisateur> Realisateurs => _realisateurs.ToImmutableArray();
+	public ImmutableArray<IActeur> Acteurs => _acteurs.ToImmutableArray();
+	public ImmutableArray<IRealisateur> Realisateurs => _realisateurs.ToImmutableArray();
 	public ushort Duree { get; private set; }
 
 	public int CompareTo(Film? other)
@@ -52,7 +53,7 @@ public class Film : Entite, IComparable<Film>
 		                              film.DateSortieInternationale.Year && Duree == film.Duree);
 	}
 
-	private void SetTitre(string titre)
+	public void SetTitre(string titre)
 	{
 		if (string.IsNullOrWhiteSpace(titre))
 		{
@@ -62,7 +63,7 @@ public class Film : Entite, IComparable<Film>
 		Titre = titre.Trim();
 	}
 
-	private void SetDescription(string description)
+	public void SetDescription(string description)
 	{
 		if (string.IsNullOrWhiteSpace(description))
 		{
@@ -72,7 +73,7 @@ public class Film : Entite, IComparable<Film>
 		Description = description.Trim();
 	}
 
-	private void SetCategorie(CategorieFilm categorie)
+	public void SetCategorie(CategorieFilm categorie)
 	{
 		if (categorie == null)
 		{
@@ -82,7 +83,7 @@ public class Film : Entite, IComparable<Film>
 		Categorie = categorie;
 	}
 
-	private void SetDateSortieInternationale(DateTime dateSortieInternationale)
+	public void SetDateSortieInternationale(DateTime dateSortieInternationale)
 	{
 		if (dateSortieInternationale == DateTime.MinValue)
 		{
@@ -93,17 +94,17 @@ public class Film : Entite, IComparable<Film>
 		DateSortieInternationale = dateSortieInternationale;
 	}
 
-	private void AddActeurs(IEnumerable<Acteur> acteurs)
+	public void AddActeurs(IEnumerable<IActeur> acteurs)
 	{
 		_acteurs.UnionWith(acteurs);
 	}
 
-	private void AddRealisateurs(IEnumerable<Realisateur> realisateurs)
+	public void AddRealisateurs(IEnumerable<IRealisateur> realisateurs)
 	{
 		_realisateurs.UnionWith(realisateurs);
 	}
 
-	private void SetDuree(ushort duree)
+	public void SetDuree(ushort duree)
 	{
 		if (duree == 0)
 		{
