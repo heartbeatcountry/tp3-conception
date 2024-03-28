@@ -5,16 +5,16 @@ using CineQuebec.Domain.Entities.Abstract;
 
 namespace Tests.Domain.Entities.Abstract;
 
-public abstract class EntiteTests<T> where T : Entite
+public abstract class EntiteTests<TEntite> where TEntite : Entite
 {
-	protected virtual T Entite { get; set; } = null!;
+	protected virtual TEntite Entite { get; set; } = null!;
 	protected virtual object?[] ArgsConstructeur => [];
 
-	protected T CreateInstance(params object?[] args)
+	protected TEntite CreateInstance(params object?[] args)
 	{
 		try
 		{
-			return (T)Activator.CreateInstance(typeof(T), args)!;
+			return (TEntite)Activator.CreateInstance(typeof(TEntite), args)!;
 		}
 		catch (TargetInvocationException e)
 		{
@@ -22,7 +22,7 @@ public abstract class EntiteTests<T> where T : Entite
 		}
 	}
 
-	protected T CreateInstance()
+	protected TEntite CreateInstance()
 	{
 		return CreateInstance(ArgsConstructeur);
 	}
@@ -36,7 +36,7 @@ public abstract class EntiteTests<T> where T : Entite
 	[Test]
 	public void Constructor_Always_ShouldCreateEntityOfTypeT()
 	{
-		Assert.That(Entite, Is.InstanceOf<T>());
+		Assert.That(Entite, Is.InstanceOf<TEntite>());
 	}
 
 	[Test]
@@ -70,14 +70,28 @@ public abstract class EntiteTests<T> where T : Entite
 	public void Equals_WhenComparingToNull_ShouldReturnFalse()
 	{
 		// Assert
-		Assert.That(Entite, Is.Not.EqualTo(null));
+		Assert.That(Entite.Equals(null), Is.False);
+	}
+
+	[Test]
+	public void Equals_WhenComparingToBoxedSameInstance_ShouldReturnTrue()
+	{
+		// Assert
+		Assert.That(Entite.Equals((object)Entite), Is.True);
+	}
+
+	[Test]
+	public void Equals_WhenComparingToBoxedNull_ShouldReturnFalse()
+	{
+		// Assert
+		Assert.That(Entite.Equals((object?)null), Is.False);
 	}
 
 	[Test]
 	public void Equals_WhenComparingToSameInstance_ShouldReturnTrue()
 	{
 		// Assert
-		Assert.That(Entite, Is.EqualTo(Entite));
+		Assert.That(Entite.Equals(Entite), Is.True);
 	}
 
 	[Test]
@@ -89,7 +103,7 @@ public abstract class EntiteTests<T> where T : Entite
 		autre.SetId(Guid.NewGuid());
 
 		// Assert
-		Assert.That(Entite, Is.Not.EqualTo(autre));
+		Assert.That(Entite.Equals(autre), Is.False);
 	}
 
 	[Test]
@@ -99,7 +113,7 @@ public abstract class EntiteTests<T> where T : Entite
 		var autre = new object();
 
 		// Assert
-		Assert.That(Entite, Is.Not.EqualTo(autre));
+		Assert.That(Entite.Equals(autre), Is.False);
 	}
 
 	[Test]
@@ -111,7 +125,7 @@ public abstract class EntiteTests<T> where T : Entite
 		autre.SetId(Entite.Id);
 
 		// Assert
-		Assert.That(Entite, Is.EqualTo(autre));
+		Assert.That(Entite.Equals(autre), Is.True);
 	}
 
 	[Test]
@@ -188,6 +202,18 @@ public abstract class EntiteTests<T> where T : Entite
 	}
 
 	[Test]
+	public void ToString_OfDerivedClass_ShouldUniquelyDescribeTheEntity()
+	{
+		// Arrange
+		var entiteImpl = new EntiteImpl();
+		var type = entiteImpl.GetType().Name;
+		var id = entiteImpl.Id;
+
+		// Assert
+		Assert.That(entiteImpl.ToString(), Is.EqualTo($"{type} {id}"));
+	}
+
+	[Test]
 	public virtual void GetHashCode_Always_ShouldBeUniqueToTheEntity()
 	{
 		// Arrange
@@ -202,7 +228,7 @@ public abstract class EntiteTests<T> where T : Entite
 	public void Instance_WhenAddingToHashSet_ShouldNotAddOtherInstanceWithSameId()
 	{
 		// Arrange
-		var hashSet = new HashSet<T>();
+		var hashSet = new HashSet<TEntite>();
 		Entite.SetId(Guid.NewGuid());
 		var autre = CreateInstance();
 		autre.SetId(Entite.Id);
@@ -214,4 +240,6 @@ public abstract class EntiteTests<T> where T : Entite
 		// Assert
 		Assert.That(hashSet, Has.Count.EqualTo(1));
 	}
+
+	private class EntiteImpl : Entite;
 }

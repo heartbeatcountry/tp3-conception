@@ -6,6 +6,7 @@ public abstract class PersonneTests<T> : EntiteTests<T> where T : Personne
 {
 	private const string PrenomValide = "Michel";
 	private const string NomValide = "Sardou";
+	private const string AutreNomValide = "Bergeron";
 	protected override object?[] ArgsConstructeur => [PrenomValide, NomValide];
 
 	[Test]
@@ -49,5 +50,60 @@ public abstract class PersonneTests<T> : EntiteTests<T> where T : Personne
 	public void NomComplet_Always_ShouldBeEqualToPrenomAndNom()
 	{
 		Assert.That(Entite.NomComplet, Is.EqualTo($"{PrenomValide} {NomValide}"));
+	}
+
+	[Test]
+	public void Equals_WhenGivenPersonneWithDifferentNomCompletAndId_ShouldReturnFalse()
+	{
+		// Arrange
+		var autre = CreateInstance("Michel", "Berger");
+		autre.SetId(Guid.NewGuid());
+
+		// Assert
+		Assert.That(Entite.Equals(autre), Is.False);
+	}
+
+	[Test]
+	public void Equals_WhenGivenPersonneWithSameNomCompletAndId_ShouldReturnTrue()
+	{
+		// Arrange
+		var autre = CreateInstance(PrenomValide, NomValide);
+
+		// Assert
+		Assert.That(Entite.Equals(autre), Is.True);
+	}
+
+	[Test]
+	public void CompareTo_WhenGivenNull_ShouldReturn1()
+	{
+		// Act
+		var result = Entite.CompareTo(null);
+
+		// Assert
+		Assert.That(result, Is.EqualTo(1));
+	}
+
+	[Test]
+	public void CompareTo_WhenGivenSameInstance_ShouldReturn0()
+	{
+		// Act
+		var result = Entite.CompareTo(Entite);
+
+		// Assert
+		Assert.That(result, Is.EqualTo(0));
+	}
+
+	[Test]
+	public void CompareTo_WhenGivenDifferentInstance_ShouldReturnComparisonResult()
+	{
+		// Arrange
+		var autre = CreateInstance(PrenomValide, AutreNomValide);
+		autre.SetId(Guid.NewGuid());
+
+		// Act
+		var result = Entite.CompareTo(autre);
+
+		// Assert
+		Assert.That(result, Is.EqualTo(string.Compare(Entite.NomComplet, autre.NomComplet, StringComparison.Ordinal)));
 	}
 }

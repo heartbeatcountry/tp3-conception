@@ -35,7 +35,10 @@ public class ActeurTests : PersonneTests<Acteur>
 		var film = Mock.Of<IFilm>(m => m.Id == Guid.Empty);
 
 		// Act
-		void AjouterFilm() => Entite.AjouterFilm(film);
+		void AjouterFilm()
+		{
+			Entite.AjouterFilm(film);
+		}
 
 		// Assert
 		Assert.That(AjouterFilm, Throws.ArgumentException);
