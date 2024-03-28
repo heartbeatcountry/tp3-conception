@@ -50,22 +50,26 @@
 
       
         <Label x:Name="lblCategorieFilm" Content="{x:Static rs:Resource.admin_ajout_categorie_film}"    Grid.Row="4"    Grid.Column="1"  VerticalAlignment="Center"/>
-        <ListBox SelectionMode="Multiple" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" MaxWidth="170" BorderBrush="Black" BorderThickness="2" Margin="10">
-            <ListBox.Effect>
+
+
+        <ComboBox x:Name="cbNiveauDifficulte" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" MaxWidth="170" BorderBrush="Black" BorderThickness="2" Margin="10" >
+            <ComboBoxItem Name="cbxHumour" >Humour</ComboBoxItem>
+            <ComboBoxItem Name="cbxRomantique" >Romantique</ComboBoxItem>
+            <ComboBoxItem Name="cbxHorreur" >Horreur</ComboBoxItem>
+            <ComboBoxItem Name="cbxScienceFiction" >Science Fiction</ComboBoxItem>
+
+            <ComboBox.Effect>
                 <DropShadowEffect/>
-            </ListBox.Effect>
-            <ListBoxItem>Option 1</ListBoxItem>
-            <ListBoxItem>Option 2</ListBoxItem>
-            <ListBoxItem>Option 3</ListBoxItem>
-            <ListBoxItem>Option 4</ListBoxItem>
-        </ListBox>
+            </ComboBox.Effect>
+
+        </ComboBox>
 
         <Label x:Name="lblActeursFilm" Content="{x:Static rs:Resource.admin_ajout_acteurs_film}"    Grid.Row="2"    Grid.Column="5"  VerticalAlignment="Center"/>
         <ListBox SelectionMode="Multiple" Grid.Row="2" Grid.Column="6" Grid.ColumnSpan="2" Grid.RowSpan="2"  Style="{StaticResource defautListBox}" >
-            <ListBoxItem>Option 1</ListBoxItem>
-            <ListBoxItem>Option 2</ListBoxItem>
-            <ListBoxItem>Option 3</ListBoxItem>
-            <ListBoxItem>Option 4</ListBoxItem>
+            <ListBoxItem>Brad Pitt</ListBoxItem>
+            <ListBoxItem>Angélina Jolie</ListBoxItem>
+            <ListBoxItem>Timothée Chalamet</ListBoxItem>
+            <ListBoxItem>Zendaya</ListBoxItem>
         </ListBox>
 
         <Label x:Name="lblRealisateursFilm" Content="{x:Static rs:Resource.admin_ajout_realisateurs_film}"    Grid.Row="4"    Grid.Column="5"  VerticalAlignment="Center"/>
@@ -73,14 +77,14 @@
             <ListBox.Effect>
                 <DropShadowEffect/>
             </ListBox.Effect>
-            <ListBoxItem>Option 1</ListBoxItem>
-            <ListBoxItem>Option 2</ListBoxItem>
+            <ListBoxItem>Denis Villeneuve</ListBoxItem>
+            <ListBoxItem>David Fincher</ListBoxItem>
             <ListBoxItem>Option 3</ListBoxItem>
             <ListBoxItem>Option 4</ListBoxItem>
         </ListBox>
 
         <Label x:Name="lblImageFilm" Content="{x:Static rs:Resource.admin_ajout_image_film}"    Grid.Row="7"    Grid.Column="1"  VerticalAlignment="Center"/>
-        <Button x:Name="btnAjouterImage" Content="{x:Static rs:Resource.admin_ajout_parcourir_film}"   Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource menuButton}"/>
+        <Button x:Name="btnAjouterImage" Content="{x:Static rs:Resource.admin_ajout_parcourir_film}"   Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="2"  Style="{StaticResource menuButton}"/>
 
         <Button x:Name="btnAnnulerImage" Content="{x:Static rs:Resource.admin_ajout_annuler_film}"   Grid.Row="7" Grid.Column="6" Style="{StaticResource menuButton}"/>
         <Button x:Name="btnEnregistrerImage" Content="{x:Static rs:Resource.admin_ajout_enregistrer_film}"  Grid.Row="7" Grid.Column="7"  Style="{StaticResource menuButton}"/>
