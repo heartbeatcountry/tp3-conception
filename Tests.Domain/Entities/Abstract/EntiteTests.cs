@@ -1,6 +1,8 @@
 using System.Reflection;
 using CineQuebec.Domain.Entities.Abstract;
 
+// ReSharper disable EqualExpressionComparison
+
 namespace Tests.Domain.Entities.Abstract;
 
 public abstract class EntiteTests<T> where T : Entite
@@ -32,27 +34,27 @@ public abstract class EntiteTests<T> where T : Entite
 	}
 
 	[Test]
-	public void AfterInstantiation_EntityShouldBeOfTypeT()
+	public void Constructor_Always_ShouldCreateEntityOfTypeT()
 	{
 		Assert.That(Entite, Is.InstanceOf<T>());
 	}
 
 	[Test]
-	public void OnInstantiation_IdShouldBeEmpty()
+	public void Constructor_Always_ShouldSetIdToEmptyGuid()
 	{
 		// Assert
 		Assert.That(Entite.Id, Is.EqualTo(Guid.Empty));
 	}
 
 	[Test]
-	public void SetId_ShouldThrowArgumentNullExceptionWhenIdIsEmpty()
+	public void SetId_WhenGivenEmptyGuid_ShouldThrowArgumentNullException()
 	{
 		// Assert
 		Assert.That(() => Entite.SetId(Guid.Empty), Throws.ArgumentNullException);
 	}
 
 	[Test]
-	public void SetId_ShouldSetIdWhenGivenIdIsNotEmpty()
+	public void SetId_WhenGivenNonEmptyGuid_ShouldSetId()
 	{
 		// Arrange
 		var id = Guid.NewGuid();
@@ -65,21 +67,21 @@ public abstract class EntiteTests<T> where T : Entite
 	}
 
 	[Test]
-	public void Equals_ShouldReturnFalseWhenGivenEntiteIsNull()
+	public void Equals_WhenComparingToNull_ShouldReturnFalse()
 	{
 		// Assert
 		Assert.That(Entite, Is.Not.EqualTo(null));
 	}
 
 	[Test]
-	public void Equals_ShouldReturnTrueWhenGivenEntiteIsSameInstance()
+	public void Equals_WhenComparingToSameInstance_ShouldReturnTrue()
 	{
 		// Assert
 		Assert.That(Entite, Is.EqualTo(Entite));
 	}
 
 	[Test]
-	public void Equals_ShouldReturnFalseWhenGivenEntiteIsDifferentInstanceWithDifferentId()
+	public void Equals_WhenComparingToDifferentInstanceWithDifferentId_ShouldReturnFalse()
 	{
 		// Arrange
 		var autre = CreateInstance();
@@ -91,7 +93,7 @@ public abstract class EntiteTests<T> where T : Entite
 	}
 
 	[Test]
-	public void Equals_ShouldReturnFalseWhenGivenEntiteIsDifferentType()
+	public void Equals_WhenComparingToEntityOfDifferentType_ShouldReturnFalse()
 	{
 		// Arrange
 		var autre = new object();
@@ -101,7 +103,7 @@ public abstract class EntiteTests<T> where T : Entite
 	}
 
 	[Test]
-	public void Equals_ShouldReturnTrueWhenGivenEntiteHasSameId()
+	public void Equals_WhenComparingToDifferentInstanceWithSameId_ShouldReturnTrue()
 	{
 		// Arrange
 		var autre = CreateInstance();
@@ -113,19 +115,14 @@ public abstract class EntiteTests<T> where T : Entite
 	}
 
 	[Test]
-	public void Equals_ShouldReturnFalseWhenGivenEntiteHasDifferentId()
+	public void OperatorEqual_WhenComparingToSameInstance_ShouldReturnTrue()
 	{
-		// Arrange
-		var autre = CreateInstance();
-		Entite.SetId(Guid.NewGuid());
-		autre.SetId(Guid.NewGuid());
-
 		// Assert
-		Assert.That(Entite, Is.Not.EqualTo(autre));
+		Assert.That(Entite == Entite, Is.True);
 	}
 
 	[Test]
-	public void OperatorEqual_ShouldReturnTrueWhenGivenEntiteHasSameId()
+	public void OperatorEqual_WhenComparingToDifferentInstanceWithSameId_ShouldReturnTrue()
 	{
 		// Arrange
 		var autre = CreateInstance();
@@ -137,7 +134,7 @@ public abstract class EntiteTests<T> where T : Entite
 	}
 
 	[Test]
-	public void OperatorEqual_ShouldReturnFalseWhenGivenEntiteHasDifferentId()
+	public void OperatorEqual_WhenComparingToDifferentInstanceWithDifferentId_ShouldReturnFalse()
 	{
 		// Arrange
 		var autre = CreateInstance();
@@ -149,7 +146,7 @@ public abstract class EntiteTests<T> where T : Entite
 	}
 
 	[Test]
-	public void OperatorNotEqual_ShouldReturnFalseWhenGivenEntiteHasSameId()
+	public void OperatorNotEqual_WhenComparingDifferentInstanceWithSameId_ShouldReturnFalse()
 	{
 		// Arrange
 		var autre = CreateInstance();
@@ -161,7 +158,7 @@ public abstract class EntiteTests<T> where T : Entite
 	}
 
 	[Test]
-	public void OperatorNotEqual_ShouldReturnTrueWhenGivenEntiteHasDifferentId()
+	public void OperatorNotEqual_WhenComparingDifferentInstanceWithDifferentId_ShouldReturnTrue()
 	{
 		// Arrange
 		var autre = CreateInstance();
@@ -173,7 +170,14 @@ public abstract class EntiteTests<T> where T : Entite
 	}
 
 	[Test]
-	public virtual void ToString_ShouldUniquelyDescribeTheEntity()
+	public void OperatorNotEqual_WhenComparingToSameInstance_ShouldReturnFalse()
+	{
+		// Assert
+		Assert.That(Entite != Entite, Is.False);
+	}
+
+	[Test]
+	public virtual void ToString_Always_ShouldUniquelyDescribeTheEntity()
 	{
 		// Arrange
 		var type = Entite.GetType().Name;
@@ -184,7 +188,7 @@ public abstract class EntiteTests<T> where T : Entite
 	}
 
 	[Test]
-	public virtual void GetHashCode_ShouldBeUniqueToTheEntity()
+	public virtual void GetHashCode_Always_ShouldBeUniqueToTheEntity()
 	{
 		// Arrange
 		var id = Guid.NewGuid();
@@ -195,7 +199,7 @@ public abstract class EntiteTests<T> where T : Entite
 	}
 
 	[Test]
-	public void AddingToHashSet_ShouldNotAddDuplicateWithSameId()
+	public void Instance_WhenAddingToHashSet_ShouldNotAddOtherInstanceWithSameId()
 	{
 		// Arrange
 		var hashSet = new HashSet<T>();

@@ -10,7 +10,7 @@ public class CategorieFilmTests : EntiteTests<CategorieFilm>
 	protected override object?[] ArgsConstructeur => [NomValide];
 
 	[Test]
-	public override void ToString_ShouldUniquelyDescribeTheEntity()
+	public override void ToString_Always_ShouldUniquelyDescribeTheEntity()
 	{
 		// Assert
 		Assert.That(Entite.ToString(), Is.EqualTo(Entite.NomAffichage));
