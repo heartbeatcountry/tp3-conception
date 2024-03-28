@@ -10,13 +10,13 @@ public class RealisateurTests : PersonneTests<Realisateur>
 	protected override Realisateur Entite { get; set; } = null!;
 
 	[Test]
-	public void AfterInstantiation_RealiseFilmsShouldBeEmpty()
+	public void Constructor_Always_ShouldInitializeRealiseFilmsToEmptyCollection()
 	{
 		Assert.That(Entite.RealiseFilms, Is.Empty);
 	}
 
 	[Test]
-	public void GivenFilmToAdd_WhenAjouterFilm_ThenFilmShouldBeAddedToRealiseFilms()
+	public void AjouterFilm_WhenGivenFilmWithValidIdNotPresentInRealiseFilms_ShouldAddFilmToRealiseFilms()
 	{
 		// Arrange
 		var film = Mock.Of<IFilm>();
@@ -29,7 +29,7 @@ public class RealisateurTests : PersonneTests<Realisateur>
 	}
 
 	[Test]
-	public void GivenFilmToRemove_WhenRetirerFilm_ThenFilmShouldBeRemovedFromRealiseFilms()
+	public void RetirerFilm_WhenGivenFilmWithValidIdPresentInRealiseFilms_ShouldRemoveFilmFromRealiseFilms()
 	{
 		// Arrange
 		var film = Mock.Of<IFilm>();
@@ -43,7 +43,7 @@ public class RealisateurTests : PersonneTests<Realisateur>
 	}
 
 	[Test]
-	public void GivenFilmsToAdd_WhenAjouterFilms_ThenFilmsShouldBeAddedToRealiseFilms()
+	public void AjouterFilms_WhenGivenFilmsWithValidIdNotPresentInRealiseFilms_ShouldAddFilmsToRealiseFilms()
 	{
 		// Arrange
 		var films = new List<IFilm>
@@ -61,7 +61,7 @@ public class RealisateurTests : PersonneTests<Realisateur>
 	}
 
 	[Test]
-	public void GivenFilmToAdd_WhenAjouterFilm_ThenReturnTrue()
+	public void AjouterFilm_WhenGivenFilmWithValidIdNotPresentInRealiseFilms_ShouldReturnTrue()
 	{
 		// Arrange
 		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
@@ -74,7 +74,7 @@ public class RealisateurTests : PersonneTests<Realisateur>
 	}
 
 	[Test]
-	public void GivenFilmInRealiseFilms_WhenRetirerFilm_ThenReturnTrue()
+	public void RetirerFilm_WhenGivenFilmWithValidIdPresentInRealiseFilms_ShouldReturnTrue()
 	{
 		// Arrange
 		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
@@ -88,7 +88,7 @@ public class RealisateurTests : PersonneTests<Realisateur>
 	}
 
 	[Test]
-	public void GivenFilmNotInRealiseFilms_WhenRetirerFilm_ThenReturnFalse()
+	public void RetirerFilm_WhenGivenFilmNotPresentInRealiseFilms_ShouldReturnFalse()
 	{
 		// Arrange
 		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
@@ -101,7 +101,7 @@ public class RealisateurTests : PersonneTests<Realisateur>
 	}
 
 	[Test]
-	public void GivenFilmAlreadyInRealiseFilms_WhenAjouterFilm_ThenReturnFalse()
+	public void AjouterFilm_WhenGivenFilmAlreadyInRealiseFilms_ShouldReturnFalse()
 	{
 		// Arrange
 		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
