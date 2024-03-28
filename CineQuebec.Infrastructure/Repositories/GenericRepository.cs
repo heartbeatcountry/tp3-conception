@@ -47,7 +47,7 @@ public class GenericRepository<TEntite> : IRepository<TEntite> where TEntite : E
 	public TEntite Modifier(TEntite entite)
 	{
 		_dbSet.Attach(entite);
-		_context.Entry(entite).State = EntityState.Deleted;
+		_context.Entry(entite).State = EntityState.Modified;
 		return entite;
 	}
 
