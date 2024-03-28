@@ -1,8 +1,9 @@
 using CineQuebec.Domain.Entities.Abstract;
+using CineQuebec.Domain.Interfaces.Entities.Films;
 
 namespace CineQuebec.Domain.Entities.Films;
 
-public class CategorieFilm : Entite, IComparable<CategorieFilm>
+public class CategorieFilm : Entite, IComparable<CategorieFilm>, ICategorieFilm
 {
 	public CategorieFilm(string nomAffichage)
 	{
@@ -33,7 +34,7 @@ public class CategorieFilm : Entite, IComparable<CategorieFilm>
 			                              StringComparison.OrdinalIgnoreCase));
 	}
 
-	private void SetNomAffichage(string nomAffichage)
+	public void SetNomAffichage(string nomAffichage)
 	{
 		if (string.IsNullOrWhiteSpace(nomAffichage))
 		{

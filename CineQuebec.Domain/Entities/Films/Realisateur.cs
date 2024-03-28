@@ -14,9 +14,9 @@ public class Realisateur : Personne, IRealisateur
 
 	public ImmutableArray<IFilm> RealiseFilms => _realiseFilms.ToImmutableArray();
 
-	public void AjouterFilm(IFilm film)
+	public bool AjouterFilm(IFilm film)
 	{
-		_realiseFilms.Add(film);
+		return _realiseFilms.Add(film);
 	}
 
 	public void AjouterFilms(IEnumerable<IFilm> films)
@@ -27,8 +27,8 @@ public class Realisateur : Personne, IRealisateur
 		}
 	}
 
-	public void RetirerFilm(IFilm film)
+	public bool RetirerFilm(IFilm film)
 	{
-		_realiseFilms.Remove(film);
+		return _realiseFilms.Remove(film);
 	}
 }

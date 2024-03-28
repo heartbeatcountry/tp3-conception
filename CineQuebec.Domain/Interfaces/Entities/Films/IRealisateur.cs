@@ -5,7 +5,7 @@ namespace CineQuebec.Domain.Interfaces.Entities.Films;
 public interface IRealisateur: IPersonne
 {
 	ImmutableArray<IFilm> RealiseFilms { get; }
-	void AjouterFilm(IFilm film);
+	bool AjouterFilm(IFilm film);
 	void AjouterFilms(IEnumerable<IFilm> films);
-	void RetirerFilm(IFilm film);
+	bool RetirerFilm(IFilm film);
 }

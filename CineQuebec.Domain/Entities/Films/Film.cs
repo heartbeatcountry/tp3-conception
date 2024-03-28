@@ -9,8 +9,8 @@ public class Film : Entite, IComparable<Film>, IFilm
 	private readonly HashSet<IActeur> _acteurs = [];
 	private readonly HashSet<IRealisateur> _realisateurs = [];
 
-	public Film(string titre, string description, CategorieFilm categorie, DateTime dateSortieInternationale,
-		IEnumerable<Acteur> acteurs, IEnumerable<Realisateur> realisateurs, ushort duree)
+	public Film(string titre, string description, ICategorieFilm categorie, DateTime dateSortieInternationale,
+		IEnumerable<IActeur> acteurs, IEnumerable<IRealisateur> realisateurs, ushort duree)
 	{
 		SetTitre(titre);
 		SetDescription(description);
@@ -23,7 +23,7 @@ public class Film : Entite, IComparable<Film>, IFilm
 
 	public string Titre { get; private set; } = string.Empty;
 	public string Description { get; private set; } = string.Empty;
-	public CategorieFilm Categorie { get; private set; } = null!;
+	public ICategorieFilm Categorie { get; private set; } = null!;
 	public DateTime DateSortieInternationale { get; private set; } = DateTime.MinValue;
 	public ImmutableArray<IActeur> Acteurs => _acteurs.ToImmutableArray();
 	public ImmutableArray<IRealisateur> Realisateurs => _realisateurs.ToImmutableArray();
@@ -73,14 +73,9 @@ public class Film : Entite, IComparable<Film>, IFilm
 		Description = description.Trim();
 	}
 
-	public void SetCategorie(CategorieFilm categorie)
+	public void SetCategorie(ICategorieFilm categorie)
 	{
-		if (categorie == null)
-		{
-			throw new ArgumentNullException(nameof(categorie), "La catégorie ne peut pas être nulle.");
-		}
-
-		Categorie = categorie;
+		Categorie = categorie ?? throw new ArgumentNullException(nameof(categorie), "La catégorie ne peut pas être nulle.");
 	}
 
 	public void SetDateSortieInternationale(DateTime dateSortieInternationale)

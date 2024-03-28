@@ -5,18 +5,18 @@ using Tests.Domain.Entities.Abstract;
 
 namespace Tests.Domain.Entities.Films;
 
-public class ActeurTests : PersonneTests<Acteur>
+public class RealisateurTests : PersonneTests<Realisateur>
 {
-	protected override Acteur Entite { get; set; } = null!;
+	protected override Realisateur Entite { get; set; } = null!;
 
 	[Test]
-	public void AfterInstantiation_JoueDansFilmsShouldBeEmpty()
+	public void AfterInstantiation_RealiseFilmsShouldBeEmpty()
 	{
-		Assert.That(Entite.JoueDansFilms, Is.Empty);
+		Assert.That(Entite.RealiseFilms, Is.Empty);
 	}
 
 	[Test]
-	public void GivenFilmToAdd_WhenAjouterFilm_ThenFilmShouldBeAddedToJoueDansFilms()
+	public void GivenFilmToAdd_WhenAjouterFilm_ThenFilmShouldBeAddedToRealiseFilms()
 	{
 		// Arrange
 		var film = Mock.Of<IFilm>();
@@ -25,11 +25,11 @@ public class ActeurTests : PersonneTests<Acteur>
 		Entite.AjouterFilm(film);
 
 		// Assert
-		Assert.That(Entite.JoueDansFilms, Has.Member(film));
+		Assert.That(Entite.RealiseFilms, Has.Member(film));
 	}
 
 	[Test]
-	public void GivenFilmToRemove_WhenRetirerFilm_ThenFilmShouldBeRemovedFromJoueDansFilms()
+	public void GivenFilmToRemove_WhenRetirerFilm_ThenFilmShouldBeRemovedFromRealiseFilms()
 	{
 		// Arrange
 		var film = Mock.Of<IFilm>();
@@ -39,11 +39,11 @@ public class ActeurTests : PersonneTests<Acteur>
 		Entite.RetirerFilm(film);
 
 		// Assert
-		Assert.That(Entite.JoueDansFilms, Has.No.Member(film));
+		Assert.That(Entite.RealiseFilms, Has.No.Member(film));
 	}
 
 	[Test]
-	public void GivenFilmsToAdd_WhenAjouterFilms_ThenFilmsShouldBeAddedToJoueDansFilms()
+	public void GivenFilmsToAdd_WhenAjouterFilms_ThenFilmsShouldBeAddedToRealiseFilms()
 	{
 		// Arrange
 		var films = new List<IFilm>
@@ -56,8 +56,8 @@ public class ActeurTests : PersonneTests<Acteur>
 		Entite.AjouterFilms(films);
 
 		// Assert
-		Assert.That(Entite.JoueDansFilms, Has.Member(films[0]));
-		Assert.That(Entite.JoueDansFilms, Has.Member(films[1]));
+		Assert.That(Entite.RealiseFilms, Has.Member(films[0]));
+		Assert.That(Entite.RealiseFilms, Has.Member(films[1]));
 	}
 
 	[Test]
@@ -74,7 +74,7 @@ public class ActeurTests : PersonneTests<Acteur>
 	}
 
 	[Test]
-	public void GivenFilmInJoueDansFilms_WhenRetirerFilm_ThenReturnTrue()
+	public void GivenFilmInRealiseFilms_WhenRetirerFilm_ThenReturnTrue()
 	{
 		// Arrange
 		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
@@ -88,7 +88,7 @@ public class ActeurTests : PersonneTests<Acteur>
 	}
 
 	[Test]
-	public void GivenFilmNotInJoueDansFilms_WhenRetirerFilm_ThenReturnFalse()
+	public void GivenFilmNotInRealiseFilms_WhenRetirerFilm_ThenReturnFalse()
 	{
 		// Arrange
 		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
@@ -101,7 +101,7 @@ public class ActeurTests : PersonneTests<Acteur>
 	}
 
 	[Test]
-	public void GivenFilmAlreadyInJoueDansFilms_WhenAjouterFilm_ThenReturnFalse()
+	public void GivenFilmAlreadyInRealiseFilms_WhenAjouterFilm_ThenReturnFalse()
 	{
 		// Arrange
 		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
