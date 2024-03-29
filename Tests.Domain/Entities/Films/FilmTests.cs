@@ -22,24 +22,10 @@ public class FilmTests : EntiteTests<Film>
 	];
 
 	[Test]
-	public override void ToString_Always_ShouldUniquelyDescribeTheEntity()
+	public void AfterInstantiation_ActeursShouldBeEmpty()
 	{
 		// Assert
-		Assert.That(Entite.ToString(), Is.EqualTo($"{Entite.Titre} ({Entite.DateSortieInternationale.Year})"));
-	}
-
-	[Test]
-	public void AfterInstantiation_TitreShouldBeEqualToTitreGivenInConstructor()
-	{
-		// Assert
-		Assert.That(Entite.Titre, Is.EqualTo(TitreValide));
-	}
-
-	[Test]
-	public void AfterInstantiation_DescriptionShouldBeEqualToDescriptionGivenInConstructor()
-	{
-		// Assert
-		Assert.That(Entite.Description, Is.EqualTo(DescriptionValide));
+		Assert.That(Entite.Acteurs, Is.Empty);
 	}
 
 	[Test]
@@ -57,17 +43,10 @@ public class FilmTests : EntiteTests<Film>
 	}
 
 	[Test]
-	public void AfterInstantiation_ActeursShouldBeEmpty()
+	public void AfterInstantiation_DescriptionShouldBeEqualToDescriptionGivenInConstructor()
 	{
 		// Assert
-		Assert.That(Entite.Acteurs, Is.Empty);
-	}
-
-	[Test]
-	public void AfterInstantiation_RealisateursShouldBeEmpty()
-	{
-		// Assert
-		Assert.That(Entite.Realisateurs, Is.Empty);
+		Assert.That(Entite.Description, Is.EqualTo(DescriptionValide));
 	}
 
 	[Test]
@@ -78,14 +57,17 @@ public class FilmTests : EntiteTests<Film>
 	}
 
 	[Test]
-	public void OnInstantiation_ConstructorShouldThrowArgumentExceptionWhenTitreIsNullOrWhitespace()
+	public void AfterInstantiation_RealisateursShouldBeEmpty()
 	{
-		Assert.That(() => CreateInstance(null, DescriptionValide, _categorieFilm, _dateSortieInternationale,
-			_aucunActeurs, _aucunRealisateurs, DureeValide), Throws.ArgumentException);
-		Assert.That(() => CreateInstance(string.Empty, DescriptionValide, _categorieFilm, _dateSortieInternationale,
-			_aucunActeurs, _aucunRealisateurs, DureeValide), Throws.ArgumentException);
-		Assert.That(() => CreateInstance(" ", DescriptionValide, _categorieFilm, _dateSortieInternationale,
-			_aucunActeurs, _aucunRealisateurs, DureeValide), Throws.ArgumentException);
+		// Assert
+		Assert.That(Entite.Realisateurs, Is.Empty);
+	}
+
+	[Test]
+	public void AfterInstantiation_TitreShouldBeEqualToTitreGivenInConstructor()
+	{
+		// Assert
+		Assert.That(Entite.Titre, Is.EqualTo(TitreValide));
 	}
 
 	[Test]
@@ -100,9 +82,27 @@ public class FilmTests : EntiteTests<Film>
 	}
 
 	[Test]
+	public void OnInstantiation_ConstructorShouldThrowArgumentExceptionWhenTitreIsNullOrWhitespace()
+	{
+		Assert.That(() => CreateInstance(null, DescriptionValide, _categorieFilm, _dateSortieInternationale,
+			_aucunActeurs, _aucunRealisateurs, DureeValide), Throws.ArgumentException);
+		Assert.That(() => CreateInstance(string.Empty, DescriptionValide, _categorieFilm, _dateSortieInternationale,
+			_aucunActeurs, _aucunRealisateurs, DureeValide), Throws.ArgumentException);
+		Assert.That(() => CreateInstance(" ", DescriptionValide, _categorieFilm, _dateSortieInternationale,
+			_aucunActeurs, _aucunRealisateurs, DureeValide), Throws.ArgumentException);
+	}
+
+	[Test]
 	public void OnInstantiation_ConstructorShouldThrowArgumentNullExceptionWhenCategorieIsNull()
 	{
 		Assert.That(() => CreateInstance(TitreValide, DescriptionValide, null, _dateSortieInternationale,
 			_aucunActeurs, _aucunRealisateurs, DureeValide), Throws.ArgumentNullException);
+	}
+
+	[Test]
+	public override void ToString_Always_ShouldUniquelyDescribeTheEntity()
+	{
+		// Assert
+		Assert.That(Entite.ToString(), Is.EqualTo($"{Entite.Titre} ({Entite.DateSortieInternationale.Year})"));
 	}
 }

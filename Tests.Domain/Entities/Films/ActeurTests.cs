@@ -10,13 +10,18 @@ public class ActeurTests : PersonneTests<Acteur>
 	protected override Acteur Entite { get; set; } = null!;
 
 	[Test]
-	public void Constructor_Always_ShouldInitializeJoueDansFilmsToEmptyCollection()
+	public void AjouterFilm_WhenGivenFilmWithEmptyGuid_ShouldThrowArgumentException()
 	{
-		Assert.That(Entite.JoueDansFilms, Is.Empty);
+		// Arrange
+		var film = Mock.Of<IFilm>(m => m.Id == Guid.Empty);
+
+		// Act & Assert
+		Assert.That(() => Entite.AjouterFilm(film),
+			Throws.ArgumentException.With.Message.Contains("Le film doit avoir un identifiant unique."));
 	}
 
 	[Test]
-	public void AjouterFilm_WhenGivenFilmWithUniqueId_ShouldAddFilmToJoueDansFilms()
+	public void AjouterFilm_WhenGivenFilmWithValidIdNotPresentInJoueDansFilms_ShouldAddFilmToJoueDansFilms()
 	{
 		// Arrange
 		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
@@ -29,33 +34,44 @@ public class ActeurTests : PersonneTests<Acteur>
 	}
 
 	[Test]
-	public void AjouterFilm_WhenGivenFilmWithNonUniqueId_ShouldThrowArgumentException()
+	public void AjouterFilm_WhenGivenFilmWithValidIdNotPresentInJoueDansFilms_ShouldReturnTrue()
 	{
 		// Arrange
-		var film = Mock.Of<IFilm>(m => m.Id == Guid.Empty);
+		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
 
 		// Act
-		void AjouterFilm()
-		{
-			Entite.AjouterFilm(film);
-		}
+		var result = Entite.AjouterFilm(film);
 
 		// Assert
-		Assert.That(AjouterFilm, Throws.ArgumentException);
+		Assert.That(result, Is.True);
 	}
 
 	[Test]
-	public void RetirerFilm_WhenGivenFilmPresentInJoueDansFilms_ShouldRemoveFilmFromJoueDansFilms()
+	public void AjouterFilm_WhenGivenFilmWithValidIdPresentInJoueDansFilms_ShouldNotAddFilmToJoueDansFilms()
 	{
 		// Arrange
-		var film = Mock.Of<IFilm>(f => f.Id == Guid.NewGuid());
+		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
 		Entite.AjouterFilm(film);
 
 		// Act
-		Entite.RetirerFilm(film);
+		Entite.AjouterFilm(film);
 
 		// Assert
-		Assert.That(Entite.JoueDansFilms, Has.No.Member(film));
+		Assert.That(Entite.JoueDansFilms.Count, Is.EqualTo(1));
+	}
+
+	[Test]
+	public void AjouterFilm_WhenGivenFilmWithValidIdPresentInJoueDansFilms_ShouldReturnFalse()
+	{
+		// Arrange
+		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
+		Entite.AjouterFilm(film);
+
+		// Act
+		var result = Entite.AjouterFilm(film);
+
+		// Assert
+		Assert.That(result, Is.False);
 	}
 
 	[Test]
@@ -77,30 +93,28 @@ public class ActeurTests : PersonneTests<Acteur>
 	}
 
 	[Test]
-	public void AjouterFilm_WhenGivenFilmNotPresentInJoueDansFilms_ShouldReturnTrue()
+	public void AjouterFilms_WhenGivenFilmsWithSomeAlreadyPresentInJoueDansFilms_ShouldAddOnlyNewFilms()
 	{
 		// Arrange
-		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
+		var film1 = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
+		var film2 = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
+		Entite.AjouterFilm(film1);
+
+		var films = new List<IFilm> { film1, film2 };
 
 		// Act
-		var result = Entite.AjouterFilm(film);
+		Entite.AjouterFilms(films);
 
 		// Assert
-		Assert.That(result, Is.True);
+		Assert.That(Entite.JoueDansFilms, Has.Member(film1));
+		Assert.That(Entite.JoueDansFilms, Has.Member(film2));
+		Assert.That(Entite.JoueDansFilms.Count, Is.EqualTo(2));
 	}
 
 	[Test]
-	public void RetirerFilm_WhenGivenFilmPresentInJoueDansFilms_ShouldReturnTrue()
+	public void Constructor_Always_ShouldInitializeJoueDansFilmsToEmptyCollection()
 	{
-		// Arrange
-		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
-		Entite.AjouterFilm(film);
-
-		// Act
-		var result = Entite.RetirerFilm(film);
-
-		// Assert
-		Assert.That(result, Is.True);
+		Assert.That(Entite.JoueDansFilms, Is.Empty);
 	}
 
 	[Test]
@@ -117,16 +131,30 @@ public class ActeurTests : PersonneTests<Acteur>
 	}
 
 	[Test]
-	public void AjouterFilm_WhenGivenFilmPresentInJoueDansFilms_ShouldReturnFalse()
+	public void RetirerFilm_WhenGivenFilmPresentInJoueDansFilms_ShouldRemoveFilmFromJoueDansFilms()
+	{
+		// Arrange
+		var film = Mock.Of<IFilm>(f => f.Id == Guid.NewGuid());
+		Entite.AjouterFilm(film);
+
+		// Act
+		Entite.RetirerFilm(film);
+
+		// Assert
+		Assert.That(Entite.JoueDansFilms, Has.No.Member(film));
+	}
+
+	[Test]
+	public void RetirerFilm_WhenGivenFilmPresentInJoueDansFilms_ShouldReturnTrue()
 	{
 		// Arrange
 		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
 		Entite.AjouterFilm(film);
 
 		// Act
-		var result = Entite.AjouterFilm(film);
+		var result = Entite.RetirerFilm(film);
 
 		// Assert
-		Assert.That(result, Is.False);
+		Assert.That(result, Is.True);
 	}
 }

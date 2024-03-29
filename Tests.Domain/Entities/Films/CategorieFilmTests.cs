@@ -10,46 +10,7 @@ public class CategorieFilmTests : EntiteTests<CategorieFilm>
 	protected override object?[] ArgsConstructeur => [NomValide];
 
 	[Test]
-	public override void ToString_Always_ShouldUniquelyDescribeTheEntity()
-	{
-		// Assert
-		Assert.That(Entite.ToString(), Is.EqualTo(Entite.NomAffichage));
-	}
-
-	[Test]
-	public void AfterInstantiation_NomAffichageShouldBeEqualToNomAffichageGivenInConstructor()
-	{
-		// Assert
-		Assert.That(Entite.NomAffichage, Is.EqualTo(NomValide));
-	}
-
-	[Test]
-	public void OnInstantiation_ConstructorShouldThrowArgumentExceptionWhenNomAffichageIsNullOrWhitespace()
-	{
-		Assert.That(() => CreateInstance(string.Empty), Throws.ArgumentException);
-		Assert.That(() => CreateInstance(" "), Throws.ArgumentException);
-	}
-
-	[Test]
-	public void WhenSetNomAffichageWithNullOrWhitespace_ThenThrowArgumentException()
-	{
-		Assert.That(() => Entite.SetNomAffichage(null), Throws.ArgumentException);
-		Assert.That(() => Entite.SetNomAffichage(string.Empty), Throws.ArgumentException);
-		Assert.That(() => Entite.SetNomAffichage(" "), Throws.ArgumentException);
-	}
-
-	[Test]
-	public void WhenSetNomAffichageWithValidValue_ThenNomAffichageShouldBeEqualToValue()
-	{
-		// Act
-		Entite.SetNomAffichage(AutreNomValide);
-
-		// Assert
-		Assert.That(Entite.NomAffichage, Is.EqualTo(AutreNomValide));
-	}
-
-	[Test]
-	public void WhenCompareToWithNull_ThenReturn1()
+	public void CompareTo_WhenGivenNull_ShouldReturn1()
 	{
 		// Act
 		var result = Entite.CompareTo(null);
@@ -59,17 +20,7 @@ public class CategorieFilmTests : EntiteTests<CategorieFilm>
 	}
 
 	[Test]
-	public void WhenCompareToWithSameObject_ThenReturn0()
-	{
-		// Act
-		var result = Entite.CompareTo(Entite);
-
-		// Assert
-		Assert.That(result, Is.EqualTo(0));
-	}
-
-	[Test]
-	public void WhenCompareToWithDifferentObject_ThenReturnComparisonResult()
+	public void CompareTo_WhenGivenOtherInstanceWithDifferentNomAffichage_ShouldReturnComparisonResult()
 	{
 		// Arrange
 		var autreCategorie = new CategorieFilm(AutreNomValide);
@@ -80,5 +31,68 @@ public class CategorieFilmTests : EntiteTests<CategorieFilm>
 		// Assert
 		Assert.That(result,
 			Is.EqualTo(string.Compare(Entite.NomAffichage, autreCategorie.NomAffichage, StringComparison.Ordinal)));
+	}
+
+	[Test]
+	public void CompareTo_WhenGivenSameInstance_ShouldReturn0()
+	{
+		// Act
+		var result = Entite.CompareTo(Entite);
+
+		// Assert
+		Assert.That(result, Is.EqualTo(0));
+	}
+
+	[Test]
+	public void Constructor_WhenNomAffichageIsNullOrWhitespace_ShouldThrowArgumentException()
+	{
+		Assert.That(() => CreateInstance(string.Empty), Throws.ArgumentException);
+		Assert.That(() => CreateInstance(" "), Throws.ArgumentException);
+	}
+
+	[Test]
+	public void Constructor_WhenNomAffichageIsValid_ShouldSetNomAffichageToNomAffichageGivenInConstructor()
+	{
+		// Assert
+		Assert.That(Entite.NomAffichage, Is.EqualTo(NomValide));
+	}
+
+	[Test]
+	public void Equals_WhenGivenBoxedCategorieFilmWithSameNomAffichage_ShouldReturnTrue()
+	{
+		// Arrange
+		var autreCategorie = new CategorieFilm(NomValide);
+		autreCategorie.SetId(Guid.NewGuid());
+
+		// Act
+		var result = Entite.Equals(autreCategorie);
+
+		// Assert
+		Assert.That(result, Is.True);
+	}
+
+	[Test]
+	public void SetNomAffichage_WhenGivenNomAffichageIsNullOrWhitespace_ShouldThrowArgumentException()
+	{
+		Assert.That(() => Entite.SetNomAffichage(null), Throws.ArgumentException);
+		Assert.That(() => Entite.SetNomAffichage(string.Empty), Throws.ArgumentException);
+		Assert.That(() => Entite.SetNomAffichage(" "), Throws.ArgumentException);
+	}
+
+	[Test]
+	public void SetNomAffichage_WhenGivenValidNomAffichage_ShouldSetNomAffichageToGivenNomAffichage()
+	{
+		// Act
+		Entite.SetNomAffichage(AutreNomValide);
+
+		// Assert
+		Assert.That(Entite.NomAffichage, Is.EqualTo(AutreNomValide));
+	}
+
+	[Test]
+	public override void ToString_Always_ShouldUniquelyDescribeTheEntity()
+	{
+		// Assert
+		Assert.That(Entite.ToString(), Is.EqualTo(Entite.NomAffichage));
 	}
 }

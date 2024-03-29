@@ -54,7 +54,7 @@ public abstract class EntiteTests<TEntite> where TEntite : Entite
 	}
 
 	[Test]
-	public void SetId_WhenGivenNonEmptyGuid_ShouldSetId()
+	public void SetId_WhenGivenNonEmptyGuid_ShouldSetIdToGivenGuid()
 	{
 		// Arrange
 		var id = Guid.NewGuid();
