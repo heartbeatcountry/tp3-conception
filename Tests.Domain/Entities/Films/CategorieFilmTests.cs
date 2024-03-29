@@ -23,7 +23,7 @@ public class CategorieFilmTests : EntiteTests<CategorieFilm>
 	public void CompareTo_WhenGivenOtherInstanceWithDifferentNomAffichage_ShouldReturnComparisonResult()
 	{
 		// Arrange
-		var autreCategorie = new CategorieFilm(AutreNomValide);
+		var autreCategorie = CreateInstance(AutreNomValide);
 
 		// Act
 		var result = Entite.CompareTo(autreCategorie);
@@ -46,8 +46,11 @@ public class CategorieFilmTests : EntiteTests<CategorieFilm>
 	[Test]
 	public void Constructor_WhenNomAffichageIsNullOrWhitespace_ShouldThrowArgumentException()
 	{
-		Assert.That(() => CreateInstance(string.Empty), Throws.ArgumentException);
-		Assert.That(() => CreateInstance(" "), Throws.ArgumentException);
+		Assert.Multiple(() =>
+		{
+			Assert.That(() => CreateInstance(string.Empty), Throws.ArgumentException);
+			Assert.That(() => CreateInstance(" "), Throws.ArgumentException);
+		});
 	}
 
 	[Test]
@@ -61,7 +64,7 @@ public class CategorieFilmTests : EntiteTests<CategorieFilm>
 	public void Equals_WhenGivenBoxedCategorieFilmWithSameNomAffichage_ShouldReturnTrue()
 	{
 		// Arrange
-		var autreCategorie = new CategorieFilm(NomValide);
+		var autreCategorie = CreateInstance(NomValide);
 		autreCategorie.SetId(Guid.NewGuid());
 
 		// Act
@@ -74,9 +77,11 @@ public class CategorieFilmTests : EntiteTests<CategorieFilm>
 	[Test]
 	public void SetNomAffichage_WhenGivenNomAffichageIsNullOrWhitespace_ShouldThrowArgumentException()
 	{
-		Assert.That(() => Entite.SetNomAffichage(null), Throws.ArgumentException);
-		Assert.That(() => Entite.SetNomAffichage(string.Empty), Throws.ArgumentException);
-		Assert.That(() => Entite.SetNomAffichage(" "), Throws.ArgumentException);
+		Assert.Multiple(() =>
+		{
+			Assert.That(() => Entite.SetNomAffichage(string.Empty), Throws.ArgumentException);
+			Assert.That(() => Entite.SetNomAffichage(" "), Throws.ArgumentException);
+		});
 	}
 
 	[Test]

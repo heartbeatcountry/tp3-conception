@@ -75,43 +75,6 @@ public class ActeurTests : PersonneTests<Acteur>
 	}
 
 	[Test]
-	public void AjouterFilms_WhenGivenFilmsWithDistinctIds_ShouldAddFilmsToJoueDansFilms()
-	{
-		// Arrange
-		var films = new List<IFilm>
-		{
-			Mock.Of<IFilm>(m => m.Id == Guid.NewGuid()),
-			Mock.Of<IFilm>(m => m.Id == Guid.NewGuid()),
-		};
-
-		// Act
-		Entite.AjouterFilms(films);
-
-		// Assert
-		Assert.That(Entite.JoueDansFilms, Has.Member(films[0]));
-		Assert.That(Entite.JoueDansFilms, Has.Member(films[1]));
-	}
-
-	[Test]
-	public void AjouterFilms_WhenGivenFilmsWithSomeAlreadyPresentInJoueDansFilms_ShouldAddOnlyNewFilms()
-	{
-		// Arrange
-		var film1 = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
-		var film2 = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
-		Entite.AjouterFilm(film1);
-
-		var films = new List<IFilm> { film1, film2 };
-
-		// Act
-		Entite.AjouterFilms(films);
-
-		// Assert
-		Assert.That(Entite.JoueDansFilms, Has.Member(film1));
-		Assert.That(Entite.JoueDansFilms, Has.Member(film2));
-		Assert.That(Entite.JoueDansFilms.Count, Is.EqualTo(2));
-	}
-
-	[Test]
 	public void Constructor_Always_ShouldInitializeJoueDansFilmsToEmptyCollection()
 	{
 		Assert.That(Entite.JoueDansFilms, Is.Empty);

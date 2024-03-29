@@ -9,7 +9,7 @@ public class Film : Entite, IComparable<Film>, IFilm
 	private readonly HashSet<IActeur> _acteurs = [];
 	private readonly HashSet<IRealisateur> _realisateurs = [];
 
-	public Film(string titre, string description, ICategorieFilm categorie, DateTime dateSortieInternationale,
+	public Film(string titre, string description, ICategorieFilm categorie, DateOnly dateSortieInternationale,
 		IEnumerable<IActeur> acteurs, IEnumerable<IRealisateur> realisateurs, ushort duree)
 	{
 		SetTitre(titre);
@@ -18,16 +18,16 @@ public class Film : Entite, IComparable<Film>, IFilm
 		SetDateSortieInternationale(dateSortieInternationale);
 		AddActeurs(acteurs);
 		AddRealisateurs(realisateurs);
-		SetDuree(duree);
+		SetDureeEnMinutes(duree);
 	}
 
 	public string Titre { get; private set; } = string.Empty;
 	public string Description { get; private set; } = string.Empty;
 	public ICategorieFilm Categorie { get; private set; } = null!;
-	public DateTime DateSortieInternationale { get; private set; } = DateTime.MinValue;
+	public DateOnly DateSortieInternationale { get; private set; } = DateOnly.MinValue;
 	public ImmutableArray<IActeur> Acteurs => _acteurs.ToImmutableArray();
 	public ImmutableArray<IRealisateur> Realisateurs => _realisateurs.ToImmutableArray();
-	public ushort Duree { get; private set; }
+	public ushort DureeEnMinutes { get; private set; }
 
 	public int CompareTo(Film? other)
 	{
@@ -50,7 +50,7 @@ public class Film : Entite, IComparable<Film>, IFilm
 		return base.Equals(autre) || (autre is Film film &&
 		                              string.Equals(Titre, film.Titre,
 			                              StringComparison.OrdinalIgnoreCase) && DateSortieInternationale.Year ==
-		                              film.DateSortieInternationale.Year && Duree == film.Duree);
+		                              film.DateSortieInternationale.Year && DureeEnMinutes == film.DureeEnMinutes);
 	}
 
 	public void SetTitre(string titre)
@@ -78,12 +78,12 @@ public class Film : Entite, IComparable<Film>, IFilm
 		Categorie = categorie ?? throw new ArgumentNullException(nameof(categorie), "La catégorie ne peut pas être nulle.");
 	}
 
-	public void SetDateSortieInternationale(DateTime dateSortieInternationale)
+	public void SetDateSortieInternationale(DateOnly dateSortieInternationale)
 	{
-		if (dateSortieInternationale == DateTime.MinValue)
+		if (dateSortieInternationale == DateOnly.MinValue)
 		{
-			throw new ArgumentNullException(nameof(dateSortieInternationale),
-				"La date de sortie internationale ne peut pas être nulle.");
+			throw new ArgumentOutOfRangeException(nameof(dateSortieInternationale),
+				$"La date de sortie internationale doit être supérieure à {DateOnly.MinValue}.");
 		}
 
 		DateSortieInternationale = dateSortieInternationale;
@@ -99,14 +99,14 @@ public class Film : Entite, IComparable<Film>, IFilm
 		_realisateurs.UnionWith(realisateurs);
 	}
 
-	public void SetDuree(ushort duree)
+	public void SetDureeEnMinutes(ushort duree)
 	{
 		if (duree == 0)
 		{
-			throw new ArgumentNullException(nameof(duree), "Le film doit durer plus de 0 minutes.");
+			throw new ArgumentOutOfRangeException(nameof(duree), "Le film doit durer plus de 0 minutes.");
 		}
 
-		Duree = duree;
+		DureeEnMinutes = duree;
 	}
 
 	public override string ToString()

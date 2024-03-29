@@ -13,16 +13,11 @@ public class Acteur(string prenom, string nom) : Personne(prenom, nom), IActeur
 	public bool AjouterFilm(IFilm film)
 	{
 		if (film.Id == Guid.Empty)
-			throw new ArgumentException("Le film doit avoir un identifiant unique.", nameof(film));
-		return _joueDansFilms.Add(film);
-	}
-
-	public void AjouterFilms(IEnumerable<IFilm> films)
-	{
-		foreach (var film in films)
 		{
-			AjouterFilm(film);
+			throw new ArgumentException("Le film doit avoir un identifiant unique.", nameof(film));
 		}
+
+		return _joueDansFilms.Add(film);
 	}
 
 	public bool RetirerFilm(IFilm film)

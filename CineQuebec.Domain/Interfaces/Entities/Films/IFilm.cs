@@ -7,15 +7,15 @@ public interface IFilm: IEntite
 	string Titre { get; }
 	string Description { get; }
 	ICategorieFilm Categorie { get; }
-	DateTime DateSortieInternationale { get; }
+	DateOnly DateSortieInternationale { get; }
 	ImmutableArray<IActeur> Acteurs { get; }
 	ImmutableArray<IRealisateur> Realisateurs { get; }
-	ushort Duree { get; }
+	ushort DureeEnMinutes { get; }
 	void SetTitre(string titre);
 	void SetDescription(string description);
 	void SetCategorie(ICategorieFilm categorie);
-	void SetDateSortieInternationale(DateTime dateSortieInternationale);
+	void SetDateSortieInternationale(DateOnly dateSortieInternationale);
 	void AddActeurs(IEnumerable<IActeur> acteurs);
 	void AddRealisateurs(IEnumerable<IRealisateur> realisateurs);
-	void SetDuree(ushort duree);
+	void SetDureeEnMinutes(ushort duree);
 }

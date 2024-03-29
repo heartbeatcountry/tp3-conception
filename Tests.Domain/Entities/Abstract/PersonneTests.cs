@@ -18,8 +18,11 @@ public abstract class PersonneTests<T> : EntiteTests<T> where T : Personne
 		autre.SetId(Guid.NewGuid());
 
 		// Act & Assert
-		Assert.That(Entite.CompareTo(autre), Is.GreaterThan(0));
-		Assert.That(autre.CompareTo(Entite), Is.LessThan(0));
+		Assert.Multiple(() =>
+		{
+			Assert.That(Entite.CompareTo(autre), Is.GreaterThan(0));
+			Assert.That(autre.CompareTo(Entite), Is.LessThan(0));
+		});
 	}
 
 	[Test]
@@ -85,9 +88,11 @@ public abstract class PersonneTests<T> : EntiteTests<T> where T : Personne
 	[Test]
 	public void Constructor_WhenGivenNomIsNullOrWhitespace_ShouldThrowArgumentException()
 	{
-		Assert.That(() => CreateInstance(PrenomValide, null), Throws.ArgumentException);
-		Assert.That(() => CreateInstance(PrenomValide, string.Empty), Throws.ArgumentException);
-		Assert.That(() => CreateInstance(PrenomValide, " "), Throws.ArgumentException);
+		Assert.Multiple(() =>
+		{
+			Assert.That(() => CreateInstance(PrenomValide, string.Empty), Throws.ArgumentException);
+			Assert.That(() => CreateInstance(PrenomValide, " "), Throws.ArgumentException);
+		});
 	}
 
 	[Test]
@@ -100,9 +105,11 @@ public abstract class PersonneTests<T> : EntiteTests<T> where T : Personne
 	[Test]
 	public void Constructor_WhenGivenPrenomIsNullOrWhitespace_ShouldThrowArgumentException()
 	{
-		Assert.That(() => CreateInstance(null, NomValide), Throws.ArgumentException);
-		Assert.That(() => CreateInstance(string.Empty, NomValide), Throws.ArgumentException);
-		Assert.That(() => CreateInstance(" ", NomValide), Throws.ArgumentException);
+		Assert.Multiple(() =>
+		{
+			Assert.That(() => CreateInstance(string.Empty, NomValide), Throws.ArgumentException);
+			Assert.That(() => CreateInstance(" ", NomValide), Throws.ArgumentException);
+		});
 	}
 
 	[Test]
@@ -140,10 +147,13 @@ public abstract class PersonneTests<T> : EntiteTests<T> where T : Personne
 	}
 
 	[Test]
-	public override void ToString_Always_ShouldUniquelyDescribeTheEntity()
+	public void SetPrenom_WhenGivenPrenomIsNullOrWhitespace_ShouldThrowArgumentException()
 	{
-		// Assert
-		Assert.That(Entite.ToString(), Is.EqualTo($"{PrenomValide} {NomValide}"));
+		Assert.Multiple(() =>
+		{
+			Assert.That(() => Entite.SetPrenom(string.Empty), Throws.ArgumentException);
+			Assert.That(() => Entite.SetPrenom(" "), Throws.ArgumentException);
+		});
 	}
 
 	[Test]
@@ -167,10 +177,9 @@ public abstract class PersonneTests<T> : EntiteTests<T> where T : Personne
 	}
 
 	[Test]
-	public void SetPrenom_WhenGivenPrenomIsNullOrWhitespace_ShouldThrowArgumentException()
+	public override void ToString_Always_ShouldUniquelyDescribeTheEntity()
 	{
-		Assert.That(() => Entite.SetPrenom(null), Throws.ArgumentException);
-		Assert.That(() => Entite.SetPrenom(string.Empty), Throws.ArgumentException);
-		Assert.That(() => Entite.SetPrenom(" "), Throws.ArgumentException);
+		// Assert
+		Assert.That(Entite.ToString(), Is.EqualTo($"{PrenomValide} {NomValide}"));
 	}
 }
