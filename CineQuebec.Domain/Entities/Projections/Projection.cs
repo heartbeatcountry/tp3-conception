@@ -39,6 +39,21 @@ public class Projection : Entite, IComparable<Projection>
 		                              DateHeure == projection.DateHeure);
 	}
 
+	private void SetDateHeure(DateTime dateHeure)
+	{
+		if (dateHeure == DateTime.MinValue)
+		{
+			throw new ArgumentNullException(nameof(dateHeure), "La date et l'heure ne peuvent pas être nulles.");
+		}
+
+		DateHeure = dateHeure;
+	}
+
+	private void SetEstAvantPremiere(bool estAvantPremiere)
+	{
+		EstAvantPremiere = estAvantPremiere;
+	}
+
 	private void SetFilm(Film film)
 	{
 		if (film == null)
@@ -57,20 +72,5 @@ public class Projection : Entite, IComparable<Projection>
 		}
 
 		Salle = salle;
-	}
-
-	private void SetDateHeure(DateTime dateHeure)
-	{
-		if (dateHeure == DateTime.MinValue)
-		{
-			throw new ArgumentNullException(nameof(dateHeure), "La date et l'heure ne peuvent pas être nulles.");
-		}
-
-		DateHeure = dateHeure;
-	}
-
-	private void SetEstAvantPremiere(bool estAvantPremiere)
-	{
-		EstAvantPremiere = estAvantPremiere;
 	}
 }

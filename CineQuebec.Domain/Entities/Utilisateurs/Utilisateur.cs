@@ -31,6 +31,61 @@ public class Utilisateur : Entite
 	public ImmutableArray<Realisateur> RealisateursFavoris => _realisateursFavoris.ToImmutableArray();
 	public ImmutableArray<Billet> Billets => _billets.ToImmutableArray();
 
+	private void AddActeursFavoris(IEnumerable<Acteur> acteurs)
+	{
+		var copie = _acteursFavoris.ToHashSet();
+		copie.UnionWith(acteurs);
+
+		if (copie.Count > MaxActeursFavoris)
+		{
+			throw new ArgumentException(
+				$"Impossible de compléter l'opération, puisque le nombre d'acteurs favoris ne peut pas dépasser {MaxActeursFavoris}.",
+				nameof(acteurs));
+		}
+
+		_acteursFavoris.UnionWith(copie);
+	}
+
+	private void AddBillets(IEnumerable<Billet> billets)
+	{
+		_billets.UnionWith(billets);
+	}
+
+	private void AddCategoriesPreferees(IEnumerable<CategorieFilm> categories)
+	{
+		var copie = _categoriesPreferees.ToHashSet();
+		copie.UnionWith(categories);
+
+		if (copie.Count > MaxCategoriesPreferees)
+		{
+			throw new ArgumentException(
+				$"Impossible de compléter l'opération, puisque le nombre de catégories préférées ne peut pas dépasser {MaxCategoriesPreferees}.",
+				nameof(categories));
+		}
+
+		_categoriesPreferees.UnionWith(copie);
+	}
+
+	private void AddRealisateursFavoris(IEnumerable<Realisateur> realisateurs)
+	{
+		var copie = _realisateursFavoris.ToHashSet();
+		copie.UnionWith(realisateurs);
+
+		if (copie.Count > MaxRealisateursFavoris)
+		{
+			throw new ArgumentException(
+				$"Impossible de compléter l'opération, puisque le nombre de réalisateurs favoris ne peut pas dépasser {MaxRealisateursFavoris}.",
+				nameof(realisateurs));
+		}
+
+		_realisateursFavoris.UnionWith(copie);
+	}
+
+	private void AddRoles(IEnumerable<Role> roles)
+	{
+		_roles.UnionWith(roles);
+	}
+
 	public new bool Equals(Entite? autre)
 	{
 		return base.Equals(autre) || (autre is Utilisateur utilisateur &&
@@ -56,60 +111,5 @@ public class Utilisateur : Entite
 		}
 
 		HashMotDePasse = motDePasse.Trim();
-	}
-
-	private void AddRoles(IEnumerable<Role> roles)
-	{
-		_roles.UnionWith(roles);
-	}
-
-	private void AddCategoriesPreferees(IEnumerable<CategorieFilm> categories)
-	{
-		var copie = _categoriesPreferees.ToHashSet();
-		copie.UnionWith(categories);
-
-		if (copie.Count > MaxCategoriesPreferees)
-		{
-			throw new ArgumentException(
-				$"Impossible de compléter l'opération, puisque le nombre de catégories préférées ne peut pas dépasser {MaxCategoriesPreferees}.",
-				nameof(categories));
-		}
-
-		_categoriesPreferees.UnionWith(copie);
-	}
-
-	private void AddActeursFavoris(IEnumerable<Acteur> acteurs)
-	{
-		var copie = _acteursFavoris.ToHashSet();
-		copie.UnionWith(acteurs);
-
-		if (copie.Count > MaxActeursFavoris)
-		{
-			throw new ArgumentException(
-				$"Impossible de compléter l'opération, puisque le nombre d'acteurs favoris ne peut pas dépasser {MaxActeursFavoris}.",
-				nameof(acteurs));
-		}
-
-		_acteursFavoris.UnionWith(copie);
-	}
-
-	private void AddRealisateursFavoris(IEnumerable<Realisateur> realisateurs)
-	{
-		var copie = _realisateursFavoris.ToHashSet();
-		copie.UnionWith(realisateurs);
-
-		if (copie.Count > MaxRealisateursFavoris)
-		{
-			throw new ArgumentException(
-				$"Impossible de compléter l'opération, puisque le nombre de réalisateurs favoris ne peut pas dépasser {MaxRealisateursFavoris}.",
-				nameof(realisateurs));
-		}
-
-		_realisateursFavoris.UnionWith(copie);
-	}
-
-	private void AddBillets(IEnumerable<Billet> billets)
-	{
-		_billets.UnionWith(billets);
 	}
 }

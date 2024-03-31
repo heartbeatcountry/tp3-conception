@@ -6,11 +6,11 @@ namespace CineQuebec.Domain.Entities.Films;
 
 public class Film : Entite, IComparable<Film>, IFilm
 {
-	private readonly HashSet<IActeur> _acteurs = [];
-	private readonly HashSet<IRealisateur> _realisateurs = [];
+	private readonly HashSet<Acteur> _acteurs = [];
+	private readonly HashSet<Realisateur> _realisateurs = [];
 
-	public Film(string titre, string description, ICategorieFilm categorie, DateOnly dateSortieInternationale,
-		IEnumerable<IActeur> acteurs, IEnumerable<IRealisateur> realisateurs, ushort duree)
+	public Film(string titre, string description, CategorieFilm categorie, DateOnly dateSortieInternationale,
+		IEnumerable<Acteur> acteurs, IEnumerable<Realisateur> realisateurs, ushort dureeEnMinutes)
 	{
 		SetTitre(titre);
 		SetDescription(description);
@@ -18,16 +18,35 @@ public class Film : Entite, IComparable<Film>, IFilm
 		SetDateSortieInternationale(dateSortieInternationale);
 		AddActeurs(acteurs);
 		AddRealisateurs(realisateurs);
-		SetDureeEnMinutes(duree);
+		SetDureeEnMinutes(dureeEnMinutes);
+	}
+
+	private Film(Guid id, string titre, string description, DateOnly dateSortieInternationale, ushort dureeEnMinutes)
+	{
+		SetId(id);
+		SetTitre(titre);
+		SetDescription(description);
+		SetDateSortieInternationale(dateSortieInternationale);
+		SetDureeEnMinutes(dureeEnMinutes);
 	}
 
 	public string Titre { get; private set; } = string.Empty;
 	public string Description { get; private set; } = string.Empty;
-	public ICategorieFilm Categorie { get; private set; } = null!;
+	public virtual CategorieFilm Categorie { get; private set; } = null!;
 	public DateOnly DateSortieInternationale { get; private set; } = DateOnly.MinValue;
-	public ImmutableArray<IActeur> Acteurs => _acteurs.ToImmutableArray();
-	public ImmutableArray<IRealisateur> Realisateurs => _realisateurs.ToImmutableArray();
+	public virtual IEnumerable<Acteur> Acteurs => _acteurs.ToImmutableArray();
+	public virtual IEnumerable<Realisateur> Realisateurs => _realisateurs.ToImmutableArray();
 	public ushort DureeEnMinutes { get; private set; }
+
+	public void AddActeurs(IEnumerable<Acteur> acteurs)
+	{
+		_acteurs.UnionWith(acteurs);
+	}
+
+	public void AddRealisateurs(IEnumerable<Realisateur> realisateurs)
+	{
+		_realisateurs.UnionWith(realisateurs);
+	}
 
 	public int CompareTo(Film? other)
 	{
@@ -53,29 +72,16 @@ public class Film : Entite, IComparable<Film>, IFilm
 		                              film.DateSortieInternationale.Year && DureeEnMinutes == film.DureeEnMinutes);
 	}
 
-	public void SetTitre(string titre)
+	public void SetActeurs(IEnumerable<Acteur> acteurs)
 	{
-		if (string.IsNullOrWhiteSpace(titre))
-		{
-			throw new ArgumentException("Le titre ne peut pas être vide.", nameof(titre));
-		}
-
-		Titre = titre.Trim();
+		_acteurs.Clear();
+		AddActeurs(acteurs);
 	}
 
-	public void SetDescription(string description)
+	public void SetCategorie(CategorieFilm categorie)
 	{
-		if (string.IsNullOrWhiteSpace(description))
-		{
-			throw new ArgumentException("La description ne peut pas être vide.", nameof(description));
-		}
-
-		Description = description.Trim();
-	}
-
-	public void SetCategorie(ICategorieFilm categorie)
-	{
-		Categorie = categorie ?? throw new ArgumentNullException(nameof(categorie), "La catégorie ne peut pas être nulle.");
+		Categorie = categorie ??
+		            throw new ArgumentNullException(nameof(categorie), "La catégorie ne peut pas être nulle.");
 	}
 
 	public void SetDateSortieInternationale(DateOnly dateSortieInternationale)
@@ -89,14 +95,14 @@ public class Film : Entite, IComparable<Film>, IFilm
 		DateSortieInternationale = dateSortieInternationale;
 	}
 
-	public void AddActeurs(IEnumerable<IActeur> acteurs)
+	public void SetDescription(string description)
 	{
-		_acteurs.UnionWith(acteurs);
-	}
+		if (string.IsNullOrWhiteSpace(description))
+		{
+			throw new ArgumentException("La description ne peut pas être vide.", nameof(description));
+		}
 
-	public void AddRealisateurs(IEnumerable<IRealisateur> realisateurs)
-	{
-		_realisateurs.UnionWith(realisateurs);
+		Description = description.Trim();
 	}
 
 	public void SetDureeEnMinutes(ushort duree)
@@ -107,6 +113,22 @@ public class Film : Entite, IComparable<Film>, IFilm
 		}
 
 		DureeEnMinutes = duree;
+	}
+
+	public void SetRealisateurs(IEnumerable<Realisateur> realisateurs)
+	{
+		_realisateurs.Clear();
+		AddRealisateurs(realisateurs);
+	}
+
+	public void SetTitre(string titre)
+	{
+		if (string.IsNullOrWhiteSpace(titre))
+		{
+			throw new ArgumentException("Le titre ne peut pas être vide.", nameof(titre));
+		}
+
+		Titre = titre.Trim();
 	}
 
 	public override string ToString()

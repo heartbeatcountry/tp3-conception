@@ -8,6 +8,11 @@ public class Realisateur(string prenom, string nom) : Personne(prenom, nom), IRe
 {
 	private readonly HashSet<IFilm> _realiseFilms = [];
 
+	private Realisateur(Guid id, string prenom, string nom) : this(prenom, nom)
+	{
+		SetId(id);
+	}
+
 	public ImmutableArray<IFilm> RealiseFilms => _realiseFilms.ToImmutableArray();
 
 	public bool AjouterFilm(IFilm film)

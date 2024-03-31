@@ -1,6 +1,6 @@
 namespace CineQuebec.Domain.Interfaces.Entities;
 
-public interface IPersonne: IEntite
+public interface IPersonne : IEntite
 {
 	string Prenom { get; }
 	string Nom { get; }

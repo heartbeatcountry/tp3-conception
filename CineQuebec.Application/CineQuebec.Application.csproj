@@ -10,14 +10,4 @@
         <ProjectReference Include="..\CineQuebec.Domain\CineQuebec.Domain.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Reference Include="Microsoft.EntityFrameworkCore">
-            <HintPath>..\..\..\..\..\..\..\.nuget\packages\microsoft.entityframeworkcore\9.0.0-preview.2.24128.4\lib\net8.0\Microsoft.EntityFrameworkCore.dll</HintPath>
-        </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="MongoDB.EntityFrameworkCore" Version="7.0.0-preview.1"/>
-    </ItemGroup>
-
 </Project>

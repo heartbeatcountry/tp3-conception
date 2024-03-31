@@ -33,16 +33,6 @@ public class Salle : Entite, IComparable<Salle>
 		return base.Equals(autre) || (autre is Salle salle && Numero == salle.Numero);
 	}
 
-	private void SetNumero(byte numero)
-	{
-		if (numero == 0)
-		{
-			throw new ArgumentException("Le numéro de salle ne peut pas être zéro.", nameof(numero));
-		}
-
-		Numero = numero;
-	}
-
 	private void SetNbSieges(ushort nbSieges)
 	{
 		if (nbSieges == 0)
@@ -51,5 +41,15 @@ public class Salle : Entite, IComparable<Salle>
 		}
 
 		NbSieges = nbSieges;
+	}
+
+	private void SetNumero(byte numero)
+	{
+		if (numero == 0)
+		{
+			throw new ArgumentException("Le numéro de salle ne peut pas être zéro.", nameof(numero));
+		}
+
+		Numero = numero;
 	}
 }

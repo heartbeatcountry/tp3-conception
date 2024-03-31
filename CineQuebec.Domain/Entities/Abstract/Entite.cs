@@ -21,16 +21,6 @@ public abstract class Entite : IEquatable<Entite>, IEntite
 		return Id.Equals(autre.Id);
 	}
 
-	public void SetId(Guid id)
-	{
-		if (id == Guid.Empty)
-		{
-			throw new ArgumentNullException(nameof(id), "L'identifiant ne peut pas être nul.");
-		}
-
-		Id = id;
-	}
-
 	public override bool Equals(object? obj)
 	{
 		if (ReferenceEquals(null, obj))
@@ -64,6 +54,16 @@ public abstract class Entite : IEquatable<Entite>, IEntite
 	public static bool operator !=(Entite? gauche, Entite? droite)
 	{
 		return !Equals(gauche, droite);
+	}
+
+	public void SetId(Guid id)
+	{
+		if (id == Guid.Empty)
+		{
+			throw new ArgumentNullException(nameof(id), "L'identifiant ne peut pas être nul.");
+		}
+
+		Id = id;
 	}
 
 	public override string ToString()

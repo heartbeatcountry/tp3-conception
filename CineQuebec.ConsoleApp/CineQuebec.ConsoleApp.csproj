@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\CineQuebec.Persistence\CineQuebec.Persistence.csproj"/>
+        <ProjectReference Include="..\Tests.Persistence\Tests.Persistence.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="MongoDB.Driver">
+            <HintPath>..\..\..\..\..\..\..\.nuget\packages\mongodb.driver\2.22.0\lib\netstandard2.1\MongoDB.Driver.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="appsettings.local.json"/>
+        <Content Include="appsettings.local.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Update="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0"/>
+    </ItemGroup>
+
+</Project>

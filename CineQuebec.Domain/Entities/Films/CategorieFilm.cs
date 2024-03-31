@@ -10,6 +10,11 @@ public class CategorieFilm : Entite, IComparable<CategorieFilm>, ICategorieFilm
 		SetNomAffichage(nomAffichage);
 	}
 
+	private CategorieFilm(Guid id, string nomAffichage) : this(nomAffichage)
+	{
+		SetId(id);
+	}
+
 	public string NomAffichage { get; private set; } = string.Empty;
 
 	public int CompareTo(CategorieFilm? other)

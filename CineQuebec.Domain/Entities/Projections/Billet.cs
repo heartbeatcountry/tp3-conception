@@ -34,11 +34,6 @@ public class Billet : Entite, IComparable<Billet>
 		                              NumSiege == billet.NumSiege);
 	}
 
-	private void SetProjection(Projection projection)
-	{
-		Projection = projection;
-	}
-
 	private void SetNumSiege(ushort numSiege)
 	{
 		if (numSiege == 0)
@@ -53,5 +48,10 @@ public class Billet : Entite, IComparable<Billet>
 		}
 
 		NumSiege = numSiege;
+	}
+
+	private void SetProjection(Projection projection)
+	{
+		Projection = projection;
 	}
 }

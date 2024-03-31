@@ -7,18 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.2.24128.4"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-preview.2.24128.4">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.0-preview.2.24128.4"/>
-        <PackageReference Include="MongoDB.EntityFrameworkCore" Version="7.0.0-preview.1"/>
+        <ProjectReference Include="..\3rdparty\mongo-efcore-provider\src\MongoDB.EntityFrameworkCore\MongoDB.EntityFrameworkCore.csproj"/>
+        <ProjectReference Include="..\CineQuebec.Application\CineQuebec.Application.csproj"/>
+        <ProjectReference Include="..\CineQuebec.Domain\CineQuebec.Domain.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\CineQuebec.Domain\CineQuebec.Domain.csproj"/>
-        <ProjectReference Include="..\CineQuebec.Infrastructure\CineQuebec.Infrastructure.csproj"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.3"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0"/>
     </ItemGroup>
 
 </Project>

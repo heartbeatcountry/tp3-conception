@@ -38,16 +38,6 @@ public abstract class Personne : Entite, IComparable<Personne>, IPersonne
 			                              StringComparison.OrdinalIgnoreCase));
 	}
 
-	public void SetPrenom(string prenom)
-	{
-		if (string.IsNullOrWhiteSpace(prenom))
-		{
-			throw new ArgumentException("Le prénom ne peut pas être vide.", nameof(prenom));
-		}
-
-		Prenom = prenom.Trim();
-	}
-
 	public void SetNom(string nom)
 	{
 		if (string.IsNullOrWhiteSpace(nom))
@@ -56,6 +46,16 @@ public abstract class Personne : Entite, IComparable<Personne>, IPersonne
 		}
 
 		Nom = nom.Trim();
+	}
+
+	public void SetPrenom(string prenom)
+	{
+		if (string.IsNullOrWhiteSpace(prenom))
+		{
+			throw new ArgumentException("Le prénom ne peut pas être vide.", nameof(prenom));
+		}
+
+		Prenom = prenom.Trim();
 	}
 
 	public override string ToString()
