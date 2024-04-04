@@ -7,13 +7,13 @@ namespace CineQuebec.Domain.Entities.Utilisateurs;
 
 public class Utilisateur : Entite
 {
-	public static readonly byte MaxActeursFavoris = 5;
-	public static readonly byte MaxRealisateursFavoris = 5;
-	public static readonly byte MaxCategoriesPreferees = 3;
-	private readonly HashSet<Acteur> _acteursFavoris = [];
-	private readonly HashSet<Billet> _billets = [];
-	private readonly HashSet<CategorieFilm> _categoriesPreferees = [];
-	private readonly HashSet<Realisateur> _realisateursFavoris = [];
+	public const byte MaxActeursFavoris = 5;
+	public const byte MaxRealisateursFavoris = 5;
+	public const byte MaxCategoriesPreferees = 3;
+	private readonly HashSet<Guid> _acteursFavorisParId = [];
+	private readonly HashSet<Guid> _billetsParId = [];
+	private readonly HashSet<Guid> _categoriesPrefereesParId = [];
+	private readonly HashSet<Guid> _realisateursFavorisParId = [];
 	private readonly HashSet<Role> _roles = [];
 
 	public Utilisateur(string courriel, string motDePasse, IEnumerable<Role> roles)
@@ -26,14 +26,14 @@ public class Utilisateur : Entite
 	public string Courriel { get; private set; } = string.Empty;
 	public string HashMotDePasse { get; private set; } = string.Empty;
 	public ImmutableArray<Role> Roles => _roles.ToImmutableArray();
-	public ImmutableArray<CategorieFilm> CategoriesPreferees => _categoriesPreferees.ToImmutableArray();
-	public ImmutableArray<Acteur> ActeursFavoris => _acteursFavoris.ToImmutableArray();
-	public ImmutableArray<Realisateur> RealisateursFavoris => _realisateursFavoris.ToImmutableArray();
-	public ImmutableArray<Billet> Billets => _billets.ToImmutableArray();
+	public ImmutableArray<Guid> CategoriesPrefereesParId => _categoriesPrefereesParId.ToImmutableArray();
+	public ImmutableArray<Guid> ActeursFavorisParId => _acteursFavorisParId.ToImmutableArray();
+	public ImmutableArray<Guid> RealisateursFavorisParId => _realisateursFavorisParId.ToImmutableArray();
+	public ImmutableArray<Guid> BilletsParId => _billetsParId.ToImmutableArray();
 
-	private void AddActeursFavoris(IEnumerable<Acteur> acteurs)
+	private void AddActeursFavoris(IEnumerable<Guid> acteurs)
 	{
-		var copie = _acteursFavoris.ToHashSet();
+		var copie = _acteursFavorisParId.ToHashSet();
 		copie.UnionWith(acteurs);
 
 		if (copie.Count > MaxActeursFavoris)
@@ -43,17 +43,17 @@ public class Utilisateur : Entite
 				nameof(acteurs));
 		}
 
-		_acteursFavoris.UnionWith(copie);
+		_acteursFavorisParId.UnionWith(copie);
 	}
 
-	private void AddBillets(IEnumerable<Billet> billets)
+	private void AddBillets(IEnumerable<Guid> billets)
 	{
-		_billets.UnionWith(billets);
+		_billetsParId.UnionWith(billets);
 	}
 
-	private void AddCategoriesPreferees(IEnumerable<CategorieFilm> categories)
+	private void AddCategoriesPreferees(IEnumerable<Guid> categories)
 	{
-		var copie = _categoriesPreferees.ToHashSet();
+		var copie = _categoriesPrefereesParId.ToHashSet();
 		copie.UnionWith(categories);
 
 		if (copie.Count > MaxCategoriesPreferees)
@@ -63,12 +63,12 @@ public class Utilisateur : Entite
 				nameof(categories));
 		}
 
-		_categoriesPreferees.UnionWith(copie);
+		_categoriesPrefereesParId.UnionWith(copie);
 	}
 
-	private void AddRealisateursFavoris(IEnumerable<Realisateur> realisateurs)
+	private void AddRealisateursFavoris(IEnumerable<Guid> realisateurs)
 	{
-		var copie = _realisateursFavoris.ToHashSet();
+		var copie = _realisateursFavorisParId.ToHashSet();
 		copie.UnionWith(realisateurs);
 
 		if (copie.Count > MaxRealisateursFavoris)
@@ -78,7 +78,7 @@ public class Utilisateur : Entite
 				nameof(realisateurs));
 		}
 
-		_realisateursFavoris.UnionWith(copie);
+		_realisateursFavorisParId.UnionWith(copie);
 	}
 
 	private void AddRoles(IEnumerable<Role> roles)

@@ -13,7 +13,7 @@ public class RealisateurTests : PersonneTests<Realisateur>
 	public void AjouterFilm_WhenGivenFilmAlreadyInRealiseFilms_ShouldReturnFalse()
 	{
 		// Arrange
-		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
+		var film = Guid.NewGuid();
 		Entite.AjouterFilm(film);
 
 		// Act
@@ -27,20 +27,20 @@ public class RealisateurTests : PersonneTests<Realisateur>
 	public void AjouterFilm_WhenGivenFilmWithValidIdNotPresentInRealiseFilms_ShouldAddFilmToRealiseFilms()
 	{
 		// Arrange
-		var film = Mock.Of<IFilm>();
+		var film = Guid.NewGuid();
 
 		// Act
 		Entite.AjouterFilm(film);
 
 		// Assert
-		Assert.That(Entite.RealiseFilms, Has.Member(film));
+		Assert.That(Entite.RealiseFilmsAvecId, Has.Member(film));
 	}
 
 	[Test]
 	public void AjouterFilm_WhenGivenFilmWithValidIdNotPresentInRealiseFilms_ShouldReturnTrue()
 	{
 		// Arrange
-		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
+		var film = Guid.NewGuid();
 
 		// Act
 		var result = Entite.AjouterFilm(film);
@@ -52,14 +52,14 @@ public class RealisateurTests : PersonneTests<Realisateur>
 	[Test]
 	public void Constructor_Always_ShouldInitializeRealiseFilmsToEmptyCollection()
 	{
-		Assert.That(Entite.RealiseFilms, Is.Empty);
+		Assert.That(Entite.RealiseFilmsAvecId, Is.Empty);
 	}
 
 	[Test]
 	public void RetirerFilm_WhenGivenFilmNotPresentInRealiseFilms_ShouldReturnFalse()
 	{
 		// Arrange
-		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
+		var film = Guid.NewGuid();
 
 		// Act
 		var result = Entite.RetirerFilm(film);
@@ -72,21 +72,21 @@ public class RealisateurTests : PersonneTests<Realisateur>
 	public void RetirerFilm_WhenGivenFilmWithValidIdPresentInRealiseFilms_ShouldRemoveFilmFromRealiseFilms()
 	{
 		// Arrange
-		var film = Mock.Of<IFilm>();
+		var film = Guid.NewGuid();
 		Entite.AjouterFilm(film);
 
 		// Act
 		Entite.RetirerFilm(film);
 
 		// Assert
-		Assert.That(Entite.RealiseFilms, Has.No.Member(film));
+		Assert.That(Entite.RealiseFilmsAvecId, Has.No.Member(film));
 	}
 
 	[Test]
 	public void RetirerFilm_WhenGivenFilmWithValidIdPresentInRealiseFilms_ShouldReturnTrue()
 	{
 		// Arrange
-		var film = Mock.Of<IFilm>(m => m.Id == Guid.NewGuid());
+		var film = Guid.NewGuid();
 		Entite.AjouterFilm(film);
 
 		// Act

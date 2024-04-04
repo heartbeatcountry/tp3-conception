@@ -6,22 +6,27 @@ namespace CineQuebec.Domain.Entities.Films;
 
 public class Realisateur(string prenom, string nom) : Personne(prenom, nom), IRealisateur
 {
-	private readonly HashSet<IFilm> _realiseFilms = [];
+	private readonly HashSet<Guid> _realiseFilms = [];
 
 	private Realisateur(Guid id, string prenom, string nom) : this(prenom, nom)
 	{
 		SetId(id);
 	}
 
-	public ImmutableArray<IFilm> RealiseFilms => _realiseFilms.ToImmutableArray();
+	public ImmutableArray<Guid> RealiseFilmsAvecId => _realiseFilms.ToImmutableArray();
 
-	public bool AjouterFilm(IFilm film)
+	public bool AjouterFilm(Guid idFilm)
 	{
-		return _realiseFilms.Add(film);
+		if (idFilm == Guid.Empty)
+		{
+			throw new ArgumentException("L'identifiant du film ne peut pas être vide.", nameof(idFilm));
+		}
+
+		return _realiseFilms.Add(idFilm);
 	}
 
-	public bool RetirerFilm(IFilm film)
+	public bool RetirerFilm(Guid idFilm)
 	{
-		return _realiseFilms.Remove(film);
+		return _realiseFilms.Remove(idFilm);
 	}
 }

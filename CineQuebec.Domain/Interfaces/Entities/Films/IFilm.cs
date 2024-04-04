@@ -7,18 +7,18 @@ public interface IFilm : IEntite
 {
 	string Titre { get; }
 	string Description { get; }
-	CategorieFilm Categorie { get; }
+	Guid IdCategorie { get; }
 	DateOnly DateSortieInternationale { get; }
-	IEnumerable<Acteur> Acteurs { get; }
-	IEnumerable<Realisateur> Realisateurs { get; }
+	IEnumerable<Guid> ActeursParId { get; }
+	IEnumerable<Guid> RealisateursParId { get; }
 	ushort DureeEnMinutes { get; }
 	void SetTitre(string titre);
 	void SetDescription(string description);
-	void SetCategorie(CategorieFilm categorie);
+	void SetCategorie(Guid categorie);
 	void SetDateSortieInternationale(DateOnly dateSortieInternationale);
-	void AddActeurs(IEnumerable<Acteur> acteurs);
-	void AddRealisateurs(IEnumerable<Realisateur> realisateurs);
-	void SetActeurs(IEnumerable<Acteur> acteurs);
-	void SetRealisateurs(IEnumerable<Realisateur> realisateurs);
+	void AddActeurs(IEnumerable<Guid> acteurs);
+	void AddRealisateurs(IEnumerable<Guid> realisateurs);
+	void SetActeurs(IEnumerable<Guid> acteurs);
+	void SetRealisateurs(IEnumerable<Guid> realisateurs);
 	void SetDureeEnMinutes(ushort duree);
 }

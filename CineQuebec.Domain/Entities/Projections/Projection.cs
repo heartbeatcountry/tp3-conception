@@ -5,7 +5,7 @@ namespace CineQuebec.Domain.Entities.Projections;
 
 public class Projection : Entite, IComparable<Projection>
 {
-	public Projection(Film film, Salle salle, DateTime dateHeure, bool estAvantPremiere)
+	public Projection(Guid film, Guid salle, DateTime dateHeure, bool estAvantPremiere)
 	{
 		SetFilm(film);
 		SetSalle(salle);
@@ -13,8 +13,8 @@ public class Projection : Entite, IComparable<Projection>
 		SetEstAvantPremiere(estAvantPremiere);
 	}
 
-	public Film Film { get; private set; } = null!;
-	public Salle Salle { get; private set; } = null!;
+	public Guid Film { get; private set; }
+	public Guid Salle { get; private set; }
 	public DateTime DateHeure { get; private set; } = DateTime.MinValue;
 	public bool EstAvantPremiere { get; private set; }
 
@@ -54,23 +54,23 @@ public class Projection : Entite, IComparable<Projection>
 		EstAvantPremiere = estAvantPremiere;
 	}
 
-	private void SetFilm(Film film)
+	private void SetFilm(Guid idFilm)
 	{
-		if (film == null)
+		if (idFilm == Guid.Empty)
 		{
-			throw new ArgumentNullException(nameof(film), "Le film ne peut pas être nul.");
+			throw new ArgumentNullException(nameof(idFilm), "Le guid du film ne peut pas être nul.");
 		}
 
-		Film = film;
+		Film = idFilm;
 	}
 
-	private void SetSalle(Salle salle)
+	private void SetSalle(Guid idSalle)
 	{
-		if (salle == null)
+		if (idSalle == Guid.Empty)
 		{
-			throw new ArgumentNullException(nameof(salle), "La salle ne peut pas être nulle.");
+			throw new ArgumentNullException(nameof(idSalle), "Le guid de la salle ne peut pas être nul.");
 		}
 
-		Salle = salle;
+		Salle = idSalle;
 	}
 }

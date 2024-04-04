@@ -12,23 +12,15 @@ public class FilmTests : EntiteTests<Film>
 	private const string DescriptionValide = "Un film de Peter Jackson";
 	private const ushort DureeValide = 178;
 
-	private static readonly IActeur Acteur1 = Mock.Of<IActeur>(a => a.Id == Guid.NewGuid() && a.Prenom == "Michel" && a
-		.Nom == "Sardou" && a.NomComplet == "Michel Sardou");
-
-	private static readonly IActeur Acteur2 = Mock.Of<IActeur>(a => a.Id == Guid.NewGuid() && a.Prenom == "Ginette" && a
-		.Nom == "Bergeron" && a.NomComplet == "Ginette Bergeron");
-
-	private static readonly IRealisateur Realisateur1 = Mock.Of<IRealisateur>(r => r.Id == Guid.NewGuid() &&
-		r.Prenom == "Peter" && r.Nom == "Jackson" && r.NomComplet == "Peter Jackson");
-
-	private static readonly IRealisateur Realisateur2 = Mock.Of<IRealisateur>(r => r.Id == Guid.NewGuid() &&
-		r.Prenom == "Andrew" && r.Nom == "Stanton" && r.NomComplet == "Andrew Stanton");
-
-	private static readonly IEnumerable<IActeur> AucunActeurs = Array.Empty<IActeur>();
-	private static readonly IEnumerable<IActeur> DeuxActeurs = new[] { Acteur1, Acteur2 };
-	private static readonly IEnumerable<IRealisateur> AucunRealisateurs = Array.Empty<IRealisateur>();
-	private static readonly IEnumerable<IRealisateur> DeuxRealisateurs = new[] { Realisateur1, Realisateur2 };
-	private static readonly ICategorieFilm CategorieFilm = Mock.Of<ICategorieFilm>(cf => cf.NomAffichage == "Action");
+	private static readonly Guid Acteur1 = Guid.NewGuid();
+	private static readonly Guid Acteur2 = Guid.NewGuid();
+	private static readonly Guid Realisateur1 = Guid.NewGuid();
+	private static readonly Guid Realisateur2 = Guid.NewGuid();
+	private static readonly IEnumerable<Guid> AucunActeurs = Array.Empty<Guid>();
+	private static readonly IEnumerable<Guid> DeuxActeurs = new[] { Acteur1, Acteur2 };
+	private static readonly IEnumerable<Guid> AucunRealisateurs = Array.Empty<Guid>();
+	private static readonly IEnumerable<Guid> DeuxRealisateurs = new[] { Realisateur1, Realisateur2 };
+	private static readonly Guid CategorieFilm = Guid.NewGuid();
 	private static readonly DateOnly DateSortieInternationale = new(2001, 12, 19);
 
 	protected override object?[] ArgsConstructeur =>
@@ -76,14 +68,14 @@ public class FilmTests : EntiteTests<Film>
 	public void Constructor_WhenGivenActeurs_ShouldAddGivenActeursToActeurs()
 	{
 		// Assert
-		Assert.That(Entite.Acteurs, Is.SupersetOf(AucunActeurs));
+		Assert.That(Entite.ActeursParId, Is.SupersetOf(AucunActeurs));
 	}
 
 	[Test]
-	public void Constructor_WhenGivenNullCategorie_ShouldThrowArgumentNullException()
+	public void Constructor_WhenGivenNullCategorie_ShouldThrowArgumentException()
 	{
-		Assert.That(() => CreateInstance(TitreValide, DescriptionValide, null, DateSortieInternationale,
-			AucunActeurs, AucunRealisateurs, DureeValide), Throws.ArgumentNullException);
+		Assert.That(() => CreateInstance(TitreValide, DescriptionValide, Guid.Empty, DateSortieInternationale,
+			AucunActeurs, AucunRealisateurs, DureeValide), Throws.ArgumentException);
 	}
 
 	[Test]
@@ -114,14 +106,14 @@ public class FilmTests : EntiteTests<Film>
 	public void Constructor_WhenGivenRealisateurs_ShouldAddGivenRealisateursToRealisateurs()
 	{
 		// Assert
-		Assert.That(Entite.Realisateurs, Is.SupersetOf(DeuxRealisateurs));
+		Assert.That(Entite.RealisateursParId, Is.SupersetOf(DeuxRealisateurs));
 	}
 
 	[Test]
 	public void Constructor_WhenGivenValidCategorieFilm_ShouldSetCategorieFilm()
 	{
 		// Assert
-		Assert.That(Entite.Categorie, Is.EqualTo(CategorieFilm));
+		Assert.That(Entite.IdCategorie, Is.EqualTo(CategorieFilm));
 	}
 
 	[Test]

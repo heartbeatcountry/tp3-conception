@@ -20,8 +20,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 	{
 		base.OnModelCreating(builder);
 
-		builder.Entity<Film>().ToCollection("films")
-			.HasMany(f => f.Acteurs);
+		builder.Entity<Film>().ToCollection("films");
 		builder.Entity<Acteur>().ToCollection("acteurs");
 		builder.Entity<Realisateur>().ToCollection("realisateurs");
 		builder.Entity<CategorieFilm>().ToCollection("categories");

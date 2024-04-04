@@ -6,11 +6,11 @@ namespace CineQuebec.Domain.Entities.Films;
 
 public class Film : Entite, IComparable<Film>, IFilm
 {
-	private readonly HashSet<Acteur> _acteurs = [];
-	private readonly HashSet<Realisateur> _realisateurs = [];
+	private readonly HashSet<Guid> _acteurs = [];
+	private readonly HashSet<Guid> _realisateurs = [];
 
-	public Film(string titre, string description, CategorieFilm categorie, DateOnly dateSortieInternationale,
-		IEnumerable<Acteur> acteurs, IEnumerable<Realisateur> realisateurs, ushort dureeEnMinutes)
+	public Film(string titre, string description, Guid categorie, DateOnly dateSortieInternationale,
+		IEnumerable<Guid> acteurs, IEnumerable<Guid> realisateurs, ushort dureeEnMinutes)
 	{
 		SetTitre(titre);
 		SetDescription(description);
@@ -32,18 +32,18 @@ public class Film : Entite, IComparable<Film>, IFilm
 
 	public string Titre { get; private set; } = string.Empty;
 	public string Description { get; private set; } = string.Empty;
-	public virtual CategorieFilm Categorie { get; private set; } = null!;
+	public virtual Guid IdCategorie { get; private set; }
 	public DateOnly DateSortieInternationale { get; private set; } = DateOnly.MinValue;
-	public virtual IEnumerable<Acteur> Acteurs => _acteurs.ToImmutableArray();
-	public virtual IEnumerable<Realisateur> Realisateurs => _realisateurs.ToImmutableArray();
+	public virtual IEnumerable<Guid> ActeursParId => _acteurs.ToImmutableArray();
+	public virtual IEnumerable<Guid> RealisateursParId => _realisateurs.ToImmutableArray();
 	public ushort DureeEnMinutes { get; private set; }
 
-	public void AddActeurs(IEnumerable<Acteur> acteurs)
+	public void AddActeurs(IEnumerable<Guid> acteurs)
 	{
 		_acteurs.UnionWith(acteurs);
 	}
 
-	public void AddRealisateurs(IEnumerable<Realisateur> realisateurs)
+	public void AddRealisateurs(IEnumerable<Guid> realisateurs)
 	{
 		_realisateurs.UnionWith(realisateurs);
 	}
@@ -72,16 +72,20 @@ public class Film : Entite, IComparable<Film>, IFilm
 		                              film.DateSortieInternationale.Year && DureeEnMinutes == film.DureeEnMinutes);
 	}
 
-	public void SetActeurs(IEnumerable<Acteur> acteurs)
+	public void SetActeurs(IEnumerable<Guid> acteurs)
 	{
 		_acteurs.Clear();
 		AddActeurs(acteurs);
 	}
 
-	public void SetCategorie(CategorieFilm categorie)
+	public void SetCategorie(Guid categorie)
 	{
-		Categorie = categorie ??
-		            throw new ArgumentNullException(nameof(categorie), "La catégorie ne peut pas être nulle.");
+		if (categorie == Guid.Empty)
+		{
+			throw new ArgumentException("Le guid de la catégorie ne peut pas être nul.", nameof(categorie));
+		}
+
+		IdCategorie = categorie;
 	}
 
 	public void SetDateSortieInternationale(DateOnly dateSortieInternationale)
@@ -115,7 +119,7 @@ public class Film : Entite, IComparable<Film>, IFilm
 		DureeEnMinutes = duree;
 	}
 
-	public void SetRealisateurs(IEnumerable<Realisateur> realisateurs)
+	public void SetRealisateurs(IEnumerable<Guid> realisateurs)
 	{
 		_realisateurs.Clear();
 		AddRealisateurs(realisateurs);

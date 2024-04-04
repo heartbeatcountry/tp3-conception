@@ -4,13 +4,13 @@ namespace CineQuebec.Domain.Entities.Projections;
 
 public class Billet : Entite, IComparable<Billet>
 {
-	public Billet(Projection projection, ushort numSiege)
+	public Billet(Guid projection, ushort numSiege)
 	{
 		SetProjection(projection);
 		SetNumSiege(numSiege);
 	}
 
-	public Projection Projection { get; private set; } = null!;
+	public Guid Projection { get; private set; }
 	public ushort NumSiege { get; private set; }
 
 	public int CompareTo(Billet? other)
@@ -41,16 +41,10 @@ public class Billet : Entite, IComparable<Billet>
 			throw new ArgumentException("Le numéro de siège ne peut pas être zéro.", nameof(numSiege));
 		}
 
-		if (numSiege > Projection.Salle.NbSieges)
-		{
-			throw new ArgumentException("Le numéro de siège ne peut pas être plus grand que la capacité de la salle.",
-				nameof(numSiege));
-		}
-
 		NumSiege = numSiege;
 	}
 
-	private void SetProjection(Projection projection)
+	private void SetProjection(Guid projection)
 	{
 		Projection = projection;
 	}
