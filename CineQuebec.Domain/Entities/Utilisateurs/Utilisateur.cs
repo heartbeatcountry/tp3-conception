@@ -1,7 +1,5 @@
 using System.Collections.Immutable;
 using CineQuebec.Domain.Entities.Abstract;
-using CineQuebec.Domain.Entities.Films;
-using CineQuebec.Domain.Entities.Projections;
 
 namespace CineQuebec.Domain.Entities.Utilisateurs;
 

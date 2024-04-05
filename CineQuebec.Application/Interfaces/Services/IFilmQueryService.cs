@@ -1,8 +1,8 @@
-using CineQuebec.Domain.Entities.Films;
+using CineQuebec.Application.Records.Films;
 
 namespace CineQuebec.Application.Interfaces.Services;
 
 public interface IFilmQueryService
 {
-	Task<IEnumerable<Film>> GetFilms();
+	Task<IEnumerable<FilmDto>> GetFilms();
 }

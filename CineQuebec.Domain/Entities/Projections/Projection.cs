@@ -1,5 +1,4 @@
 using CineQuebec.Domain.Entities.Abstract;
-using CineQuebec.Domain.Entities.Films;
 
 namespace CineQuebec.Domain.Entities.Projections;
 

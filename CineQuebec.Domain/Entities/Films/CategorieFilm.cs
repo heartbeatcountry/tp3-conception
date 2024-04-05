@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 
@@ -10,8 +11,10 @@ public class CategorieFilm : Entite, IComparable<CategorieFilm>, ICategorieFilm
 		SetNomAffichage(nomAffichage);
 	}
 
-	private CategorieFilm(Guid id, string nomAffichage) : this(nomAffichage)
+	[SuppressMessage("ReSharper", "UnusedMember.Local")]
+	private CategorieFilm(Guid id, string nomAffichage): this(nomAffichage)
 	{
+		// Constructeur avec identifiant pour Entity Framework Core
 		SetId(id);
 	}
 

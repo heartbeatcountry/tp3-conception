@@ -10,7 +10,15 @@ public class RealisateurTests : PersonneTests<Realisateur>
 	protected override Realisateur Entite { get; set; } = null!;
 
 	[Test]
-	public void AjouterFilm_WhenGivenFilmAlreadyInRealiseFilms_ShouldReturnFalse()
+	public void AjouterFilm_WhenGivenFilmWithEmptyGuid_ShouldThrowArgumentException()
+	{
+		// Act & Assert
+		Assert.That(() => Entite.AjouterFilm(Guid.Empty),
+			Throws.ArgumentException.With.Message.Contains("ne peut pas être vide"));
+	}
+
+	[Test]
+	public void AjouterFilm_WhenGivenFilmWithValidIdAlreadyPresentInRealiseFilms_ShouldReturnFalse()
 	{
 		// Arrange
 		var film = Guid.NewGuid();
@@ -21,6 +29,20 @@ public class RealisateurTests : PersonneTests<Realisateur>
 
 		// Assert
 		Assert.That(result, Is.False);
+	}
+
+	[Test]
+	public void AjouterFilm_WhenGivenFilmWithValidIdAlreadyPresentInRealiseFilms_ShouldNotAddFilmToRealiseFilms()
+	{
+		// Arrange
+		var film = Guid.NewGuid();
+		Entite.AjouterFilm(film);
+
+		// Act
+		Entite.AjouterFilm(film);
+
+		// Assert
+		Assert.That(Entite.RealiseFilmsAvecId.Count, Is.EqualTo(1));
 	}
 
 	[Test]

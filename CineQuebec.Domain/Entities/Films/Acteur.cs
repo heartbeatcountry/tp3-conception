@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 
@@ -8,8 +9,10 @@ public class Acteur(string prenom, string nom) : Personne(prenom, nom), IActeur
 {
 	private readonly HashSet<Guid> _joueDansFilmsAvecId = [];
 
+	[SuppressMessage("ReSharper", "UnusedMember.Local")]
 	private Acteur(Guid id, string prenom, string nom) : this(prenom, nom)
 	{
+		// Constructeur avec identifiant pour Entity Framework Core
 		SetId(id);
 	}
 

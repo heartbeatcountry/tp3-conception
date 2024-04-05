@@ -1,4 +1,4 @@
-using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 
@@ -6,46 +6,52 @@ namespace CineQuebec.Domain.Entities.Films;
 
 public class Film : Entite, IComparable<Film>, IFilm
 {
-	private readonly HashSet<Guid> _acteurs = [];
-	private readonly HashSet<Guid> _realisateurs = [];
+	private readonly HashSet<Guid> _acteursParId = [];
+	private readonly HashSet<Guid> _realisateursParId = [];
+	private DateOnly _dateSortieInternationale = DateOnly.MinValue;
 
-	public Film(string titre, string description, Guid categorie, DateOnly dateSortieInternationale,
-		IEnumerable<Guid> acteurs, IEnumerable<Guid> realisateurs, ushort dureeEnMinutes)
+	public Film(string titre, string description, Guid idCategorie, DateTime dateSortieInternationale,
+		IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes)
 	{
 		SetTitre(titre);
 		SetDescription(description);
-		SetCategorie(categorie);
+		SetCategorie(idCategorie);
 		SetDateSortieInternationale(dateSortieInternationale);
-		AddActeurs(acteurs);
-		AddRealisateurs(realisateurs);
+		AddActeurs(acteursParId);
+		AddRealisateurs(realisateursParId);
 		SetDureeEnMinutes(dureeEnMinutes);
 	}
 
-	private Film(Guid id, string titre, string description, DateOnly dateSortieInternationale, ushort dureeEnMinutes)
+	[SuppressMessage("ReSharper", "UnusedMember.Local")]
+	private Film(Guid id, string titre, string description, Guid idCategorie, DateTime dateSortieInternationale,
+		IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes) : this(titre, description, idCategorie, dateSortieInternationale, acteursParId, realisateursParId, dureeEnMinutes)
 	{
+		// Constructeur avec identifiant pour Entity Framework Core
 		SetId(id);
-		SetTitre(titre);
-		SetDescription(description);
-		SetDateSortieInternationale(dateSortieInternationale);
-		SetDureeEnMinutes(dureeEnMinutes);
 	}
 
 	public string Titre { get; private set; } = string.Empty;
 	public string Description { get; private set; } = string.Empty;
-	public virtual Guid IdCategorie { get; private set; }
-	public DateOnly DateSortieInternationale { get; private set; } = DateOnly.MinValue;
-	public virtual IEnumerable<Guid> ActeursParId => _acteurs.ToImmutableArray();
-	public virtual IEnumerable<Guid> RealisateursParId => _realisateurs.ToImmutableArray();
+	public Guid IdCategorie { get; private set; }
+
+	public DateTime DateSortieInternationale
+	{
+		get => _dateSortieInternationale.ToDateTime(TimeOnly.MinValue);
+		private set => _dateSortieInternationale = DateOnly.FromDateTime(value);
+	}
+
+	public IEnumerable<Guid> ActeursParId { get; private set; } = [];
+	public IEnumerable<Guid> RealisateursParId { get; private set; } = [];
 	public ushort DureeEnMinutes { get; private set; }
 
 	public void AddActeurs(IEnumerable<Guid> acteurs)
 	{
-		_acteurs.UnionWith(acteurs);
+		SetActeursParId(ActeursParId.Union(acteurs));
 	}
 
 	public void AddRealisateurs(IEnumerable<Guid> realisateurs)
 	{
-		_realisateurs.UnionWith(realisateurs);
+		SetRealisateursParId(RealisateursParId.Union(realisateurs));
 	}
 
 	public int CompareTo(Film? other)
@@ -72,10 +78,11 @@ public class Film : Entite, IComparable<Film>, IFilm
 		                              film.DateSortieInternationale.Year && DureeEnMinutes == film.DureeEnMinutes);
 	}
 
-	public void SetActeurs(IEnumerable<Guid> acteurs)
+	private void SetActeursParId(IEnumerable<Guid> acteurs)
 	{
-		_acteurs.Clear();
-		AddActeurs(acteurs);
+		_acteursParId.Clear();
+		_acteursParId.UnionWith(acteurs);
+		ActeursParId = _acteursParId.ToArray().AsReadOnly();
 	}
 
 	public void SetCategorie(Guid categorie)
@@ -88,9 +95,9 @@ public class Film : Entite, IComparable<Film>, IFilm
 		IdCategorie = categorie;
 	}
 
-	public void SetDateSortieInternationale(DateOnly dateSortieInternationale)
+	public void SetDateSortieInternationale(DateTime dateSortieInternationale)
 	{
-		if (dateSortieInternationale == DateOnly.MinValue)
+		if (dateSortieInternationale == DateTime.MinValue)
 		{
 			throw new ArgumentOutOfRangeException(nameof(dateSortieInternationale),
 				$"La date de sortie internationale doit être supérieure à {DateOnly.MinValue}.");
@@ -119,10 +126,11 @@ public class Film : Entite, IComparable<Film>, IFilm
 		DureeEnMinutes = duree;
 	}
 
-	public void SetRealisateurs(IEnumerable<Guid> realisateurs)
+	private void SetRealisateursParId(IEnumerable<Guid> realisateurs)
 	{
-		_realisateurs.Clear();
-		AddRealisateurs(realisateurs);
+		_realisateursParId.Clear();
+		_realisateursParId.UnionWith(realisateurs);
+		RealisateursParId = _realisateursParId.ToArray().AsReadOnly();
 	}
 
 	public void SetTitre(string titre)

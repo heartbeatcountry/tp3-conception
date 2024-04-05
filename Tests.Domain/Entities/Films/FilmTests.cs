@@ -21,7 +21,7 @@ public class FilmTests : EntiteTests<Film>
 	private static readonly IEnumerable<Guid> AucunRealisateurs = Array.Empty<Guid>();
 	private static readonly IEnumerable<Guid> DeuxRealisateurs = new[] { Realisateur1, Realisateur2 };
 	private static readonly Guid CategorieFilm = Guid.NewGuid();
-	private static readonly DateOnly DateSortieInternationale = new(2001, 12, 19);
+	private static readonly DateTime DateSortieInternationale = new(2001, 12, 19);
 
 	protected override object?[] ArgsConstructeur =>
 	[
@@ -120,7 +120,9 @@ public class FilmTests : EntiteTests<Film>
 	public void Constructor_WhenGivenValidDateSortie_ShouldSetDateSortie()
 	{
 		// Assert
+#pragma warning disable NUnit2021
 		Assert.That(Entite.DateSortieInternationale, Is.EqualTo(DateSortieInternationale));
+#pragma warning restore NUnit2021
 	}
 
 	[Test]
@@ -172,19 +174,21 @@ public class FilmTests : EntiteTests<Film>
 		SetDateSortieInternationale_WhenGivenValidDateSortie_ShouldSetDateSortieInternationaleToGivenDateSortie()
 	{
 		// Arrange
-		var nouvelleDateSortie = new DateOnly(2003, 12, 25);
+		DateTime nouvelleDateSortie = new(2022, 12, 19);
 
 		// Act
 		Entite.SetDateSortieInternationale(nouvelleDateSortie);
 
 		// Assert
+#pragma warning disable NUnit2021
 		Assert.That(Entite.DateSortieInternationale, Is.EqualTo(nouvelleDateSortie));
+#pragma warning restore NUnit2021
 	}
 
 	[Test]
 	public void SetDateSortieInternationale_WhenGivenZeroDate_ShouldThrowArgumentOutOfRangeException()
 	{
-		Assert.That(() => Entite.SetDateSortieInternationale(DateOnly.MinValue), Throws
+		Assert.That(() => Entite.SetDateSortieInternationale(DateTime.MinValue), Throws
 			.InstanceOf<ArgumentOutOfRangeException>());
 	}
 

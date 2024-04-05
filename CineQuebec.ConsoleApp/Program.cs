@@ -1,4 +1,5 @@
 ﻿using CineQuebec.Application.Interfaces.DbContext;
+using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Persistence;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,10 +9,28 @@ namespace CineQuebec.ConsoleApp;
 
 internal class UOWTest
 {
+	private readonly IUnitOfWork _unitOfWork;
+
 	public UOWTest(IUnitOfWorkFactory unitOfWorkFactory)
 	{
-		var unitOfWork = unitOfWorkFactory.Create();
-		var filmRepository = unitOfWork.FilmRepository;
+		_unitOfWork = unitOfWorkFactory.Create();
+		Test();
+	}
+
+	private async void Test()
+	{
+		var realisateur = new Realisateur("Test", "Test");
+		await _unitOfWork.RealisateurRepository.AjouterAsync(realisateur);
+
+		var film = new Film("Test", "Test", Guid.NewGuid(), DateOnly.Parse("2022-02-01").ToDateTime(TimeOnly.MinValue),
+			Enumerable
+				.Empty<Guid>
+					(), new List<Guid> { realisateur.Id }, 22);
+		await _unitOfWork.FilmRepository.AjouterAsync(film);
+
+		await _unitOfWork.SauvegarderAsync();
+
+		var films = await _unitOfWork.FilmRepository.ObtenirTousAsync();
 	}
 }
 

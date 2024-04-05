@@ -68,4 +68,8 @@
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpCodeStyle/BRACES_FOR_FOREACH/@EntryValue">Required</s:String>
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpCodeStyle/BRACES_FOR_IFELSE/@EntryValue">Required</s:String>
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharpCodeStyle/BRACES_FOR_WHILE/@EntryValue">Required</s:String>
-	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpCodeStyle/TRAILING_COMMA_IN_MULTILINE_LISTS/@EntryValue">True</s:Boolean></wpf:ResourceDictionary>
+	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpCodeStyle/TRAILING_COMMA_IN_MULTILINE_LISTS/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=CineQuebec_002EDomain_003B_002A_003BCineQuebec_002EDomain_002EEntities_002EFilms_002EActeur_003B_002Ector/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=CineQuebec_002EDomain_003B_002A_003BCineQuebec_002EDomain_002EEntities_002EFilms_002ECategorieFilm_003B_002Ector/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=CineQuebec_002EDomain_003B_002A_003BCineQuebec_002EDomain_002EEntities_002EFilms_002EFilm_003B_002Ector/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=CineQuebec_002EDomain_003B_002A_003BCineQuebec_002EDomain_002EEntities_002EFilms_002ERealisateur_003B_002Ector/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
