@@ -7,15 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\3rdparty\mongo-efcore-provider\src\MongoDB.EntityFrameworkCore\MongoDB.EntityFrameworkCore.csproj"/>
-        <ProjectReference Include="..\CineQuebec.Application\CineQuebec.Application.csproj"/>
-        <ProjectReference Include="..\CineQuebec.Domain\CineQuebec.Domain.csproj"/>
+        <ProjectReference Include="..\3rdparty\mongo-efcore-provider\src\MongoDB.EntityFrameworkCore\MongoDB.EntityFrameworkCore.csproj" />
+        <ProjectReference Include="..\CineQuebec.Application\CineQuebec.Application.csproj" />
+        <ProjectReference Include="..\CineQuebec.Domain\CineQuebec.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.3"/>
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.3" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     </ItemGroup>
 
 </Project>
