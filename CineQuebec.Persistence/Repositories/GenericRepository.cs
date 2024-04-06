@@ -36,7 +36,12 @@ public class GenericRepository<TEntite> : IRepository<TEntite> where TEntite : E
 		return await _dbSet.FindAsync(id).AsTask();
 	}
 
-	public async Task<ImmutableArray<TEntite>> ObtenirTousAsync(Expression<Func<TEntite, bool>>? filtre = null,
+    public async Task<IEnumerable<TEntite>> ObtenirParIdsAsync(IEnumerable<Guid> ids)
+    {
+        return await _dbSet.Where(e => ids.Contains(e.Id)).ToArrayAsync();
+    }
+
+	public async Task<IEnumerable<TEntite>> ObtenirTousAsync(Expression<Func<TEntite, bool>>? filtre = null,
 		Func<IQueryable<TEntite>, IOrderedQueryable<TEntite>>? trierPar = null)
 	{
 		IQueryable<TEntite> query = _dbSet;
@@ -46,8 +51,7 @@ public class GenericRepository<TEntite> : IRepository<TEntite> where TEntite : E
 			query = query.Where(filtre);
 		}
 
-		var arr = trierPar is not null ? await trierPar(query).ToArrayAsync() : await query.ToArrayAsync();
-		return arr.ToImmutableArray();
+		return trierPar is not null ? await trierPar(query).ToArrayAsync() : await query.ToArrayAsync();
 	}
 
 	public void Supprimer(TEntite entite)

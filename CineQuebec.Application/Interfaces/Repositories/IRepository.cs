@@ -8,7 +8,9 @@ public interface IRepository<TEntite> where TEntite : Entite
 {
 	public Task<TEntite?> ObtenirParIdAsync(Guid id);
 
-	public Task<ImmutableArray<TEntite>> ObtenirTousAsync(Expression<Func<TEntite, bool>>? filtre = null,
+    public Task<IEnumerable<TEntite>> ObtenirParIdsAsync(IEnumerable<Guid> ids);
+
+	public Task<IEnumerable<TEntite>> ObtenirTousAsync(Expression<Func<TEntite, bool>>? filtre = null,
 		Func<IQueryable<TEntite>, IOrderedQueryable<TEntite>>? trierPar = null);
 
 	public Task<TEntite> AjouterAsync(TEntite entite);
