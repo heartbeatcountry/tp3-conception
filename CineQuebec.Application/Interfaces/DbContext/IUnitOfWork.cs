@@ -1,7 +1,6 @@
 using CineQuebec.Application.Interfaces.Repositories;
 using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Domain.Entities.Projections;
-using CineQuebec.Domain.Entities.Utilisateurs;
 
 namespace CineQuebec.Application.Interfaces.DbContext;
 
@@ -13,10 +12,8 @@ public interface IUnitOfWork : IDisposable
 
 	IRepository<Realisateur> RealisateurRepository { get; }
 
-	IRepository<Billet> BilletRepository { get; }
 	IRepository<Projection> ProjectionRepository { get; }
 	IRepository<Salle> SalleRepository { get; }
-	IRepository<Utilisateur> UtilisateurRepository { get; }
 	public int Sauvegarder();
 	public Task<int> SauvegarderAsync(CancellationToken? cancellationToken = null);
 }
