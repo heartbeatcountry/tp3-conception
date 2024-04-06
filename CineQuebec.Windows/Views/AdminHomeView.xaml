@@ -1,0 +1,88 @@
+﻿<UserControl x:Class="CineQuebec.Windows.Views.AdminHomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             xmlns:views="clr-namespace:CineQuebec.Windows.Views"
+             d:DataContext="{d:DesignInstance views:AdminHomeViewModel}"
+             xmlns:rs="clr-namespace:CineQuebec.Windows.Ressources.i18n"
+             xmlns:s="https://github.com/canton7/Stylet"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid Background="White">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10" />
+            <RowDefinition Height="40" />
+            <RowDefinition />
+            <RowDefinition Height="75" />
+            <RowDefinition Height="75" />
+            <RowDefinition />
+            <RowDefinition Height="10" />
+        </Grid.RowDefinitions>
+
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*" />
+            <ColumnDefinition Width="100*" />
+            <ColumnDefinition Width="10*" />
+            <ColumnDefinition Width="100*" />
+            <ColumnDefinition Width="10*" />
+            <ColumnDefinition Width="100*" />
+            <ColumnDefinition Width="10*" />
+        </Grid.ColumnDefinitions>
+
+        <Image Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left"
+               Source="/Ressources/Images/logoCinema.png" MaxWidth="40px" />
+
+
+        <Button x:Name="BtnDeconnecter" Content="{x:Static rs:Resource.admin_menu_deconnection}" Grid.Column="5"
+                Grid.Row="1" Style="{StaticResource MenuButton}" Command="{s:Action Logout}" />
+
+
+        <Button x:Name="BtnAjouterFilm" Style="{StaticResource DefautButton}"
+                Grid.Column="1" Grid.Row="3" Grid.RowSpan="2" Command="{s:Action NavigateToMovieCreation}">
+            <StackPanel Height="134" Width="130" HorizontalAlignment="Center">
+                <Image Height="65"
+                       Source="/Ressources/Images/projections.png" Width="68" />
+
+                <Label Style="{StaticResource DefautLabel}" HorizontalAlignment="Center">
+                    <Label.Content>
+                        <AccessText TextAlignment="Center" TextWrapping="Wrap"
+                                    Text="{x:Static rs:Resource.admin_ajout_film}" />
+                    </Label.Content>
+                </Label>
+
+            </StackPanel>
+        </Button>
+
+        <Button x:Name="BtnVoirAbonnes" Style="{StaticResource DefautButton}"
+                Grid.Column="3" Grid.Row="3" Grid.RowSpan="2">
+            <StackPanel Height="134" Width="130" HorizontalAlignment="Center">
+                <Image Height="58"
+                       Source="/Ressources/Images/users.png" Width="75" />
+                <Label Style="{StaticResource DefautLabel}" HorizontalAlignment="Center">
+                    <Label.Content>
+                        <AccessText TextAlignment="Center" TextWrapping="Wrap"
+                                    Text="{x:Static rs:Resource.admin_visualiser_abonnes}" />
+                    </Label.Content>
+                </Label>
+            </StackPanel>
+        </Button>
+
+        <Button x:Name="BtnReprogFilm" Style="{StaticResource DefautButton}"
+                Grid.Column="5" Grid.Row="3" Grid.RowSpan="2">
+            <StackPanel Height="134" Width="130" HorizontalAlignment="Center">
+                <Image Height="65"
+                       Source="/Ressources/Images/projections.png" Width="68" />
+                <Label Style="{StaticResource DefautLabel}" HorizontalAlignment="Center">
+                    <Label.Content>
+                        <AccessText TextAlignment="Center" TextWrapping="Wrap"
+                                    Text="{x:Static rs:Resource.admin_reprog_film}" />
+                    </Label.Content>
+                </Label>
+            </StackPanel>
+        </Button>
+    </Grid>
+</UserControl>

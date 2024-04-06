@@ -4,8 +4,8 @@ namespace CineQuebec.Windows.Views;
 
 public class LoginViewModel(INavigationController navigationController) : Screen
 {
-    internal void NavigateToPage2()
+    public void NavigateToAdminHome()
     {
-        throw new NotImplementedException();
+        navigationController.NavigateTo<AdminHomeViewModel>();
     }
 }

@@ -1,11 +1,11 @@
-﻿using CineQuebec.Windows.Views;
-using Stylet;
+﻿using Stylet;
+using StyletIoC;
 
 namespace CineQuebec.Windows;
 
 public interface INavigationController
 {
-    void NavigateToLogin();
+    void NavigateTo<TScreen>() where TScreen : IScreen;
 }
 
 public interface INavigationControllerDelegateFn
@@ -13,13 +13,14 @@ public interface INavigationControllerDelegateFn
     void NavigateTo(IScreen screen);
 }
 
-public class NavigationController(Func<LoginViewModel> loginViewModelFactory)
+public class NavigationController(IContainer container)
     : INavigationController
 {
     public INavigationControllerDelegateFn? Delegate { get; set; }
 
-    public void NavigateToLogin()
+    public void NavigateTo<TScreen>() where TScreen : IScreen
     {
-        Delegate?.NavigateTo(loginViewModelFactory());
+        var screen = container.Get<TScreen>();
+        Delegate?.NavigateTo(screen);
     }
 }
