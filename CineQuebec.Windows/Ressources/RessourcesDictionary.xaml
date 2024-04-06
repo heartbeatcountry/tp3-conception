@@ -10,18 +10,19 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
                         <Border.Effect>
-                            <DropShadowEffect/>
+                            <DropShadowEffect />
                         </Border.Effect>
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#AF93AF"/>
+                <Setter Property="Background" Value="#AF93AF" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -51,11 +52,12 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2" Margin="10">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2" Margin="10">
                         <Border.Effect>
-                            <DropShadowEffect/>
+                            <DropShadowEffect />
                         </Border.Effect>
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -68,19 +70,20 @@
         <Setter Property="Width" Value="170" />
 
         <Setter Property="Height" Value="30" />
-        <Setter Property="BorderBrush" Value= "Black" />
-        <Setter Property="BorderThickness" Value= "2" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="BorderThickness" Value="2" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
 
                         <Border.Effect>
-                            <DropShadowEffect/>
+                            <DropShadowEffect />
                         </Border.Effect>
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -88,23 +91,23 @@
     </Style>
 
     <Style x:Key="defautListBox" TargetType="ListBox">
-        <Setter Property="BorderBrush" Value= "Black" />
-        <Setter Property="BorderThickness" Value= "2" />
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="BorderThickness" Value="2" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBox">
-                    <Border  BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2"  Margin="10" >
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2" Margin="10">
 
                         <Border.Effect>
-                            <DropShadowEffect/>
+                            <DropShadowEffect />
                         </Border.Effect>
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-
 
 
 </ResourceDictionary>

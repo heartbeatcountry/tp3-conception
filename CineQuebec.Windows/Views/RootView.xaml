@@ -14,6 +14,6 @@
         Icon="/Ressources/images/logoCinemaWithoutText.png">
 
     <Grid>
-        <ContentControl s:View.Model="{Binding ActiveItem}"/>
+        <ContentControl s:View.Model="{Binding ActiveItem}" />
     </Grid>
 </Window>
