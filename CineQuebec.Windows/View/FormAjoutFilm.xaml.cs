@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,27 +14,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using CineQuebec.Application.Interfaces.DbContext;
+using CineQuebec.Application.Interfaces.Services;
 using MongoDB.Driver;
-using CineQuebec.Persistence.DbContext;
-using CineQuebec.Application.Services;
-using CineQuebec.Domain.Entities.Films;
 
 
 namespace CineQuebec.Windows.View
    {
-
-
-
-
-
     /// <summary>
     /// Logique d'interaction pour AdminHomeControl.xaml
     /// </summary>
     public partial class FormAjoutFilm : UserControl
     {
-        public FormAjoutFilm()
+        private readonly IFilmCreationService _filmCreationService;
+
+        public FormAjoutFilm(IFilmCreationService filmCreationService)
         {
+            _filmCreationService = filmCreationService;
             InitializeComponent();
             InitialiserFormulaire();
         }
@@ -55,7 +51,21 @@ namespace CineQuebec.Windows.View
             }
         }
 
-        private async Task btnAjouterFilm_Click(object sender, RoutedEventArgs e)
+        private async Task AjouterNouveauFilmAsync()
+        {
+
+            string titre = txtTitreFilm.Text;
+            string description = txtDescriptionFilm.Text;
+
+            DateTime dateDeSortieInternationale = dpDateSortie.SelectedDate ?? DateTime.MinValue;
+            //List<Acteur> acteurs = listBoxActeursFilm.SelectedItems.Cast<Acteur>().ToList();
+            //List<Realisateur> realisateurs = listBoxRealisateursFilm.SelectedItems.Cast<Realisateur>().ToList();
+            var duree = Convert.ToUInt16(txtDureeFilm.Text, CultureInfo.InvariantCulture);
+
+            var nouvFilm = await _filmCreationService.CreerFilm(titre, description, Guid.NewGuid(), dateDeSortieInternationale, Enumerable.Empty<Guid>(), Enumerable.Empty<Guid>(), duree);
+        }
+
+        private async void BtnEnregistrerFilm_OnClick(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -63,32 +73,8 @@ namespace CineQuebec.Windows.View
             }
             catch (Exception ex)
             {
-                lblMessageErreur.Content = ex.Message;       
+                lblMessageErreur.Content = ex.Message;
             }
         }
-
-        private async Task AjouterNouveauFilmAsync()
-        {
-            using var unitOfWork = new UnitOfWork(null as IMongoDatabase);
-
-            var filmCreationService = new FilmCreationService(unitOfWork);
-
-            string titre = txtTitreFilm.Text;
-            string description = txtDescriptionFilm.Text;
-            CategorieFilm categorie = (CategorieFilm)cbCategorie.SelectedItem;
-            DateTime dateDeSortieInternationale = dpDateSortie.SelectedDate ?? DateTime.MinValue;
-            List<Acteur> acteurs = listBoxActeursFilm.SelectedItems.Cast<Acteur>().ToList();
-            List<Realisateur> realisateurs = listBoxRealisateursFilm.SelectedItems.Cast<Realisateur>().ToList();
-            ushort duree = Convert.ToUInt16(txtDureeFilm.Text);
-
-            var nouvFilm = await filmCreationService.CreerFilm(titre, description, categorie, dateDeSortieInternationale, acteurs, realisateurs, duree);
-
-            await unitOfWork.SauvegarderAsync();
-        }
-
-
-
-
-
     }
 }

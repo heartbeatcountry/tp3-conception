@@ -15,6 +15,6 @@ public partial class ConnexionControl : UserControl
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-        ((MainWindow)Application.Current.MainWindow).AdminHomeControl();
+        ((MainWindow)System.Windows.Application.Current.MainWindow).AdminHomeControl();
     }
 }

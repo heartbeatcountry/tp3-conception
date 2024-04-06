@@ -20,7 +20,7 @@
             </StackPanel>
         </Button>
 
-        <Button Style="{StaticResource defautButton}"
+        <Button Style="{StaticResource defautButton}" Click="BoutonFilms_OnClick"
                 Grid.Column="1">
             <StackPanel>
                 <Image Height="100"

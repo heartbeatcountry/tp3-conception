@@ -48,7 +48,7 @@
         <TextBox x:Name="txtTitreFilm" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource defautInput}" />
 
         <Label x:Name="lblDescriptionFilm" Content="{x:Static rs:Resource.admin_ajout_duree_film}"    Grid.Row="3"     Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center"/>
-        <TextBlock x:Name="txtDescriptionFilm" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource defautInput}" />
+        <TextBox x:Name="txtDescriptionFilm" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource defautInput}" />
 
         
         <Label x:Name="lblDureeFilm" Content="{x:Static rs:Resource.admin_ajout_duree_film}"    Grid.Row="5"    Grid.Column="1"  VerticalAlignment="Center"/>
@@ -101,7 +101,7 @@
         <Button x:Name="btnAjouterImage" Content="{x:Static rs:Resource.admin_ajout_parcourir_film}"   Grid.Row="9" Grid.Column="2" Grid.ColumnSpan="2"  Style="{StaticResource menuButton}" />
 
         <Button x:Name="btnAnnulerAjoutFilm" Content="{x:Static rs:Resource.admin_ajout_annuler_film}"   Grid.Row="9" Grid.Column="6" Style="{StaticResource menuButton}"/>
-        <Button x:Name="btnEnregistrerFilm" Content="{x:Static rs:Resource.admin_ajout_enregistrer_film}"  Grid.Row="9" Grid.Column="7"  Style="{StaticResource menuButton}" Click="btnAjouterFilm_Click" />
+        <Button x:Name="btnEnregistrerFilm" Content="{x:Static rs:Resource.admin_ajout_enregistrer_film}"  Grid.Row="9" Grid.Column="7"  Style="{StaticResource menuButton}" Click="BtnEnregistrerFilm_OnClick" />
 
 
     </Grid>
