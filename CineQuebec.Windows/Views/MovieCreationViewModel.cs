@@ -1,4 +1,5 @@
 ﻿using CineQuebec.Application.Interfaces.Services;
+
 using Stylet;
 
 namespace CineQuebec.Windows.Views;

@@ -1,4 +1,5 @@
 ﻿using Stylet;
+
 using StyletIoC;
 
 namespace CineQuebec.Windows;
@@ -20,7 +21,7 @@ public class NavigationController(IContainer container)
 
     public void NavigateTo<TScreen>() where TScreen : IScreen
     {
-        var screen = container.Get<TScreen>();
+        TScreen? screen = container.Get<TScreen>();
         Delegate?.NavigateTo(screen);
     }
 }

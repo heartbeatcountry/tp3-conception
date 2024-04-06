@@ -1,5 +1,7 @@
 ﻿using CineQuebec.Windows.Views;
+
 using Stylet;
+
 using StyletIoC;
 
 namespace CineQuebec.Windows;
@@ -14,7 +16,7 @@ public class Bootstrapper : Bootstrapper<RootViewModel>
 
     protected override void OnLaunch()
     {
-        var navigationController = Container.Get<NavigationController>();
+        NavigationController? navigationController = Container.Get<NavigationController>();
         navigationController.Delegate = RootViewModel;
         navigationController.NavigateTo<LoginViewModel>();
     }
