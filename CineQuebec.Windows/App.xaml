@@ -1,7 +1,16 @@
 ﻿<Application x:Class="CineQuebec.Windows.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:s="https://github.com/canton7/Stylet"
+             xmlns:local="clr-namespace:CineQuebec.Windows">
     <Application.Resources>
-        <ResourceDictionary Source="Ressources/RessourcesDictionary.xaml" />
+        <s:ApplicationLoader>
+            <s:ApplicationLoader.Bootstrapper>
+                <local:Bootstrapper />
+            </s:ApplicationLoader.Bootstrapper>
+            <s:ApplicationLoader.MergedDictionaries>
+                <ResourceDictionary Source="Ressources/RessourcesDictionary.xaml" />
+            </s:ApplicationLoader.MergedDictionaries>
+        </s:ApplicationLoader>
     </Application.Resources>
 </Application>

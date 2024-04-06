@@ -10,14 +10,12 @@ public static class ConfigureServices
 {
 	private static IServiceCollection AddMongoDb(this IServiceCollection services, IConfiguration configuration)
 	{
-		return services.AddSingleton<IMongoDatabase>(_ =>
-		{
-			var connectionString = configuration.GetConnectionString("DefaultConnection");
-			var mongoUrl = new MongoUrl(connectionString);
-			var mongoClient = new MongoClient(mongoUrl);
-			var mongoDatabase = mongoClient.GetDatabase(mongoUrl.DatabaseName ?? "TP2DB");
-			return mongoDatabase;
-		});
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var mongoUrl = new MongoUrl(connectionString);
+        var mongoClient = new MongoClient(mongoUrl);
+        var mongoDatabase = mongoClient.GetDatabase(mongoUrl.DatabaseName ?? "TP2DB");
+        
+        return services.AddSingleton<IMongoDatabase>(mongoDatabase);
 	}
 
 	public static IServiceCollection AddPersistenceServices(this IServiceCollection services,
