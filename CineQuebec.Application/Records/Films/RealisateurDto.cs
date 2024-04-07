@@ -7,8 +7,8 @@ public record class RealisateurDto(Guid Id, string Prenom, string Nom) : Personn
 
 internal static class RealisateurExtensions
 {
-	internal static RealisateurDto VersDto(this IRealisateur realisateur)
-	{
-		return new RealisateurDto(realisateur.Id, realisateur.Prenom, realisateur.Nom);
-	}
+    internal static RealisateurDto VersDto(this IRealisateur realisateur)
+    {
+        return new RealisateurDto(realisateur.Id, realisateur.Prenom, realisateur.Nom);
+    }
 }

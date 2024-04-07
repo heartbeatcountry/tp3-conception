@@ -15,7 +15,7 @@ public class FilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmCr
 
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
-        var exceptions = await EffectuerValidations(unitOfWork, titre, description, categorie,
+        IEnumerable<Exception> exceptions = await EffectuerValidations(unitOfWork, titre, description, categorie,
             dateDeSortieInternationale, acteursParId, realisateursParId, duree);
 
         if (exceptions.ToArray() is { Length: > 0 } innerExceptions)
@@ -24,7 +24,7 @@ public class FilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmCr
                 innerExceptions);
         }
 
-        Film film = new Film(titre, description, categorie, dateDeSortieInternationale, acteursParId, realisateursParId,
+        Film film = new(titre, description, categorie, dateDeSortieInternationale, acteursParId, realisateursParId,
             duree);
         IFilm filmCree = await unitOfWork.FilmRepository.AjouterAsync(film);
 

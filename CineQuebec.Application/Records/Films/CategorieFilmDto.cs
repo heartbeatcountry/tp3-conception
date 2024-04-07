@@ -7,8 +7,8 @@ public record class CategorieFilmDto(Guid Id, string NomAffichage) : EntityDto(I
 
 internal static class CategorieFilmExtensions
 {
-	internal static CategorieFilmDto VersDto(this ICategorieFilm categorieFilm)
-	{
-		return new CategorieFilmDto(categorieFilm.Id, categorieFilm.NomAffichage);
-	}
+    internal static CategorieFilmDto VersDto(this ICategorieFilm categorieFilm)
+    {
+        return new CategorieFilmDto(categorieFilm.Id, categorieFilm.NomAffichage);
+    }
 }

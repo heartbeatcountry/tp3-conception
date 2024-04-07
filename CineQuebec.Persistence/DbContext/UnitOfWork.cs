@@ -26,22 +26,22 @@ public sealed class UnitOfWork(DbContextOptions<ApplicationDbContext> contextOpt
 	private IRepository<ISalle>? _salleRepository;
 
 	public IRepository<ISalle> SalleRepository =>
-		_salleRepository ??= new GenericRepository<ISalle>(_context);
+		_salleRepository ??= new GenericRepository<Salle, ISalle>(_context);
 
 	public IRepository<IActeur> ActeurRepository =>
-		_acteurRepository ??= new GenericRepository<IActeur>(_context);
+		_acteurRepository ??= new GenericRepository<Acteur, IActeur>(_context);
 
 	public IRepository<ICategorieFilm> CategorieFilmRepository =>
-		_categorieFilmRepository ??= new GenericRepository<ICategorieFilm>(_context);
+		_categorieFilmRepository ??= new GenericRepository<CategorieFilm, ICategorieFilm>(_context);
 
 	public IRepository<IFilm> FilmRepository =>
-		_filmRepository ??= new GenericRepository<IFilm>(_context);
+		_filmRepository ??= new GenericRepository<Film, IFilm>(_context);
 
 	public IRepository<IProjection> ProjectionRepository =>
-		_projectionRepository ??= new GenericRepository<IProjection>(_context);
+		_projectionRepository ??= new GenericRepository<Projection, IProjection>(_context);
 
 	public IRepository<IRealisateur> RealisateurRepository =>
-		_realisateurRepository ??= new GenericRepository<IRealisateur>(_context);
+		_realisateurRepository ??= new GenericRepository<Realisateur, IRealisateur>(_context);
 
 	public void Dispose()
 	{

@@ -1,23 +1,23 @@
-using System.Collections.Immutable;
 using System.Linq.Expressions;
+
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities;
 
 namespace CineQuebec.Application.Interfaces.Repositories;
 
-public interface IRepository<TEntite> where TEntite : class, IEntite
+public interface IRepository<TIEntite> where TIEntite : IEntite
 {
-	public Task<TEntite?> ObtenirParIdAsync(Guid id);
+    public Task<TIEntite?> ObtenirParIdAsync(Guid id);
 
-    public Task<IEnumerable<TEntite>> ObtenirParIdsAsync(IEnumerable<Guid> ids);
+    public Task<IEnumerable<TIEntite>> ObtenirParIdsAsync(IEnumerable<Guid> ids);
 
-	public Task<IEnumerable<TEntite>> ObtenirTousAsync(Expression<Func<TEntite, bool>>? filtre = null,
-		Func<IQueryable<TEntite>, IOrderedQueryable<TEntite>>? trierPar = null);
+    public Task<IEnumerable<TIEntite>> ObtenirTousAsync(Expression<Func<TIEntite, bool>>? filtre = null,
+        Func<IQueryable<TIEntite>, IOrderedQueryable<TIEntite>>? trierPar = null);
 
-    public Task<bool> ExisteAsync(Expression<Func<TEntite, bool>> filtre);
+    public Task<bool> ExisteAsync(Expression<Func<TIEntite, bool>> filtre);
 
-	public Task<TEntite> AjouterAsync(TEntite entite);
-	public TEntite Modifier(TEntite entite);
-	public void Supprimer(TEntite entite);
-	public void Supprimer(Guid id);
+    public Task<TIEntite> AjouterAsync(TIEntite entite);
+    public TIEntite Modifier(TIEntite entite);
+    public void Supprimer(TIEntite entite);
+    public void Supprimer(Guid id);
 }

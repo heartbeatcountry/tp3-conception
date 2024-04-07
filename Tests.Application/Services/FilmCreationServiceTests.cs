@@ -51,7 +51,7 @@ public class FilmCreationServiceTests
         _categorieFilmRepository = _categorieFilmRepositoryMock.Object;
 
         _categorieFilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(_idCategorieValide))
-            .ReturnsAsync(Mock.Of<ICategorieFilm>(cf => cf.NomAffichage == "Action" && cf.Id == _idCategorieValide));
+            .ReturnsAsync(Mock.Of<ICategorieFilm>(cf => cf.Id == _idCategorieValide));
 
         _unitOfWorkMock.Setup(u => u.FilmRepository).Returns(_filmRepository);
         _unitOfWorkMock.Setup(u => u.ActeurRepository).Returns(_acteurRepository);
@@ -80,7 +80,7 @@ public class FilmCreationServiceTests
     {
         // Arrange
         _categorieFilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(_idCategorieValide))
-            .ReturnsAsync((ICategorieFilm?)null);
+            .ReturnsAsync((CategorieFilm?)null);
 
         // Act & Assert
         var aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
@@ -93,7 +93,7 @@ public class FilmCreationServiceTests
     {
         // Arrange
         _acteurRepositoryMock.Setup(r => r.ObtenirParIdAsync(It.IsAny<Guid>()))
-            .ReturnsAsync((IActeur?)null);
+            .ReturnsAsync((Acteur?)null);
 
         // Act & Assert
         var aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
@@ -106,7 +106,7 @@ public class FilmCreationServiceTests
     {
         // Arrange
         _realisateurRepositoryMock.Setup(r => r.ObtenirParIdAsync(It.IsAny<Guid>()))
-            .ReturnsAsync((IRealisateur?)null);
+            .ReturnsAsync((Realisateur?)null);
 
         // Act & Assert
         var aggregateException = Assert.ThrowsAsync<AggregateException>(() =>

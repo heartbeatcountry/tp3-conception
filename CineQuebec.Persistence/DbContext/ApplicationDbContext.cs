@@ -3,6 +3,7 @@ using System.Reflection;
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities;
+using CineQuebec.Domain.Interfaces.Entities.Films;
 using CineQuebec.Persistence.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

@@ -7,8 +7,8 @@ public record class ActeurDto(Guid Id, string Prenom, string Nom) : PersonneDto(
 
 internal static class ActeurExtensions
 {
-	internal static ActeurDto VersDto(this IActeur acteur)
-	{
-		return new ActeurDto(acteur.Id, acteur.Prenom, acteur.Nom);
-	}
+    internal static ActeurDto VersDto(this IActeur acteur)
+    {
+        return new ActeurDto(acteur.Id, acteur.Prenom, acteur.Nom);
+    }
 }
