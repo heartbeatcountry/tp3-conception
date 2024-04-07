@@ -12,8 +12,8 @@
     <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.0"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
-        <PackageReference Include="Moq" Version="4.20.70" />
-        <PackageReference Include="NUnit" Version="4.1.0" />
+        <PackageReference Include="Moq" Version="4.20.70"/>
+        <PackageReference Include="NUnit" Version="4.1.0"/>
         <PackageReference Include="NUnit.Analyzers" Version="3.9.0"/>
         <PackageReference Include="NUnit3TestAdapter" Version="4.5.0"/>
     </ItemGroup>
@@ -23,13 +23,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Moq">
-        <HintPath>..\..\..\..\..\..\..\.nuget\packages\moq\4.20.70\lib\net6.0\Moq.dll</HintPath>
-      </Reference>
+        <Reference Include="Moq">
+            <HintPath>..\..\..\..\..\..\..\.nuget\packages\moq\4.20.70\lib\net6.0\Moq.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CineQuebec.Application\CineQuebec.Application.csproj" />
+        <ProjectReference Include="..\CineQuebec.Application\CineQuebec.Application.csproj"/>
     </ItemGroup>
 
 </Project>

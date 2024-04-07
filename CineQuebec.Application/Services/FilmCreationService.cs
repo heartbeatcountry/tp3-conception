@@ -39,6 +39,10 @@ public class FilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmCr
     {
         List<Exception> exceptions = [];
 
+        exceptions.AddRange(ValiderTitre(titre));
+        exceptions.AddRange(ValiderDescription(description));
+        exceptions.AddRange(ValiderDuree(duree));
+        exceptions.AddRange(ValiderDateSortieInternationale(dateDeSortieInternationale));
         exceptions.AddRange(await ValiderCategorieExiste(unitOfWork, categorie));
         exceptions.AddRange(await ValiderActeursExistent(unitOfWork, acteurs));
         exceptions.AddRange(await ValiderRealisateursExistent(unitOfWork, realisateurs));
@@ -104,6 +108,55 @@ public class FilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmCr
                 exceptions.Add(new ArgumentException($"Le réalisateur avec l'identifiant {idRealisateur} n'existe pas.",
                     nameof(realisateurs)));
             }
+        }
+
+        return exceptions;
+    }
+
+    private static IEnumerable<Exception> ValiderTitre(string titre)
+    {
+        List<Exception> exceptions = [];
+
+        if (string.IsNullOrWhiteSpace(titre))
+        {
+            exceptions.Add(new ArgumentException("Le titre ne peut pas être vide.", nameof(titre)));
+        }
+
+        return exceptions;
+    }
+
+    private static IEnumerable<Exception> ValiderDescription(string description)
+    {
+        List<Exception> exceptions = [];
+
+        if (string.IsNullOrWhiteSpace(description))
+        {
+            exceptions.Add(new ArgumentException("La description ne peut pas être vide.", nameof(description)));
+        }
+
+        return exceptions;
+    }
+
+    private static IEnumerable<Exception> ValiderDuree(ushort duree)
+    {
+        List<Exception> exceptions = [];
+
+        if (duree == 0)
+        {
+            exceptions.Add(new ArgumentOutOfRangeException(nameof(duree), "Le film doit durer plus de 0 minutes."));
+        }
+
+        return exceptions;
+    }
+
+    private static IEnumerable<Exception> ValiderDateSortieInternationale(DateTime dateSortieInternationale)
+    {
+        List<Exception> exceptions = [];
+
+        if (dateSortieInternationale <= DateTime.MinValue)
+        {
+            exceptions.Add(new ArgumentOutOfRangeException(nameof(dateSortieInternationale),
+                $"La date de sortie internationale doit être supérieure à {DateOnly.MinValue}."));
         }
 
         return exceptions;
