@@ -2,6 +2,8 @@ using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Application.Interfaces.Repositories;
 using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Domain.Entities.Projections;
+using CineQuebec.Domain.Interfaces.Entities.Films;
+using CineQuebec.Domain.Interfaces.Entities.Projections;
 using CineQuebec.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,35 +13,35 @@ public sealed class UnitOfWork(DbContextOptions<ApplicationDbContext> contextOpt
 {
 	private readonly ApplicationDbContext _context = new(contextOptions);
 
-	private IRepository<Acteur>? _acteurRepository;
+	private IRepository<IActeur>? _acteurRepository;
 
-	private IRepository<CategorieFilm>? _categorieFilmRepository;
+	private IRepository<ICategorieFilm>? _categorieFilmRepository;
 
 	private bool _disposed;
 
-	private IRepository<Film>? _filmRepository;
+	private IRepository<IFilm>? _filmRepository;
 
-	private IRepository<Projection>? _projectionRepository;
-	private IRepository<Realisateur>? _realisateurRepository;
-	private IRepository<Salle>? _salleRepository;
+	private IRepository<IProjection>? _projectionRepository;
+	private IRepository<IRealisateur>? _realisateurRepository;
+	private IRepository<ISalle>? _salleRepository;
 
-	public IRepository<Salle> SalleRepository =>
-		_salleRepository ??= new GenericRepository<Salle>(_context);
+	public IRepository<ISalle> SalleRepository =>
+		_salleRepository ??= new GenericRepository<ISalle>(_context);
 
-	public IRepository<Acteur> ActeurRepository =>
-		_acteurRepository ??= new GenericRepository<Acteur>(_context);
+	public IRepository<IActeur> ActeurRepository =>
+		_acteurRepository ??= new GenericRepository<IActeur>(_context);
 
-	public IRepository<CategorieFilm> CategorieFilmRepository =>
-		_categorieFilmRepository ??= new GenericRepository<CategorieFilm>(_context);
+	public IRepository<ICategorieFilm> CategorieFilmRepository =>
+		_categorieFilmRepository ??= new GenericRepository<ICategorieFilm>(_context);
 
-	public IRepository<Film> FilmRepository =>
-		_filmRepository ??= new GenericRepository<Film>(_context);
+	public IRepository<IFilm> FilmRepository =>
+		_filmRepository ??= new GenericRepository<IFilm>(_context);
 
-	public IRepository<Projection> ProjectionRepository =>
-		_projectionRepository ??= new GenericRepository<Projection>(_context);
+	public IRepository<IProjection> ProjectionRepository =>
+		_projectionRepository ??= new GenericRepository<IProjection>(_context);
 
-	public IRepository<Realisateur> RealisateurRepository =>
-		_realisateurRepository ??= new GenericRepository<Realisateur>(_context);
+	public IRepository<IRealisateur> RealisateurRepository =>
+		_realisateurRepository ??= new GenericRepository<IRealisateur>(_context);
 
 	public void Dispose()
 	{
@@ -55,11 +57,6 @@ public sealed class UnitOfWork(DbContextOptions<ApplicationDbContext> contextOpt
 		}
 
 		_disposed = true;
-	}
-
-	public int Sauvegarder()
-	{
-		return _context.SaveChanges();
 	}
 
 	public async Task<int> SauvegarderAsync(CancellationToken? cancellationToken = null)

@@ -1,8 +1,9 @@
 using CineQuebec.Domain.Entities.Abstract;
+using CineQuebec.Domain.Interfaces.Entities.Projections;
 
 namespace CineQuebec.Domain.Entities.Projections;
 
-public class Salle : Entite, IComparable<Salle>
+public class Salle : Entite, IComparable<Salle>, ISalle
 {
 	public Salle(byte numero, ushort nbSieges)
 	{
@@ -33,7 +34,7 @@ public class Salle : Entite, IComparable<Salle>
 		return base.Equals(autre) || (autre is Salle salle && Numero == salle.Numero);
 	}
 
-	private void SetNbSieges(ushort nbSieges)
+    public void SetNbSieges(ushort nbSieges)
 	{
 		if (nbSieges == 0)
 		{
@@ -43,7 +44,7 @@ public class Salle : Entite, IComparable<Salle>
 		NbSieges = nbSieges;
 	}
 
-	private void SetNumero(byte numero)
+    public void SetNumero(byte numero)
 	{
 		if (numero == 0)
 		{

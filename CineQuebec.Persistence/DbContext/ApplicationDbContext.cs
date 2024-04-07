@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Reflection;
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Entities.Films;
+using CineQuebec.Domain.Interfaces.Entities;
 using CineQuebec.Persistence.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -24,7 +25,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 		dateTime => DateOnly.FromDateTime(dateTime).ToString(CultureInfo.InvariantCulture),
 		str => DateOnly.Parse(str).ToDateTime(TimeOnly.MinValue));
 
-	public new EntityEntry<TEntite> Entry<TEntite>(TEntite entite) where TEntite : Entite
+	public new EntityEntry<TEntite> Entry<TEntite>(TEntite entite) where TEntite : class, IEntite
 	{
 		return base.Entry(entite);
 	}
@@ -71,7 +72,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 		builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 	}
 
-	public new DbSet<TEntite> Set<TEntite>() where TEntite : Entite
+	public new DbSet<TEntite> Set<TEntite>() where TEntite : class, IEntite
 	{
 		return base.Set<TEntite>();
 	}

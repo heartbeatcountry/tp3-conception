@@ -1,10 +1,11 @@
 using System.Collections.Immutable;
 using System.Linq.Expressions;
 using CineQuebec.Domain.Entities.Abstract;
+using CineQuebec.Domain.Interfaces.Entities;
 
 namespace CineQuebec.Application.Interfaces.Repositories;
 
-public interface IRepository<TEntite> where TEntite : Entite
+public interface IRepository<TEntite> where TEntite : class, IEntite
 {
 	public Task<TEntite?> ObtenirParIdAsync(Guid id);
 
@@ -12,6 +13,8 @@ public interface IRepository<TEntite> where TEntite : Entite
 
 	public Task<IEnumerable<TEntite>> ObtenirTousAsync(Expression<Func<TEntite, bool>>? filtre = null,
 		Func<IQueryable<TEntite>, IOrderedQueryable<TEntite>>? trierPar = null);
+
+    public Task<bool> ExisteAsync(Expression<Func<TEntite, bool>> filtre);
 
 	public Task<TEntite> AjouterAsync(TEntite entite);
 	public TEntite Modifier(TEntite entite);

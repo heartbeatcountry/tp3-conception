@@ -1,4 +1,6 @@
 using CineQuebec.Domain.Entities.Abstract;
+using CineQuebec.Domain.Interfaces.Entities;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -6,6 +8,6 @@ namespace CineQuebec.Persistence.Interfaces;
 
 public interface IApplicationDbContext
 {
-	public DbSet<TEntite> Set<TEntite>() where TEntite : Entite;
-	public EntityEntry<TEntite> Entry<TEntite>(TEntite entite) where TEntite : Entite;
+	public DbSet<TIEntite> Set<TIEntite>() where TIEntite : class, IEntite;
+	public EntityEntry<TIEntite> Entry<TIEntite>(TIEntite entite) where TIEntite : class, IEntite;
 }

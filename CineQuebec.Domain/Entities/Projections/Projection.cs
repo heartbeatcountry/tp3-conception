@@ -1,8 +1,9 @@
 using CineQuebec.Domain.Entities.Abstract;
+using CineQuebec.Domain.Interfaces.Entities.Projections;
 
 namespace CineQuebec.Domain.Entities.Projections;
 
-public class Projection : Entite, IComparable<Projection>
+public class Projection : Entite, IComparable<Projection>, IProjection
 {
 	public Projection(Guid film, Guid salle, DateTime dateHeure, bool estAvantPremiere)
 	{
@@ -12,8 +13,8 @@ public class Projection : Entite, IComparable<Projection>
 		SetEstAvantPremiere(estAvantPremiere);
 	}
 
-	public Guid Film { get; private set; }
-	public Guid Salle { get; private set; }
+	public Guid IdFilm { get; private set; }
+	public Guid IdSalle { get; private set; }
 	public DateTime DateHeure { get; private set; } = DateTime.MinValue;
 	public bool EstAvantPremiere { get; private set; }
 
@@ -34,11 +35,11 @@ public class Projection : Entite, IComparable<Projection>
 
 	public new bool Equals(Entite? autre)
 	{
-		return base.Equals(autre) || (autre is Projection projection && Salle.Equals(projection.Salle) &&
+		return base.Equals(autre) || (autre is Projection projection && IdSalle.Equals(projection.IdSalle) &&
 		                              DateHeure == projection.DateHeure);
 	}
 
-	private void SetDateHeure(DateTime dateHeure)
+    public void SetDateHeure(DateTime dateHeure)
 	{
 		if (dateHeure == DateTime.MinValue)
 		{
@@ -48,28 +49,28 @@ public class Projection : Entite, IComparable<Projection>
 		DateHeure = dateHeure;
 	}
 
-	private void SetEstAvantPremiere(bool estAvantPremiere)
+    public void SetEstAvantPremiere(bool estAvantPremiere)
 	{
 		EstAvantPremiere = estAvantPremiere;
 	}
 
-	private void SetFilm(Guid idFilm)
+    public void SetFilm(Guid idFilm)
 	{
 		if (idFilm == Guid.Empty)
 		{
 			throw new ArgumentNullException(nameof(idFilm), "Le guid du film ne peut pas être nul.");
 		}
 
-		Film = idFilm;
+		IdFilm = idFilm;
 	}
 
-	private void SetSalle(Guid idSalle)
+    public void SetSalle(Guid idSalle)
 	{
 		if (idSalle == Guid.Empty)
 		{
 			throw new ArgumentNullException(nameof(idSalle), "Le guid de la salle ne peut pas être nul.");
 		}
 
-		Salle = idSalle;
+		IdSalle = idSalle;
 	}
 }
