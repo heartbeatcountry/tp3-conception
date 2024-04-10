@@ -10,7 +10,7 @@
         d:DataContext="{d:DesignInstance views:RootViewModel, IsDesignTimeCreatable=True}"
         Title="{x:Static rs:Resource.app_name}"
         ResizeMode="NoResize"
-        Height="450" Width="800"
+        Height="550" Width="800"
         Icon="/Ressources/images/logoCinemaWithoutText.png">
 
     <Grid>

@@ -64,14 +64,41 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" Content="Réalisateur.trice.s"/>
-                    <ListView Margin="0,0,0,5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1"></ListView>
+                    <ListView Margin="0,0,0,5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" ItemsSource="{Binding Realisateurs}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding NomComplet}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                     <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" Content="Acteur.trice.s"/>
-                    <ListView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1"></ListView>
+                    <ListView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" ItemsSource="{Binding Acteurs}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding NomComplet}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </Grid>
             </Grid>
-            <ListView Margin="0,10,0,0">
-                <Label Content="blabla"/>
-            </ListView>
+            <DockPanel Margin="0,5,0,0">
+                <StackPanel Margin="0,5,0,0" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Ajouter une projection" Margin="5,0"/>
+                    <Button Content="Modifier ce film"></Button>
+                </StackPanel>
+                <DockPanel>
+                    <Label DockPanel.Dock="Top" Content="Projections planifiées pour ce film" Background="LightGray"/>
+                    <ListView>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Date" Width="200"/>
+                                <GridViewColumn Header="Heure" Width="200"/>
+                                <GridViewColumn Header="Salle" Width="200"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DockPanel>
+            </DockPanel>
         </DockPanel>
     </DockPanel>
 </UserControl>
