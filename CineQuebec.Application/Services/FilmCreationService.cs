@@ -81,6 +81,43 @@ public class FilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmCr
         return exceptions;
     }
 
+    private static IEnumerable<Exception> ValiderDateSortieInternationale(DateTime dateSortieInternationale)
+    {
+        List<Exception> exceptions = [];
+
+        if (dateSortieInternationale <= DateTime.MinValue)
+        {
+            exceptions.Add(new ArgumentOutOfRangeException(nameof(dateSortieInternationale),
+                $"La date de sortie internationale doit être supérieure à {DateOnly.MinValue}."));
+        }
+
+        return exceptions;
+    }
+
+    private static IEnumerable<Exception> ValiderDescription(string description)
+    {
+        List<Exception> exceptions = [];
+
+        if (string.IsNullOrWhiteSpace(description))
+        {
+            exceptions.Add(new ArgumentException("La description ne peut pas être vide.", nameof(description)));
+        }
+
+        return exceptions;
+    }
+
+    private static IEnumerable<Exception> ValiderDuree(ushort duree)
+    {
+        List<Exception> exceptions = [];
+
+        if (duree == 0)
+        {
+            exceptions.Add(new ArgumentOutOfRangeException(nameof(duree), "Le film doit durer plus de 0 minutes."));
+        }
+
+        return exceptions;
+    }
+
     private static async Task<IEnumerable<Exception>> ValiderFilmEstUnique(IUnitOfWork unitOfWork, string titre, int
         annee, ushort duree)
     {
@@ -120,43 +157,6 @@ public class FilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmCr
         if (string.IsNullOrWhiteSpace(titre))
         {
             exceptions.Add(new ArgumentException("Le titre ne peut pas être vide.", nameof(titre)));
-        }
-
-        return exceptions;
-    }
-
-    private static IEnumerable<Exception> ValiderDescription(string description)
-    {
-        List<Exception> exceptions = [];
-
-        if (string.IsNullOrWhiteSpace(description))
-        {
-            exceptions.Add(new ArgumentException("La description ne peut pas être vide.", nameof(description)));
-        }
-
-        return exceptions;
-    }
-
-    private static IEnumerable<Exception> ValiderDuree(ushort duree)
-    {
-        List<Exception> exceptions = [];
-
-        if (duree == 0)
-        {
-            exceptions.Add(new ArgumentOutOfRangeException(nameof(duree), "Le film doit durer plus de 0 minutes."));
-        }
-
-        return exceptions;
-    }
-
-    private static IEnumerable<Exception> ValiderDateSortieInternationale(DateTime dateSortieInternationale)
-    {
-        List<Exception> exceptions = [];
-
-        if (dateSortieInternationale <= DateTime.MinValue)
-        {
-            exceptions.Add(new ArgumentOutOfRangeException(nameof(dateSortieInternationale),
-                $"La date de sortie internationale doit être supérieure à {DateOnly.MinValue}."));
         }
 
         return exceptions;

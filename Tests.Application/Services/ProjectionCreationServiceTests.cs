@@ -17,18 +17,10 @@ public class ProjectionCreationServiceTests : GenericServiceTests<ProjectionCrea
     private static readonly DateTime DateValide = DateTime.Now;
     private static readonly DateTime DateDansLePasse = DateTime.Now - TimeSpan.FromDays(1);
 
-    protected override void SetUpExt()
-    {
-        FilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(IdFilmValide))
-            .ReturnsAsync(Mock.Of<IFilm>(cf => cf.Id == IdFilmValide));
-
-        SalleRepositoryMock.Setup(r => r.ObtenirParIdAsync(IdSalleValide))
-            .ReturnsAsync(Mock.Of<ISalle>(cf => cf.Id == IdSalleValide));
-    }
-
 
     [Test]
-    public void CreerProjection_WhenGivenIdFilmAndIdSalleAndDateHeureAlreadyPrensentInRepository_ThrowsAggregateExceptionContainingArgumentException()
+    public void
+        CreerProjection_WhenGivenIdFilmAndIdSalleAndDateHeureAlreadyPrensentInRepository_ThrowsAggregateExceptionContainingArgumentException()
     {
         //Arrange
         ProjectionRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<IProjection, bool>>>()))
@@ -81,5 +73,14 @@ public class ProjectionCreationServiceTests : GenericServiceTests<ProjectionCrea
             Service.CreerProjection(IdFilmValide, IdSalleValide, DateValide, false));
         Assert.That(aggregateException?.InnerExceptions,
             Has.One.InstanceOf<ArgumentException>().With.Message.Contains("n'existe pas"));
+    }
+
+    protected override void SetUpExt()
+    {
+        FilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(IdFilmValide))
+            .ReturnsAsync(Mock.Of<IFilm>(cf => cf.Id == IdFilmValide));
+
+        SalleRepositoryMock.Setup(r => r.ObtenirParIdAsync(IdSalleValide))
+            .ReturnsAsync(Mock.Of<ISalle>(cf => cf.Id == IdSalleValide));
     }
 }

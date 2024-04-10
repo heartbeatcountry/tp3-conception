@@ -64,8 +64,10 @@ public class FilmQueryServiceTests : GenericServiceTests<FilmQueryService>
     public void ObtenirTousAlAffiche_Always_ShouldReturnAllFilmsCurrentlyPlaying()
     {
         // Arrange
-        IEnumerable<IProjection> projections = new[] { Mock.Of<IProjection>(), Mock.Of<IProjection>(), Mock.Of<IProjection>() };
-        ProjectionRepositoryMock.Setup(r => r.ObtenirTousAsync(It.IsAny<Expression<Func<IProjection, bool>>>(), It.IsAny<Func<IQueryable<IProjection>, IOrderedQueryable<IProjection>>>())).ReturnsAsync(projections);
+        IEnumerable<IProjection> projections =
+            new[] { Mock.Of<IProjection>(), Mock.Of<IProjection>(), Mock.Of<IProjection>() };
+        ProjectionRepositoryMock.Setup(r => r.ObtenirTousAsync(It.IsAny<Expression<Func<IProjection, bool>>>(),
+            It.IsAny<Func<IQueryable<IProjection>, IOrderedQueryable<IProjection>>>())).ReturnsAsync(projections);
         IEnumerable<IFilm> films = new[] { Mock.Of<IFilm>(), Mock.Of<IFilm>(), Mock.Of<IFilm>() };
         FilmRepositoryMock.Setup(r => r.ObtenirParIdsAsync(It.IsAny<IEnumerable<Guid>>())).ReturnsAsync(films);
 

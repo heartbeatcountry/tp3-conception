@@ -1,6 +1,5 @@
 using System.Linq.Expressions;
 
-using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities;
 
 namespace CineQuebec.Application.Interfaces.Repositories;

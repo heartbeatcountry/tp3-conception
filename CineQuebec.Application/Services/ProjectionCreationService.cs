@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-
-using CineQuebec.Application.Interfaces.DbContext;
+﻿using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Application.Interfaces.Services;
-using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Domain.Entities.Projections;
-using CineQuebec.Domain.Interfaces.Entities.Films;
+using CineQuebec.Domain.Interfaces.Entities.Projections;
 
 namespace CineQuebec.Application.Services;
 
 public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory) : IProjectionCreationService
 {
-	public async Task<Guid> CreerProjection(Guid pFilm, Guid pSalle, DateTime pDateHeure, bool pEstAvantPremiere)
-	{
-		using var unitOfWork = unitOfWorkFactory.Create();
+    public async Task<Guid> CreerProjection(Guid pFilm, Guid pSalle, DateTime pDateHeure, bool pEstAvantPremiere)
+    {
+        using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
         IEnumerable<Exception> exceptions = await EffectuerValidations(unitOfWork, pFilm, pSalle, pDateHeure,
-           pEstAvantPremiere);
+            pEstAvantPremiere);
 
         if (exceptions.ToArray() is { Length: > 0 } innerExceptions)
         {
@@ -24,13 +20,13 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory) : I
                 innerExceptions);
         }
 
-        var projection = new Projection( pFilm, pSalle, pDateHeure,pEstAvantPremiere);
-        var projectionCreee = await unitOfWork.ProjectionRepository.AjouterAsync(projection);
+        Projection projection = new Projection(pFilm, pSalle, pDateHeure, pEstAvantPremiere);
+        IProjection projectionCreee = await unitOfWork.ProjectionRepository.AjouterAsync(projection);
 
-		await unitOfWork.SauvegarderAsync();
+        await unitOfWork.SauvegarderAsync();
 
-		return projectionCreee.Id;
-	}
+        return projectionCreee.Id;
+    }
 
 
     private static async Task<IEnumerable<Exception>> EffectuerValidations(IUnitOfWork unitOfWork, Guid pFilm,
@@ -47,18 +43,64 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory) : I
         return exceptions;
     }
 
+    private static IEnumerable<Exception> ValiderDateHeure(DateTime pDateHeure)
+    {
+        List<Exception> exceptions = [];
 
-    private static async Task<IEnumerable<Exception>> ValiderFilmExiste(IUnitOfWork unitOfWork, Guid pFilm)       
-	{
+        if (pDateHeure < DateTime.Now)
+        {
+            exceptions.Add(new ArgumentOutOfRangeException(nameof(pDateHeure),
+                "La date de projection ne doit pas être dans le passé."));
+        }
+
+        return exceptions;
+    }
+
+
+    private static async Task<IEnumerable<Exception>> ValiderFilmExiste(IUnitOfWork unitOfWork, Guid pFilm)
+    {
         List<Exception> exceptions = [];
 
         if (await unitOfWork.FilmRepository.ObtenirParIdAsync(pFilm) is null)
-		{
+        {
             exceptions.Add(new ArgumentException($"Le film avec l'identifiant {pFilm} n'existe pas.",
-				nameof(pFilm)));
-		}
+                nameof(pFilm)));
+        }
 
-		return exceptions;
+        return exceptions;
+    }
+
+
+    private static async Task<IEnumerable<Exception>> ValiderProjectionEstUnique(IUnitOfWork unitOfWork, Guid pFilm,
+        Guid pSalle, DateTime pDateHeure)
+    {
+        List<Exception> exceptions = [];
+
+        if (await unitOfWork.ProjectionRepository.ExisteAsync(f =>
+                f.IdFilm == pFilm && f.IdSalle == pSalle && f.DateHeure == pDateHeure))
+        {
+            exceptions.Add(new ArgumentException(
+                "Une projection avec le même film, la même date et heure dans la même salle existe déjà.",
+                nameof(pFilm)));
+        }
+
+        return exceptions;
+    }
+
+    private static async Task<IEnumerable<Exception>> ValiderSalleDispo(IUnitOfWork unitOfWork, Guid pSalle,
+        DateTime pDateHeure)
+    {
+        List<Exception> exceptions = [];
+
+        if (await unitOfWork.ProjectionRepository.ExisteAsync(proj =>
+                proj.IdSalle == pSalle && proj.DateHeure == pDateHeure))
+        {
+            exceptions.Add(new ArgumentException(
+                $"La salle avec l'identifiant {pSalle} n'est pas disponible pour la date {pDateHeure}.",
+                nameof(pSalle)));
+        }
+
+        return exceptions;
     }
 
     private static async Task<IEnumerable<Exception>> ValiderSalleExiste(IUnitOfWork unitOfWork, Guid pSalle)
@@ -73,48 +115,4 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory) : I
 
         return exceptions;
     }
-
-    private static async Task<IEnumerable<Exception>> ValiderSalleDispo(IUnitOfWork unitOfWork, Guid pSalle, DateTime pDateHeure)
-    {
-        List<Exception> exceptions = [];
-
-        if (await unitOfWork.ProjectionRepository.ExisteAsync(proj => proj.IdSalle == pSalle && proj.DateHeure == pDateHeure))
-        {
-            exceptions.Add(new ArgumentException($"La salle avec l'identifiant {pSalle} n'est pas disponible pour la date {pDateHeure}.",
-                nameof(pSalle)));
-        }
-
-        return exceptions;
-    }
-
-
-
-    private static async Task<IEnumerable<Exception>> ValiderProjectionEstUnique(IUnitOfWork unitOfWork, Guid pFilm, Guid pSalle, DateTime pDateHeure)
-    {
-        List<Exception> exceptions = [];
-
-        if (await unitOfWork.ProjectionRepository.ExisteAsync(f =>
-                f.IdFilm == pFilm && f.IdSalle == pSalle && f.DateHeure == pDateHeure))
-        {
-            exceptions.Add(new ArgumentException(
-                "Une projection avec le même film, la même date et heure dans la même salle existe déjà.", nameof(pFilm)));
-        }
-
-        return exceptions;
-    }
-
-    private static IEnumerable<Exception> ValiderDateHeure(DateTime pDateHeure)
-    {
-        List<Exception> exceptions = [];
-
-        if (pDateHeure < DateTime.Now)
-        {
-            exceptions.Add(new ArgumentOutOfRangeException(nameof(pDateHeure),
-                $"La date de projection ne doit pas être dans le passé."));
-        }
-
-        return exceptions;
-    }
-
-
 }

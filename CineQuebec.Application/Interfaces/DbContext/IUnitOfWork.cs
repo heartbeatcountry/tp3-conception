@@ -1,6 +1,4 @@
 using CineQuebec.Application.Interfaces.Repositories;
-using CineQuebec.Domain.Entities.Films;
-using CineQuebec.Domain.Entities.Projections;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Projections;
 
