@@ -189,4 +189,7 @@
   <data name="admin_menu_retour" xml:space="preserve">
     <value>Retour</value>
   </data>
+  <data name="admin.ajout_description_film" xml:space="preserve">
+    <value>Description :</value>
+  </data>
 </root>

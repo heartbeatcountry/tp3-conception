@@ -1,25 +1,23 @@
-﻿using System.Windows.Controls;
-using System.Windows;
-
-using CineQuebec.Application.Interfaces.Services;
-using CineQuebec.Application.Services;
-using CineQuebec.Domain.Entities.Films;
-using CineQuebec.Persistence.DbContext;
-
-using MongoDB.Driver;
+﻿using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Windows.Views.Components;
 
 using Stylet;
 
 namespace CineQuebec.Windows.Views;
 
-
-
-
-public class MovieCreationViewModel(
-    INavigationController navigationController,
-    IFilmCreationService filmCreationService) : Screen
+public class MovieCreationViewModel : Screen
 {
+    private readonly INavigationController _navigationController;
 
+    public MovieCreationViewModel(INavigationController navigationController, IFilmCreationService filmCreationService,
+        HeaderViewModel headerViewModel)
+    {
+        _navigationController = navigationController;
+        HeaderViewModel = headerViewModel;
+        headerViewModel.PreviousView = typeof(AdminMovieListViewModel);
+    }
+
+    public HeaderViewModel HeaderViewModel { get; }
 
     public string titreFilm { get; set; }
     public string descriptionFilm { get; set; }
@@ -28,11 +26,9 @@ public class MovieCreationViewModel(
     public string messageErreur { get; set; }
 
 
-
-
     public void NavigateToAdminHome()
     {
-        navigationController.NavigateTo<AdminHomeViewModel>();
+        _navigationController.NavigateTo<AdminHomeViewModel>();
     }
 
 
@@ -54,7 +50,6 @@ public class MovieCreationViewModel(
     }
 
 
-
     private async Task AjouterNouveauFilmAsync()
     {
         //using var unitOfWork = new UnitOfWork(null as IMongoDatabase);
@@ -74,10 +69,4 @@ public class MovieCreationViewModel(
 
         //await unitOfWork.SauvegarderAsync();
     }
-
-
-
-
-
-
 }

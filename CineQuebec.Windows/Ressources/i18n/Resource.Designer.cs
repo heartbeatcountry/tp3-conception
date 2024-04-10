@@ -97,6 +97,15 @@ namespace CineQuebec.Windows.Ressources.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description :.
+        /// </summary>
+        public static string admin_ajout_description_film {
+            get {
+                return ResourceManager.GetString("admin.ajout_description_film", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Durée :.
         /// </summary>
         public static string admin_ajout_duree_film {

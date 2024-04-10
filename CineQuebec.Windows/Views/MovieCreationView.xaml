@@ -10,125 +10,98 @@
              xmlns:s="https://github.com/canton7/Stylet"
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid Background="White">
+    <DockPanel Margin="10">
+        <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}" />
+        <Grid>
 
-        <Grid.RowDefinitions>
-            <RowDefinition  Height="10" />
-            <RowDefinition Height="40" />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="10" />
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50*" />
+                <ColumnDefinition Width="50*" />
+                <ColumnDefinition Width="50*" />
+                <ColumnDefinition Width="50*" />
+                <ColumnDefinition Width="50*" />
+                <ColumnDefinition Width="50*" />
+                <ColumnDefinition Width="50*" />
+            </Grid.ColumnDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10*"/>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="10*"/>
-        </Grid.ColumnDefinitions>
+            <Label x:Name="LblTitreFilm" Content="{x:Static rs:Resource.admin_ajout_titre_film}" Grid.Row="0"
+                   Grid.Column="0" VerticalAlignment="Center" />
+            <TextBox x:Name="TxtTitreFilm" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding titreFilm}"
+                     Style="{StaticResource DefautInput}" />
 
-        <Image Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left"
-               Source="/Ressources/Images/logoCinema.png" MaxWidth="60px" />
+            <Label x:Name="LblDescriptionFilm" Content="{x:Static rs:Resource.admin_ajout_description_film}"
+                   Grid.Row="1"
+                   Grid.Column="0" VerticalAlignment="Center" />
+            <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2" BorderBrush="Black"
+                    BorderThickness="2">
+                <TextBlock x:Name="DescriptionFilm" Text="{Binding descriptionFilm}" />
 
-
-        <Button x:Name="BtnAccueil" Content="{x:Static rs:Resource.admin_menu_accueil}" Grid.Column="5" Grid.Row="1"
-                Style="{StaticResource MenuButton}" />
-        <Button x:Name="BtnAbonnes" Content="{x:Static rs:Resource.admin_menu_abonnes}" Grid.Column="6" Grid.Row="1"
-                Style="{StaticResource MenuButton}" />
-        <Button x:Name="BtnDeconnecter" Content="{x:Static rs:Resource.admin_menu_deconnection}" Grid.Column="7"
-                Grid.Row="1" Style="{StaticResource MenuButton}" />
-
-        <Label x:Name="LblTitreFilm" Content="{x:Static rs:Resource.admin_ajout_titre_film}" Grid.Row="2"
-               Grid.Column="1" VerticalAlignment="Center" />
-        <TextBox x:Name="txtTitreFilm" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding titreFilm}"
-                 Style="{StaticResource DefautInput}" />
-
-        <Label x:Name="LblDescriptionFilm" Content="{x:Static rs:Resource.admin_ajout_description_film}" Grid.Row="3"
-        Grid.Column="1" VerticalAlignment="Center" />
-        <Border BorderBrush="Black" BorderThickness="2">
-            <TextBlock x:Name="descriptionFilm" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding descriptionFilm}"/>
-
-        </Border>
-     
+            </Border>
 
 
-        <Label x:Name="LblDureeFilm" Content="{x:Static rs:Resource.admin_ajout_duree_film}" Grid.Row="5"
-               Grid.Column="1" VerticalAlignment="Center" />
-        <TextBox x:Name="dureeFilm" Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding dureeFilm}"
-                 Style="{StaticResource DefautInput}" />
+            <Label x:Name="LblDureeFilm" Content="{x:Static rs:Resource.admin_ajout_duree_film}" Grid.Row="3"
+                   Grid.Column="0" VerticalAlignment="Center" />
+            <TextBox x:Name="DureeFilm" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding dureeFilm}"
+                     Style="{StaticResource DefautInput}" />
 
 
-        <Label x:Name="LblCategorieFilm" Content="{x:Static rs:Resource.admin_ajout_categorie_film}" Grid.Row="6"
-               Grid.Column="1" VerticalAlignment="Center" />
-        <ComboBox x:Name="Categorie" Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" MaxWidth="170" BorderBrush="Black" BorderThickness="2" Margin="10" >
-            <ComboBoxItem Name="cbxHumour" >Humour</ComboBoxItem>
-            <ComboBoxItem Name="cbxRomantique" >Romantique</ComboBoxItem>
-            <ComboBoxItem Name="cbxHorreur" >Horreur</ComboBoxItem>
-            <ComboBoxItem Name="cbxScienceFiction" >Science Fiction</ComboBoxItem>
+            <Label x:Name="LblCategorieFilm" Content="{x:Static rs:Resource.admin_ajout_categorie_film}" Grid.Row="4"
+                   Grid.Column="0" VerticalAlignment="Center" />
+            <ComboBox x:Name="Categorie" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" MaxWidth="170"
+                      BorderBrush="Black" BorderThickness="2" Margin="10">
+                <ComboBoxItem Name="CbxHumour">Humour</ComboBoxItem>
+                <ComboBoxItem Name="CbxRomantique">Romantique</ComboBoxItem>
+                <ComboBoxItem Name="CbxHorreur">Horreur</ComboBoxItem>
+                <ComboBoxItem Name="CbxScienceFiction">Science Fiction</ComboBoxItem>
 
-            <ComboBox.Effect>
-                <DropShadowEffect/>
-            </ComboBox.Effect>
+                <ComboBox.Effect>
+                    <DropShadowEffect />
+                </ComboBox.Effect>
 
-        </ComboBox>
-
-
-        <DatePicker  x:Name="dpDateSortie"  Grid.Row="2"   Grid.Column="5"  Grid.ColumnSpan="2"/>
+            </ComboBox>
 
 
-        <Label x:Name="LblActeursFilm" Content="{x:Static rs:Resource.admin_ajout_acteurs_film}" Grid.Row="3"
-               Grid.Column="5" VerticalAlignment="Center" />
-        <ListBox SelectionMode="Multiple" Grid.Row="3" Grid.Column="6" Grid.ColumnSpan="2" Grid.RowSpan="2"  
-                 BorderBrush="Black" BorderThickness="2" Margin="10">
+            <DatePicker x:Name="DpDateSortie" Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" />
+
+
+            <Label x:Name="LblActeursFilm" Content="{x:Static rs:Resource.admin_ajout_acteurs_film}" Grid.Row="1"
+                   Grid.Column="4" VerticalAlignment="Center" />
+            <ListBox SelectionMode="Multiple" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="2" Grid.RowSpan="2"
+                     BorderBrush="Black" BorderThickness="2" Margin="10">
                 <ListBox.Effect>
                     <DropShadowEffect />
                 </ListBox.Effect>
-            <ListBoxItem>Brad Pitt</ListBoxItem>
-            <ListBoxItem>Angélina Jolie</ListBoxItem>
-            <ListBoxItem>Timothée Chalamet</ListBoxItem>
-            <ListBoxItem>Zendaya</ListBoxItem>
-        </ListBox>
+                <ListBoxItem>Brad Pitt</ListBoxItem>
+                <ListBoxItem>Angélina Jolie</ListBoxItem>
+                <ListBoxItem>Timothée Chalamet</ListBoxItem>
+                <ListBoxItem>Zendaya</ListBoxItem>
+            </ListBox>
 
-        <Label x:Name="LblRealisateursFilm" Content="{x:Static rs:Resource.admin_ajout_realisateurs_film}" Grid.Row="5"
-               Grid.Column="5" VerticalAlignment="Center" />
-        <ListBox SelectionMode="Multiple" Grid.Row="5" Grid.Column="6" Grid.ColumnSpan="2" Grid.RowSpan="2"
-                 BorderBrush="Black" BorderThickness="2" Margin="10">
-            <ListBox.Effect>
-                <DropShadowEffect />
-            </ListBox.Effect>
-            <ListBoxItem>Denis Villeneuve</ListBoxItem>
-            <ListBoxItem>David Fincher</ListBoxItem>
-            <ListBoxItem>Option 3</ListBoxItem>
-            <ListBoxItem>Option 4</ListBoxItem>
-        </ListBox>
-
-
-        <Label x:Name="lblMessageErreur" Content="{Binding messageErreur}"    Grid.Row="7"    Grid.Column="1" Grid.ColumnSpan="7" Grid.RowSpan="2" VerticalAlignment="Center"/>
+            <Label x:Name="LblRealisateursFilm" Content="{x:Static rs:Resource.admin_ajout_realisateurs_film}"
+                   Grid.Row="3"
+                   Grid.Column="4" VerticalAlignment="Center" />
+            <ListBox SelectionMode="Multiple" Grid.Row="3" Grid.Column="5" Grid.ColumnSpan="2" Grid.RowSpan="2"
+                     BorderBrush="Black" BorderThickness="2" Margin="10">
+                <ListBox.Effect>
+                    <DropShadowEffect />
+                </ListBox.Effect>
+                <ListBoxItem>Denis Villeneuve</ListBoxItem>
+                <ListBoxItem>David Fincher</ListBoxItem>
+                <ListBoxItem>Option 3</ListBoxItem>
+                <ListBoxItem>Option 4</ListBoxItem>
+            </ListBox>
 
 
-
-        <Label x:Name="LblImageFilm" Content="{x:Static rs:Resource.admin_ajout_image_film}" Grid.Row="9"
-               Grid.Column="1" VerticalAlignment="Center" />
-        <Button x:Name="BtnAjouterImage" Content="{x:Static rs:Resource.admin_ajout_parcourir_film}" Grid.Row="9"
-                Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource MenuButton}" />
-
-        <Button x:Name="BtnAnnulerImage" Content="{x:Static rs:Resource.admin_ajout_annuler_film}" Grid.Row="9"
-                Grid.Column="6" Style="{StaticResource MenuButton}" Command="{s:Action NavigateToAdminHome}" />
-        <Button x:Name="BtnEnregistrerImage" Content="{x:Static rs:Resource.admin_ajout_enregistrer_film}" Grid.Row="9"
-                Grid.Column="7" Style="{StaticResource MenuButton}" Command="{s:Action AjouterNouveauFilmAsync}"/>
-
-
-    </Grid>
+            <Label Content="erreur!" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="7" />
+        </Grid>
+    </DockPanel>
 </UserControl>
