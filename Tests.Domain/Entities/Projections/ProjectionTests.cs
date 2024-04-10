@@ -15,13 +15,10 @@ namespace Tests.Domain.Entities.Projections
     public class ProjectionTests : EntiteTests<Projection>
     {
         private static readonly Guid Film1= Guid.NewGuid();
-        private static readonly Guid Film2 = Guid.NewGuid();
         private static readonly Guid Salle1 = Guid.NewGuid();
-        private static readonly Guid Salle2 = Guid.NewGuid();
         private static readonly DateTime DateValide = new(2024, 12, 19);
-        private static readonly DateTime DateInvalide = new(2022, 11, 08);
         private static readonly Boolean estAvantPremiere = true;
-        private static readonly Boolean pasAvantPremiere = false;
+
 
         protected override object?[] ArgsConstructeur =>
     [
@@ -67,7 +64,7 @@ namespace Tests.Domain.Entities.Projections
 
         [Test]
         public void Constructor_WhenGivenValidSalle_ShouldSetSalle()
-        {
+    {
             // Assert
             Assert.That(Entite.IdSalle, Is.EqualTo(Salle1));
         }
