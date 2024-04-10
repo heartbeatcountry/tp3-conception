@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Reflection;
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Entities.Films;
+using CineQuebec.Domain.Entities.Projections;
 using CineQuebec.Domain.Interfaces.Entities;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 using CineQuebec.Persistence.Interfaces;
@@ -39,6 +40,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 		var acteurs = builder.Entity<Acteur>().ToCollection("acteurs");
 		var realisateurs = builder.Entity<Realisateur>().ToCollection("realisateurs");
 		var categorieFilms = builder.Entity<CategorieFilm>().ToCollection("categories");
+        var projections = builder.Entity<Projection>().ToCollection("projections");
+        var salles = builder.Entity<Salle>().ToCollection("salles");
 
 		films
 			.Property(film => film.Id)
@@ -69,6 +72,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 		categorieFilms
 			.Property(film => film.Id)
 			.HasConversion<string>();
+
+        projections
+            .Property(projection => projection.Id)
+            .HasConversion<string>();
+
+        salles
+            .Property(salle => salle.Id)
+            .HasConversion<string>();
 
 		builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 	}

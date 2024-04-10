@@ -14,18 +14,18 @@
         <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}"/>
         <DockPanel Margin="0,10,0,0">
             <DockPanel DockPanel.Dock="Bottom">
-                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" IsEnabled="{Binding CanRefreshFilms}">
                     <Label Content="Afficher:" VerticalAlignment="Center"/>
-                    <RadioButton Content="Tous les films" IsChecked="True" GroupName="Filtre" Margin="10, 0" VerticalAlignment="Center"/>
-                    <RadioButton Content="Films à l'affiche" GroupName="Filtre" VerticalAlignment="Center"/>
+                    <RadioButton Content="Tous les films" IsChecked="True" GroupName="Filtre" Margin="10, 0" VerticalAlignment="Center" Command="{s:Action AfficherTous}"/>
+                    <RadioButton Content="Films à l'affiche" GroupName="Filtre" VerticalAlignment="Center" Command="{s:Action AfficherAlaffiche}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Margin="5,5" Content="Rafraîchir" Command="{s:Action RefreshFilms}"/>
-                    <Button Margin="0,5" Content="Ajouter un film"/>
+                    <Button Margin="0,5" Content="Ajouter un film" Command="{s:Action AddNewFilm}"/>
                 </StackPanel>
             </DockPanel>
 
-            <ListView ItemsSource="{Binding Films}">
+            <ListView ItemsSource="{Binding Films}" IsEnabled="{Binding CanRefreshFilms}">
                 <ListView.View>
                     <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Détails des films">
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Titre}" Header="Titre" Width="370"/>

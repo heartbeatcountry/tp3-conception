@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities.Projections;
 
@@ -5,15 +7,23 @@ namespace CineQuebec.Domain.Entities.Projections;
 
 public class Projection : Entite, IComparable<Projection>, IProjection
 {
-	public Projection(Guid film, Guid salle, DateTime dateHeure, bool estAvantPremiere)
+	public Projection(Guid idFilm, Guid idSalle, DateTime dateHeure, bool estAvantPremiere)
 	{
-		SetFilm(film);
-		SetSalle(salle);
+		SetFilm(idFilm);
+		SetSalle(idSalle);
 		SetDateHeure(dateHeure);
 		SetEstAvantPremiere(estAvantPremiere);
 	}
 
-	public Guid IdFilm { get; private set; }
+    [SuppressMessage("ReSharper", "UnusedMember.Local")]
+    private Projection(Guid id, Guid idFilm, Guid idSalle, DateTime dateHeure, bool estAvantPremiere) : this(idFilm, idSalle,
+        dateHeure, estAvantPremiere)
+    {
+        // Constructeur avec identifiant pour Entity Framework Core
+        SetId(id);
+    }
+
+    public Guid IdFilm { get; private set; }
 	public Guid IdSalle { get; private set; }
 	public DateTime DateHeure { get; private set; } = DateTime.MinValue;
 	public bool EstAvantPremiere { get; private set; }

@@ -4,6 +4,7 @@ using CineQuebec.Application.Interfaces.Repositories;
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities;
 using CineQuebec.Persistence.Interfaces;
+using CineQuebec.Persistence.Lib;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -57,7 +58,8 @@ public class GenericRepository<TEntite, TIEntite> : IRepository<TIEntite>
 
         if (filtre != null)
         {
-            query = query.Where((filtre as Expression<Func<TEntite, bool>>)!);
+            var filtreExp = filtre.ReplaceTypeParameter<TIEntite, TEntite, bool>();
+            query = query.Where(filtreExp);
         }
 
         return (trierPar is not null
