@@ -139,7 +139,7 @@
     <value>Ajouter un film à l'affiche</value>
   </data>
   <data name="admin_gerer_films" xml:space="preserve">
-    <value>Gérer les films</value>
+    <value>Gérer les films et projections</value>
   </data>
   <data name="admin.ajout_image_film" xml:space="preserve">
     <value>Affiche du film :</value>

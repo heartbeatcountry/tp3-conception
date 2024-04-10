@@ -8,6 +8,14 @@ public class AdminHomeViewModel(INavigationController navigationController, Head
 {
     public HeaderViewModel HeaderViewModel => headerViewModel;
 
+    private bool _navigationIsEnabled = true;
+
+    public bool NavigationIsEnabled
+    {
+        get => _navigationIsEnabled;
+        set => SetAndNotify(ref _navigationIsEnabled, value);
+    }
+
     public void Logout()
     {
         navigationController.NavigateTo<LoginViewModel>();
@@ -15,6 +23,7 @@ public class AdminHomeViewModel(INavigationController navigationController, Head
 
     public void NavigateToFilmManagement()
     {
+        NavigationIsEnabled = false;
         navigationController.NavigateTo<AdminMovieListViewModel>();
     }
 }

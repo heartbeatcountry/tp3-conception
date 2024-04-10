@@ -169,7 +169,7 @@ namespace CineQuebec.Windows.Ressources.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gérer les films.
+        ///   Looks up a localized string similar to Gérer les films et projections.
         /// </summary>
         public static string admin_gerer_films {
             get {
