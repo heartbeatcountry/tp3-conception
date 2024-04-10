@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="CineQuebec.Windows.Views.AdminMovieDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             xmlns:views="clr-namespace:CineQuebec.Windows.Views"
+             d:DataContext="{d:DesignInstance views:AdminMovieDetailsViewModel}"
+             xmlns:rs="clr-namespace:CineQuebec.Windows.Ressources.i18n"
+             xmlns:s="https://github.com/canton7/Stylet" xmlns:components="clr-namespace:CineQuebec.Windows.Views.Components"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <DockPanel Margin="10">
+        <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}"/>
+        <DockPanel Margin="0,10,0,0">
+            <Grid DockPanel.Dock="Top">
+                <Grid.Resources>
+                    <ResourceDictionary>
+                        <Style TargetType="Label">
+                            <Setter Property="Background" Value="LightGray"/>
+                        </Style>
+                    </ResourceDictionary>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Content="Titre"/>
+                    <TextBlock Margin="0,5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Film.Titre}"/>
+                    <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" Content="Catégorie"/>
+                    <TextBlock Margin="0,5" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" Text="{Binding Film.Categorie.NomAffichage}"/>
+                    <Label Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="1" Content="Durée"/>
+                    <TextBlock Margin="0,5" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="1" Text="{Binding Film.DureeEnMinutes, StringFormat={}{0} minutes}"/>
+                    <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Content="Date de sortie internationale"/>
+                    <TextBlock Margin="0,5" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Film.DateSortieInternationale, StringFormat={}{0:yyyy-MM-dd}}"/>
+                    <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Content="Description"/>
+                    <ScrollViewer Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3">
+                        <TextBlock Text="{Binding Film.Description}"/>
+                    </ScrollViewer>
+                </Grid>
+                <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" Content="Réalisateur.trice.s"/>
+                    <ListView Margin="0,0,0,5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1"></ListView>
+                    <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" Content="Acteur.trice.s"/>
+                    <ListView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1"></ListView>
+                </Grid>
+            </Grid>
+            <ListView Margin="0,10,0,0">
+                <Label Content="blabla"/>
+            </ListView>
+        </DockPanel>
+    </DockPanel>
+</UserControl>

@@ -8,6 +8,7 @@
              d:DataContext="{d:DesignInstance views:AdminMovieListViewModel}"
              xmlns:rs="clr-namespace:CineQuebec.Windows.Ressources.i18n"
              xmlns:s="https://github.com/canton7/Stylet" xmlns:components="clr-namespace:CineQuebec.Windows.Views.Components"
+             xmlns:films="clr-namespace:CineQuebec.Application.Records.Films;assembly=CineQuebec.Application"
              d:DesignHeight="450" d:DesignWidth="800">
 
     <DockPanel Margin="10">
@@ -33,10 +34,8 @@
                         <GridViewColumn DisplayMemberBinding="{Binding Path=DateSortieInternationale, StringFormat={}{0:yyyy-MM-dd}}" Header="Date de sortie" Width="100"/>
                         <GridViewColumn Header="Actions" Width="100">
                             <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                        <Button Content="Consulter"/>
-                                    </StackPanel>
+                                <DataTemplate DataType="{x:Type films:FilmDto}">
+                                    <Button Content="Consulter" Command="{s:Action ConsulterFilm}" CommandParameter="{Binding Id}"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

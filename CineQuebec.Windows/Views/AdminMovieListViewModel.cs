@@ -88,4 +88,10 @@ public class AdminMovieListViewModel : Screen
         _afficherUniquementAlaffiche = true;
         _ = RefreshFilms();
     }
+
+    public void ConsulterFilm(Guid id)
+    {
+        DesactiverInterface();
+        _navigationController.NavigateTo<AdminMovieDetailsViewModel>(id);
+    }
 }
