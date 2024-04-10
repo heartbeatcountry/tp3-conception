@@ -11,23 +11,8 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel Margin="10">
         <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}" />
-        <Grid VerticalAlignment="Center">
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="150"/>
-            </Grid.RowDefinitions>
-
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100*" />
-                <ColumnDefinition Width="10*" />
-                <ColumnDefinition Width="100*" />
-                <ColumnDefinition Width="10*" />
-                <ColumnDefinition Width="100*" />
-            </Grid.ColumnDefinitions>
-
-            <Button x:Name="BtnAjouterFilm" Style="{StaticResource DefautButton}"
-                    Grid.Column="0" Grid.Row="0" Command="{s:Action NavigateToFilmManagement}">
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button x:Name="BtnAjouterFilm" Style="{StaticResource DefautButton}" Command="{s:Action NavigateToFilmManagement}">
                 <StackPanel Height="134" Width="130" HorizontalAlignment="Center">
                     <Image Height="65"
                            Source="/Ressources/Images/projections.png" Width="68" />
@@ -39,34 +24,6 @@
                         </Label.Content>
                     </Label>
 
-                </StackPanel>
-            </Button>
-
-            <Button x:Name="BtnVoirAbonnes" Style="{StaticResource DefautButton}"
-                    Grid.Column="2" Grid.Row="0">
-                <StackPanel Height="134" Width="130" HorizontalAlignment="Center">
-                    <Image Height="58"
-                           Source="/Ressources/Images/users.png" Width="75" />
-                    <Label Style="{StaticResource DefautLabel}" HorizontalAlignment="Center">
-                        <Label.Content>
-                            <AccessText TextAlignment="Center" TextWrapping="Wrap"
-                                        Text="{x:Static rs:Resource.admin_visualiser_abonnes}" />
-                        </Label.Content>
-                    </Label>
-                </StackPanel>
-            </Button>
-
-            <Button x:Name="BtnReprogFilm" Style="{StaticResource DefautButton}"
-                    Grid.Column="4" Grid.Row="0">
-                <StackPanel Height="134" Width="130" HorizontalAlignment="Center">
-                    <Image Height="65"
-                           Source="/Ressources/Images/projections.png" Width="68" />
-                    <Label Style="{StaticResource DefautLabel}" HorizontalAlignment="Center">
-                        <Label.Content>
-                            <AccessText TextAlignment="Center" TextWrapping="Wrap"
-                                        Text="{x:Static rs:Resource.admin_reprog_film}" />
-                        </Label.Content>
-                    </Label>
                 </StackPanel>
             </Button>
         </Grid>
