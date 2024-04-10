@@ -34,7 +34,7 @@
         </Grid.ColumnDefinitions>
 
         <Image Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left"
-               Source="/Ressources/Images/logoCinema.png" MaxWidth="40px" />
+               Source="/Ressources/images/logoCinemaWithoutText.png" MaxWidth="40px" />
 
 
         <Button x:Name="BtnDeconnecter" Content="{x:Static rs:Resource.admin_menu_deconnection}" Grid.Column="5"
@@ -42,7 +42,7 @@
 
 
         <Button x:Name="BtnAjouterFilm" Style="{StaticResource DefautButton}"
-                Grid.Column="1" Grid.Row="3" Grid.RowSpan="2" Command="{s:Action NavigateToMovieCreation}">
+                Grid.Column="1" Grid.Row="3" Grid.RowSpan="2" Command="{s:Action NavigateToFilmManagement}">
             <StackPanel Height="134" Width="130" HorizontalAlignment="Center">
                 <Image Height="65"
                        Source="/Ressources/Images/projections.png" Width="68" />
@@ -50,7 +50,7 @@
                 <Label Style="{StaticResource DefautLabel}" HorizontalAlignment="Center">
                     <Label.Content>
                         <AccessText TextAlignment="Center" TextWrapping="Wrap"
-                                    Text="{x:Static rs:Resource.admin_ajout_film}" />
+                                    Text="{x:Static rs:Resource.admin_gerer_films}" />
                     </Label.Content>
                 </Label>
 
@@ -84,5 +84,7 @@
                 </Label>
             </StackPanel>
         </Button>
+        <Image Grid.Column="1" HorizontalAlignment="Left"
+            Source="/Ressources/images/logoMark.png"  Margin="38,5,0,0" Grid.Row="1" Height="35" />
     </Grid>
 </UserControl>

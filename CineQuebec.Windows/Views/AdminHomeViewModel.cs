@@ -9,8 +9,8 @@ public class AdminHomeViewModel(INavigationController navigationController) : Sc
         navigationController.NavigateTo<LoginViewModel>();
     }
 
-    public void NavigateToMovieCreation()
+    public void NavigateToFilmManagement()
     {
-        navigationController.NavigateTo<MovieCreationViewModel>();
+        navigationController.NavigateTo<AdminMovieListViewModel>();
     }
 }

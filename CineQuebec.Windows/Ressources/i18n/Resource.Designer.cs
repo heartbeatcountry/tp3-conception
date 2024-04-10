@@ -169,6 +169,15 @@ namespace CineQuebec.Windows.Ressources.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gérer les films.
+        /// </summary>
+        public static string admin_gerer_films {
+            get {
+                return ResourceManager.GetString("admin_gerer_films", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Abonnés.
         /// </summary>
         public static string admin_menu_abonnes {
@@ -192,6 +201,15 @@ namespace CineQuebec.Windows.Ressources.i18n {
         public static string admin_menu_deconnection {
             get {
                 return ResourceManager.GetString("admin.menu_deconnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retour.
+        /// </summary>
+        public static string admin_menu_retour {
+            get {
+                return ResourceManager.GetString("admin_menu_retour", resourceCulture);
             }
         }
         
