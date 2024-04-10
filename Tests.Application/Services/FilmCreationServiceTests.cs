@@ -1,7 +1,5 @@
 using System.Linq.Expressions;
 
-using CineQuebec.Application.Interfaces.DbContext;
-using CineQuebec.Application.Interfaces.Repositories;
 using CineQuebec.Application.Services;
 using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Films;
@@ -10,18 +8,12 @@ using Moq;
 
 namespace Tests.Application.Services;
 
-public class FilmCreationServiceTests: GenericServiceTests<FilmCreationService>
+public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
 {
     private const string TitreValide = "Le Seigneur des Anneaux";
     private const string DescriptionValide = "Un film de Peter Jackson";
     private const ushort DureeValide = 178;
     private readonly Guid _idCategorieValide = Guid.NewGuid();
-
-    protected override void SetUpExt()
-    {
-        CategorieFilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(_idCategorieValide))
-            .ReturnsAsync(Mock.Of<ICategorieFilm>(cf => cf.Id == _idCategorieValide));
-    }
 
     [Test]
     public void CreerFilm_WhenGivenActeurNotPresentInRepository_ThrowsAggregateExceptionContainingArgumentException()
@@ -163,5 +155,11 @@ public class FilmCreationServiceTests: GenericServiceTests<FilmCreationService>
 
         // Assert
         Assert.That(idFilm, Is.EqualTo(result));
+    }
+
+    protected override void SetUpExt()
+    {
+        CategorieFilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(_idCategorieValide))
+            .ReturnsAsync(Mock.Of<ICategorieFilm>(cf => cf.Id == _idCategorieValide));
     }
 }

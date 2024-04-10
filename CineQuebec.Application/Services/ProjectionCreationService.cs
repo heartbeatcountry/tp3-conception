@@ -15,16 +15,21 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory) : I
 	{
 		using var unitOfWork = unitOfWorkFactory.Create();
 
-        var projection= new Projection( pFilm, pSalle, pDateHeure,pEstAvantPremiere);
-
         IEnumerable<Exception> exceptions = await EffectuerValidations(unitOfWork, pFilm, pSalle, pDateHeure,
            pEstAvantPremiere);
 
-        var projectionCree = await unitOfWork.ProjectionRepository.AjouterAsync(projection);
+        if (exceptions.ToArray() is { Length: > 0 } innerExceptions)
+        {
+            throw new AggregateException("Des erreurs se sont produites lors de la validation des données.",
+                innerExceptions);
+        }
+
+        var projection = new Projection( pFilm, pSalle, pDateHeure,pEstAvantPremiere);
+        var projectionCreee = await unitOfWork.ProjectionRepository.AjouterAsync(projection);
 
 		await unitOfWork.SauvegarderAsync();
 
-		return projectionCree.Id;
+		return projectionCreee.Id;
 	}
 
 
@@ -38,6 +43,7 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory) : I
         exceptions.AddRange(await ValiderSalleDispo(unitOfWork, pSalle, pDateHeure));
         exceptions.AddRange(await ValiderProjectionEstUnique(unitOfWork, pFilm, pSalle, pDateHeure));
         exceptions.AddRange(ValiderDateHeure(pDateHeure));
+
         return exceptions;
     }
 
@@ -91,7 +97,7 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory) : I
                 f.IdFilm == pFilm && f.IdSalle == pSalle && f.DateHeure == pDateHeure))
         {
             exceptions.Add(new ArgumentException(
-                "Une projection avec le même film, avec la même date et heure dans la même salle existe déjà.", nameof(pFilm)));
+                "Une projection avec le même film, la même date et heure dans la même salle existe déjà.", nameof(pFilm)));
         }
 
         return exceptions;
@@ -104,7 +110,7 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory) : I
         if (pDateHeure < DateTime.Now)
         {
             exceptions.Add(new ArgumentOutOfRangeException(nameof(pDateHeure),
-                $"La date de projection doit être supérieure à {DateTime.Now}."));
+                $"La date de projection ne doit pas être dans le passé."));
         }
 
         return exceptions;
