@@ -104,7 +104,7 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory) : I
         if (pDateHeure < DateTime.Now)
         {
             exceptions.Add(new ArgumentOutOfRangeException(nameof(pDateHeure),
-                $"La date de projection doit être supérieure à {DateTime.MinValue}."));
+                $"La date de projection doit être supérieure à {DateTime.Now}."));
         }
 
         return exceptions;
