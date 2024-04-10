@@ -10,6 +10,8 @@ public class FilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmCr
     public async Task<Guid> CreerFilm(string titre, string description, Guid categorie, DateTime
         dateDeSortieInternationale, IEnumerable<Guid> acteurs, IEnumerable<Guid> realisateurs, ushort duree)
     {
+        titre = titre.Trim();
+        description = description.Trim();
         Guid[] acteursParId = acteurs as Guid[] ?? acteurs.ToArray();
         Guid[] realisateursParId = realisateurs as Guid[] ?? realisateurs.ToArray();
 
@@ -123,8 +125,11 @@ public class FilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmCr
     {
         List<Exception> exceptions = [];
 
+        string titreLower = titre.ToLowerInvariant();
+
         if (await unitOfWork.FilmRepository.ExisteAsync(f =>
-                f.Titre == titre && f.DateSortieInternationale.Year == annee && f.DureeEnMinutes == duree))
+                f.Titre.ToLowerInvariant() == titreLower && f.DateSortieInternationale.Year == annee &&
+                f.DureeEnMinutes == duree))
         {
             exceptions.Add(new ArgumentException(
                 "Un film avec le même titre, la même année de sortie et la même durée existe déjà.", nameof(titre)));

@@ -12,6 +12,12 @@ public static class ConfigureServices
         return services
             .AddSingleton<IFilmQueryService, FilmQueryService>()
             .AddSingleton<IFilmCreationService, FilmCreationService>()
+            .AddSingleton<IActeurCreationService, ActeurCreationService>()
+            .AddSingleton<IActeurQueryService, ActeurQueryService>()
+            .AddSingleton<IRealisateurCreationService, RealisateurCreationService>()
+            .AddSingleton<IRealisateurQueryService, RealisateurQueryService>()
+            .AddSingleton<ICategorieFilmCreationService, CategorieFilmCreationService>()
+            .AddSingleton<ICategorieFilmQueryService, CategorieFilmQueryService>()
             .AddSingleton<IProjectionCreationService, ProjectionCreationService>()
             .AddSingleton<IProjectionQueryService, ProjectionQueryService>()
             .AddSingleton<IProjectionDeletionService, ProjectionDeletionService>();

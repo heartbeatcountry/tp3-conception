@@ -20,7 +20,7 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory) : I
                 innerExceptions);
         }
 
-        Projection projection = new Projection(pFilm, pSalle, pDateHeure, pEstAvantPremiere);
+        Projection projection = new(pFilm, pSalle, pDateHeure, pEstAvantPremiere);
         IProjection projectionCreee = await unitOfWork.ProjectionRepository.AjouterAsync(projection);
 
         await unitOfWork.SauvegarderAsync();
