@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CineQuebec.Windows", "CineQ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineQuebec.Domain", "CineQuebec.Domain\CineQuebec.Domain.csproj", "{CC9BDDB2-3A05-49E8-90F8-A4B4E0FBBDA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineQuebec.Infrastructure", "CineQuebec.Infrastructure\CineQuebec.Infrastructure.csproj", "{0452AF85-349D-4E6C-B38D-25F12191FA97}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineQuebec.Persistence", "CineQuebec.Persistence\CineQuebec.Persistence.csproj", "{543E782E-C795-40CA-AD25-39EA7A05D5B9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineQuebec.Application", "CineQuebec.Application\CineQuebec.Application.csproj", "{30D10CE4-135F-4958-9349-94D035476E7D}"
@@ -19,9 +17,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Application", "Tests.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Domain", "Tests.Domain\Tests.Domain.csproj", "{66D9C791-D09F-4151-ABDA-79BBA3E02062}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Infrastructure", "Tests.Infrastructure\Tests.Infrastructure.csproj", "{EC723714-6F30-4802-A928-3049813FC711}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Persistence", "Tests.Persistence\Tests.Persistence.csproj", "{C9B766F6-DC19-494F-A1C0-D7C636EB7E3C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3rdparty", "3rdparty", "{56ECE20E-E839-4C7F-B31D-C1556FA426CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDB.EntityFrameworkCore", "3rdparty\mongo-efcore-provider\src\MongoDB.EntityFrameworkCore\MongoDB.EntityFrameworkCore.csproj", "{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +37,6 @@ Global
 		{CC9BDDB2-3A05-49E8-90F8-A4B4E0FBBDA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC9BDDB2-3A05-49E8-90F8-A4B4E0FBBDA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC9BDDB2-3A05-49E8-90F8-A4B4E0FBBDA4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0452AF85-349D-4E6C-B38D-25F12191FA97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0452AF85-349D-4E6C-B38D-25F12191FA97}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0452AF85-349D-4E6C-B38D-25F12191FA97}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0452AF85-349D-4E6C-B38D-25F12191FA97}.Release|Any CPU.Build.0 = Release|Any CPU
 		{543E782E-C795-40CA-AD25-39EA7A05D5B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{543E782E-C795-40CA-AD25-39EA7A05D5B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{543E782E-C795-40CA-AD25-39EA7A05D5B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,14 +53,14 @@ Global
 		{66D9C791-D09F-4151-ABDA-79BBA3E02062}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66D9C791-D09F-4151-ABDA-79BBA3E02062}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66D9C791-D09F-4151-ABDA-79BBA3E02062}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC723714-6F30-4802-A928-3049813FC711}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC723714-6F30-4802-A928-3049813FC711}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC723714-6F30-4802-A928-3049813FC711}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC723714-6F30-4802-A928-3049813FC711}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C9B766F6-DC19-494F-A1C0-D7C636EB7E3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C9B766F6-DC19-494F-A1C0-D7C636EB7E3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9B766F6-DC19-494F-A1C0-D7C636EB7E3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9B766F6-DC19-494F-A1C0-D7C636EB7E3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,7 +71,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{390BAE1A-32CD-4F45-B294-822407BB9AB8} = {01B05719-D678-4A75-ABBE-C6AAADCB6C6D}
 		{66D9C791-D09F-4151-ABDA-79BBA3E02062} = {01B05719-D678-4A75-ABBE-C6AAADCB6C6D}
-		{EC723714-6F30-4802-A928-3049813FC711} = {01B05719-D678-4A75-ABBE-C6AAADCB6C6D}
 		{C9B766F6-DC19-494F-A1C0-D7C636EB7E3C} = {01B05719-D678-4A75-ABBE-C6AAADCB6C6D}
+		{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726} = {56ECE20E-E839-4C7F-B31D-C1556FA426CF}
 	EndGlobalSection
 EndGlobal
