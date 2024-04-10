@@ -1,4 +1,4 @@
 [submodule "3rdparty/mongo-efcore-provider"]
 	path = 3rdparty/mongo-efcore-provider
-	url = https://github.com/mongodb/mongo-efcore-provider.git
-	branch = main
+	url = https://github.com/vermarine/mongo-efcore-provider.git
+	branch = generic-enumerable
