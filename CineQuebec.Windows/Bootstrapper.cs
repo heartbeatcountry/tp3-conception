@@ -18,6 +18,6 @@ public class Bootstrapper : Bootstrapper<RootViewModel>
     {
         NavigationController? navigationController = Container.Get<NavigationController>();
         navigationController.Delegate = RootViewModel;
-        navigationController.NavigateTo<LoginViewModel>(null);
+        navigationController.NavigateTo<LoginViewModel>();
     }
 }
