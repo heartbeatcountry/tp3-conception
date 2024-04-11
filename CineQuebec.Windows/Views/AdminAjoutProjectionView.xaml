@@ -52,7 +52,7 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                     <TextBlock Text="{Binding Numero, StringFormat={}Salle {0}}" />
-                                    <TextBlock Margin="5,0,0,0" Text="{Binding NbSieges, StringFormat={}({0} sièges)}"/>
+                                    <TextBlock Margin="5,0,0,0" Text="{Binding NbSieges, StringFormat={}({0} sièges)}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>

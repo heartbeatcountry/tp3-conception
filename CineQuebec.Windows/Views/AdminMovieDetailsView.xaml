@@ -92,7 +92,7 @@
             </Grid>
             <DockPanel Margin="0,5,0,0">
                 <StackPanel Margin="0,5,0,0" DockPanel.Dock="Bottom" Orientation="Horizontal"
-                            HorizontalAlignment="Right" Height="30">
+                            HorizontalAlignment="Right">
                     <Button Content="Rafraîchir" Command="{s:Action RafraichirTout}"
                             Style="{StaticResource DefautButton}" />
                     <Button Content="Ajouter une projection" Command="{s:Action AjouterProjection}"
@@ -105,14 +105,17 @@
                     <ListView ItemsSource="{Binding Projections}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Date" Width="200" DisplayMemberBinding="{Binding DateHeure, StringFormat={}{0:yyyy-MM-dd}}" />
-                                <GridViewColumn Header="Heure" Width="200" DisplayMemberBinding="{Binding DateHeure, StringFormat={}{0:HH\:mm}}" />
+                                <GridViewColumn Header="Date" Width="200"
+                                                DisplayMemberBinding="{Binding DateHeure, StringFormat={}{0:yyyy-MM-dd}}" />
+                                <GridViewColumn Header="Heure" Width="200"
+                                                DisplayMemberBinding="{Binding DateHeure, StringFormat={}{0:HH\:mm}}" />
                                 <GridViewColumn Header="Salle" Width="200">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate DataType="{x:Type films:ProjectionDto}">
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                                 <TextBlock Text="{Binding Salle.Numero, StringFormat={}Salle {0}}" />
-                                                <TextBlock Margin="5,0,0,0" Text="{Binding Salle.NbSieges, StringFormat={}({0} sièges)}"/>
+                                                <TextBlock Margin="5,0,0,0"
+                                                           Text="{Binding Salle.NbSieges, StringFormat={}({0} sièges)}" />
                                             </StackPanel>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
@@ -120,7 +123,8 @@
                                 <GridViewColumn Header="Actions" Width="100">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate DataType="{x:Type films:ProjectionDto}">
-                                            <Button Content="Supprimer" Command="{s:Action SupprimerProjection}" Style="{StaticResource BoutonBase}"
+                                            <Button Content="Supprimer" Command="{s:Action SupprimerProjection}"
+                                                    Style="{StaticResource BoutonBase}"
                                                     CommandParameter="{Binding}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>

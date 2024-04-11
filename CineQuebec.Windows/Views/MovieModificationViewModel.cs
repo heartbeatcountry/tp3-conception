@@ -19,11 +19,11 @@ public class MovieModificationViewModel : Screen, IScreenWithData
     private readonly IDialogFactory _dialogFactory;
     private readonly IFilmCreationService _filmCreationService;
     private readonly IFilmQueryService _filmQueryService;
+    private readonly GestionnaireExceptions _gestionnaireExceptions;
     private readonly INavigationController _navigationController;
     private readonly IRealisateurCreationService _realisateurCreationService;
     private readonly IRealisateurQueryService _realisateurQueryService;
     private readonly IWindowManager _windowManager;
-    private readonly GestionnaireExceptions _gestionnaireExceptions;
     private BindableCollection<ActeurDto> _acteursSelectionnes = [];
     private CategorieFilmDto? _categorieSelectionnee;
     private DateTime _dateSelectionnee = DateTime.Now;

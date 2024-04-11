@@ -35,7 +35,7 @@
                          Margin="0 0 0 20" />
 
                 <Button Content="{x:Static rs:Resource.connexion_connect}"
-                        Style="{StaticResource DefautButton}" Width="100" Command="{s:Action NavigateToAdminHome}" />
+                        Style="{StaticResource DefautButton}" Width="200" Command="{s:Action NavigateToAdminHome}" />
             </StackPanel>
         </Grid>
     </Grid>

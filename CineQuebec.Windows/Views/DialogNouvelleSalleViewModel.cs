@@ -4,8 +4,8 @@ namespace CineQuebec.Windows.Views;
 
 public class DialogNouvelleSalleViewModel : Screen
 {
-    private string _numeroStr = String.Empty;
     private string _capaciteStr = String.Empty;
+    private string _numeroStr = String.Empty;
 
     public bool AValide { get; private set; }
 

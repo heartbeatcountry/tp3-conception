@@ -15,11 +15,6 @@ public class AdminHomeViewModel(INavigationController navigationController, Head
         set => SetAndNotify(ref _navigationIsEnabled, value);
     }
 
-    public void Logout()
-    {
-        navigationController.NavigateTo<LoginViewModel>();
-    }
-
     public void NavigateToFilmManagement()
     {
         NavigationIsEnabled = false;
