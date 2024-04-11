@@ -17,14 +17,14 @@
             <Image HorizontalAlignment="Left" UseLayoutRounding="True"
                    Source="/Ressources/images/logoMark.png" Margin="8,5,0,0" Height="35" Width="156" />
         </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
             <Button x:Name="BtnPrecedent" Visibility="{Binding BackButtonVisibility}"
                     Style="{StaticResource MenuButton}" Command="{s:Action GoBack}">
-                <TextBlock Text="{x:Static rs:Resource.admin_menu_retour}" Padding="20,2" />
+                <TextBlock Text="{x:Static rs:Resource.admin_menu_retour}" Padding="0,2" />
             </Button>
-            <Button x:Name="BtnDeconnecter"
+            <Button x:Name="BtnDeconnecter" Margin="10,0,5,0"
                     Style="{StaticResource MenuButton}" Command="{s:Action Logout}">
-                <TextBlock Text="{x:Static rs:Resource.admin_menu_deconnection}" Padding="20,2" />
+                <TextBlock Text="{x:Static rs:Resource.admin_menu_deconnection}" Padding="0,2" />
             </Button>
         </StackPanel>
     </DockPanel>
