@@ -1,8 +1,10 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Input;
 
 using CineQuebec.Application.Interfaces.Services;
 using CineQuebec.Application.Records.Films;
 using CineQuebec.Application.Records.Projections;
+using CineQuebec.Application.Services;
 using CineQuebec.Windows.Views.Components;
 
 using Stylet;
@@ -15,6 +17,9 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
     private readonly ISalleQueryService _salleQueryService;
     private readonly IProjectionCreationService _projectionCreationService;
     private readonly ISalleCreationService _salleCreationService;
+    private readonly IWindowManager _windowManager;
+    private readonly IDialogFactory _dialogFactory;
+    private readonly GestionnaireExceptions _gestionnaireExceptions;
 
     private DateTime _dateSelectionnee = DateTime.Now;
     private Guid? _filmId;
@@ -24,15 +29,17 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
     private FilmDto _film;
     private bool _estAvantPremiere = false;
 
-    public AdminAjoutProjectionViewModel(HeaderViewModel headerViewModel, IFilmQueryService filmQueryService, IProjectionCreationService projectionCreationService, ISalleCreationService salleCreationService, ISalleQueryService salleQueryService)
+    public AdminAjoutProjectionViewModel(HeaderViewModel headerViewModel, IFilmQueryService filmQueryService, IProjectionCreationService projectionCreationService, ISalleCreationService salleCreationService, ISalleQueryService salleQueryService, IWindowManager windowManager, IDialogFactory dialogFactory, GestionnaireExceptions gestionnaireExceptions)
     {
         _filmQueryService = filmQueryService;
         _projectionCreationService = projectionCreationService;
         _salleCreationService = salleCreationService;
         _salleQueryService = salleQueryService;
+        _windowManager = windowManager;
+        _dialogFactory = dialogFactory;
+        _gestionnaireExceptions = gestionnaireExceptions;
 
         headerViewModel.PreviousView = typeof(AdminMovieDetailsViewModel);
-        headerViewModel.PreviousViewData = _filmId;
         HeaderViewModel = headerViewModel;
 
         _ = ChargerSalles();
@@ -85,6 +92,7 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
         }
 
         _filmId = filmId;
+        HeaderViewModel.PreviousViewData = _filmId;
         _ = RefreshDetails();
     }
 
@@ -111,6 +119,31 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
 
     public void AjouterSalle()
     {
+        var dialog = _dialogFactory.CreateDialogNouvelleSalle();
+        dialog.DisplayName = "Ajouter un salle";
+        _windowManager.ShowDialog(dialog);
+
+        if (dialog.AValide)
+        {
+            AjouterSalle(dialog.Numero, dialog.Capacite);
+        }
+    }
+
+    private async void AjouterSalle(byte numero, ushort capacite)
+    {
+        try
+        {
+            if (await _salleCreationService.CreerSalle(numero, capacite) is var nouvSalle)
+            {
+                _windowManager.ShowMessageBox("Salle ajoutée avec succès", "Succès", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                _ = ChargerSalles();
+            }
+        }
+        catch (Exception e)
+        {
+            _gestionnaireExceptions.GererException(e);
+        }
     }
 
     public void EnregistrerProjection()

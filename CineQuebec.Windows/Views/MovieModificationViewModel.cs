@@ -23,6 +23,7 @@ public class MovieModificationViewModel : Screen, IScreenWithData
     private readonly IRealisateurCreationService _realisateurCreationService;
     private readonly IRealisateurQueryService _realisateurQueryService;
     private readonly IWindowManager _windowManager;
+    private readonly GestionnaireExceptions _gestionnaireExceptions;
     private BindableCollection<ActeurDto> _acteursSelectionnes = [];
     private CategorieFilmDto? _categorieSelectionnee;
     private DateTime _dateSelectionnee = DateTime.Now;
@@ -41,7 +42,7 @@ public class MovieModificationViewModel : Screen, IScreenWithData
         HeaderViewModel headerViewModel, IActeurQueryService acteurQueryService, IDialogFactory dialogFactory,
         IRealisateurQueryService realisateurQueryService, ICategorieFilmQueryService categorieFilmQueryService,
         IWindowManager windowManager, IActeurCreationService acteurCreationService,
-        IRealisateurCreationService realisateurCreationService,
+        IRealisateurCreationService realisateurCreationService, GestionnaireExceptions gestionnaireExceptions,
         ICategorieFilmCreationService categorieFilmCreationService, IFilmQueryService filmQueryService)
     {
         _navigationController = navigationController;
@@ -53,6 +54,7 @@ public class MovieModificationViewModel : Screen, IScreenWithData
         _acteurCreationService = acteurCreationService;
         _realisateurCreationService = realisateurCreationService;
         _categorieFilmCreationService = categorieFilmCreationService;
+        _gestionnaireExceptions = gestionnaireExceptions;
         _windowManager = windowManager;
         _dialogFactory = dialogFactory;
 
@@ -234,10 +236,9 @@ public class MovieModificationViewModel : Screen, IScreenWithData
                 _ = ChargerActeurs();
             }
         }
-        catch (AggregateException e)
+        catch (Exception e)
         {
-            string message = e.InnerExceptions.Select(e => e.Message).Aggregate((a, b) => $"{a}\n{b}");
-            AfficherErreur(message);
+            _gestionnaireExceptions.GererException(e);
         }
     }
 
@@ -264,10 +265,9 @@ public class MovieModificationViewModel : Screen, IScreenWithData
                 _ = ChargerRealisateurs();
             }
         }
-        catch (AggregateException e)
+        catch (Exception e)
         {
-            string message = e.InnerExceptions.Select(e => e.Message).Aggregate((a, b) => $"{a}\n{b}");
-            AfficherErreur(message);
+            _gestionnaireExceptions.GererException(e);
         }
     }
 
@@ -294,10 +294,9 @@ public class MovieModificationViewModel : Screen, IScreenWithData
                 _ = ChargerCategories();
             }
         }
-        catch (AggregateException e)
+        catch (Exception e)
         {
-            string message = e.InnerExceptions.Select(e => e.Message).Aggregate((a, b) => $"{a}\n{b}");
-            AfficherErreur(message);
+            _gestionnaireExceptions.GererException(e);
         }
     }
 
@@ -324,10 +323,9 @@ public class MovieModificationViewModel : Screen, IScreenWithData
                 HeaderViewModel.GoBack();
             }
         }
-        catch (AggregateException e)
+        catch (Exception e)
         {
-            string message = e.InnerExceptions.Select(e => e.Message).Aggregate((a, b) => $"{a}\n{b}");
-            AfficherErreur(message);
+            _gestionnaireExceptions.GererException(e);
         }
     }
 
