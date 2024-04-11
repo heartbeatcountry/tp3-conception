@@ -60,7 +60,7 @@
     <Style x:Key="DefautInput" TargetType="{x:Type TextBox}">
         <Setter Property="Foreground" Value="#444" />
         <Setter Property="FontSize" Value="16" />
-        <Setter Property="Width" Value="170" />
+  
         <Setter Property="Height" Value="30" />
         <Setter Property="BorderBrush" Value="Black" />
         <Setter Property="BorderThickness" Value="2" />
