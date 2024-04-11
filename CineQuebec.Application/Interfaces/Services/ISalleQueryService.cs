@@ -2,7 +2,7 @@
 
 namespace CineQuebec.Application.Interfaces.Services;
 
-internal interface ISalleQueryService
+public interface ISalleQueryService
 {
     Task<IEnumerable<SalleDto>> ObtenirToutes();
 }
