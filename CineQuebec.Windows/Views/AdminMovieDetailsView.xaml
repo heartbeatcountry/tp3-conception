@@ -102,16 +102,25 @@
                 </StackPanel>
                 <DockPanel>
                     <Label DockPanel.Dock="Top" Content="Projections planifiées pour ce film" Background="LightGray" />
-                    <ListView>
+                    <ListView ItemsSource="{Binding Projections}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Date" Width="200" />
-                                <GridViewColumn Header="Heure" Width="200" />
-                                <GridViewColumn Header="Salle" Width="200" />
+                                <GridViewColumn Header="Date" Width="200" DisplayMemberBinding="{Binding DateHeure, StringFormat={}{0:yyyy-MM-dd}}" />
+                                <GridViewColumn Header="Heure" Width="200" DisplayMemberBinding="{Binding DateHeure, StringFormat={}{0:HH\:mm}}" />
+                                <GridViewColumn Header="Salle" Width="200">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate DataType="{x:Type films:ProjectionDto}">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                                <TextBlock Text="{Binding Salle.Numero, StringFormat={}Salle {0}}" />
+                                                <TextBlock Margin="5,0,0,0" Text="{Binding Salle.NbSieges, StringFormat={}({0} sièges)}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                                 <GridViewColumn Header="Actions" Width="100">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate DataType="{x:Type films:ProjectionDto}">
-                                            <Button Content="Supprimer" Command="{s:Action SupprimerProjection}"
+                                            <Button Content="Supprimer" Command="{s:Action SupprimerProjection}" Style="{StaticResource BoutonBase}"
                                                     CommandParameter="{Binding}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>

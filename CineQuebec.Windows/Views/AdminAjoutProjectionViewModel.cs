@@ -4,7 +4,6 @@ using System.Windows.Input;
 using CineQuebec.Application.Interfaces.Services;
 using CineQuebec.Application.Records.Films;
 using CineQuebec.Application.Records.Projections;
-using CineQuebec.Application.Services;
 using CineQuebec.Windows.Views.Components;
 
 using Stylet;
@@ -13,23 +12,26 @@ namespace CineQuebec.Windows.Views;
 
 public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
 {
+    private readonly IDialogFactory _dialogFactory;
     private readonly IFilmQueryService _filmQueryService;
-    private readonly ISalleQueryService _salleQueryService;
+    private readonly GestionnaireExceptions _gestionnaireExceptions;
     private readonly IProjectionCreationService _projectionCreationService;
     private readonly ISalleCreationService _salleCreationService;
+    private readonly ISalleQueryService _salleQueryService;
     private readonly IWindowManager _windowManager;
-    private readonly IDialogFactory _dialogFactory;
-    private readonly GestionnaireExceptions _gestionnaireExceptions;
 
     private DateTime _dateSelectionnee = DateTime.Now;
+    private bool _estAvantPremiere;
+    private FilmDto _film;
     private Guid? _filmId;
     private bool _formulairEstActive = true;
     private BindableCollection<SalleDto> _lstSalles = [];
     private SalleDto? _salleSelectionnee;
-    private FilmDto _film;
-    private bool _estAvantPremiere = false;
 
-    public AdminAjoutProjectionViewModel(HeaderViewModel headerViewModel, IFilmQueryService filmQueryService, IProjectionCreationService projectionCreationService, ISalleCreationService salleCreationService, ISalleQueryService salleQueryService, IWindowManager windowManager, IDialogFactory dialogFactory, GestionnaireExceptions gestionnaireExceptions)
+    public AdminAjoutProjectionViewModel(HeaderViewModel headerViewModel, IFilmQueryService filmQueryService,
+        IProjectionCreationService projectionCreationService, ISalleCreationService salleCreationService,
+        ISalleQueryService salleQueryService, IWindowManager windowManager, IDialogFactory dialogFactory,
+        GestionnaireExceptions gestionnaireExceptions)
     {
         _filmQueryService = filmQueryService;
         _projectionCreationService = projectionCreationService;
@@ -119,7 +121,7 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
 
     public void AjouterSalle()
     {
-        var dialog = _dialogFactory.CreateDialogNouvelleSalle();
+        DialogNouvelleSalleViewModel dialog = _dialogFactory.CreateDialogNouvelleSalle();
         dialog.DisplayName = "Ajouter un salle";
         _windowManager.ShowDialog(dialog);
 
@@ -146,8 +148,34 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
         }
     }
 
-    public void EnregistrerProjection()
+    public async void EnregistrerProjection()
     {
+        if (SalleSelectionnee is null)
+        {
+            AfficherErreur("Veuillez sélectionner une salle");
+            return;
+        }
+
+        try
+        {
+            if (await _projectionCreationService.CreerProjection(Film.Id, SalleSelectionnee.Id, DateSelectionnee,
+                    EstAvantPremiere) is var nouvProjection)
+            {
+                _windowManager.ShowMessageBox("Projection ajoutée avec succès", "Succès", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                HeaderViewModel.GoBack();
+            }
+        }
+        catch (Exception e)
+        {
+            _gestionnaireExceptions.GererException(e);
+        }
+    }
+
+    private void AfficherErreur(string msg)
+    {
+        _windowManager.ShowMessageBox(msg, "Problèmes dans le formulaire", MessageBoxButton.OK,
+            MessageBoxImage.Warning);
     }
 
 

@@ -7,6 +7,7 @@
              xmlns:views="clr-namespace:CineQuebec.Windows.Views"
              d:DataContext="{d:DesignInstance views:AdminAjoutProjectionViewModel}"
              xmlns:s="https://github.com/canton7/Stylet"
+             xmlns:apflkuacha="clr-namespace:CineQuebec.Windows.Views.Components._3rdparty.Apflkuacha"
              d:DesignHeight="450" d:DesignWidth="800">
 
     <DockPanel Margin="10">
@@ -39,7 +40,7 @@
                 <Label Grid.Row="0" Content="Titre du film:" />
                 <TextBlock Margin="0,10,0,40" Grid.Row="1" Text="{Binding Film.Titre}" />
                 <Label Grid.Row="2" Content="Choisir la date et l'heure:" />
-                <DatePicker Grid.Row="3" SelectedDate="{Binding DateSelectionnee}" Margin="0,10,0,40" />
+                <apflkuacha:DateTimePicker Grid.Row="3" SelectedDate="{Binding DateSelectionnee}" Margin="0,10,0,40" />
                 <Label Grid.Row="4" Content="Choisir la salle de projection:" />
                 <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,10,0,40">
                     <ComboBox ItemsSource="{Binding LstSalles}" Margin="0,0,30,0"
@@ -49,7 +50,10 @@
                         </ComboBox.Effect>
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <Label Content="{Binding Numero}" />
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <TextBlock Text="{Binding Numero, StringFormat={}Salle {0}}" />
+                                    <TextBlock Margin="5,0,0,0" Text="{Binding NbSieges, StringFormat={}({0} sièges)}"/>
+                                </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>

@@ -4,7 +4,7 @@ using CineQuebec.Domain.Interfaces.Entities.Projections;
 
 namespace CineQuebec.Application.Records.Projections;
 
-public record class ProjectionDto(Guid Id, FilmDto? film, SalleDto? salle, DateTime DateHeure, bool EstAvantPremiere)
+public record class ProjectionDto(Guid Id, FilmDto? Film, SalleDto? Salle, DateTime DateHeure, bool EstAvantPremiere)
     : EntityDto(Id);
 
 internal static class ProjectionExtensions

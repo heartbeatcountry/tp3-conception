@@ -22,6 +22,7 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
     private bool _canRafraichirTout = true;
     private Guid _filmId;
     private BindableCollection<RealisateurDto> _realisateurs = [];
+    private BindableCollection<ProjectionDto> _projections = [];
 
     public AdminMovieDetailsViewModel(INavigationController navigationController, HeaderViewModel headerViewModel,
         IFilmQueryService filmQueryService, IWindowManager windowManager,
@@ -57,7 +58,11 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
         private set => SetAndNotify(ref _realisateurs, value);
     }
 
-    public BindableCollection<ProjectionDto> Projections { get; private set; } = [];
+    public BindableCollection<ProjectionDto> Projections
+    {
+        get => _projections;
+        private set => _projections = value;
+    }
 
     public HeaderViewModel HeaderViewModel { get; }
 
