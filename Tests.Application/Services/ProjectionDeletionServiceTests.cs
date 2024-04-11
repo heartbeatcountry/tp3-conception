@@ -1,8 +1,4 @@
-using System.Linq.Expressions;
-
-using CineQuebec.Application.Records.Projections;
 using CineQuebec.Application.Services;
-using CineQuebec.Domain.Interfaces.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Projections;
 
 using Moq;
@@ -26,21 +22,6 @@ public class ProjectionDeletionServiceTests : GenericServiceTests<ProjectionDele
     }
 
     [Test]
-    public void SupprimerProjection_WhenProjectionExists_ShouldReturnTrue()
-    {
-        // Arrange
-        Guid idProjection = Guid.NewGuid();
-        IProjection projection = Mock.Of<IProjection>(p => p.Id == idProjection);
-        ProjectionRepositoryMock.Setup(r => r.ObtenirParIdAsync(idProjection)).ReturnsAsync(projection);
-
-        // Act
-        bool result = Service.SupprimerProjection(idProjection).Result;
-
-        // Assert
-        Assert.That(result, Is.True);
-    }
-
-    [Test]
     public void SupprimerProjection_WhenProjectionExists_ShouldDeleteProjection()
     {
         // Arrange
@@ -53,5 +34,20 @@ public class ProjectionDeletionServiceTests : GenericServiceTests<ProjectionDele
 
         // Assert
         ProjectionRepositoryMock.Verify(r => r.Supprimer(projection), Times.Once);
+    }
+
+    [Test]
+    public void SupprimerProjection_WhenProjectionExists_ShouldReturnTrue()
+    {
+        // Arrange
+        Guid idProjection = Guid.NewGuid();
+        IProjection projection = Mock.Of<IProjection>(p => p.Id == idProjection);
+        ProjectionRepositoryMock.Setup(r => r.ObtenirParIdAsync(idProjection)).ReturnsAsync(projection);
+
+        // Act
+        bool result = Service.SupprimerProjection(idProjection).Result;
+
+        // Assert
+        Assert.That(result, Is.True);
     }
 }
