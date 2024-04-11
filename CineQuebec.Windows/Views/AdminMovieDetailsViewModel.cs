@@ -124,14 +124,24 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
         Projections = new BindableCollection<ProjectionDto>(projections);
     }
 
-    public void AjouterProjection(Guid id)
+    public void AjouterProjection()
     {
-        _navigationController.NavigateTo<AdminAjoutProjectionViewModel>();
+        if (Film is null)
+        {
+            return;
+        }
+
+        _navigationController.NavigateTo<AdminAjoutProjectionViewModel>(Film.Id);
     }
 
-    public void ModifierFilm(Guid id)
+    public void ModifierFilm()
     {
-        _navigationController.NavigateTo<MovieModificationViewModel>();
+        if (Film is null)
+        {
+            return;
+        }
+
+        _navigationController.NavigateTo<MovieModificationViewModel>(Film.Id);
     }
 
     public void SupprimerProjection(ProjectionDto projection)

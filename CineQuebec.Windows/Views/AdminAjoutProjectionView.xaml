@@ -42,7 +42,7 @@
                 <DatePicker Grid.Row="3" SelectedDate="{Binding DateSelectionnee}" Margin="0,10,0,40" />
                 <Label Grid.Row="4" Content="Choisir la salle de projection:" />
                 <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,10,0,40">
-                    <ComboBox ItemsSource="{Binding SallesDisponibles}" Margin="0,0,30,0"
+                    <ComboBox ItemsSource="{Binding LstSalles}" Margin="0,0,30,0"
                               SelectedItem="{Binding SalleSelectionnee}" MinWidth="300">
                         <ComboBox.Effect>
                             <DropShadowEffect />
@@ -59,7 +59,7 @@
                 </StackPanel>
                 <Label Grid.Row="6" Content="Est-ce une avant-première?" />
                 <CheckBox Grid.Row="7" Content="Cette projection est une avant-première"
-                          IsChecked="{Binding estAvantPremiere}" Margin="0,5" />
+                          IsChecked="{Binding EstAvantPremiere}" Margin="0,5" />
             </Grid>
         </DockPanel>
     </DockPanel>

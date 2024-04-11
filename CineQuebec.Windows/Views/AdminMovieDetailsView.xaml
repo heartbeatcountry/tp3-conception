@@ -96,7 +96,7 @@
                     <Button Content="Rafraîchir" Command="{s:Action RafraichirTout}"
                             Style="{StaticResource DefautButton}" />
                     <Button Content="Ajouter une projection" Command="{s:Action AjouterProjection}"
-                            CommandParameter="{Binding Id}" Style="{StaticResource DefautButton}" Margin="15,0" />
+                            Style="{StaticResource DefautButton}" Margin="15,0" />
                     <Button Content="Modifier ce film" Command="{s:Action ModifierFilm}"
                             Style="{StaticResource DefautButton}" />
                 </StackPanel>

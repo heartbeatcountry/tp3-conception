@@ -12,21 +12,30 @@ namespace CineQuebec.Windows.Views;
 public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
 {
     private readonly IFilmQueryService _filmQueryService;
-    private readonly INavigationController _navigationController;
     private readonly ISalleQueryService _salleQueryService;
+    private readonly IProjectionCreationService _projectionCreationService;
+    private readonly ISalleCreationService _salleCreationService;
+
     private DateTime _dateSelectionnee = DateTime.Now;
-    private Guid _filmId;
-    private bool _formulairEstActive;
+    private Guid? _filmId;
+    private bool _formulairEstActive = true;
     private BindableCollection<SalleDto> _lstSalles = [];
     private SalleDto? _salleSelectionnee;
+    private FilmDto _film;
+    private bool _estAvantPremiere = false;
 
-    public AdminAjoutProjectionViewModel(INavigationController navigationController, HeaderViewModel headerViewModel,
-        IFilmQueryService filmQueryService)
+    public AdminAjoutProjectionViewModel(HeaderViewModel headerViewModel, IFilmQueryService filmQueryService, IProjectionCreationService projectionCreationService, ISalleCreationService salleCreationService, ISalleQueryService salleQueryService)
     {
-        _navigationController = navigationController;
         _filmQueryService = filmQueryService;
-        headerViewModel.PreviousView = typeof(AdminHomeViewModel);
+        _projectionCreationService = projectionCreationService;
+        _salleCreationService = salleCreationService;
+        _salleQueryService = salleQueryService;
+
+        headerViewModel.PreviousView = typeof(AdminMovieDetailsViewModel);
+        headerViewModel.PreviousViewData = _filmId;
         HeaderViewModel = headerViewModel;
+
+        _ = ChargerSalles();
     }
 
     public BindableCollection<SalleDto> LstSalles
@@ -56,7 +65,17 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
 
     public HeaderViewModel HeaderViewModel { get; }
 
-    public FilmDto Film { get; private set; }
+    public FilmDto Film
+    {
+        get => _film;
+        private set => SetAndNotify(ref _film, value);
+    }
+
+    public bool EstAvantPremiere
+    {
+        get => _estAvantPremiere;
+        set => SetAndNotify(ref _estAvantPremiere, value);
+    }
 
     public void SetData(object data)
     {
@@ -101,13 +120,18 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
 
     public void Annuler()
     {
-        RequestClose(false);
+        HeaderViewModel.GoBack();
     }
 
     public async Task RefreshDetails()
     {
+        if (_filmId is null)
+        {
+            return;
+        }
+
         DesactiverInterface();
-        FilmDto? film = await _filmQueryService.ObtenirDetailsFilmParId(_filmId);
+        FilmDto? film = await _filmQueryService.ObtenirDetailsFilmParId((Guid)_filmId);
 
         if (film is null)
         {
@@ -116,7 +140,6 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
         }
 
         Film = film;
-
         ActiverInterface();
     }
 }
