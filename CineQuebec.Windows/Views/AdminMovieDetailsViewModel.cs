@@ -101,8 +101,8 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
         _navigationController.NavigateTo<AdminAjoutProjectionViewModel>();
     }
 
-    public void ModifierFilm()
+    public void ModifierFilm(Guid id)
     {
-        _windowManager.ShowMessageBox("Fonctionnalité non implémentée.", "Modifier le film");
+        _navigationController.NavigateTo<MovieModificationViewModel>();
     }
 }
