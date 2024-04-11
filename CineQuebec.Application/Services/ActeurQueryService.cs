@@ -13,6 +13,7 @@ public class ActeurQueryService(IUnitOfWorkFactory unitOfWorkFactory) : IActeurQ
 
         IEnumerable<IActeur> acteurs = await unitOfWork.ActeurRepository.ObtenirTousAsync();
 
-        return acteurs.Select(acteur => acteur.VersDto());
+        return acteurs.Select(acteur => acteur.VersDto())
+            .OrderBy(acteur => acteur.Prenom);
     }
 }

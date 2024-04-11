@@ -1,12 +1,30 @@
 ﻿using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Application.Interfaces.Services;
-using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 
 namespace CineQuebec.Application.Services;
 
-public class FilmModificationService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmModificationService
+public class FilmUpdateService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmUpdateService
 {
+    private static async Task<IEnumerable<Exception>> EffectuerValidations(IUnitOfWork unitOfWork, Guid id,
+        string titre, string description, Guid categorie, DateTime dateDeSortieInternationale,
+        IEnumerable<Guid> acteurs, IEnumerable<Guid> realisateurs, ushort duree)
+    {
+        List<Exception> exceptions = [];
+
+        exceptions.AddRange(await ValiderFilmExiste(unitOfWork, id));
+        exceptions.AddRange(ValiderTitre(titre));
+        exceptions.AddRange(ValiderDescription(description));
+        exceptions.AddRange(ValiderDuree(duree));
+        exceptions.AddRange(ValiderDateSortieInternationale(dateDeSortieInternationale));
+        exceptions.AddRange(await ValiderCategorieExiste(unitOfWork, categorie));
+        exceptions.AddRange(await ValiderActeursExistent(unitOfWork, acteurs));
+        exceptions.AddRange(await ValiderRealisateursExistent(unitOfWork, realisateurs));
+        exceptions.AddRange(await ValiderFilmEstUnique(unitOfWork, id, titre, dateDeSortieInternationale.Year, duree));
+
+        return exceptions;
+    }
+
     public async Task ModifierFilm(Guid idFilm, string titre, string description, Guid categorie, DateTime
         dateDeSortieInternationale, IEnumerable<Guid> acteurs, IEnumerable<Guid> realisateurs, ushort duree)
     {
@@ -38,25 +56,6 @@ public class FilmModificationService(IUnitOfWorkFactory unitOfWorkFactory) : IFi
 
         unitOfWork.FilmRepository.Modifier(film);
         await unitOfWork.SauvegarderAsync();
-    }
-
-    private static async Task<IEnumerable<Exception>> EffectuerValidations(IUnitOfWork unitOfWork, Guid id,
-        string titre, string description, Guid categorie, DateTime dateDeSortieInternationale,
-        IEnumerable<Guid> acteurs, IEnumerable<Guid> realisateurs, ushort duree)
-    {
-        List<Exception> exceptions = [];
-
-        exceptions.AddRange(await ValiderFilmExiste(unitOfWork, id));
-        exceptions.AddRange(ValiderTitre(titre));
-        exceptions.AddRange(ValiderDescription(description));
-        exceptions.AddRange(ValiderDuree(duree));
-        exceptions.AddRange(ValiderDateSortieInternationale(dateDeSortieInternationale));
-        exceptions.AddRange(await ValiderCategorieExiste(unitOfWork, categorie));
-        exceptions.AddRange(await ValiderActeursExistent(unitOfWork, acteurs));
-        exceptions.AddRange(await ValiderRealisateursExistent(unitOfWork, realisateurs));
-        exceptions.AddRange(await ValiderFilmEstUnique(unitOfWork, id, titre, dateDeSortieInternationale.Year, duree));
-
-        return exceptions;
     }
 
     private static async Task<IEnumerable<Exception>> ValiderActeursExistent(IUnitOfWork unitOfWork,
@@ -144,6 +143,19 @@ public class FilmModificationService(IUnitOfWorkFactory unitOfWorkFactory) : IFi
         return exceptions;
     }
 
+    private static async Task<IEnumerable<Exception>> ValiderFilmExiste(IUnitOfWork unitOfWork, Guid id)
+    {
+        List<Exception> exceptions = [];
+
+        if (await unitOfWork.FilmRepository.ObtenirParIdAsync(id) is null)
+        {
+            exceptions.Add(new ArgumentException($"Le film avec l'identifiant {id} n'existe pas.",
+                nameof(id)));
+        }
+
+        return exceptions;
+    }
+
     private static async Task<IEnumerable<Exception>> ValiderRealisateursExistent(IUnitOfWork unitOfWork,
         IEnumerable<Guid> realisateurs)
     {
@@ -168,19 +180,6 @@ public class FilmModificationService(IUnitOfWorkFactory unitOfWorkFactory) : IFi
         if (string.IsNullOrWhiteSpace(titre))
         {
             exceptions.Add(new ArgumentException("Le titre ne peut pas être vide.", nameof(titre)));
-        }
-
-        return exceptions;
-    }
-
-    private static async Task<IEnumerable<Exception>> ValiderFilmExiste(IUnitOfWork unitOfWork, Guid id)
-    {
-        List<Exception> exceptions = [];
-
-        if (await unitOfWork.FilmRepository.ObtenirParIdAsync(id) is null)
-        {
-            exceptions.Add(new ArgumentException($"Le film avec l'identifiant {id} n'existe pas.",
-                nameof(id)));
         }
 
         return exceptions;

@@ -5,7 +5,6 @@ using System.Windows.Input;
 using CineQuebec.Application.Interfaces.Services;
 using CineQuebec.Application.Records.Films;
 using CineQuebec.Application.Records.Projections;
-using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Windows.Views.Components;
 
 using Stylet;
@@ -14,11 +13,11 @@ namespace CineQuebec.Windows.Views;
 
 public class AdminMovieDetailsViewModel : Screen, IScreenWithData
 {
+    private readonly IFilmDeletionService _filmDeletionService;
     private readonly IFilmQueryService _filmQueryService;
     private readonly INavigationController _navigationController;
     private readonly IProjectionDeletionService _projectionDeletionService;
     private readonly IProjectionQueryService _projectionQueryService;
-    private readonly IFilmDeletionService _filmDeletionService;
     private readonly IWindowManager _windowManager;
     private BindableCollection<ActeurDto> _acteurs = [];
     private bool _canRafraichirTout = true;
@@ -160,8 +159,8 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
         }
 
         MessageBoxResult result = _windowManager.ShowMessageBox(
-                       $"Êtes-vous certain.e de vouloir supprimer le film {Film.Titre} ?",
-                                  "Supprimer un film", MessageBoxButton.YesNo);
+            $"Êtes-vous certain.e de vouloir supprimer le film {Film.Titre} ?",
+            "Supprimer un film", MessageBoxButton.YesNo);
 
         if (result != MessageBoxResult.Yes)
         {
@@ -177,7 +176,6 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
 
         _windowManager.ShowMessageBox("Le film a été supprimé avec succès.", "Suppression de film");
         HeaderViewModel.GoBack();
-        return;
     }
 
     public void SupprimerProjection(ProjectionDto projection)

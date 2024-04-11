@@ -13,6 +13,7 @@ public class CategorieFilmQueryService(IUnitOfWorkFactory unitOfWorkFactory) : I
 
         IEnumerable<ICategorieFilm> categories = await unitOfWork.CategorieFilmRepository.ObtenirTousAsync();
 
-        return categories.Select(categorie => categorie.VersDto());
+        return categories.Select(categorie => categorie.VersDto())
+            .OrderBy(categorie => categorie.NomAffichage);
     }
 }

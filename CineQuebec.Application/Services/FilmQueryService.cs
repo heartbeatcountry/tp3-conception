@@ -20,8 +20,10 @@ public class FilmQueryService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmQuery
 
         ICategorieFilm? categorie = await unitOfWork.CategorieFilmRepository.ObtenirParIdAsync(film.IdCategorie);
         IEnumerable<IRealisateur> realisateurs =
-            await unitOfWork.RealisateurRepository.ObtenirParIdsAsync(film.RealisateursParId);
-        IEnumerable<IActeur> acteurs = await unitOfWork.ActeurRepository.ObtenirParIdsAsync(film.ActeursParId);
+            (await unitOfWork.RealisateurRepository.ObtenirParIdsAsync(film.RealisateursParId))
+            .OrderBy(realisateur => realisateur.Prenom);
+        IEnumerable<IActeur> acteurs = (await unitOfWork.ActeurRepository.ObtenirParIdsAsync(film.ActeursParId))
+            .OrderBy(acteur => acteur.Prenom);
 
         FilmDto filmDto = film.VersDto(categorie?.VersDto(), realisateurs.Select(r => r.VersDto()),
             acteurs.Select(a => a.VersDto()));
@@ -33,15 +35,15 @@ public class FilmQueryService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmQuery
     {
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
         IEnumerable<IFilm> films = await unitOfWork.FilmRepository.ObtenirTousAsync();
-        return films.Select(f => f.VersDto(null, [], []));
+        return films.Select(f => f.VersDto(null, [], [])).OrderBy(film => film.Titre);
     }
 
     public async Task<IEnumerable<FilmDto>> ObtenirTousAlAffiche()
     {
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
         IEnumerable<IProjection> projections =
-            await unitOfWork.ProjectionRepository.ObtenirTousAsync(pr => pr.DateHeure >= DateTime.Now,
-                iq => iq.OrderBy(pr => pr.DateHeure));
+            (await unitOfWork.ProjectionRepository.ObtenirTousAsync(pr => pr.DateHeure >= DateTime.Now,
+                iq => iq.OrderBy(pr => pr.DateHeure))).OrderBy(pr => pr.DateHeure);
         IEnumerable<IFilm> films =
             await unitOfWork.FilmRepository.ObtenirParIdsAsync(projections.Select(p => p.IdFilm));
         return films.Select(f => f.VersDto(null, [], []));

@@ -19,31 +19,33 @@ public class MovieCreationViewModel : Screen, IScreenWithData
     private readonly ICategorieFilmQueryService _categorieFilmQueryService;
     private readonly IDialogFactory _dialogFactory;
     private readonly IFilmCreationService _filmCreationService;
+    private readonly IFilmUpdateService _filmUpdateService;
+    private readonly IFilmQueryService _filmQueryService;
     private readonly GestionnaireExceptions _gestionnaireExceptions;
     private readonly INavigationController _navigationController;
     private readonly IRealisateurCreationService _realisateurCreationService;
     private readonly IRealisateurQueryService _realisateurQueryService;
-    private readonly IFilmQueryService _filmQueryService;
     private readonly IWindowManager _windowManager;
-    private readonly IFilmModificationService _filmModificationService;
     private BindableCollection<ActeurDto> _acteursSelectionnes = [];
     private CategorieFilmDto? _categorieSelectionnee;
     private DateTime _dateSelectionnee = DateTime.Now;
     private string _descriptionFilm = String.Empty;
     private string _dureeFilm = String.Empty;
+    private FilmDto? _film;
     private bool _formulairEstActive = true;
+    private Guid? _idFilm;
     private BindableCollection<ActeurDto> _lstActeurs = [];
     private BindableCollection<CategorieFilmDto> _lstCategories = [];
     private BindableCollection<RealisateurDto> _lstRealisateurs = [];
     private BindableCollection<RealisateurDto> _realisateursSelectionnes = [];
     private string _titreFilm = String.Empty;
-    private Guid? _idFilm = null;
-    private FilmDto? _film = null;
+    private string _texteBoutonPrincipal = "Créer le film";
 
     public MovieCreationViewModel(INavigationController navigationController, IFilmCreationService filmCreationService,
         HeaderViewModel headerViewModel, IActeurQueryService acteurQueryService, IDialogFactory dialogFactory,
         IRealisateurQueryService realisateurQueryService, ICategorieFilmQueryService categorieFilmQueryService,
-        IWindowManager windowManager, IActeurCreationService acteurCreationService, IFilmModificationService filmModificationService,
+        IWindowManager windowManager, IActeurCreationService acteurCreationService,
+        IFilmUpdateService filmUpdateService,
         IRealisateurCreationService realisateurCreationService, IFilmQueryService filmQueryService,
         ICategorieFilmCreationService categorieFilmCreationService, GestionnaireExceptions gestionnaireExceptions)
     {
@@ -55,7 +57,7 @@ public class MovieCreationViewModel : Screen, IScreenWithData
         _acteurCreationService = acteurCreationService;
         _realisateurCreationService = realisateurCreationService;
         _categorieFilmCreationService = categorieFilmCreationService;
-        _filmModificationService = filmModificationService;
+        _filmUpdateService = filmUpdateService;
         _gestionnaireExceptions = gestionnaireExceptions;
         _filmQueryService = filmQueryService;
         _windowManager = windowManager;
@@ -136,6 +138,23 @@ public class MovieCreationViewModel : Screen, IScreenWithData
     {
         get => _dateSelectionnee;
         set => SetAndNotify(ref _dateSelectionnee, value);
+    }
+
+    public string TexteBoutonPrincipal
+    {
+        get => _texteBoutonPrincipal;
+        set => SetAndNotify(ref _texteBoutonPrincipal, value);
+    }
+
+    public void SetData(object data)
+    {
+        if (data is not Guid idFilm)
+        {
+            return;
+        }
+
+        _idFilm = idFilm;
+        _ = ChargerFilm();
     }
 
     private void DesactiverInterface()
@@ -311,7 +330,7 @@ public class MovieCreationViewModel : Screen, IScreenWithData
         {
             if (_idFilm is { } id)
             {
-                await _filmModificationService.ModifierFilm(id, TitreFilm, DescriptionFilm, (Guid)guidCategorie!,
+                await _filmUpdateService.ModifierFilm(id, TitreFilm, DescriptionFilm, (Guid)guidCategorie!,
                     DateSelectionnee, guidsActeurs, guidsRealisateurs, duree);
 
                 _windowManager.ShowMessageBox("Film modifié avec succès", "Succès", MessageBoxButton.OK,
@@ -319,8 +338,9 @@ public class MovieCreationViewModel : Screen, IScreenWithData
                 HeaderViewModel.GoBack();
             }
 
-            else if (await _filmCreationService.CreerFilm(TitreFilm, DescriptionFilm, (Guid)guidCategorie!, DateSelectionnee,
-                    guidsActeurs, guidsRealisateurs, duree) is var nouvFilm)
+            else if (await _filmCreationService.CreerFilm(TitreFilm, DescriptionFilm, (Guid)guidCategorie!,
+                         DateSelectionnee,
+                         guidsActeurs, guidsRealisateurs, duree) is var nouvFilm)
             {
                 _windowManager.ShowMessageBox("Film ajouté avec succès", "Succès", MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -331,17 +351,6 @@ public class MovieCreationViewModel : Screen, IScreenWithData
         {
             _gestionnaireExceptions.GererException(e);
         }
-    }
-
-    public void SetData(object data)
-    {
-        if (data is not Guid idFilm)
-        {
-            return;
-        }
-
-        _idFilm = idFilm;
-        _ = ChargerFilm();
     }
 
     private async Task ChargerFilm()
@@ -368,9 +377,15 @@ public class MovieCreationViewModel : Screen, IScreenWithData
         DureeFilm = _film.DureeEnMinutes.ToString(CultureInfo.InvariantCulture);
         DateSelectionnee = _film.DateSortieInternationale;
         CategorieSelectionnee = LstCategories.FirstOrDefault(c => c.Id == _film.Categorie?.Id);
-        ActeursSelectionnes = new BindableCollection<ActeurDto>(LstActeurs.Where(a => _film.Acteurs.Any(a2 => a2.Id == a.Id)));
-        RealisateursSelectionnes = new BindableCollection<RealisateurDto>(LstRealisateurs.Where(r => _film.Realisateurs.Any(r2 => r2.Id == r.Id)));
+        ActeursSelectionnes =
+            new BindableCollection<ActeurDto>(LstActeurs.Where(a => _film.Acteurs.Any(a2 => a2.Id == a.Id)));
+        RealisateursSelectionnes =
+            new BindableCollection<RealisateurDto>(LstRealisateurs.Where(r =>
+                _film.Realisateurs.Any(r2 => r2.Id == r.Id)));
 
         HeaderViewModel.DisplayName = "Modifier un film";
+        HeaderViewModel.PreviousView = typeof(AdminMovieDetailsViewModel);
+        HeaderViewModel.PreviousViewData = _film.Id;
+        TexteBoutonPrincipal = "Modifier le film";
     }
 }

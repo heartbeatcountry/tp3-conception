@@ -13,6 +13,6 @@ public class SalleQueryService(IUnitOfWorkFactory unitOfWorkFactory) : ISalleQue
 
         IEnumerable<ISalle> salles = await unitOfWork.SalleRepository.ObtenirTousAsync();
 
-        return salles.Select(s => s.VersDto());
+        return salles.Select(s => s.VersDto()).OrderBy(salle => salle.Numero);
     }
 }

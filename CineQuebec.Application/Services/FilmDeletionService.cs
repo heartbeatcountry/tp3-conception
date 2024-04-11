@@ -17,7 +17,8 @@ public class FilmDeletionService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmDe
             return false;
         }
 
-        var projections = await unitOfWork.ProjectionRepository.ObtenirTousAsync(pr => pr.IdFilm == id);
+        IEnumerable<IProjection> projections =
+            await unitOfWork.ProjectionRepository.ObtenirTousAsync(pr => pr.IdFilm == id);
 
         foreach (IProjection projection in projections)
         {

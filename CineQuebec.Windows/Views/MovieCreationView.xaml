@@ -23,7 +23,7 @@
                             Style="{StaticResource DefautButton}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="Créer le film" Command="{s:Action CreerFilm}"
+                    <Button Content="{Binding TexteBoutonPrincipal}" Command="{s:Action CreerFilm}"
                             Style="{StaticResource DefautButton}" />
                 </StackPanel>
             </DockPanel>
@@ -87,7 +87,7 @@
                 <Label Content="Date de sortie:"
                        Grid.Column="5" VerticalAlignment="Center" />
                 <DatePicker SelectedDate="{Binding DateSelectionnee}" Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="3"
-                            Margin="111,20,0,20" Text="Choisir la date..." VerticalAlignment="Center"/>
+                            Margin="111,20,0,20" Text="Choisir la date..." VerticalAlignment="Center" />
 
 
                 <Label Content="{x:Static rs:Resource.admin_ajout_acteurs_film}" Grid.Row="1"

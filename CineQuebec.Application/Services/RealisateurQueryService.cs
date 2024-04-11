@@ -13,6 +13,7 @@ public class RealisateurQueryService(IUnitOfWorkFactory unitOfWorkFactory) : IRe
 
         IEnumerable<IRealisateur> realisateurs = await unitOfWork.RealisateurRepository.ObtenirTousAsync();
 
-        return realisateurs.Select(realisateur => realisateur.VersDto());
+        return realisateurs.Select(realisateur => realisateur.VersDto())
+            .OrderBy(realisateur => realisateur.Prenom);
     }
 }

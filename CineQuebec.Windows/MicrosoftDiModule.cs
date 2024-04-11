@@ -16,6 +16,7 @@ internal class MicrosoftDiModule : StyletIoCModule
     {
         return new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", false, true)
             .AddJsonFile("appsettings.local.json", true, true)
             .Build();
     }

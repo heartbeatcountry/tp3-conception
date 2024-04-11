@@ -128,14 +128,6 @@ public class Film : Entite, IComparable<Film>, IFilm
         return $"{Titre} ({DateSortieInternationale.Year})";
     }
 
-    public new bool Equals(Entite? autre)
-    {
-        return base.Equals(autre) || (autre is Film film &&
-                                      string.Equals(Titre, film.Titre,
-                                          StringComparison.OrdinalIgnoreCase) && DateSortieInternationale.Year ==
-                                      film.DateSortieInternationale.Year && DureeEnMinutes == film.DureeEnMinutes);
-    }
-
     public void SetActeursParId(IEnumerable<Guid> acteurs)
     {
         _acteursParId.Clear();
@@ -148,5 +140,13 @@ public class Film : Entite, IComparable<Film>, IFilm
         _realisateursParId.Clear();
         _realisateursParId.UnionWith(realisateurs);
         RealisateursParId = _realisateursParId.ToArray().AsReadOnly();
+    }
+
+    public new bool Equals(Entite? autre)
+    {
+        return base.Equals(autre) || (autre is Film film &&
+                                      string.Equals(Titre, film.Titre,
+                                          StringComparison.OrdinalIgnoreCase) && DateSortieInternationale.Year ==
+                                      film.DateSortieInternationale.Year && DureeEnMinutes == film.DureeEnMinutes);
     }
 }
