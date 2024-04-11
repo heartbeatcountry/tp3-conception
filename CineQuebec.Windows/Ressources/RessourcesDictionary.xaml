@@ -12,7 +12,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
-                      BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2" Margin="10">
+                      BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
                         <Border.Effect>
                             <DropShadowEffect />
                         </Border.Effect>

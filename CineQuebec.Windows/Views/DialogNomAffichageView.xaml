@@ -24,7 +24,7 @@
         <Label Grid.Row="0" Grid.Column="0" Content="Nom d'affichage :" />
         <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Nom, Mode=TwoWay}" />
 
-        <Button Grid.Row="2" Grid.Column="2" Content="Valider" Command="{s:Action Valider}" />
-        <Button Grid.Row="2" Grid.Column="0" Content="Annuler" Command="{s:Action Annuler}" />
+        <Button Grid.Row="2" Grid.Column="2" Content="Valider" Command="{s:Action Valider}" Style="{StaticResource DefautButton}" Margin="5" />
+        <Button Grid.Row="2" Grid.Column="0" Content="Annuler" Command="{s:Action Annuler}" Style="{StaticResource DefautButton}" Margin="5" />
     </Grid>
 </Window>
