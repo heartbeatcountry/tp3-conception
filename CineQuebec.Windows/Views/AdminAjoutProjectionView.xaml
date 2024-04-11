@@ -14,7 +14,8 @@
         <DockPanel Margin="0,10,0,0">
             <StackPanel Margin="0,5,0,0" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Content="Annuler" Command="{s:Action Annuler}" Style="{StaticResource DefautButton}" />
-                <Button Content="Enregistrer la projection" Margin="15,0,0,0" Command="{s:Action EnregistrerProjection}"
+                <Button Content="Enregistrer la projection" Margin="15,0,0,0"
+                        Command="{s:Action EnregistrerProjection}"
                         Style="{StaticResource DefautButton}" />
             </StackPanel>
             <Grid>
@@ -37,9 +38,9 @@
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Content="Titre du film:" />
                 <TextBlock Margin="0,10,0,40" Grid.Row="1" Text="{Binding Film.Titre}" />
-                <Label Grid.Row="2" Content="Choisir la date et l'heure:"/>
+                <Label Grid.Row="2" Content="Choisir la date et l'heure:" />
                 <DatePicker Grid.Row="3" SelectedDate="{Binding DateSelectionnee}" Margin="0,10,0,40" />
-                <Label Grid.Row="4" Content="Choisir la salle de projection:"/>
+                <Label Grid.Row="4" Content="Choisir la salle de projection:" />
                 <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,10,0,40">
                     <ComboBox ItemsSource="{Binding SallesDisponibles}" Margin="0,0,30,0"
                               SelectedItem="{Binding SalleSelectionnee}" MinWidth="300">
@@ -52,11 +53,13 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <Button Content="Ajouter une nouvelle salle" Command="{s:Action AjouterSalle}" VerticalAlignment="Center"
+                    <Button Content="Ajouter une nouvelle salle" Command="{s:Action AjouterSalle}"
+                            VerticalAlignment="Center"
                             Style="{StaticResource BoutonBase}" />
                 </StackPanel>
-                <Label Grid.Row="6" Content="Est-ce une avant-première?"/>
-                <CheckBox Grid.Row="7" Content="Cette projection est une avant-première" IsChecked="{Binding estAvantPremiere}" Margin="0,5" />
+                <Label Grid.Row="6" Content="Est-ce une avant-première?" />
+                <CheckBox Grid.Row="7" Content="Cette projection est une avant-première"
+                          IsChecked="{Binding estAvantPremiere}" Margin="0,5" />
             </Grid>
         </DockPanel>
     </DockPanel>

@@ -4,9 +4,6 @@ using System.Windows.Input;
 
 using CineQuebec.Application.Interfaces.Services;
 using CineQuebec.Application.Records.Films;
-using CineQuebec.Application.Services;
-using CineQuebec.Domain.Entities.Films;
-using CineQuebec.Domain.Interfaces.Entities.Films;
 using CineQuebec.Windows.Views.Components;
 
 using Stylet;
@@ -31,15 +28,16 @@ public class MovieModificationViewModel : Screen, IScreenWithData
     private DateTime _dateSelectionnee = DateTime.Now;
     private string _descriptionFilm = String.Empty;
     private string _dureeFilm = String.Empty;
+    private Guid _filmId;
     private bool _formulairEstActive = true;
     private BindableCollection<ActeurDto> _lstActeurs = [];
     private BindableCollection<CategorieFilmDto> _lstCategories = [];
     private BindableCollection<RealisateurDto> _lstRealisateurs = [];
     private BindableCollection<RealisateurDto> _realisateursSelectionnes = [];
-    private Guid _filmId;
     private string _titreFilm = String.Empty;
 
-    public MovieModificationViewModel(INavigationController navigationController, IFilmCreationService filmCreationService,
+    public MovieModificationViewModel(INavigationController navigationController,
+        IFilmCreationService filmCreationService,
         HeaderViewModel headerViewModel, IActeurQueryService acteurQueryService, IDialogFactory dialogFactory,
         IRealisateurQueryService realisateurQueryService, ICategorieFilmQueryService categorieFilmQueryService,
         IWindowManager windowManager, IActeurCreationService acteurCreationService,
@@ -120,6 +118,7 @@ public class MovieModificationViewModel : Screen, IScreenWithData
         get => _categorieSelectionnee;
         set => SetAndNotify(ref _categorieSelectionnee, value);
     }
+
     public FilmDto Film { get; private set; }
 
     public bool CanCreateFilm => !string.IsNullOrWhiteSpace(TitreFilm) && !string.IsNullOrWhiteSpace(DescriptionFilm) &&
@@ -135,6 +134,17 @@ public class MovieModificationViewModel : Screen, IScreenWithData
     {
         get => _dateSelectionnee;
         set => SetAndNotify(ref _dateSelectionnee, value);
+    }
+
+    public void SetData(object data)
+    {
+        if (data is not Guid filmId)
+        {
+            return;
+        }
+
+        _filmId = filmId;
+        _ = RefreshDetails();
     }
 
     private void DesactiverInterface()
@@ -321,16 +331,6 @@ public class MovieModificationViewModel : Screen, IScreenWithData
         }
     }
 
-    public void SetData(object data)
-    {
-        if (data is not Guid filmId)
-        {
-            return;
-        }
-
-        _filmId = filmId;
-        _ = RefreshDetails();
-    }
     public async Task RefreshDetails()
     {
         DesactiverInterface();
@@ -352,5 +352,4 @@ public class MovieModificationViewModel : Screen, IScreenWithData
 
         ActiverInterface();
     }
- 
 }

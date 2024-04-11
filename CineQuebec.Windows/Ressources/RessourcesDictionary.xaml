@@ -60,7 +60,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2" x:Name="Border">
+                            BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2" x:Name="Border">
                         <Border.Effect>
                             <DropShadowEffect />
                         </Border.Effect>
@@ -74,8 +74,8 @@
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames
-                                    Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                    Storyboard.TargetName="Border">
+                                            Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                            Storyboard.TargetName="Border">
                                             <EasingColorKeyFrame KeyTime="0" Value="#DBB3FF" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
@@ -83,8 +83,8 @@
                                 <VisualState x:Name="Pressed">
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames
-                                    Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                    Storyboard.TargetName="Border">
+                                            Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                            Storyboard.TargetName="Border">
                                             <EasingColorKeyFrame KeyTime="0" Value="#cf9dfc" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>
@@ -92,8 +92,8 @@
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
                                         <ColorAnimationUsingKeyFrames
-                                    Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
-                                    Storyboard.TargetName="Border">
+                                            Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)"
+                                            Storyboard.TargetName="Border">
                                             <EasingColorKeyFrame KeyTime="0" Value="#d2c5de" />
                                         </ColorAnimationUsingKeyFrames>
                                     </Storyboard>

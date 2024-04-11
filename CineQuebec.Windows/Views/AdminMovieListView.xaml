@@ -23,8 +23,10 @@
                                  Command="{s:Action AfficherAlaffiche}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Margin="0,0,15,0" Content="Rafraîchir" Command="{s:Action RefreshFilms}" Style="{StaticResource DefautButton}"  />
-                    <Button Content="Ajouter un film" Command="{s:Action AddNewFilm}" Style="{StaticResource DefautButton}"  />
+                    <Button Margin="0,0,15,0" Content="Rafraîchir" Command="{s:Action RefreshFilms}"
+                            Style="{StaticResource DefautButton}" />
+                    <Button Content="Ajouter un film" Command="{s:Action AddNewFilm}"
+                            Style="{StaticResource DefautButton}" />
                 </StackPanel>
             </DockPanel>
 
@@ -42,7 +44,8 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate DataType="{x:Type films:FilmDto}">
                                     <Button Content="Consulter" Command="{s:Action ConsulterFilm}"
-                                            CommandParameter="{Binding Id}" Style="{StaticResource BoutonBase}" Margin="0" />
+                                            CommandParameter="{Binding Id}" Style="{StaticResource BoutonBase}"
+                                            Margin="0" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

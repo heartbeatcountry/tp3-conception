@@ -14,13 +14,17 @@
         <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}" />
         <DockPanel IsEnabled="{Binding FormulairEstActive}">
             <DockPanel DockPanel.Dock="Bottom">
-                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" HorizontalAlignment="Left" >
-                    <Button Content="Créer un acteur" Command="{s:Action AjouterActeur}" Style="{StaticResource DefautButton}" />
-                    <Button Content="Créer un réalisateur" Command="{s:Action AjouterRealisateur}" Margin="15,0" Style="{StaticResource DefautButton}" />
-                    <Button Content="Créer une catégorie" Command="{s:Action AjouterCategorie}" Style="{StaticResource DefautButton}" />
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button Content="Créer un acteur" Command="{s:Action AjouterActeur}"
+                            Style="{StaticResource DefautButton}" />
+                    <Button Content="Créer un réalisateur" Command="{s:Action AjouterRealisateur}" Margin="15,0"
+                            Style="{StaticResource DefautButton}" />
+                    <Button Content="Créer une catégorie" Command="{s:Action AjouterCategorie}"
+                            Style="{StaticResource DefautButton}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="Créer le film" Command="{s:Action CreerFilm}" Style="{StaticResource DefautButton}" />
+                    <Button Content="Créer le film" Command="{s:Action CreerFilm}"
+                            Style="{StaticResource DefautButton}" />
                 </StackPanel>
             </DockPanel>
             <Grid>
@@ -38,7 +42,7 @@
                     <ColumnDefinition Width="111*" />
                     <ColumnDefinition Width="111*" />
                     <ColumnDefinition Width="35*" />
-                    <ColumnDefinition Width="35*"/>
+                    <ColumnDefinition Width="35*" />
                     <ColumnDefinition Width="111*" />
                     <ColumnDefinition Width="111*" />
                     <ColumnDefinition Width="111*" />
@@ -53,7 +57,7 @@
                 <Label Content="{x:Static rs:Resource.admin_ajout_description_film}"
                        Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" />
                 <TextBox Grid.ColumnSpan="3" Grid.RowSpan="3"
-                         Text="{Binding DescriptionFilm}"  BorderBrush="Black" BorderThickness="2" Margin="111,80,0,1" >
+                         Text="{Binding DescriptionFilm}" BorderBrush="Black" BorderThickness="2" Margin="111,80,0,1">
                     <TextBox.Effect>
                         <DropShadowEffect />
                     </TextBox.Effect>
@@ -68,7 +72,7 @@
                 <Label Content="{x:Static rs:Resource.admin_ajout_categorie_film}" Grid.Row="4" Grid.Column="0"
                        VerticalAlignment="Center" />
                 <ComboBox ItemsSource="{Binding LstCategories}" SelectedItem="{Binding CategorieSelectionnee}"
-                          Grid.Row="4" Grid.ColumnSpan="3"  BorderBrush="Black"
+                          Grid.Row="4" Grid.ColumnSpan="3" BorderBrush="Black"
                           BorderThickness="2" Margin="111,20,0,20">
                     <ComboBox.Effect>
                         <DropShadowEffect />
@@ -81,15 +85,16 @@
                 </ComboBox>
 
                 <Label Content="Date de sortie:"
-                Grid.Column="5" VerticalAlignment="Center" />
-                <DatePicker SelectedDate="{Binding DateSelectionnee}" Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="3" Margin="111,20,0,20" />
+                       Grid.Column="5" VerticalAlignment="Center" />
+                <DatePicker SelectedDate="{Binding DateSelectionnee}" Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="3"
+                            Margin="111,20,0,20" />
 
 
                 <Label Content="{x:Static rs:Resource.admin_ajout_acteurs_film}" Grid.Row="1"
                        Grid.Column="5" VerticalAlignment="Center" />
                 <ListBox ItemsSource="{Binding LstActeurs}" SelectionChanged="{s:Action OnActeursChange}"
                          SelectionMode="Multiple" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="3" Grid.RowSpan="2"
-                         BorderBrush="Black" BorderThickness="2"  Margin="111,10,0,11">
+                         BorderBrush="Black" BorderThickness="2" Margin="111,10,0,11">
                     <ListBox.Effect>
                         <DropShadowEffect />
                     </ListBox.Effect>
@@ -97,7 +102,7 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                 <Label Content="{Binding Prenom}" Margin="0,0,5,0" />
-                                <Label Content="{Binding Nom}"  />
+                                <Label Content="{Binding Nom}" />
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

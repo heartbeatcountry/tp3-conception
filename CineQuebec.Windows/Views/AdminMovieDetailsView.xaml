@@ -93,9 +93,12 @@
             <DockPanel Margin="0,5,0,0">
                 <StackPanel Margin="0,5,0,0" DockPanel.Dock="Bottom" Orientation="Horizontal"
                             HorizontalAlignment="Right" Height="30">
-                    <Button Content="Rafraîchir"  Command="{s:Action RafraichirTout}" Style="{StaticResource DefautButton}" />
-                    <Button Content="Ajouter une projection"  Command="{s:Action AjouterProjection}" CommandParameter="{Binding Id}" Style="{StaticResource DefautButton}" Margin="15,0" />
-                    <Button Content="Modifier ce film" Command="{s:Action ModifierFilm}" Style="{StaticResource DefautButton}" />
+                    <Button Content="Rafraîchir" Command="{s:Action RafraichirTout}"
+                            Style="{StaticResource DefautButton}" />
+                    <Button Content="Ajouter une projection" Command="{s:Action AjouterProjection}"
+                            CommandParameter="{Binding Id}" Style="{StaticResource DefautButton}" Margin="15,0" />
+                    <Button Content="Modifier ce film" Command="{s:Action ModifierFilm}"
+                            Style="{StaticResource DefautButton}" />
                 </StackPanel>
                 <DockPanel>
                     <Label DockPanel.Dock="Top" Content="Projections planifiées pour ce film" Background="LightGray" />
