@@ -96,9 +96,9 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
         ActiverInterface();
     }
 
-    public void AjouterProjection()
+    public void AjouterProjection(Guid id)
     {
-        _windowManager.ShowMessageBox("Fonctionnalité non implémentée.", "Ajouter une projection");
+        _navigationController.NavigateTo<AdminAjoutProjectionViewModel>();
     }
 
     public void ModifierFilm()
