@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 
@@ -6,54 +7,54 @@ namespace CineQuebec.Domain.Entities.Films;
 
 public class CategorieFilm : Entite, IComparable<CategorieFilm>, ICategorieFilm
 {
-	public CategorieFilm(string nomAffichage)
-	{
-		SetNomAffichage(nomAffichage);
-	}
+    public CategorieFilm(string nomAffichage)
+    {
+        SetNomAffichage(nomAffichage);
+    }
 
-	[SuppressMessage("ReSharper", "UnusedMember.Local")]
-	private CategorieFilm(Guid id, string nomAffichage): this(nomAffichage)
-	{
-		// Constructeur avec identifiant pour Entity Framework Core
-		SetId(id);
-	}
+    [SuppressMessage("ReSharper", "UnusedMember.Local")]
+    private CategorieFilm(Guid id, string nomAffichage) : this(nomAffichage)
+    {
+        // Constructeur avec identifiant pour Entity Framework Core
+        SetId(id);
+    }
 
-	public string NomAffichage { get; private set; } = string.Empty;
+    public string NomAffichage { get; private set; } = string.Empty;
 
-	public int CompareTo(CategorieFilm? other)
-	{
-		if (ReferenceEquals(this, other))
-		{
-			return 0;
-		}
+    public void SetNomAffichage(string nomAffichage)
+    {
+        if (string.IsNullOrWhiteSpace(nomAffichage))
+        {
+            throw new ArgumentException("Le nom d'affichage ne peut pas être vide.", nameof(nomAffichage));
+        }
 
-		if (ReferenceEquals(null, other))
-		{
-			return 1;
-		}
+        NomAffichage = nomAffichage.Trim();
+    }
 
-		return string.Compare(NomAffichage, other.NomAffichage, StringComparison.Ordinal);
-	}
+    public override string ToString()
+    {
+        return NomAffichage;
+    }
 
-	public new bool Equals(Entite? autre)
-	{
-		return base.Equals(autre) || (autre is CategorieFilm categorie &&
-		                              string.Equals(NomAffichage, categorie.NomAffichage,
-			                              StringComparison.OrdinalIgnoreCase));
-	}
+    public int CompareTo(CategorieFilm? other)
+    {
+        if (ReferenceEquals(this, other))
+        {
+            return 0;
+        }
 
-	public void SetNomAffichage(string nomAffichage)
-	{
-		if (string.IsNullOrWhiteSpace(nomAffichage))
-		{
-			throw new ArgumentException("Le nom d'affichage ne peut pas être vide.", nameof(nomAffichage));
-		}
+        if (ReferenceEquals(null, other))
+        {
+            return 1;
+        }
 
-		NomAffichage = nomAffichage.Trim();
-	}
+        return string.Compare(NomAffichage, other.NomAffichage, StringComparison.Ordinal);
+    }
 
-	public override string ToString()
-	{
-		return NomAffichage;
-	}
+    public new bool Equals(Entite? autre)
+    {
+        return base.Equals(autre) || (autre is CategorieFilm categorie &&
+                                      string.Equals(NomAffichage, categorie.NomAffichage,
+                                          StringComparison.OrdinalIgnoreCase));
+    }
 }

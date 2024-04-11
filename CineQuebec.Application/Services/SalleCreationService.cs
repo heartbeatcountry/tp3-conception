@@ -19,8 +19,8 @@ public class SalleCreationService(IUnitOfWorkFactory unitOfWorkFactory) : ISalle
                 innerExceptions);
         }
 
-        var salle = new Salle(numero, nbSieges);
-        var salleAjoutee = await unitOfWork.SalleRepository.AjouterAsync(salle);
+        Salle salle = new(numero, nbSieges);
+        ISalle salleAjoutee = await unitOfWork.SalleRepository.AjouterAsync(salle);
 
         await unitOfWork.SauvegarderAsync();
         return salleAjoutee.Id;
@@ -38,18 +38,6 @@ public class SalleCreationService(IUnitOfWorkFactory unitOfWorkFactory) : ISalle
         return exceptions;
     }
 
-    private static IEnumerable<Exception> ValiderNumero(byte numero)
-    {
-        List<Exception> exceptions = [];
-
-        if (numero == 0)
-        {
-            exceptions.Add(new ArgumentException("Le numéro de la salle doit être supérieur à 0."));
-        }
-
-        return exceptions;
-    }
-
     private static IEnumerable<Exception> ValiderNbSieges(ushort nbSieges)
     {
         List<Exception> exceptions = [];
@@ -57,6 +45,18 @@ public class SalleCreationService(IUnitOfWorkFactory unitOfWorkFactory) : ISalle
         if (nbSieges == 0)
         {
             exceptions.Add(new ArgumentException("Le nombre de sièges de la salle doit être supérieur à 0."));
+        }
+
+        return exceptions;
+    }
+
+    private static IEnumerable<Exception> ValiderNumero(byte numero)
+    {
+        List<Exception> exceptions = [];
+
+        if (numero == 0)
+        {
+            exceptions.Add(new ArgumentException("Le numéro de la salle doit être supérieur à 0."));
         }
 
         return exceptions;

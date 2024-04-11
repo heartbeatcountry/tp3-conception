@@ -4,70 +4,70 @@ namespace CineQuebec.Domain.Entities.Abstract;
 
 public abstract class Entite : IEquatable<Entite>, IEntite
 {
-	public Guid Id { get; private set; } = Guid.Empty;
+    public Guid Id { get; private set; } = Guid.Empty;
 
-	public bool Equals(Entite? autre)
-	{
-		if (ReferenceEquals(null, autre))
-		{
-			return false;
-		}
+    public void SetId(Guid id)
+    {
+        if (id == Guid.Empty)
+        {
+            throw new ArgumentNullException(nameof(id), "L'identifiant ne peut pas être nul.");
+        }
 
-		if (ReferenceEquals(this, autre))
-		{
-			return true;
-		}
+        Id = id;
+    }
 
-		return Id.Equals(autre.Id);
-	}
+    public override string ToString()
+    {
+        return $"{GetType().Name} {Id}";
+    }
 
-	public override bool Equals(object? obj)
-	{
-		if (ReferenceEquals(null, obj))
-		{
-			return false;
-		}
+    public bool Equals(Entite? autre)
+    {
+        if (ReferenceEquals(null, autre))
+        {
+            return false;
+        }
 
-		if (ReferenceEquals(this, obj))
-		{
-			return true;
-		}
+        if (ReferenceEquals(this, autre))
+        {
+            return true;
+        }
 
-		if (obj.GetType() != GetType())
-		{
-			return false;
-		}
+        return Id.Equals(autre.Id);
+    }
 
-		return Equals((Entite)obj);
-	}
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(null, obj))
+        {
+            return false;
+        }
 
-	public override int GetHashCode()
-	{
-		return Id.GetHashCode();
-	}
+        if (ReferenceEquals(this, obj))
+        {
+            return true;
+        }
 
-	public static bool operator ==(Entite? gauche, Entite? droite)
-	{
-		return Equals(gauche, droite);
-	}
+        if (obj.GetType() != GetType())
+        {
+            return false;
+        }
 
-	public static bool operator !=(Entite? gauche, Entite? droite)
-	{
-		return !Equals(gauche, droite);
-	}
+        return Equals((Entite)obj);
+    }
 
-	public void SetId(Guid id)
-	{
-		if (id == Guid.Empty)
-		{
-			throw new ArgumentNullException(nameof(id), "L'identifiant ne peut pas être nul.");
-		}
+    public override int GetHashCode()
+    {
+        return Id.GetHashCode();
+    }
 
-		Id = id;
-	}
+    public static bool operator ==(Entite? gauche, Entite? droite)
+    {
+        return Equals(gauche, droite);
+    }
 
-	public override string ToString()
-	{
-		return $"{GetType().Name} {Id}";
-	}
+    public static bool operator !=(Entite? gauche, Entite? droite)
+    {
+        return !Equals(gauche, droite);
+    }
 }

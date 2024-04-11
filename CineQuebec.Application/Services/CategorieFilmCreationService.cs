@@ -21,7 +21,7 @@ public class CategorieFilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) 
                 innerExceptions);
         }
 
-        CategorieFilm categorieFilm = new CategorieFilm(nomAffichage);
+        CategorieFilm categorieFilm = new(nomAffichage);
 
         ICategorieFilm categorieFilmAjoute = await unitOfWork.CategorieFilmRepository.AjouterAsync(categorieFilm);
         await unitOfWork.SauvegarderAsync();

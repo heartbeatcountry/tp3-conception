@@ -11,8 +11,6 @@ public abstract class EntiteTests<TEntite> where TEntite : Entite
     protected virtual TEntite Entite { get; set; } = null!;
     protected virtual object?[] ArgsConstructeur => [];
 
-    private class EntiteImpl : Entite;
-
     [Test]
     public void Constructor_Always_ShouldCreateEntityOfTypeT()
     {
@@ -85,7 +83,7 @@ public abstract class EntiteTests<TEntite> where TEntite : Entite
     public void Equals_WhenComparingToEntityOfDifferentType_ShouldReturnFalse()
     {
         // Arrange
-        object autre = new object();
+        object autre = new();
 
         // Assert
         Assert.That(Entite.Equals(autre), Is.False);
@@ -120,7 +118,7 @@ public abstract class EntiteTests<TEntite> where TEntite : Entite
     public void Instance_WhenAddingToHashSet_ShouldNotAddOtherInstanceWithSameId()
     {
         // Arrange
-        HashSet<TEntite> hashSet = new HashSet<TEntite>();
+        HashSet<TEntite> hashSet = new();
         Entite.SetId(Guid.NewGuid());
         TEntite autre = CreateInstance();
         autre.SetId(Entite.Id);
@@ -236,11 +234,13 @@ public abstract class EntiteTests<TEntite> where TEntite : Entite
     public void ToString_OfDerivedClass_ShouldUniquelyDescribeTheEntity()
     {
         // Arrange
-        EntiteImpl entiteImpl = new EntiteImpl();
+        EntiteImpl entiteImpl = new();
         string type = entiteImpl.GetType().Name;
         Guid id = entiteImpl.Id;
 
         // Assert
         Assert.That(entiteImpl.ToString(), Is.EqualTo($"{type} {id}"));
     }
+
+    private class EntiteImpl : Entite;
 }

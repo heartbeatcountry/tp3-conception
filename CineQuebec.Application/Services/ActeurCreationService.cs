@@ -22,7 +22,7 @@ public class ActeurCreationService(IUnitOfWorkFactory unitOfWorkFactory) : IActe
                 innerExceptions);
         }
 
-        Acteur acteur = new Acteur(prenom, nom);
+        Acteur acteur = new(prenom, nom);
 
         IActeur acteurAjoute = await unitOfWork.ActeurRepository.AjouterAsync(acteur);
         await unitOfWork.SauvegarderAsync();

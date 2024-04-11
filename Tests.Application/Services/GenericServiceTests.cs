@@ -11,14 +11,14 @@ namespace Tests.Application.Services;
 
 public abstract class GenericServiceTests<TService> where TService : class
 {
-    private IUnitOfWorkFactory _unitOfWorkFactory = null!;
-    private IUnitOfWork _unitOfWork = null!;
-    private IRepository<IFilm> _filmRepository = null!;
     private IRepository<IActeur> _acteurRepository = null!;
-    private IRepository<IRealisateur> _realisateurRepository = null!;
     private IRepository<ICategorieFilm> _categorieFilmRepository = null!;
-    private IRepository<ISalle> _salleRepository = null!;
+    private IRepository<IFilm> _filmRepository = null!;
     private IRepository<IProjection> _projectionRepository = null!;
+    private IRepository<IRealisateur> _realisateurRepository = null!;
+    private IRepository<ISalle> _salleRepository = null!;
+    private IUnitOfWork _unitOfWork = null!;
+    private IUnitOfWorkFactory _unitOfWorkFactory = null!;
 
     protected TService Service { get; private set; } = null!;
     private Mock<IUnitOfWorkFactory> UnitOfWorkFactoryMock { get; set; } = null!;

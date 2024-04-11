@@ -22,7 +22,7 @@ public class RealisateurCreationService(IUnitOfWorkFactory unitOfWorkFactory) : 
                 innerExceptions);
         }
 
-        Realisateur realisateur = new Realisateur(prenom, nom);
+        Realisateur realisateur = new(prenom, nom);
 
         IRealisateur realisateurAjoute = await unitOfWork.RealisateurRepository.AjouterAsync(realisateur);
         await unitOfWork.SauvegarderAsync();

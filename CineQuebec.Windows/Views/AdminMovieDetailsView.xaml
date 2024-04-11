@@ -6,81 +6,83 @@
              mc:Ignorable="d"
              xmlns:views="clr-namespace:CineQuebec.Windows.Views"
              d:DataContext="{d:DesignInstance views:AdminMovieDetailsViewModel}"
-             xmlns:rs="clr-namespace:CineQuebec.Windows.Ressources.i18n"
-             xmlns:s="https://github.com/canton7/Stylet" xmlns:components="clr-namespace:CineQuebec.Windows.Views.Components"
+             xmlns:s="https://github.com/canton7/Stylet"
              d:DesignHeight="450" d:DesignWidth="800">
 
     <DockPanel Margin="10">
-        <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}"/>
+        <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}" />
         <DockPanel Margin="0,10,0,0">
             <Grid DockPanel.Dock="Top">
                 <Grid.Resources>
                     <ResourceDictionary>
                         <Style TargetType="Label">
-                            <Setter Property="Background" Value="LightGray"/>
+                            <Setter Property="Background" Value="LightGray" />
                         </Style>
                     </ResourceDictionary>
                 </Grid.Resources>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="5"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="5"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="5" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Content="Titre"/>
-                    <TextBlock Margin="0,5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Film.Titre}"/>
-                    <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" Content="Catégorie"/>
-                    <TextBlock Margin="0,5" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" Text="{Binding Film.Categorie.NomAffichage}"/>
-                    <Label Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="1" Content="Durée"/>
-                    <TextBlock Margin="0,5" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="1" Text="{Binding Film.DureeEnMinutes, StringFormat={}{0} minutes}"/>
-                    <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Content="Date de sortie internationale"/>
-                    <TextBlock Margin="0,5" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Film.DateSortieInternationale, StringFormat={}{0:yyyy-MM-dd}}"/>
-                    <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Content="Description"/>
+                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Content="Titre" />
+                    <TextBlock Margin="0,5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                               Text="{Binding Film.Titre}" />
+                    <Label Grid.Row="2" Grid.Column="0" Content="Catégorie" />
+                    <TextBlock Margin="0,5" Grid.Row="3" Grid.Column="0" Text="{Binding Film.Categorie.NomAffichage}" />
+                    <Label Grid.Row="2" Grid.Column="2" Content="Durée" />
+                    <TextBlock Margin="0,5" Grid.Row="3" Grid.Column="2"
+                               Text="{Binding Film.DureeEnMinutes, StringFormat={}{0} minutes}" />
+                    <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Content="Date de sortie internationale" />
+                    <TextBlock Margin="0,5" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3"
+                               Text="{Binding Film.DateSortieInternationale, StringFormat={}{0:yyyy-MM-dd}}" />
+                    <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Content="Description" />
                     <ScrollViewer Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3">
-                        <TextBlock Text="{Binding Film.Description}"/>
+                        <TextBlock Text="{Binding Film.Description}" />
                     </ScrollViewer>
                 </Grid>
-                <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
+                <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" Content="Réalisateur.trice.s"/>
-                    <ListView Margin="0,0,0,5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" ItemsSource="{Binding Realisateurs}">
+                    <Label Grid.Row="0" Grid.Column="0" Content="Réalisateur.trice.s" />
+                    <ListView Margin="0,0,0,5" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Realisateurs}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                    <TextBlock Text="{Binding Prenom}" Margin="0,0,5,0"/>
-                                    <TextBlock Text="{Binding Nom}"/>
+                                    <TextBlock Text="{Binding Prenom}" Margin="0,0,5,0" />
+                                    <TextBlock Text="{Binding Nom}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" Content="Acteur.trice.s"/>
-                    <ListView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" ItemsSource="{Binding Acteurs}">
+                    <Label Grid.Row="2" Grid.Column="0" Content="Acteur.trice.s" />
+                    <ListView Grid.Row="3" Grid.Column="0" ItemsSource="{Binding Acteurs}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                    <TextBlock Text="{Binding Prenom}" Margin="0,0,5,0"/>
-                                    <TextBlock Text="{Binding Nom}"/>
+                                    <TextBlock Text="{Binding Prenom}" Margin="0,0,5,0" />
+                                    <TextBlock Text="{Binding Nom}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -88,18 +90,19 @@
                 </Grid>
             </Grid>
             <DockPanel Margin="0,5,0,0">
-                <StackPanel Margin="0,5,0,0" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="Ajouter une projection" Margin="5,0" Command="{s:Action AjouterProjection}"/>
-                    <Button Content="Modifier ce film" Command="{s:Action ModifierFilm}"/>
+                <StackPanel Margin="0,5,0,0" DockPanel.Dock="Bottom" Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Content="Ajouter une projection" Margin="5,0" Command="{s:Action AjouterProjection}" />
+                    <Button Content="Modifier ce film" Command="{s:Action ModifierFilm}" />
                 </StackPanel>
                 <DockPanel>
-                    <Label DockPanel.Dock="Top" Content="Projections planifiées pour ce film" Background="LightGray"/>
+                    <Label DockPanel.Dock="Top" Content="Projections planifiées pour ce film" Background="LightGray" />
                     <ListView>
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Date" Width="200"/>
-                                <GridViewColumn Header="Heure" Width="200"/>
-                                <GridViewColumn Header="Salle" Width="200"/>
+                                <GridViewColumn Header="Date" Width="200" />
+                                <GridViewColumn Header="Heure" Width="200" />
+                                <GridViewColumn Header="Salle" Width="200" />
                             </GridView>
                         </ListView.View>
                     </ListView>

@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 using CineQuebec.Application.Interfaces.Services;
 using CineQuebec.Application.Records.Films;
@@ -99,11 +98,11 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
 
     public void AjouterProjection()
     {
-        _windowManager.ShowMessageBox("Fonctionnalité non implémentée.", "Ajouter une projection", MessageBoxButton.OK);
+        _windowManager.ShowMessageBox("Fonctionnalité non implémentée.", "Ajouter une projection");
     }
 
     public void ModifierFilm()
     {
-        _windowManager.ShowMessageBox("Fonctionnalité non implémentée.", "Modifier le film", MessageBoxButton.OK);
+        _windowManager.ShowMessageBox("Fonctionnalité non implémentée.", "Modifier le film");
     }
 }

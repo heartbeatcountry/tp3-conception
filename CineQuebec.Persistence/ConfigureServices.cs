@@ -1,33 +1,35 @@
 using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Persistence.DbContext;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using MongoDB.Driver;
 
 namespace CineQuebec.Persistence;
 
 public static class ConfigureServices
 {
-	private static IServiceCollection AddMongoDb(this IServiceCollection services, IConfiguration configuration)
-	{
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
-        var mongoUrl = new MongoUrl(connectionString);
-        var mongoClient = new MongoClient(mongoUrl);
-        var mongoDatabase = mongoClient.GetDatabase(mongoUrl.DatabaseName ?? "TP2DB");
-        
-        return services.AddSingleton<IMongoDatabase>(mongoDatabase);
-	}
+    private static IServiceCollection AddMongoDb(this IServiceCollection services, IConfiguration configuration)
+    {
+        string? connectionString = configuration.GetConnectionString("DefaultConnection");
+        MongoUrl mongoUrl = new(connectionString);
+        MongoClient mongoClient = new(mongoUrl);
+        IMongoDatabase? mongoDatabase = mongoClient.GetDatabase(mongoUrl.DatabaseName ?? "TP2DB");
 
-	public static IServiceCollection AddPersistenceServices(this IServiceCollection services,
-		IConfiguration configuration)
-	{
-		return services
-			.AddMongoDb(configuration)
-			.AddUnitOfWorkFactory();
-	}
+        return services.AddSingleton(mongoDatabase);
+    }
 
-	private static IServiceCollection AddUnitOfWorkFactory(this IServiceCollection services)
-	{
-		return services.AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactory>();
-	}
+    public static IServiceCollection AddPersistenceServices(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        return services
+            .AddMongoDb(configuration)
+            .AddUnitOfWorkFactory();
+    }
+
+    private static IServiceCollection AddUnitOfWorkFactory(this IServiceCollection services)
+    {
+        return services.AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactory>();
+    }
 }

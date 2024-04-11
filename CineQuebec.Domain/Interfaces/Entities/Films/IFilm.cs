@@ -2,18 +2,18 @@ namespace CineQuebec.Domain.Interfaces.Entities.Films;
 
 public interface IFilm : IEntite
 {
-	string Titre { get; }
-	string Description { get; }
-	Guid IdCategorie { get; }
-	DateTime DateSortieInternationale { get; }
-	IEnumerable<Guid> ActeursParId { get; }
-	IEnumerable<Guid> RealisateursParId { get; }
-	ushort DureeEnMinutes { get; }
-	void SetTitre(string titre);
-	void SetDescription(string description);
-	void SetCategorie(Guid categorie);
-	void SetDateSortieInternationale(DateTime dateSortieInternationale);
-	void AddActeurs(IEnumerable<Guid> acteurs);
-	void AddRealisateurs(IEnumerable<Guid> realisateurs);
-	void SetDureeEnMinutes(ushort duree);
+    string Titre { get; }
+    string Description { get; }
+    Guid IdCategorie { get; }
+    DateTime DateSortieInternationale { get; }
+    IEnumerable<Guid> ActeursParId { get; }
+    IEnumerable<Guid> RealisateursParId { get; }
+    ushort DureeEnMinutes { get; }
+    void SetTitre(string titre);
+    void SetDescription(string description);
+    void SetCategorie(Guid categorie);
+    void SetDateSortieInternationale(DateTime dateSortieInternationale);
+    void AddActeurs(IEnumerable<Guid> acteurs);
+    void AddRealisateurs(IEnumerable<Guid> realisateurs);
+    void SetDureeEnMinutes(ushort duree);
 }

@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 
@@ -6,145 +7,146 @@ namespace CineQuebec.Domain.Entities.Films;
 
 public class Film : Entite, IComparable<Film>, IFilm
 {
-	private readonly HashSet<Guid> _acteursParId = [];
-	private readonly HashSet<Guid> _realisateursParId = [];
-	private DateOnly _dateSortieInternationale = DateOnly.MinValue;
+    private readonly HashSet<Guid> _acteursParId = [];
+    private readonly HashSet<Guid> _realisateursParId = [];
+    private DateOnly _dateSortieInternationale = DateOnly.MinValue;
 
-	public Film(string titre, string description, Guid idCategorie, DateTime dateSortieInternationale,
-		IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes)
-	{
-		SetTitre(titre);
-		SetDescription(description);
-		SetCategorie(idCategorie);
-		SetDateSortieInternationale(dateSortieInternationale);
-		AddActeurs(acteursParId);
-		AddRealisateurs(realisateursParId);
-		SetDureeEnMinutes(dureeEnMinutes);
-	}
+    public Film(string titre, string description, Guid idCategorie, DateTime dateSortieInternationale,
+        IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes)
+    {
+        SetTitre(titre);
+        SetDescription(description);
+        SetCategorie(idCategorie);
+        SetDateSortieInternationale(dateSortieInternationale);
+        AddActeurs(acteursParId);
+        AddRealisateurs(realisateursParId);
+        SetDureeEnMinutes(dureeEnMinutes);
+    }
 
-	[SuppressMessage("ReSharper", "UnusedMember.Local")]
-	private Film(Guid id, string titre, string description, Guid idCategorie, DateTime dateSortieInternationale,
-		IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes) : this(titre, description, idCategorie, dateSortieInternationale, acteursParId, realisateursParId, dureeEnMinutes)
-	{
-		// Constructeur avec identifiant pour Entity Framework Core
-		SetId(id);
-	}
+    [SuppressMessage("ReSharper", "UnusedMember.Local")]
+    private Film(Guid id, string titre, string description, Guid idCategorie, DateTime dateSortieInternationale,
+        IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes) : this(titre,
+        description, idCategorie, dateSortieInternationale, acteursParId, realisateursParId, dureeEnMinutes)
+    {
+        // Constructeur avec identifiant pour Entity Framework Core
+        SetId(id);
+    }
 
-	public string Titre { get; private set; } = string.Empty;
-	public string Description { get; private set; } = string.Empty;
-	public Guid IdCategorie { get; private set; }
+    public int CompareTo(Film? other)
+    {
+        if (ReferenceEquals(this, other))
+        {
+            return 0;
+        }
 
-	public DateTime DateSortieInternationale
-	{
-		get => _dateSortieInternationale.ToDateTime(TimeOnly.MinValue);
-		private set => _dateSortieInternationale = DateOnly.FromDateTime(value);
-	}
+        if (ReferenceEquals(null, other))
+        {
+            return 1;
+        }
 
-	public IEnumerable<Guid> ActeursParId { get; private set; } = [];
-	public IEnumerable<Guid> RealisateursParId { get; private set; } = [];
-	public ushort DureeEnMinutes { get; private set; }
+        int dateComparison = DateSortieInternationale.CompareTo(other.DateSortieInternationale);
+        return dateComparison != 0 ? dateComparison : string.Compare(Titre, other.Titre, StringComparison.Ordinal);
+    }
 
-	public void AddActeurs(IEnumerable<Guid> acteurs)
-	{
-		SetActeursParId(ActeursParId.Union(acteurs));
-	}
+    public string Titre { get; private set; } = string.Empty;
+    public string Description { get; private set; } = string.Empty;
+    public Guid IdCategorie { get; private set; }
 
-	public void AddRealisateurs(IEnumerable<Guid> realisateurs)
-	{
-		SetRealisateursParId(RealisateursParId.Union(realisateurs));
-	}
+    public DateTime DateSortieInternationale
+    {
+        get => _dateSortieInternationale.ToDateTime(TimeOnly.MinValue);
+        private set => _dateSortieInternationale = DateOnly.FromDateTime(value);
+    }
 
-	public int CompareTo(Film? other)
-	{
-		if (ReferenceEquals(this, other))
-		{
-			return 0;
-		}
+    public IEnumerable<Guid> ActeursParId { get; private set; } = [];
+    public IEnumerable<Guid> RealisateursParId { get; private set; } = [];
+    public ushort DureeEnMinutes { get; private set; }
 
-		if (ReferenceEquals(null, other))
-		{
-			return 1;
-		}
+    public void AddActeurs(IEnumerable<Guid> acteurs)
+    {
+        SetActeursParId(ActeursParId.Union(acteurs));
+    }
 
-		var dateComparison = DateSortieInternationale.CompareTo(other.DateSortieInternationale);
-		return dateComparison != 0 ? dateComparison : string.Compare(Titre, other.Titre, StringComparison.Ordinal);
-	}
+    public void AddRealisateurs(IEnumerable<Guid> realisateurs)
+    {
+        SetRealisateursParId(RealisateursParId.Union(realisateurs));
+    }
 
-	public new bool Equals(Entite? autre)
-	{
-		return base.Equals(autre) || (autre is Film film &&
-		                              string.Equals(Titre, film.Titre,
-			                              StringComparison.OrdinalIgnoreCase) && DateSortieInternationale.Year ==
-		                              film.DateSortieInternationale.Year && DureeEnMinutes == film.DureeEnMinutes);
-	}
+    public void SetCategorie(Guid categorie)
+    {
+        if (categorie == Guid.Empty)
+        {
+            throw new ArgumentException("Le guid de la catégorie ne peut pas être nul.", nameof(categorie));
+        }
 
-	private void SetActeursParId(IEnumerable<Guid> acteurs)
-	{
-		_acteursParId.Clear();
-		_acteursParId.UnionWith(acteurs);
-		ActeursParId = _acteursParId.ToArray().AsReadOnly();
-	}
+        IdCategorie = categorie;
+    }
 
-	public void SetCategorie(Guid categorie)
-	{
-		if (categorie == Guid.Empty)
-		{
-			throw new ArgumentException("Le guid de la catégorie ne peut pas être nul.", nameof(categorie));
-		}
+    public void SetDateSortieInternationale(DateTime dateSortieInternationale)
+    {
+        if (dateSortieInternationale == DateTime.MinValue)
+        {
+            throw new ArgumentOutOfRangeException(nameof(dateSortieInternationale),
+                $"La date de sortie internationale doit être supérieure à {DateOnly.MinValue}.");
+        }
 
-		IdCategorie = categorie;
-	}
+        DateSortieInternationale = dateSortieInternationale;
+    }
 
-	public void SetDateSortieInternationale(DateTime dateSortieInternationale)
-	{
-		if (dateSortieInternationale == DateTime.MinValue)
-		{
-			throw new ArgumentOutOfRangeException(nameof(dateSortieInternationale),
-				$"La date de sortie internationale doit être supérieure à {DateOnly.MinValue}.");
-		}
+    public void SetDescription(string description)
+    {
+        if (string.IsNullOrWhiteSpace(description))
+        {
+            throw new ArgumentException("La description ne peut pas être vide.", nameof(description));
+        }
 
-		DateSortieInternationale = dateSortieInternationale;
-	}
+        Description = description.Trim();
+    }
 
-	public void SetDescription(string description)
-	{
-		if (string.IsNullOrWhiteSpace(description))
-		{
-			throw new ArgumentException("La description ne peut pas être vide.", nameof(description));
-		}
+    public void SetDureeEnMinutes(ushort duree)
+    {
+        if (duree == 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(duree), "Le film doit durer plus de 0 minutes.");
+        }
 
-		Description = description.Trim();
-	}
+        DureeEnMinutes = duree;
+    }
 
-	public void SetDureeEnMinutes(ushort duree)
-	{
-		if (duree == 0)
-		{
-			throw new ArgumentOutOfRangeException(nameof(duree), "Le film doit durer plus de 0 minutes.");
-		}
+    public void SetTitre(string titre)
+    {
+        if (string.IsNullOrWhiteSpace(titre))
+        {
+            throw new ArgumentException("Le titre ne peut pas être vide.", nameof(titre));
+        }
 
-		DureeEnMinutes = duree;
-	}
+        Titre = titre.Trim();
+    }
 
-	private void SetRealisateursParId(IEnumerable<Guid> realisateurs)
-	{
-		_realisateursParId.Clear();
-		_realisateursParId.UnionWith(realisateurs);
-		RealisateursParId = _realisateursParId.ToArray().AsReadOnly();
-	}
+    public override string ToString()
+    {
+        return $"{Titre} ({DateSortieInternationale.Year})";
+    }
 
-	public void SetTitre(string titre)
-	{
-		if (string.IsNullOrWhiteSpace(titre))
-		{
-			throw new ArgumentException("Le titre ne peut pas être vide.", nameof(titre));
-		}
+    public new bool Equals(Entite? autre)
+    {
+        return base.Equals(autre) || (autre is Film film &&
+                                      string.Equals(Titre, film.Titre,
+                                          StringComparison.OrdinalIgnoreCase) && DateSortieInternationale.Year ==
+                                      film.DateSortieInternationale.Year && DureeEnMinutes == film.DureeEnMinutes);
+    }
 
-		Titre = titre.Trim();
-	}
+    private void SetActeursParId(IEnumerable<Guid> acteurs)
+    {
+        _acteursParId.Clear();
+        _acteursParId.UnionWith(acteurs);
+        ActeursParId = _acteursParId.ToArray().AsReadOnly();
+    }
 
-	public override string ToString()
-	{
-		return $"{Titre} ({DateSortieInternationale.Year})";
-	}
+    private void SetRealisateursParId(IEnumerable<Guid> realisateurs)
+    {
+        _realisateursParId.Clear();
+        _realisateursParId.UnionWith(realisateurs);
+        RealisateursParId = _realisateursParId.ToArray().AsReadOnly();
+    }
 }

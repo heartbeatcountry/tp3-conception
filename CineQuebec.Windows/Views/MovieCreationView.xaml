@@ -15,9 +15,9 @@
         <DockPanel IsEnabled="{Binding FormulairEstActive}">
             <DockPanel DockPanel.Dock="Bottom">
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Button Content="Créer un acteur" Command="{s:Action AjouterActeur}"/>
-                    <Button Content="Créer un réalisateur" Command="{s:Action AjouterRealisateur}" Margin="10,0"/>
-                    <Button Content="Créer une catégorie" Command="{s:Action AjouterCategorie}"/>
+                    <Button Content="Créer un acteur" Command="{s:Action AjouterActeur}" />
+                    <Button Content="Créer un réalisateur" Command="{s:Action AjouterRealisateur}" Margin="10,0" />
+                    <Button Content="Créer une catégorie" Command="{s:Action AjouterCategorie}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="Créer le film" Command="{s:Action CreerFilm}" />
@@ -71,7 +71,7 @@
                     </ComboBox.Effect>
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding NomAffichage}"/>
+                            <Label Content="{Binding NomAffichage}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
@@ -91,8 +91,8 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                <Label Content="{Binding Prenom}" Margin="0,0,5,0"/>
-                                <Label Content="{Binding Nom}"/>
+                                <Label Content="{Binding Prenom}" Margin="0,0,5,0" />
+                                <Label Content="{Binding Nom}" />
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -111,8 +111,8 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                <Label Content="{Binding Prenom}" Margin="0,0,5,0"/>
-                                <Label Content="{Binding Nom}"/>
+                                <Label Content="{Binding Prenom}" Margin="0,0,5,0" />
+                                <Label Content="{Binding Nom}" />
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

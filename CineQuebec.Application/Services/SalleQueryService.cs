@@ -1,8 +1,6 @@
 using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Application.Interfaces.Services;
-using CineQuebec.Application.Records.Films;
 using CineQuebec.Application.Records.Projections;
-using CineQuebec.Domain.Interfaces.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Projections;
 
 namespace CineQuebec.Application.Services;

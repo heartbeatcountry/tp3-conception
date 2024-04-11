@@ -1,6 +1,6 @@
 namespace CineQuebec.Domain.Interfaces.Entities.Projections;
 
-public interface IProjection: IEntite
+public interface IProjection : IEntite
 {
     Guid IdFilm { get; }
     Guid IdSalle { get; }

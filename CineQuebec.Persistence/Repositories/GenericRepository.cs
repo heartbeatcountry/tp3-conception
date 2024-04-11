@@ -32,7 +32,7 @@ public class GenericRepository<TEntite, TIEntite> : IRepository<TIEntite>
     public async Task<bool> ExisteAsync(Expression<Func<TIEntite, bool>> filtre)
     {
         Expression<Func<TEntite, bool>> filtreExp = filtre.ReplaceTypeParameter<TIEntite, TEntite, bool>();
-        return await _dbSet.AnyAsync<TEntite>(filtreExp);
+        return await _dbSet.AnyAsync(filtreExp);
     }
 
     public TIEntite Modifier(TIEntite entite)
@@ -59,7 +59,7 @@ public class GenericRepository<TEntite, TIEntite> : IRepository<TIEntite>
 
         if (filtre != null)
         {
-            var filtreExp = filtre.ReplaceTypeParameter<TIEntite, TEntite, bool>();
+            Expression<Func<TEntite, bool>> filtreExp = filtre.ReplaceTypeParameter<TIEntite, TEntite, bool>();
             query = query.Where(filtreExp);
         }
 
