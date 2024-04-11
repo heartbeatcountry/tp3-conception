@@ -1,4 +1,9 @@
-﻿using CineQuebec.Application.Interfaces.Services;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+
+using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Application.Records.Films;
 using CineQuebec.Windows.Views.Components;
 
 using Stylet;
@@ -8,65 +13,171 @@ namespace CineQuebec.Windows.Views;
 public class MovieCreationViewModel : Screen
 {
     private readonly INavigationController _navigationController;
+    private readonly IFilmCreationService _filmCreationService;
+    private readonly IActeurQueryService _acteurQueryService;
+    private readonly IRealisateurQueryService _realisateurQueryService;
+    private readonly ICategorieFilmQueryService _categorieFilmQueryService;
+    private readonly IWindowManager _windowManager;
+    private readonly IDialogFactory _dialogFactory;
+    private string _titreFilm;
+    private string _descriptionFilm;
+    private string _dureeFilm;
+    private BindableCollection<CategorieFilmDto> _lstCategories;
+    private BindableCollection<ActeurDto> _lstActeurs;
+    private BindableCollection<RealisateurDto> _lstRealisateurs;
+    private BindableCollection<ActeurDto> _acteursSelectionnes;
+    private BindableCollection<RealisateurDto> _realisateursSelectionnes;
+    private CategorieFilmDto? _categorieSelectionnee;
+    private bool _formulairEstActive;
 
     public MovieCreationViewModel(INavigationController navigationController, IFilmCreationService filmCreationService,
-        HeaderViewModel headerViewModel)
+        HeaderViewModel headerViewModel, IActeurQueryService acteurQueryService, IDialogFactory dialogFactory,
+        IRealisateurQueryService realisateurQueryService, ICategorieFilmQueryService categorieFilmQueryService, IWindowManager windowManager)
     {
         _navigationController = navigationController;
+        _filmCreationService = filmCreationService;
+        _acteurQueryService = acteurQueryService;
+        _realisateurQueryService = realisateurQueryService;
+        _categorieFilmQueryService = categorieFilmQueryService;
+        _windowManager = windowManager;
+        _dialogFactory = dialogFactory;
+
         HeaderViewModel = headerViewModel;
         headerViewModel.PreviousView = typeof(AdminMovieListViewModel);
+
+        _ = ToutCharger();
     }
 
     public HeaderViewModel HeaderViewModel { get; }
 
-    public string titreFilm { get; set; }
-    public string descriptionFilm { get; set; }
-    public string dureeFilm { get; set; }
-
-    public string messageErreur { get; set; }
-
-
-    public void NavigateToAdminHome()
+    public string TitreFilm
     {
-        _navigationController.NavigateTo<AdminHomeViewModel>();
+        get => _titreFilm;
+        set => SetAndNotify(ref _titreFilm, value);
     }
 
-
-    private void InitialiserFormulaire()
+    public string DescriptionFilm
     {
-        titreFilm = "";
-        dureeFilm = "";
-        //categorie.SelectedIndex = 0;
-
-        //foreach (ListBoxItem item in listBoxActeursFilm.Items)
-        //{
-        //    item.IsSelected = false;
-        //}
-
-        //foreach (ListBoxItem item in listBoxRealisateursFilm.Items)
-        //{
-        //    item.IsSelected = false;
-        //}
+        get => _descriptionFilm;
+        set => SetAndNotify(ref _descriptionFilm, value);
     }
 
-
-    private async Task AjouterNouveauFilmAsync()
+    public string DureeFilm
     {
-        //using var unitOfWork = new UnitOfWork(null as IMongoDatabase);
+        get => _dureeFilm;
+        set => SetAndNotify(ref _dureeFilm, value);
+    }
 
-        //var filmCreationService = new FilmCreationService(unitOfWork);
+    public BindableCollection<CategorieFilmDto> LstCategories
+    {
+        get => _lstCategories;
+        set => SetAndNotify(ref _lstCategories, value);
+    }
 
-        string titre = titreFilm;
-        string description = descriptionFilm;
-        //CategorieFilm categorie = (CategorieFilm)cbCategorie.SelectedItem;
-        //DateTime dateDeSortieInternationale = dpDateSortie.SelectedDate ?? DateTime.MinValue;
-        //DateOnly dateDeSortieDateOnly = DateOnly.FromDateTime(dateDeSortieInternationale);
-        //List<Acteur> acteurs = listBoxActeursFilm.SelectedItems.Cast<Acteur>().ToList();
-        //List<Realisateur> realisateurs = listBoxRealisateursFilm.SelectedItems.Cast<Realisateur>().ToList();
-        //ushort duree = Convert.ToUInt16(dureeFilm);
+    public BindableCollection<ActeurDto> LstActeurs
+    {
+        get => _lstActeurs;
+        set => SetAndNotify(ref _lstActeurs, value);
+    }
 
-        //var nouvFilm = await filmCreationService.CreerFilm(titre, description, categorie, dateDeSortieDateOnly, acteurs, realisateurs, duree);
+    public BindableCollection<RealisateurDto> LstRealisateurs
+    {
+        get => _lstRealisateurs;
+        set => SetAndNotify(ref _lstRealisateurs, value);
+    }
 
-        //await unitOfWork.SauvegarderAsync();
+    public BindableCollection<ActeurDto> ActeursSelectionnes
+    {
+        get => _acteursSelectionnes;
+        set => SetAndNotify(ref _acteursSelectionnes, value);
+    }
+
+    public BindableCollection<RealisateurDto> RealisateursSelectionnes
+    {
+        get => _realisateursSelectionnes;
+        set => SetAndNotify(ref _realisateursSelectionnes, value);
+    }
+
+    public CategorieFilmDto? CategorieSelectionnee
+    {
+        get => _categorieSelectionnee;
+        set => SetAndNotify(ref _categorieSelectionnee, value);
+    }
+
+    public bool CanCreateFilm => !string.IsNullOrWhiteSpace(TitreFilm) && !string.IsNullOrWhiteSpace(DescriptionFilm) &&
+                                 !string.IsNullOrWhiteSpace(DureeFilm) && FormulairEstActive;
+
+    public bool FormulairEstActive
+    {
+        get => _formulairEstActive;
+        set => SetAndNotify(ref _formulairEstActive, value);
+    }
+
+    private void DesactiverInterface()
+    {
+        FormulairEstActive = false;
+        Mouse.OverrideCursor = Cursors.Wait;
+    }
+
+    private void ActiverInterface()
+    {
+        FormulairEstActive = true;
+        Mouse.OverrideCursor = null;
+    }
+
+    private async Task ChargerCategories()
+    {
+        DesactiverInterface();
+        IEnumerable<CategorieFilmDto> categories = await _categorieFilmQueryService.ObtenirToutes();
+        LstCategories = new BindableCollection<CategorieFilmDto>(categories);
+        CategorieSelectionnee = LstCategories.FirstOrDefault();
+        ActiverInterface();
+    }
+
+    private async Task ChargerActeurs()
+    {
+        DesactiverInterface();
+        IEnumerable<ActeurDto> acteurs = await _acteurQueryService.ObtenirTous();
+        LstActeurs = new BindableCollection<ActeurDto>(acteurs);
+        ActeursSelectionnes = [];
+        ActiverInterface();
+    }
+
+    private async Task ChargerRealisateurs()
+    {
+        DesactiverInterface();
+        IEnumerable<RealisateurDto> realisateurs = await _realisateurQueryService.ObtenirTous();
+        LstRealisateurs = new BindableCollection<RealisateurDto>(realisateurs);
+        RealisateursSelectionnes = [];
+        ActiverInterface();
+    }
+
+    public async Task ToutCharger()
+    {
+        await ChargerCategories();
+        await ChargerActeurs();
+        await ChargerRealisateurs();
+    }
+
+    private void AfficherErreur(string msg)
+    {
+        _windowManager.ShowMessageBox(msg, "Problèmes dans le formulaire", MessageBoxButton.OK, MessageBoxImage.Warning);
+    }
+
+    public void OnActeursChange(object sender, SelectionChangedEventArgs evt)
+    {
+        var listBox = (ListBox)sender;
+        ActeursSelectionnes = new BindableCollection<ActeurDto>(listBox.SelectedItems.Cast<ActeurDto>());
+    }
+
+    public void OnRealisateursChange(object sender, SelectionChangedEventArgs evt)
+    {
+        var listBox = (ListBox)sender;
+        RealisateursSelectionnes = new BindableCollection<RealisateurDto>(listBox.SelectedItems.Cast<RealisateurDto>());
+    }
+
+    public void CreerFilm()
+    {
+        ;
     }
 }

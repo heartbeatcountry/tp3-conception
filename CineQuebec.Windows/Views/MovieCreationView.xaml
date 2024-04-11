@@ -12,96 +12,84 @@
 
     <DockPanel Margin="10">
         <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}" />
-        <Grid>
+        <DockPanel IsEnabled="{Binding FormulairEstActive}">
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Créer le film" Command="{s:Action CreerFilm}" />
+            </StackPanel>
+            <Grid>
 
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50*" />
-                <ColumnDefinition Width="50*" />
-                <ColumnDefinition Width="50*" />
-                <ColumnDefinition Width="50*" />
-                <ColumnDefinition Width="50*" />
-                <ColumnDefinition Width="50*" />
-                <ColumnDefinition Width="50*" />
-            </Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50*" />
+                    <ColumnDefinition Width="50*" />
+                    <ColumnDefinition Width="50*" />
+                    <ColumnDefinition Width="50*" />
+                    <ColumnDefinition Width="50*" />
+                    <ColumnDefinition Width="50*" />
+                    <ColumnDefinition Width="50*" />
+                </Grid.ColumnDefinitions>
 
-            <Label x:Name="LblTitreFilm" Content="{x:Static rs:Resource.admin_ajout_titre_film}" Grid.Row="0"
-                   Grid.Column="0" VerticalAlignment="Center" />
-            <TextBox x:Name="TxtTitreFilm" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding titreFilm}"
-                     Style="{StaticResource DefautInput}" />
+                <Label Content="{x:Static rs:Resource.admin_ajout_titre_film}" Grid.Row="0"
+                       Grid.Column="0" VerticalAlignment="Center" />
+                <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
+                         Text="{Binding TitreFilm}"
+                         Style="{StaticResource DefautInput}" />
 
-            <Label x:Name="LblDescriptionFilm" Content="{x:Static rs:Resource.admin_ajout_description_film}"
-                   Grid.Row="1"
-                   Grid.Column="0" VerticalAlignment="Center" />
-            <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2" BorderBrush="Black"
-                    BorderThickness="2">
-                <TextBlock x:Name="DescriptionFilm" Text="{Binding descriptionFilm}" />
-
-            </Border>
-
-
-            <Label x:Name="LblDureeFilm" Content="{x:Static rs:Resource.admin_ajout_duree_film}" Grid.Row="3"
-                   Grid.Column="0" VerticalAlignment="Center" />
-            <TextBox x:Name="DureeFilm" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding dureeFilm}"
-                     Style="{StaticResource DefautInput}" />
+                <Label Content="{x:Static rs:Resource.admin_ajout_description_film}"
+                       Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" />
+                <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2"
+                         Text="{Binding DescriptionFilm}" />
 
 
-            <Label x:Name="LblCategorieFilm" Content="{x:Static rs:Resource.admin_ajout_categorie_film}" Grid.Row="4"
-                   Grid.Column="0" VerticalAlignment="Center" />
-            <ComboBox x:Name="Categorie" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" MaxWidth="170"
-                      BorderBrush="Black" BorderThickness="2" Margin="10">
-                <ComboBoxItem Name="CbxHumour">Humour</ComboBoxItem>
-                <ComboBoxItem Name="CbxRomantique">Romantique</ComboBoxItem>
-                <ComboBoxItem Name="CbxHorreur">Horreur</ComboBoxItem>
-                <ComboBoxItem Name="CbxScienceFiction">Science Fiction</ComboBoxItem>
-
-                <ComboBox.Effect>
-                    <DropShadowEffect />
-                </ComboBox.Effect>
-
-            </ComboBox>
+                <Label Content="{x:Static rs:Resource.admin_ajout_duree_film}" Grid.Row="3"
+                       Grid.Column="0" VerticalAlignment="Center" />
+                <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding DureeFilm}"
+                         Style="{StaticResource DefautInput}" />
 
 
-            <DatePicker x:Name="DpDateSortie" Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" />
+                <Label Content="{x:Static rs:Resource.admin_ajout_categorie_film}" Grid.Row="4" Grid.Column="0"
+                       VerticalAlignment="Center" />
+                <ComboBox ItemsSource="{Binding LstCategories}" SelectedItem="{Binding CategorieSelectionnee}"
+                          Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" MaxWidth="170" BorderBrush="Black"
+                          BorderThickness="2" Margin="10">
+                    <ComboBox.Effect>
+                        <DropShadowEffect />
+                    </ComboBox.Effect>
+                </ComboBox>
 
 
-            <Label x:Name="LblActeursFilm" Content="{x:Static rs:Resource.admin_ajout_acteurs_film}" Grid.Row="1"
-                   Grid.Column="4" VerticalAlignment="Center" />
-            <ListBox SelectionMode="Multiple" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="2" Grid.RowSpan="2"
-                     BorderBrush="Black" BorderThickness="2" Margin="10">
-                <ListBox.Effect>
-                    <DropShadowEffect />
-                </ListBox.Effect>
-                <ListBoxItem>Brad Pitt</ListBoxItem>
-                <ListBoxItem>Angélina Jolie</ListBoxItem>
-                <ListBoxItem>Timothée Chalamet</ListBoxItem>
-                <ListBoxItem>Zendaya</ListBoxItem>
-            </ListBox>
-
-            <Label x:Name="LblRealisateursFilm" Content="{x:Static rs:Resource.admin_ajout_realisateurs_film}"
-                   Grid.Row="3"
-                   Grid.Column="4" VerticalAlignment="Center" />
-            <ListBox SelectionMode="Multiple" Grid.Row="3" Grid.Column="5" Grid.ColumnSpan="2" Grid.RowSpan="2"
-                     BorderBrush="Black" BorderThickness="2" Margin="10">
-                <ListBox.Effect>
-                    <DropShadowEffect />
-                </ListBox.Effect>
-                <ListBoxItem>Denis Villeneuve</ListBoxItem>
-                <ListBoxItem>David Fincher</ListBoxItem>
-                <ListBoxItem>Option 3</ListBoxItem>
-                <ListBoxItem>Option 4</ListBoxItem>
-            </ListBox>
+                <DatePicker SelectedDate="{Binding DateSelectionnee}" Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="2" />
 
 
-            <Label Content="erreur!" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="7" />
-        </Grid>
+                <Label Content="{x:Static rs:Resource.admin_ajout_acteurs_film}" Grid.Row="1"
+                       Grid.Column="4" VerticalAlignment="Center" />
+                <ListBox ItemsSource="{Binding LstActeurs}" SelectionChanged="{s:Action OnActeursChange}"
+                         SelectionMode="Multiple" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="2" Grid.RowSpan="2"
+                         BorderBrush="Black" BorderThickness="2" Margin="10">
+                    <ListBox.Effect>
+                        <DropShadowEffect />
+                    </ListBox.Effect>
+                </ListBox>
+
+                <Label x:Name="LblRealisateursFilm" Content="{x:Static rs:Resource.admin_ajout_realisateurs_film}"
+                       Grid.Row="3"
+                       Grid.Column="4" VerticalAlignment="Center" />
+                <ListBox SelectionMode="Multiple" ItemsSource="{Binding LstRealisateurs}"
+                         SelectionChanged="{s:Action OnRealisateursChange}" Grid.Row="3" Grid.Column="5"
+                         Grid.ColumnSpan="2" Grid.RowSpan="2"
+                         BorderBrush="Black" BorderThickness="2" Margin="10">
+                    <ListBox.Effect>
+                        <DropShadowEffect />
+                    </ListBox.Effect>
+                </ListBox>
+            </Grid>
+        </DockPanel>
     </DockPanel>
 </UserControl>

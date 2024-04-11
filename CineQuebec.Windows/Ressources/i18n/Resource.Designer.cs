@@ -106,7 +106,7 @@ namespace CineQuebec.Windows.Ressources.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Durée :.
+        ///   Looks up a localized string similar to Durée (minutes) :.
         /// </summary>
         public static string admin_ajout_duree_film {
             get {

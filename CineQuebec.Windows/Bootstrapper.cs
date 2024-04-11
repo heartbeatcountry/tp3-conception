@@ -11,6 +11,7 @@ public class Bootstrapper : Bootstrapper<RootViewModel>
     protected override void ConfigureIoC(IStyletIoCBuilder builder)
     {
         builder.AddModule(new MicrosoftDiModule());
+        builder.Bind<IDialogFactory>().ToAbstractFactory();
         builder.Bind<NavigationController>().And<INavigationController>().To<NavigationController>().InSingletonScope();
     }
 

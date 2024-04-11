@@ -130,7 +130,7 @@
     <value>Date de sortie :</value>
   </data>
   <data name="admin.ajout_duree_film" xml:space="preserve">
-    <value>Durée :</value>
+    <value>Durée (minutes) :</value>
   </data>
   <data name="admin.ajout_enregistrer_film" xml:space="preserve">
     <value>Enregistrer</value>
