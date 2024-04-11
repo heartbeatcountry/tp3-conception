@@ -6,9 +6,8 @@ namespace CineQuebec.Windows.Views;
 
 public class AdminHomeViewModel(INavigationController navigationController, HeaderViewModel headerViewModel) : Screen
 {
-    public HeaderViewModel HeaderViewModel => headerViewModel;
-
     private bool _navigationIsEnabled = true;
+    public HeaderViewModel HeaderViewModel => headerViewModel;
 
     public bool NavigationIsEnabled
     {

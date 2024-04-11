@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Input;
 
 using CineQuebec.Application.Interfaces.Services;
 using CineQuebec.Application.Records.Films;
@@ -12,16 +13,19 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
 {
     private readonly IFilmQueryService _filmQueryService;
     private readonly INavigationController _navigationController;
+    private readonly IWindowManager _windowManager;
     private BindableCollection<ActeurDto> _acteurs = [];
     private bool _canRefreshDetails = true;
     private Guid _filmId;
     private BindableCollection<RealisateurDto> _realisateurs = [];
 
     public AdminMovieDetailsViewModel(INavigationController navigationController, HeaderViewModel headerViewModel,
-        IFilmQueryService filmQueryService)
+        IFilmQueryService filmQueryService, IWindowManager windowManager)
     {
         _navigationController = navigationController;
         _filmQueryService = filmQueryService;
+        _windowManager = windowManager;
+
         headerViewModel.PreviousView = typeof(AdminMovieListViewModel);
         HeaderViewModel = headerViewModel;
     }
@@ -91,5 +95,15 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
         Acteurs = new BindableCollection<ActeurDto>(film.Acteurs);
         Realisateurs = new BindableCollection<RealisateurDto>(film.Realisateurs);
         ActiverInterface();
+    }
+
+    public void AjouterProjection()
+    {
+        _windowManager.ShowMessageBox("Fonctionnalité non implémentée.", "Ajouter une projection", MessageBoxButton.OK);
+    }
+
+    public void ModifierFilm()
+    {
+        _windowManager.ShowMessageBox("Fonctionnalité non implémentée.", "Modifier le film", MessageBoxButton.OK);
     }
 }

@@ -89,8 +89,8 @@
             </Grid>
             <DockPanel Margin="0,5,0,0">
                 <StackPanel Margin="0,5,0,0" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="Ajouter une projection" Margin="5,0"/>
-                    <Button Content="Modifier ce film"></Button>
+                    <Button Content="Ajouter une projection" Margin="5,0" Command="{s:Action AjouterProjection}"/>
+                    <Button Content="Modifier ce film" Command="{s:Action ModifierFilm}"/>
                 </StackPanel>
                 <DockPanel>
                     <Label DockPanel.Dock="Top" Content="Projections planifiées pour ce film" Background="LightGray"/>

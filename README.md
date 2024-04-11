@@ -1,5 +1,8 @@
 # CineQuebec
 
+Projet de Pascal & Cynthia.  
+
+
 **Attention!**
 Ce projet contient un sous-module git! Pour cloner le projet avec le sous-module, utilisez la commande suivante:
 

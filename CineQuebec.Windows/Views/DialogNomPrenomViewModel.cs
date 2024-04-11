@@ -7,7 +7,7 @@ public class DialogNomPrenomViewModel : Screen
     private string _nom = String.Empty;
     private string _prenom = String.Empty;
 
-    public bool AValide { get; private set; } = false;
+    public bool AValide { get; private set; }
 
     public string Nom
     {
