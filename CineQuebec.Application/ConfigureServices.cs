@@ -20,6 +20,8 @@ public static class ConfigureServices
             .AddSingleton<ICategorieFilmQueryService, CategorieFilmQueryService>()
             .AddSingleton<IProjectionCreationService, ProjectionCreationService>()
             .AddSingleton<IProjectionQueryService, ProjectionQueryService>()
-            .AddSingleton<IProjectionDeletionService, ProjectionDeletionService>();
+            .AddSingleton<IProjectionDeletionService, ProjectionDeletionService>()
+            .AddSingleton<ISalleCreationService, SalleCreationService>()
+            .AddSingleton<ISalleQueryService, SalleQueryService>();
     }
 }
