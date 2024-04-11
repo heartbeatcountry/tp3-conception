@@ -5,23 +5,21 @@ VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CineQuebec.Windows", "CineQuebec.Windows\CineQuebec.Windows.csproj", "{D539ED09-DF5B-45DF-B781-247A0FB86B74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineQuebec.Domain", "CineQuebec.Domain\CineQuebec.Domain.csproj", "{CC9BDDB2-3A05-49E8-90F8-A4B4E0FBBDA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CineQuebec.Domain", "CineQuebec.Domain\CineQuebec.Domain.csproj", "{CC9BDDB2-3A05-49E8-90F8-A4B4E0FBBDA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineQuebec.Persistence", "CineQuebec.Persistence\CineQuebec.Persistence.csproj", "{543E782E-C795-40CA-AD25-39EA7A05D5B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CineQuebec.Persistence", "CineQuebec.Persistence\CineQuebec.Persistence.csproj", "{543E782E-C795-40CA-AD25-39EA7A05D5B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineQuebec.Application", "CineQuebec.Application\CineQuebec.Application.csproj", "{30D10CE4-135F-4958-9349-94D035476E7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CineQuebec.Application", "CineQuebec.Application\CineQuebec.Application.csproj", "{30D10CE4-135F-4958-9349-94D035476E7D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{01B05719-D678-4A75-ABBE-C6AAADCB6C6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Application", "Tests.Application\Tests.Application.csproj", "{390BAE1A-32CD-4F45-B294-822407BB9AB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Application", "Tests.Application\Tests.Application.csproj", "{390BAE1A-32CD-4F45-B294-822407BB9AB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Domain", "Tests.Domain\Tests.Domain.csproj", "{66D9C791-D09F-4151-ABDA-79BBA3E02062}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Persistence", "Tests.Persistence\Tests.Persistence.csproj", "{C9B766F6-DC19-494F-A1C0-D7C636EB7E3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Domain", "Tests.Domain\Tests.Domain.csproj", "{66D9C791-D09F-4151-ABDA-79BBA3E02062}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3rdparty", "3rdparty", "{56ECE20E-E839-4C7F-B31D-C1556FA426CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDB.EntityFrameworkCore", "3rdparty\mongo-efcore-provider\src\MongoDB.EntityFrameworkCore\MongoDB.EntityFrameworkCore.csproj", "{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoDB.EntityFrameworkCore", "3rdparty\mongo-efcore-provider\src\MongoDB.EntityFrameworkCore\MongoDB.EntityFrameworkCore.csproj", "{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +51,6 @@ Global
 		{66D9C791-D09F-4151-ABDA-79BBA3E02062}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66D9C791-D09F-4151-ABDA-79BBA3E02062}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66D9C791-D09F-4151-ABDA-79BBA3E02062}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C9B766F6-DC19-494F-A1C0-D7C636EB7E3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9B766F6-DC19-494F-A1C0-D7C636EB7E3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C9B766F6-DC19-494F-A1C0-D7C636EB7E3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C9B766F6-DC19-494F-A1C0-D7C636EB7E3C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -65,13 +59,12 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {C52FB3C3-F7DC-49E7-859D-331517CE7486}
-	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{390BAE1A-32CD-4F45-B294-822407BB9AB8} = {01B05719-D678-4A75-ABBE-C6AAADCB6C6D}
 		{66D9C791-D09F-4151-ABDA-79BBA3E02062} = {01B05719-D678-4A75-ABBE-C6AAADCB6C6D}
-		{C9B766F6-DC19-494F-A1C0-D7C636EB7E3C} = {01B05719-D678-4A75-ABBE-C6AAADCB6C6D}
 		{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726} = {56ECE20E-E839-4C7F-B31D-C1556FA426CF}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C52FB3C3-F7DC-49E7-859D-331517CE7486}
 	EndGlobalSection
 EndGlobal
