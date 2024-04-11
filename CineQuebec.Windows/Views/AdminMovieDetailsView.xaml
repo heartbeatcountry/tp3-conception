@@ -67,7 +67,10 @@
                     <ListView Margin="0,0,0,5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" ItemsSource="{Binding Realisateurs}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding NomComplet}"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <TextBlock Text="{Binding Prenom}" Margin="0,0,5,0"/>
+                                    <TextBlock Text="{Binding Nom}"/>
+                                </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
@@ -75,7 +78,10 @@
                     <ListView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" ItemsSource="{Binding Acteurs}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding NomComplet}"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <TextBlock Text="{Binding Prenom}" Margin="0,0,5,0"/>
+                                    <TextBlock Text="{Binding Nom}"/>
+                                </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

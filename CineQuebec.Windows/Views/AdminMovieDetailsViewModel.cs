@@ -12,11 +12,10 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
 {
     private readonly IFilmQueryService _filmQueryService;
     private readonly INavigationController _navigationController;
-    private BindableCollection<ActeurDto> _acteurs;
+    private BindableCollection<ActeurDto> _acteurs = [];
     private bool _canRefreshDetails = true;
-    private BindableCollection<RealisateurDto> _realisateurs;
     private Guid _filmId;
-    public FilmDto? Film { get; private set; }
+    private BindableCollection<RealisateurDto> _realisateurs = [];
 
     public AdminMovieDetailsViewModel(INavigationController navigationController, HeaderViewModel headerViewModel,
         IFilmQueryService filmQueryService)
@@ -26,6 +25,8 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
         headerViewModel.PreviousView = typeof(AdminMovieListViewModel);
         HeaderViewModel = headerViewModel;
     }
+
+    public FilmDto? Film { get; private set; }
 
     public bool CanRefreshDetails
     {
@@ -57,7 +58,7 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
         _filmId = filmId;
         _ = RefreshDetails();
     }
-    
+
     public void AddNewFilm()
     {
         _navigationController.NavigateTo<MovieCreationViewModel>();
@@ -87,6 +88,8 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
         }
 
         Film = film;
+        Acteurs = new BindableCollection<ActeurDto>(film.Acteurs);
+        Realisateurs = new BindableCollection<RealisateurDto>(film.Realisateurs);
         ActiverInterface();
     }
 }
