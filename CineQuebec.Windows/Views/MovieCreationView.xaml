@@ -13,9 +13,16 @@
     <DockPanel Margin="10">
         <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}" />
         <DockPanel IsEnabled="{Binding FormulairEstActive}">
-            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Créer le film" Command="{s:Action CreerFilm}" />
-            </StackPanel>
+            <DockPanel DockPanel.Dock="Bottom">
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button Content="Créer un acteur" Command="{s:Action AjouterActeur}"/>
+                    <Button Content="Créer un réalisateur" Command="{s:Action AjouterRealisateur}" Margin="10,0"/>
+                    <Button Content="Créer une catégorie" Command="{s:Action AjouterCategorie}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Créer le film" Command="{s:Action CreerFilm}" />
+                </StackPanel>
+            </DockPanel>
             <Grid>
 
                 <Grid.RowDefinitions>

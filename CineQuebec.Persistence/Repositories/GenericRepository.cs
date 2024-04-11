@@ -31,7 +31,8 @@ public class GenericRepository<TEntite, TIEntite> : IRepository<TIEntite>
 
     public async Task<bool> ExisteAsync(Expression<Func<TIEntite, bool>> filtre)
     {
-        return await _dbSet.AnyAsync((filtre as Expression<Func<TEntite, bool>>)!);
+        Expression<Func<TEntite, bool>> filtreExp = filtre.ReplaceTypeParameter<TIEntite, TEntite, bool>();
+        return await _dbSet.AnyAsync<TEntite>(filtreExp);
     }
 
     public TIEntite Modifier(TIEntite entite)

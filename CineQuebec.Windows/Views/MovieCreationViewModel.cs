@@ -12,33 +12,42 @@ namespace CineQuebec.Windows.Views;
 
 public class MovieCreationViewModel : Screen
 {
-    private readonly INavigationController _navigationController;
-    private readonly IFilmCreationService _filmCreationService;
+    private readonly IActeurCreationService _acteurCreationService;
     private readonly IActeurQueryService _acteurQueryService;
-    private readonly IRealisateurQueryService _realisateurQueryService;
+    private readonly ICategorieFilmCreationService _categorieFilmCreationService;
     private readonly ICategorieFilmQueryService _categorieFilmQueryService;
-    private readonly IWindowManager _windowManager;
     private readonly IDialogFactory _dialogFactory;
-    private string _titreFilm;
+    private readonly IFilmCreationService _filmCreationService;
+    private readonly INavigationController _navigationController;
+    private readonly IRealisateurCreationService _realisateurCreationService;
+    private readonly IRealisateurQueryService _realisateurQueryService;
+    private readonly IWindowManager _windowManager;
+    private BindableCollection<ActeurDto> _acteursSelectionnes;
+    private CategorieFilmDto? _categorieSelectionnee;
     private string _descriptionFilm;
     private string _dureeFilm;
-    private BindableCollection<CategorieFilmDto> _lstCategories;
-    private BindableCollection<ActeurDto> _lstActeurs;
-    private BindableCollection<RealisateurDto> _lstRealisateurs;
-    private BindableCollection<ActeurDto> _acteursSelectionnes;
-    private BindableCollection<RealisateurDto> _realisateursSelectionnes;
-    private CategorieFilmDto? _categorieSelectionnee;
     private bool _formulairEstActive;
+    private BindableCollection<ActeurDto> _lstActeurs;
+    private BindableCollection<CategorieFilmDto> _lstCategories;
+    private BindableCollection<RealisateurDto> _lstRealisateurs;
+    private BindableCollection<RealisateurDto> _realisateursSelectionnes;
+    private string _titreFilm;
 
     public MovieCreationViewModel(INavigationController navigationController, IFilmCreationService filmCreationService,
         HeaderViewModel headerViewModel, IActeurQueryService acteurQueryService, IDialogFactory dialogFactory,
-        IRealisateurQueryService realisateurQueryService, ICategorieFilmQueryService categorieFilmQueryService, IWindowManager windowManager)
+        IRealisateurQueryService realisateurQueryService, ICategorieFilmQueryService categorieFilmQueryService,
+        IWindowManager windowManager, IActeurCreationService acteurCreationService,
+        IRealisateurCreationService realisateurCreationService,
+        ICategorieFilmCreationService categorieFilmCreationService)
     {
         _navigationController = navigationController;
         _filmCreationService = filmCreationService;
         _acteurQueryService = acteurQueryService;
         _realisateurQueryService = realisateurQueryService;
         _categorieFilmQueryService = categorieFilmQueryService;
+        _acteurCreationService = acteurCreationService;
+        _realisateurCreationService = realisateurCreationService;
+        _categorieFilmCreationService = categorieFilmCreationService;
         _windowManager = windowManager;
         _dialogFactory = dialogFactory;
 
@@ -161,23 +170,117 @@ public class MovieCreationViewModel : Screen
 
     private void AfficherErreur(string msg)
     {
-        _windowManager.ShowMessageBox(msg, "Problèmes dans le formulaire", MessageBoxButton.OK, MessageBoxImage.Warning);
+        _windowManager.ShowMessageBox(msg, "Problèmes dans le formulaire", MessageBoxButton.OK,
+            MessageBoxImage.Warning);
     }
 
     public void OnActeursChange(object sender, SelectionChangedEventArgs evt)
     {
-        var listBox = (ListBox)sender;
+        ListBox listBox = (ListBox)sender;
         ActeursSelectionnes = new BindableCollection<ActeurDto>(listBox.SelectedItems.Cast<ActeurDto>());
     }
 
     public void OnRealisateursChange(object sender, SelectionChangedEventArgs evt)
     {
-        var listBox = (ListBox)sender;
+        ListBox listBox = (ListBox)sender;
         RealisateursSelectionnes = new BindableCollection<RealisateurDto>(listBox.SelectedItems.Cast<RealisateurDto>());
+    }
+
+    public void AjouterActeur()
+    {
+        DialogNomPrenomViewModel dialog = _dialogFactory.CreateDialogNomPrenom();
+        dialog.DisplayName = "Ajouter un acteur";
+        _windowManager.ShowDialog(dialog);
+
+        if (dialog.AValide)
+        {
+            AjouterActeur(dialog.Prenom, dialog.Nom);
+        }
+    }
+
+    private async void AjouterActeur(string prenom, string nom)
+    {
+        try
+        {
+            if (await _acteurCreationService.CreerActeur(prenom, nom) is var nouvActeur)
+            {
+                _windowManager.ShowMessageBox("Acteur ajouté avec succès", "Succès", MessageBoxButton.OK,
+                                       MessageBoxImage.Information);
+                _ = ChargerActeurs();
+            }
+        }
+        catch (AggregateException e)
+        {
+            var message = e.InnerExceptions.Select(e => e.Message).Aggregate((a, b) => $"{a}\n{b}");
+            AfficherErreur(message);
+            return;
+        }
+    }
+
+    public void AjouterRealisateur()
+    {
+        DialogNomPrenomViewModel dialog = _dialogFactory.CreateDialogNomPrenom();
+        dialog.DisplayName = "Ajouter un réalisateur";
+        _windowManager.ShowDialog(dialog);
+
+        if (dialog.AValide)
+        {
+            AjouterRealisateur(dialog.Prenom, dialog.Nom);
+        }
+    }
+
+    private async void AjouterRealisateur(string prenom, string nom)
+    {
+        try
+        {
+            if (await _realisateurCreationService.CreerRealisateur(prenom, nom) is var nouvRealisateur)
+            {
+                _windowManager.ShowMessageBox("Réalisateur ajouté avec succès", "Succès", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                _ = ChargerRealisateurs();
+            }
+        }
+        catch (AggregateException e)
+        {
+            var message = e.InnerExceptions.Select(e => e.Message).Aggregate((a, b) => $"{a}\n{b}");
+            AfficherErreur(message);
+            return;
+        }
+    }
+
+    public void AjouterCategorie()
+    {
+        DialogNomAffichageViewModel dialog = _dialogFactory.CreateDialogNomAffichage();
+        dialog.DisplayName = "Ajouter une catégorie";
+        _windowManager.ShowDialog(dialog);
+
+        if (dialog.AValide)
+        {
+            AjouterCategorie(dialog.Nom);
+        }
+    }
+
+    private async void AjouterCategorie(string nom)
+    {
+        try
+        {
+            if (await _categorieFilmCreationService.CreerCategorie(nom) is var nouvCategorie)
+            {
+                _windowManager.ShowMessageBox("Catégorie ajoutée avec succès", "Succès", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                _ = ChargerCategories();
+            }
+        }
+        catch (AggregateException e)
+        {
+            var message = e.InnerExceptions.Select(e => e.Message).Aggregate((a, b) => $"{a}\n{b}");
+            AfficherErreur(message);
+            return;
+        }
     }
 
     public void CreerFilm()
     {
-        ;
+        AjouterActeur();
     }
 }
