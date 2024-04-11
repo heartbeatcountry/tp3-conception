@@ -22,16 +22,17 @@ public class MovieCreationViewModel : Screen
     private readonly IRealisateurCreationService _realisateurCreationService;
     private readonly IRealisateurQueryService _realisateurQueryService;
     private readonly IWindowManager _windowManager;
-    private BindableCollection<ActeurDto> _acteursSelectionnes;
+    private BindableCollection<ActeurDto> _acteursSelectionnes = [];
     private CategorieFilmDto? _categorieSelectionnee;
-    private string _descriptionFilm;
-    private string _dureeFilm;
-    private bool _formulairEstActive;
-    private BindableCollection<ActeurDto> _lstActeurs;
-    private BindableCollection<CategorieFilmDto> _lstCategories;
-    private BindableCollection<RealisateurDto> _lstRealisateurs;
-    private BindableCollection<RealisateurDto> _realisateursSelectionnes;
-    private string _titreFilm;
+    private DateTime _dateSelectionnee = DateTime.Now;
+    private string _descriptionFilm = String.Empty;
+    private string _dureeFilm = String.Empty;
+    private bool _formulairEstActive = true;
+    private BindableCollection<ActeurDto> _lstActeurs = [];
+    private BindableCollection<CategorieFilmDto> _lstCategories = [];
+    private BindableCollection<RealisateurDto> _lstRealisateurs = [];
+    private BindableCollection<RealisateurDto> _realisateursSelectionnes = [];
+    private string _titreFilm = String.Empty;
 
     public MovieCreationViewModel(INavigationController navigationController, IFilmCreationService filmCreationService,
         HeaderViewModel headerViewModel, IActeurQueryService acteurQueryService, IDialogFactory dialogFactory,
@@ -62,19 +63,19 @@ public class MovieCreationViewModel : Screen
     public string TitreFilm
     {
         get => _titreFilm;
-        set => SetAndNotify(ref _titreFilm, value);
+        set => SetAndNotify(ref _titreFilm, value.Trim());
     }
 
     public string DescriptionFilm
     {
         get => _descriptionFilm;
-        set => SetAndNotify(ref _descriptionFilm, value);
+        set => SetAndNotify(ref _descriptionFilm, value.Trim());
     }
 
     public string DureeFilm
     {
         get => _dureeFilm;
-        set => SetAndNotify(ref _dureeFilm, value);
+        set => SetAndNotify(ref _dureeFilm, value.Trim());
     }
 
     public BindableCollection<CategorieFilmDto> LstCategories
@@ -120,6 +121,12 @@ public class MovieCreationViewModel : Screen
     {
         get => _formulairEstActive;
         set => SetAndNotify(ref _formulairEstActive, value);
+    }
+
+    public DateTime DateSelectionnee
+    {
+        get => _dateSelectionnee;
+        set => SetAndNotify(ref _dateSelectionnee, value);
     }
 
     private void DesactiverInterface()
@@ -205,15 +212,14 @@ public class MovieCreationViewModel : Screen
             if (await _acteurCreationService.CreerActeur(prenom, nom) is var nouvActeur)
             {
                 _windowManager.ShowMessageBox("Acteur ajouté avec succès", "Succès", MessageBoxButton.OK,
-                                       MessageBoxImage.Information);
+                    MessageBoxImage.Information);
                 _ = ChargerActeurs();
             }
         }
         catch (AggregateException e)
         {
-            var message = e.InnerExceptions.Select(e => e.Message).Aggregate((a, b) => $"{a}\n{b}");
+            string message = e.InnerExceptions.Select(e => e.Message).Aggregate((a, b) => $"{a}\n{b}");
             AfficherErreur(message);
-            return;
         }
     }
 
@@ -242,9 +248,8 @@ public class MovieCreationViewModel : Screen
         }
         catch (AggregateException e)
         {
-            var message = e.InnerExceptions.Select(e => e.Message).Aggregate((a, b) => $"{a}\n{b}");
+            string message = e.InnerExceptions.Select(e => e.Message).Aggregate((a, b) => $"{a}\n{b}");
             AfficherErreur(message);
-            return;
         }
     }
 
@@ -273,14 +278,38 @@ public class MovieCreationViewModel : Screen
         }
         catch (AggregateException e)
         {
-            var message = e.InnerExceptions.Select(e => e.Message).Aggregate((a, b) => $"{a}\n{b}");
+            string message = e.InnerExceptions.Select(e => e.Message).Aggregate((a, b) => $"{a}\n{b}");
             AfficherErreur(message);
-            return;
         }
     }
 
-    public void CreerFilm()
+    public async void CreerFilm()
     {
-        AjouterActeur();
+        List<Guid> guidsActeurs = ActeursSelectionnes.Select(a => a.Id).ToList();
+        List<Guid> guidsRealisateurs = RealisateursSelectionnes.Select(r => r.Id).ToList();
+        Guid? guidCategorie = CategorieSelectionnee?.Id;
+        _ = ushort.TryParse(DureeFilm, out ushort duree);
+
+        if (guidCategorie is null)
+        {
+            AfficherErreur("Veuillez sélectionner une catégorie");
+            return;
+        }
+
+        try
+        {
+            if (await _filmCreationService.CreerFilm(TitreFilm, DescriptionFilm, (Guid)guidCategorie!, DateSelectionnee,
+                    guidsActeurs, guidsRealisateurs, duree) is var nouvFilm)
+            {
+                _windowManager.ShowMessageBox("Film ajouté avec succès", "Succès", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                HeaderViewModel.GoBack();
+            }
+        }
+        catch (AggregateException e)
+        {
+            string message = e.InnerExceptions.Select(e => e.Message).Aggregate((a, b) => $"{a}\n{b}");
+            AfficherErreur(message);
+        }
     }
 }
