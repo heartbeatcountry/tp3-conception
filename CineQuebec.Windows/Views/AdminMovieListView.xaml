@@ -13,7 +13,7 @@
     <DockPanel Margin="10">
         <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}" />
         <DockPanel Margin="0,10,0,0">
-            <DockPanel DockPanel.Dock="Bottom">
+            <DockPanel DockPanel.Dock="Bottom" Margin="0,10,0,0">
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" HorizontalAlignment="Right"
                             VerticalAlignment="Center" IsEnabled="{Binding CanRefreshFilms}">
                     <Label Content="Afficher:" VerticalAlignment="Center" />
@@ -23,8 +23,8 @@
                                  Command="{s:Action AfficherAlaffiche}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Margin="5,5" Content=" Rafraîchir " Command="{s:Action RefreshFilms}" Style="{StaticResource DefautButton}"  />
-                    <Button Margin="0,5" Content=" Ajouter un film " Command="{s:Action AddNewFilm}" Style="{StaticResource DefautButton}"  />
+                    <Button Margin="0,0,15,0" Content="Rafraîchir" Command="{s:Action RefreshFilms}" Style="{StaticResource DefautButton}"  />
+                    <Button Content="Ajouter un film" Command="{s:Action AddNewFilm}" Style="{StaticResource DefautButton}"  />
                 </StackPanel>
             </DockPanel>
 

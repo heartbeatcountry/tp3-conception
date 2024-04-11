@@ -15,12 +15,12 @@
         <DockPanel IsEnabled="{Binding FormulairEstActive}">
             <DockPanel DockPanel.Dock="Bottom">
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" HorizontalAlignment="Left" >
-                    <Button Content=" Créer un acteur " Command="{s:Action AjouterActeur}" Style="{StaticResource DefautButton}" Margin=" 5"  />
-                    <Button Content=" Créer un réalisateur " Command="{s:Action AjouterRealisateur}" Margin="5" Style="{StaticResource DefautButton}"  />
-                    <Button Content=" Créer une catégorie " Command="{s:Action AjouterCategorie}" Style="{StaticResource DefautButton}" Margin=" 5"   />
+                    <Button Content="Créer un acteur" Command="{s:Action AjouterActeur}" Style="{StaticResource DefautButton}" />
+                    <Button Content="Créer un réalisateur" Command="{s:Action AjouterRealisateur}" Margin="15,0" Style="{StaticResource DefautButton}" />
+                    <Button Content="Créer une catégorie" Command="{s:Action AjouterCategorie}" Style="{StaticResource DefautButton}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal " HorizontalAlignment="Right">
-                    <Button Content=" Créer le film " Command="{s:Action CreerFilm}" Style="{StaticResource DefautButton}" Margin="10 5" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Créer le film" Command="{s:Action CreerFilm}" Style="{StaticResource DefautButton}" />
                 </StackPanel>
             </DockPanel>
             <Grid>
