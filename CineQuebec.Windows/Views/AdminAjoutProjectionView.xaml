@@ -6,81 +6,58 @@
              mc:Ignorable="d"
              xmlns:views="clr-namespace:CineQuebec.Windows.Views"
              d:DataContext="{d:DesignInstance views:AdminAjoutProjectionViewModel}"
-             xmlns:s="https://github.com/canton7/Stylet" 
+             xmlns:s="https://github.com/canton7/Stylet"
              d:DesignHeight="450" d:DesignWidth="800">
 
     <DockPanel Margin="10">
-        <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}"/>
+        <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}" />
         <DockPanel Margin="0,10,0,0">
-            <Grid DockPanel.Dock="Top">
+            <StackPanel Margin="0,5,0,0" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Annuler" Command="{s:Action Annuler}" Style="{StaticResource DefautButton}" />
+                <Button Content="Enregistrer la projection" Margin="15,0,0,0" Command="{s:Action EnregistrerProjection}"
+                        Style="{StaticResource DefautButton}" />
+            </StackPanel>
+            <Grid>
                 <Grid.Resources>
                     <ResourceDictionary>
                         <Style TargetType="Label">
-                            <Setter Property="Background" Value="LightGray"/>
+                            <Setter Property="Background" Value="LightGray" />
                         </Style>
                     </ResourceDictionary>
                 </Grid.Resources>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="5"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="5"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Content="Titre"/>
-                    <TextBlock Margin="0,5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Film.Titre}"/>
-                   
-                  
-                </Grid>
-                
-               
-            </Grid>
-            <StackPanel Margin="0,5,0,0" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right"  Height="50">
-                <Button Content="Annuler"  Margin="10" Command="{s:Action Annuler}"  Style="{StaticResource DefautButton}" Width="100"/>
-                <Button Content="Enregistrer la projection"  Margin="10" Command="{s:Action EnregistrerProjection}"  Style="{StaticResource DefautButton}" Width="225"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Content="Titre du film:" />
+                <TextBlock Margin="0,10,0,40" Grid.Row="1" Text="{Binding Film.Titre}" />
+                <Label Grid.Row="2" Content="Choisir la date et l'heure:"/>
+                <DatePicker Grid.Row="3" SelectedDate="{Binding DateSelectionnee}" Margin="0,10,0,40" />
+                <Label Grid.Row="4" Content="Choisir la salle de projection:"/>
+                <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,10,0,40">
+                    <ComboBox ItemsSource="{Binding SallesDisponibles}" Margin="0,0,30,0"
+                              SelectedItem="{Binding SalleSelectionnee}" MinWidth="300">
+                        <ComboBox.Effect>
+                            <DropShadowEffect />
+                        </ComboBox.Effect>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Numero}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Content="Ajouter une nouvelle salle" Command="{s:Action AjouterSalle}" VerticalAlignment="Center"
+                            Style="{StaticResource BoutonBase}" />
                 </StackPanel>
-            <DockPanel Margin="0,5,0,0">
-                <DockPanel>
-                    <Label DockPanel.Dock="Top" Content="Planification d'une projection" Background="LightGray"/>
-                    <StackPanel Margin="0,5,0,0"  Orientation="Vertical" >
-                        <DatePicker SelectedDate="{Binding DateSelectionnee}" Margin="20"  />
-                        <Label Margin="20 5 " > Sélectionner une salle : </Label>
-                        <StackPanel Orientation="Horizontal" >
-
-                            <ComboBox ItemsSource="{Binding SallesDisponibles}"  SelectedItem="{Binding SalleSelectionnee}" Margin="20 10" Width="255">
-                            <ComboBox.Effect>
-                                <DropShadowEffect />
-                            </ComboBox.Effect>
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Label Content="{Binding Numero}"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                            <Button Content="Ajouter une salle" Command="{s:Action AjouterSalle}"  Style="{StaticResource DefautButton}" Width="175" Height="50" Margin="10"/>
-                        
-                        </StackPanel>
-                        <CheckBox Content="Avant-première" IsChecked ="{Binding estAvantPremiere}" Margin="20"/>
-
-                    </StackPanel>
-
-                  
-                </DockPanel>
-            </DockPanel>
+                <Label Grid.Row="6" Content="Est-ce une avant-première?"/>
+                <CheckBox Grid.Row="7" Content="Cette projection est une avant-première" IsChecked="{Binding estAvantPremiere}" Margin="0,5" />
+            </Grid>
         </DockPanel>
     </DockPanel>
 </UserControl>
