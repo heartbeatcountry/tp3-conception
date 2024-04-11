@@ -7,6 +7,7 @@
              xmlns:views="clr-namespace:CineQuebec.Windows.Views"
              d:DataContext="{d:DesignInstance views:AdminMovieDetailsViewModel}"
              xmlns:s="https://github.com/canton7/Stylet"
+             xmlns:films="clr-namespace:CineQuebec.Application.Records.Projections;assembly=CineQuebec.Application"
              d:DesignHeight="450" d:DesignWidth="800">
 
     <DockPanel Margin="10">
@@ -92,8 +93,9 @@
             <DockPanel Margin="0,5,0,0">
                 <StackPanel Margin="0,5,0,0" DockPanel.Dock="Bottom" Orientation="Horizontal"
                             HorizontalAlignment="Right" Height="30">
-                    <Button Content=" Ajouter une projection "  Command="{s:Action AjouterProjection}" CommandParameter="{Binding Id}" Style="{StaticResource DefautButton}" Margin="5 0" />
-                    <Button Content=" Modifier ce film " Command="{s:Action ModifierFilm}" Style="{StaticResource DefautButton}" CommandParameter="{Binding Id}" Margin="5 0" Padding="5 0" />
+                    <Button Content="Rafraîchir"  Command="{s:Action RafraichirTout}" Style="{StaticResource DefautButton}" />
+                    <Button Content="Ajouter une projection"  Command="{s:Action AjouterProjection}" CommandParameter="{Binding Id}" Style="{StaticResource DefautButton}" Margin="15,0" />
+                    <Button Content="Modifier ce film" Command="{s:Action ModifierFilm}" Style="{StaticResource DefautButton}" />
                 </StackPanel>
                 <DockPanel>
                     <Label DockPanel.Dock="Top" Content="Projections planifiées pour ce film" Background="LightGray" />
@@ -103,6 +105,14 @@
                                 <GridViewColumn Header="Date" Width="200" />
                                 <GridViewColumn Header="Heure" Width="200" />
                                 <GridViewColumn Header="Salle" Width="200" />
+                                <GridViewColumn Header="Actions" Width="100">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate DataType="{x:Type films:ProjectionDto}">
+                                            <Button Content="Supprimer" Command="{s:Action SupprimerProjection}"
+                                                    CommandParameter="{Binding}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </ListView>
