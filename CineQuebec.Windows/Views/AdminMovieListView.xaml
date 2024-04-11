@@ -42,7 +42,7 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate DataType="{x:Type films:FilmDto}">
                                     <Button Content="Consulter" Command="{s:Action ConsulterFilm}"
-                                            CommandParameter="{Binding Id}" Style="{StaticResource DefautButton}" Margin="10" />
+                                            CommandParameter="{Binding Id}" Style="{StaticResource BoutonBase}" Margin="0" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
