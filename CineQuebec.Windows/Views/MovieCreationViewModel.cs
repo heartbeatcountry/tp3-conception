@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -10,7 +11,7 @@ using Stylet;
 
 namespace CineQuebec.Windows.Views;
 
-public class MovieCreationViewModel : Screen
+public class MovieCreationViewModel : Screen, IScreenWithData
 {
     private readonly IActeurCreationService _acteurCreationService;
     private readonly IActeurQueryService _acteurQueryService;
@@ -22,7 +23,9 @@ public class MovieCreationViewModel : Screen
     private readonly INavigationController _navigationController;
     private readonly IRealisateurCreationService _realisateurCreationService;
     private readonly IRealisateurQueryService _realisateurQueryService;
+    private readonly IFilmQueryService _filmQueryService;
     private readonly IWindowManager _windowManager;
+    private readonly IFilmModificationService _filmModificationService;
     private BindableCollection<ActeurDto> _acteursSelectionnes = [];
     private CategorieFilmDto? _categorieSelectionnee;
     private DateTime _dateSelectionnee = DateTime.Now;
@@ -34,12 +37,14 @@ public class MovieCreationViewModel : Screen
     private BindableCollection<RealisateurDto> _lstRealisateurs = [];
     private BindableCollection<RealisateurDto> _realisateursSelectionnes = [];
     private string _titreFilm = String.Empty;
+    private Guid? _idFilm = null;
+    private FilmDto? _film = null;
 
     public MovieCreationViewModel(INavigationController navigationController, IFilmCreationService filmCreationService,
         HeaderViewModel headerViewModel, IActeurQueryService acteurQueryService, IDialogFactory dialogFactory,
         IRealisateurQueryService realisateurQueryService, ICategorieFilmQueryService categorieFilmQueryService,
-        IWindowManager windowManager, IActeurCreationService acteurCreationService,
-        IRealisateurCreationService realisateurCreationService,
+        IWindowManager windowManager, IActeurCreationService acteurCreationService, IFilmModificationService filmModificationService,
+        IRealisateurCreationService realisateurCreationService, IFilmQueryService filmQueryService,
         ICategorieFilmCreationService categorieFilmCreationService, GestionnaireExceptions gestionnaireExceptions)
     {
         _navigationController = navigationController;
@@ -50,7 +55,9 @@ public class MovieCreationViewModel : Screen
         _acteurCreationService = acteurCreationService;
         _realisateurCreationService = realisateurCreationService;
         _categorieFilmCreationService = categorieFilmCreationService;
+        _filmModificationService = filmModificationService;
         _gestionnaireExceptions = gestionnaireExceptions;
+        _filmQueryService = filmQueryService;
         _windowManager = windowManager;
         _dialogFactory = dialogFactory;
 
@@ -175,6 +182,11 @@ public class MovieCreationViewModel : Screen
         await ChargerCategories();
         await ChargerActeurs();
         await ChargerRealisateurs();
+
+        if (_film is not null)
+        {
+            ConfigurerEnModeEdition();
+        }
     }
 
     private void AfficherErreur(string msg)
@@ -297,7 +309,17 @@ public class MovieCreationViewModel : Screen
 
         try
         {
-            if (await _filmCreationService.CreerFilm(TitreFilm, DescriptionFilm, (Guid)guidCategorie!, DateSelectionnee,
+            if (_idFilm is { } id)
+            {
+                await _filmModificationService.ModifierFilm(id, TitreFilm, DescriptionFilm, (Guid)guidCategorie!,
+                    DateSelectionnee, guidsActeurs, guidsRealisateurs, duree);
+
+                _windowManager.ShowMessageBox("Film modifié avec succès", "Succès", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                HeaderViewModel.GoBack();
+            }
+
+            else if (await _filmCreationService.CreerFilm(TitreFilm, DescriptionFilm, (Guid)guidCategorie!, DateSelectionnee,
                     guidsActeurs, guidsRealisateurs, duree) is var nouvFilm)
             {
                 _windowManager.ShowMessageBox("Film ajouté avec succès", "Succès", MessageBoxButton.OK,
@@ -309,5 +331,46 @@ public class MovieCreationViewModel : Screen
         {
             _gestionnaireExceptions.GererException(e);
         }
+    }
+
+    public void SetData(object data)
+    {
+        if (data is not Guid idFilm)
+        {
+            return;
+        }
+
+        _idFilm = idFilm;
+        _ = ChargerFilm();
+    }
+
+    private async Task ChargerFilm()
+    {
+        if (_idFilm is null)
+        {
+            return;
+        }
+
+        _film = await _filmQueryService.ObtenirDetailsFilmParId((Guid)_idFilm);
+        ConfigurerEnModeEdition();
+    }
+
+    private void ConfigurerEnModeEdition()
+    {
+        if (_film is null)
+        {
+            HeaderViewModel.GoBack();
+            return;
+        }
+
+        TitreFilm = _film.Titre;
+        DescriptionFilm = _film.Description;
+        DureeFilm = _film.DureeEnMinutes.ToString(CultureInfo.InvariantCulture);
+        DateSelectionnee = _film.DateSortieInternationale;
+        CategorieSelectionnee = LstCategories.FirstOrDefault(c => c.Id == _film.Categorie?.Id);
+        ActeursSelectionnes = new BindableCollection<ActeurDto>(LstActeurs.Where(a => _film.Acteurs.Any(a2 => a2.Id == a.Id)));
+        RealisateursSelectionnes = new BindableCollection<RealisateurDto>(LstRealisateurs.Where(r => _film.Realisateurs.Any(r2 => r2.Id == r.Id)));
+
+        HeaderViewModel.DisplayName = "Modifier un film";
     }
 }

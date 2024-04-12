@@ -97,6 +97,8 @@
                             Style="{StaticResource DefautButton}" />
                     <Button Content="Ajouter une projection" Command="{s:Action AjouterProjection}"
                             Style="{StaticResource DefautButton}" Margin="15,0" />
+                    <Button Content="Supprimer ce film" Command="{s:Action SupprimerFilm}"
+                            Style="{StaticResource DefautButton}" Margin="0,0,15,0" />
                     <Button Content="Modifier ce film" Command="{s:Action ModifierFilm}"
                             Style="{StaticResource DefautButton}" />
                 </StackPanel>
@@ -128,7 +130,8 @@
                                                     <Style TargetType="{x:Type TextBlock}">
                                                         <Setter Property="Text" Value="Non" />
                                                         <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding EstAvantPremiere}" Value="True">
+                                                            <DataTrigger Binding="{Binding EstAvantPremiere}"
+                                                                         Value="True">
                                                                 <Setter Property="Text" Value="Oui" />
                                                             </DataTrigger>
                                                         </Style.Triggers>

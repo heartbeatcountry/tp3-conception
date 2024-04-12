@@ -136,14 +136,14 @@ public class Film : Entite, IComparable<Film>, IFilm
                                       film.DateSortieInternationale.Year && DureeEnMinutes == film.DureeEnMinutes);
     }
 
-    private void SetActeursParId(IEnumerable<Guid> acteurs)
+    public void SetActeursParId(IEnumerable<Guid> acteurs)
     {
         _acteursParId.Clear();
         _acteursParId.UnionWith(acteurs);
         ActeursParId = _acteursParId.ToArray().AsReadOnly();
     }
 
-    private void SetRealisateursParId(IEnumerable<Guid> realisateurs)
+    public void SetRealisateursParId(IEnumerable<Guid> realisateurs)
     {
         _realisateursParId.Clear();
         _realisateursParId.UnionWith(realisateurs);

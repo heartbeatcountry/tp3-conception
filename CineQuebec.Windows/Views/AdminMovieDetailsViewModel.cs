@@ -5,6 +5,7 @@ using System.Windows.Input;
 using CineQuebec.Application.Interfaces.Services;
 using CineQuebec.Application.Records.Films;
 using CineQuebec.Application.Records.Projections;
+using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Windows.Views.Components;
 
 using Stylet;
@@ -17,6 +18,7 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
     private readonly INavigationController _navigationController;
     private readonly IProjectionDeletionService _projectionDeletionService;
     private readonly IProjectionQueryService _projectionQueryService;
+    private readonly IFilmDeletionService _filmDeletionService;
     private readonly IWindowManager _windowManager;
     private BindableCollection<ActeurDto> _acteurs = [];
     private bool _canRafraichirTout = true;
@@ -25,11 +27,12 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
     private BindableCollection<RealisateurDto> _realisateurs = [];
 
     public AdminMovieDetailsViewModel(INavigationController navigationController, HeaderViewModel headerViewModel,
-        IFilmQueryService filmQueryService, IWindowManager windowManager,
+        IFilmQueryService filmQueryService, IWindowManager windowManager, IFilmDeletionService filmDeletionService,
         IProjectionDeletionService projectionDeletionService, IProjectionQueryService projectionQueryService)
     {
         _navigationController = navigationController;
         _filmQueryService = filmQueryService;
+        _filmDeletionService = filmDeletionService;
         _windowManager = windowManager;
         _projectionDeletionService = projectionDeletionService;
         _projectionQueryService = projectionQueryService;
@@ -146,7 +149,35 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
             return;
         }
 
-        _navigationController.NavigateTo<MovieModificationViewModel>(Film.Id);
+        _navigationController.NavigateTo<MovieCreationViewModel>(Film.Id);
+    }
+
+    public async void SupprimerFilm()
+    {
+        if (Film is null)
+        {
+            return;
+        }
+
+        MessageBoxResult result = _windowManager.ShowMessageBox(
+                       $"Êtes-vous certain.e de vouloir supprimer le film {Film.Titre} ?",
+                                  "Supprimer un film", MessageBoxButton.YesNo);
+
+        if (result != MessageBoxResult.Yes)
+        {
+            return;
+        }
+
+        DesactiverInterface();
+
+        if (!await _filmDeletionService.SupprimerFilm(Film.Id))
+        {
+            return;
+        }
+
+        _windowManager.ShowMessageBox("Le film a été supprimé avec succès.", "Suppression de film");
+        HeaderViewModel.GoBack();
+        return;
     }
 
     public void SupprimerProjection(ProjectionDto projection)

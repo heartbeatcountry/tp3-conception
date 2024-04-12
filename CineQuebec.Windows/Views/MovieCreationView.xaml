@@ -72,7 +72,7 @@
                 <Label Content="{x:Static rs:Resource.admin_ajout_categorie_film}" Grid.Row="4" Grid.Column="0"
                        VerticalAlignment="Center" />
                 <ComboBox ItemsSource="{Binding LstCategories}" SelectedItem="{Binding CategorieSelectionnee}"
-                          Grid.Row="4" Grid.ColumnSpan="3" BorderBrush="Black"
+                          Grid.Row="4" Grid.ColumnSpan="3" BorderBrush="Black" VerticalAlignment="Center"
                           BorderThickness="2" Margin="111,20,0,20">
                     <ComboBox.Effect>
                         <DropShadowEffect />
@@ -87,7 +87,7 @@
                 <Label Content="Date de sortie:"
                        Grid.Column="5" VerticalAlignment="Center" />
                 <DatePicker SelectedDate="{Binding DateSelectionnee}" Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="3"
-                            Margin="111,20,0,20" />
+                            Margin="111,20,0,20" Text="Choisir la date..." VerticalAlignment="Center"/>
 
 
                 <Label Content="{x:Static rs:Resource.admin_ajout_acteurs_film}" Grid.Row="1"
