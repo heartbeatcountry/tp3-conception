@@ -1,0 +1,27 @@
+[{
+  "_id": {
+    "$binary": {
+      "base64": "UB0uSOHe+kYfMwjcWxtiXw==",
+      "subType": "03"
+    }
+  },
+  "NomAffichage": "Action"
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "D/Q6rD4b7kEfNAjcWxtiXw==",
+      "subType": "03"
+    }
+  },
+  "NomAffichage": "Suspense"
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "vPlRDgbkV04fNQjcWxtiXw==",
+      "subType": "03"
+    }
+  },
+  "NomAffichage": "Spaghetti Western"
+}]

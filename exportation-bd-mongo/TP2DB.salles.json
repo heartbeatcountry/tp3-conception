@@ -1,0 +1,30 @@
+[{
+  "_id": {
+    "$binary": {
+      "base64": "5t2jONsJOEde9AjcWxwgRQ==",
+      "subType": "03"
+    }
+  },
+  "NbSieges": 120,
+  "Numero": 1
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "zGrABQu8hUte9QjcWxwgRQ==",
+      "subType": "03"
+    }
+  },
+  "NbSieges": 214,
+  "Numero": 2
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "a/YnUMI7vkJe9gjcWxwgRQ==",
+      "subType": "03"
+    }
+  },
+  "NbSieges": 200,
+  "Numero": 4
+}]

@@ -1,0 +1,60 @@
+[{
+  "_id": {
+    "$binary": {
+      "base64": "MD/rIbri8UicBAjcWxuFgA==",
+      "subType": "03"
+    }
+  },
+  "Nom": "Chagnon",
+  "Prenom": "Paul"
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "ytMbRJgpuEucBQjcWxuFgA==",
+      "subType": "03"
+    }
+  },
+  "Nom": "Sardou",
+  "Prenom": "Michel"
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "i+JbcGOkQkecBgjcWxuFgA==",
+      "subType": "03"
+    }
+  },
+  "Nom": "Dupieux",
+  "Prenom": "Quentin"
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "vjlSZr02s0KcBwjcWxuFgA==",
+      "subType": "03"
+    }
+  },
+  "Nom": "Hardy",
+  "Prenom": "Martin"
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "HxhSlcMMoU6cCAjcWxuFgA==",
+      "subType": "03"
+    }
+  },
+  "Nom": "Bettez",
+  "Prenom": "Edith"
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "7SoAZoXhmEucCQjcWxuFgA==",
+      "subType": "03"
+    }
+  },
+  "Nom": "Consola",
+  "Prenom": "José"
+}]

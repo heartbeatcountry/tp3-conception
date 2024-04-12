@@ -1,0 +1,174 @@
+[{
+  "_id": {
+    "$binary": {
+      "base64": "1Bi8tLxVBUhUCQjcWxvdXg==",
+      "subType": "03"
+    }
+  },
+  "ActeursParId": [
+    {
+      "$binary": {
+        "base64": "7SoAZoXhmEucCQjcWxuFgA==",
+        "subType": "03"
+      }
+    },
+    {
+      "$binary": {
+        "base64": "MD/rIbri8UicBAjcWxuFgA==",
+        "subType": "03"
+      }
+    }
+  ],
+  "DateSortieInternationale": {
+    "$date": "2024-04-12T04:00:00.000Z"
+  },
+  "Description": "Description 1",
+  "DureeEnMinutes": 114,
+  "IdCategorie": {
+    "$binary": {
+      "base64": "UB0uSOHe+kYfMwjcWxtiXw==",
+      "subType": "03"
+    }
+  },
+  "RealisateursParId": [
+    {
+      "$binary": {
+        "base64": "j05LauWd3Ug4mwjcWxvR1A==",
+        "subType": "03"
+      }
+    }
+  ],
+  "Titre": "Film 1"
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "LYW4nq8aj0BUCgjcWxvdXg==",
+      "subType": "03"
+    }
+  },
+  "ActeursParId": [
+    {
+      "$binary": {
+        "base64": "vjlSZr02s0KcBwjcWxuFgA==",
+        "subType": "03"
+      }
+    }
+  ],
+  "DateSortieInternationale": {
+    "$date": "2024-04-12T04:00:00.000Z"
+  },
+  "Description": "Description 2",
+  "DureeEnMinutes": 111,
+  "IdCategorie": {
+    "$binary": {
+      "base64": "D/Q6rD4b7kEfNAjcWxtiXw==",
+      "subType": "03"
+    }
+  },
+  "RealisateursParId": [
+    {
+      "$binary": {
+        "base64": "YYA6tyfQNUY4nAjcWxvR1A==",
+        "subType": "03"
+      }
+    }
+  ],
+  "Titre": "Film 2"
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "Ml+l/hJFLUBUCwjcWxvdXg==",
+      "subType": "03"
+    }
+  },
+  "ActeursParId": [
+    {
+      "$binary": {
+        "base64": "HxhSlcMMoU6cCAjcWxuFgA==",
+        "subType": "03"
+      }
+    },
+    {
+      "$binary": {
+        "base64": "vjlSZr02s0KcBwjcWxuFgA==",
+        "subType": "03"
+      }
+    }
+  ],
+  "DateSortieInternationale": {
+    "$date": "2024-04-12T04:00:00.000Z"
+  },
+  "Description": "Description 3",
+  "DureeEnMinutes": 64,
+  "IdCategorie": {
+    "$binary": {
+      "base64": "vPlRDgbkV04fNQjcWxtiXw==",
+      "subType": "03"
+    }
+  },
+  "RealisateursParId": [
+    {
+      "$binary": {
+        "base64": "j05LauWd3Ug4mwjcWxvR1A==",
+        "subType": "03"
+      }
+    }
+  ],
+  "Titre": "Film 3"
+},
+{
+  "_id": {
+    "$binary": {
+      "base64": "DG728/omtkpUDAjcWxvdXg==",
+      "subType": "03"
+    }
+  },
+  "ActeursParId": [
+    {
+      "$binary": {
+        "base64": "ytMbRJgpuEucBQjcWxuFgA==",
+        "subType": "03"
+      }
+    },
+    {
+      "$binary": {
+        "base64": "vjlSZr02s0KcBwjcWxuFgA==",
+        "subType": "03"
+      }
+    },
+    {
+      "$binary": {
+        "base64": "i+JbcGOkQkecBgjcWxuFgA==",
+        "subType": "03"
+      }
+    }
+  ],
+  "DateSortieInternationale": {
+    "$date": "2024-04-12T04:00:00.000Z"
+  },
+  "Description": "Description 4",
+  "DureeEnMinutes": 23,
+  "IdCategorie": {
+    "$binary": {
+      "base64": "D/Q6rD4b7kEfNAjcWxtiXw==",
+      "subType": "03"
+    }
+  },
+  "RealisateursParId": [
+    {
+      "$binary": {
+        "base64": "YYA6tyfQNUY4nAjcWxvR1A==",
+        "subType": "03"
+      }
+    },
+    {
+      "$binary": {
+        "base64": "j05LauWd3Ug4mwjcWxvR1A==",
+        "subType": "03"
+      }
+    }
+  ],
+  "Titre": "Film 4"
+}]
