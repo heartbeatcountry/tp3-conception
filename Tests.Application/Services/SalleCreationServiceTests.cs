@@ -46,35 +46,37 @@ public class SalleCreationServiceTests : GenericServiceTests<SalleCreationServic
     }
 
     [Test]
-    public async Task CreerSalle_WhenSalleEstUnique_ShouldAddSalleToRepository()
+    public async Task CreerSalle_WhenSalleEstUnique_ShouldCreateAndReturnNewSalle()
     {
         // Arrange
+        ISalle salleMock = Mock.Of<ISalle>(s => s.Id == Guid.NewGuid());
         SalleRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<ISalle, bool>>>()))
             .ReturnsAsync(false);
         SalleRepositoryMock.Setup(r => r.AjouterAsync(It.IsAny<Salle>()))
-            .ReturnsAsync(Mock.Of<ISalle>(a => a.Id == Guid.NewGuid()));
-
-        // Act
-        await Service.CreerSalle(NumeroValide, NbSiegesValide);
-
-        // Assert
-        SalleRepositoryMock.Verify(r => r.AjouterAsync(It.IsAny<Salle>()));
-    }
-
-    [Test]
-    public async Task CreerSalle_WhenSalleEstUnique_ShouldReturnGuidOfNewSalle()
-    {
-        // Arrange
-        SalleRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<ISalle, bool>>>()))
-            .ReturnsAsync(false);
-        SalleRepositoryMock.Setup(r => r.AjouterAsync(It.IsAny<Salle>()))
-            .ReturnsAsync(Mock.Of<ISalle>(a => a.Id == Guid.NewGuid()));
+            .ReturnsAsync(salleMock);
 
         // Act
         Guid salleId = await Service.CreerSalle(NumeroValide, NbSiegesValide);
 
         // Assert
-        Assert.That(salleId, Is.Not.EqualTo(Guid.Empty));
+        Assert.That(salleId, Is.EqualTo(salleMock.Id));
+    }
+
+    [Test]
+    public async Task CreerSalle_WhenSalleEstUnique_ShouldPersistnewSalle()
+    {
+        // Arrange
+        SalleRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<ISalle, bool>>>()))
+            .ReturnsAsync(false);
+        SalleRepositoryMock.Setup(r => r.AjouterAsync(It.IsAny<Salle>()))
+            .ReturnsAsync(Mock.Of<ISalle>(a => a.Id == Guid.NewGuid()));
+
+        // Act
+        _ = await Service.CreerSalle(NumeroValide, NbSiegesValide);
+
+        // Assert
+        SalleRepositoryMock.Verify(r => r.AjouterAsync(It.IsAny<Salle>()), Times.Once);
+        UnitOfWorkMock.Verify(u => u.SauvegarderAsync(It.IsAny<CancellationToken?>()), Times.Once);
     }
 
     [Test]

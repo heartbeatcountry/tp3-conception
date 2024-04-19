@@ -9,21 +9,21 @@ namespace Tests.Application.Services;
 public class FilmDeletionServiceTests : GenericServiceTests<FilmDeletionService>
 {
     [Test]
-    public void SupprimerFilm_WhenFilmDoesNotExist_ShouldReturnFalse()
+    public async Task SupprimerFilm_WhenFilmDoesNotExist_ShouldReturnFalse()
     {
         // Arrange
         Guid idFilm = Guid.NewGuid();
         FilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(idFilm)).ReturnsAsync((IFilm?)null);
 
         // Act
-        bool result = Service.SupprimerFilm(idFilm).Result;
+        bool result = await Service.SupprimerFilm(idFilm);
 
         // Assert
         Assert.That(result, Is.False);
     }
 
     [Test]
-    public void SupprimerFilm_WhenFilmExists_ShouldDeleteFilm()
+    public async Task SupprimerFilm_WhenFilmExists_ShouldDeleteFilm()
     {
         // Arrange
         Guid idFilm = Guid.NewGuid();
@@ -31,14 +31,14 @@ public class FilmDeletionServiceTests : GenericServiceTests<FilmDeletionService>
         FilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(idFilm)).ReturnsAsync(film);
 
         // Act
-        Service.SupprimerFilm(idFilm).Wait();
+        _ = await Service.SupprimerFilm(idFilm);
 
         // Assert
         FilmRepositoryMock.Verify(r => r.Supprimer(film), Times.Once);
     }
 
     [Test]
-    public void SupprimerFilm_WhenFilmExists_ShouldReturnTrue()
+    public async Task SupprimerFilm_WhenFilmExists_ShouldReturnTrue()
     {
         // Arrange
         Guid idFilm = Guid.NewGuid();
@@ -46,14 +46,14 @@ public class FilmDeletionServiceTests : GenericServiceTests<FilmDeletionService>
         FilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(idFilm)).ReturnsAsync(film);
 
         // Act
-        bool result = Service.SupprimerFilm(idFilm).Result;
+        bool result = await Service.SupprimerFilm(idFilm);
 
         // Assert
         Assert.That(result, Is.True);
     }
 
     [Test]
-    public void SupprimerFilm_WhenFilmExistsAndHasMultipleProjections_ShouldDeleteAllProjections()
+    public async Task SupprimerFilm_WhenFilmExistsAndHasMultipleProjections_ShouldDeleteAllProjections()
     {
         // Arrange
         Guid idFilm = Guid.NewGuid();
@@ -63,14 +63,14 @@ public class FilmDeletionServiceTests : GenericServiceTests<FilmDeletionService>
             .ReturnsAsync(new[] { Mock.Of<IProjection>(), Mock.Of<IProjection>(), Mock.Of<IProjection>() });
 
         // Act
-        Service.SupprimerFilm(idFilm).Wait();
+        _ = await Service.SupprimerFilm(idFilm);
 
         // Assert
         ProjectionRepositoryMock.Verify(r => r.Supprimer(It.IsAny<IProjection>()), Times.Exactly(3));
     }
 
     [Test]
-    public void SupprimerFilm_WhenFilmExistsAndHasNoProjections_ShouldNotAttemptToDeleteProjections()
+    public async Task SupprimerFilm_WhenFilmExistsAndHasNoProjections_ShouldNotAttemptToDeleteProjections()
     {
         // Arrange
         Guid idFilm = Guid.NewGuid();
@@ -80,7 +80,7 @@ public class FilmDeletionServiceTests : GenericServiceTests<FilmDeletionService>
             .ReturnsAsync(Array.Empty<IProjection>());
 
         // Act
-        Service.SupprimerFilm(idFilm).Wait();
+        _ = await Service.SupprimerFilm(idFilm);
 
         // Assert
         ProjectionRepositoryMock.Verify(r => r.Supprimer(It.IsAny<IProjection>()), Times.Never);

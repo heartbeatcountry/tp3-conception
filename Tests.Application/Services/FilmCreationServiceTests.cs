@@ -16,7 +16,8 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
     private readonly Guid _idCategorieValide = Guid.NewGuid();
 
     [Test]
-    public void CreerFilm_WhenGivenActeurNotPresentInRepository_ThrowsAggregateExceptionContainingArgumentException()
+    public void
+        CreerFilm_WhenGivenActeurNotPresentInRepository_ShouldThrowAggregateExceptionContainingArgumentException()
     {
         // Arrange
         ActeurRepositoryMock.Setup(r => r.ObtenirParIdAsync(It.IsAny<Guid>()))
@@ -25,13 +26,14 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
         // Act & Assert
         AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
             Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now,
-                new[] { Guid.NewGuid() }, Array.Empty<Guid>(), DureeValide));
+                [Guid.NewGuid()], Array.Empty<Guid>(), DureeValide));
         Assert.That(aggregateException?.InnerExceptions,
             Has.One.InstanceOf<ArgumentException>().With.Message.Contains("n'existe pas"));
     }
 
     [Test]
-    public void CreerFilm_WhenGivenCategorieNotPresentInRepository_ThrowsAggregateExceptionContainingArgumentException()
+    public void
+        CreerFilm_WhenGivenCategorieNotPresentInRepository_ShouldThrowAggregateExceptionContainingArgumentException()
     {
         // Arrange
         CategorieFilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(_idCategorieValide))
@@ -46,7 +48,7 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
     }
 
     [Test]
-    public void CreerFilm_WhenGivenInvalidDescription_ThrowsAggregateExceptionContainingArgumentException()
+    public void CreerFilm_WhenGivenInvalidDescription_ShouldThrowAggregateExceptionContainingArgumentException()
     {
         // Act & Assert
         AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
@@ -57,7 +59,7 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
     }
 
     [Test]
-    public void CreerFilm_WhenGivenInvalidDuration_ThrowsAggregateExceptionContainingArgumentException()
+    public void CreerFilm_WhenGivenInvalidDuration_ShouldThrowAggregateExceptionContainingArgumentException()
     {
         // Act & Assert
         AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
@@ -68,7 +70,7 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
     }
 
     [Test]
-    public void CreerFilm_WhenGivenInvalidReleaseDate_ThrowsAggregateExceptionContainingArgumentException()
+    public void CreerFilm_WhenGivenInvalidReleaseDate_ShouldThrowAggregateExceptionContainingArgumentException()
     {
         // Act & Assert
         AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
@@ -80,7 +82,7 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
     }
 
     [Test]
-    public void CreerFilm_WhenGivenInvalidTitle_ThrowsAggregateExceptionContainingArgumentException()
+    public void CreerFilm_WhenGivenInvalidTitle_ShouldThrowAggregateExceptionContainingArgumentException()
     {
         // Act & Assert
         AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
@@ -92,7 +94,7 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
 
     [Test]
     public void
-        CreerFilm_WhenGivenRealisateurNotPresentInRepository_ThrowsAggregateExceptionContainingArgumentException()
+        CreerFilm_WhenGivenRealisateurNotPresentInRepository_ShouldThrowAggregateExceptionContainingArgumentException()
     {
         // Arrange
         RealisateurRepositoryMock.Setup(r => r.ObtenirParIdAsync(It.IsAny<Guid>()))
@@ -101,14 +103,14 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
         // Act & Assert
         AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
             Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now, Array.Empty<Guid>(),
-                new[] { Guid.NewGuid() }, DureeValide));
+                [Guid.NewGuid()], DureeValide));
         Assert.That(aggregateException?.InnerExceptions,
             Has.One.InstanceOf<ArgumentException>().With.Message.Contains("n'existe pas"));
     }
 
     [Test]
     public void
-        CreerFilm_WhenGivenTitleAndYearAndDurationAlreadyPresentInRepository_ThrowsAggregateExceptionContainingArgumentException()
+        CreerFilm_WhenGivenTitleAndYearAndDurationAlreadyPresentInRepository_ShouldThrowAggregateExceptionContainingArgumentException()
     {
         // Arrange
         FilmRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<IFilm, bool>>>()))
@@ -123,38 +125,40 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
     }
 
     [Test]
-    public async Task CreerFilm_WhenGivenValidArguments_CallsUnitOfWorkSauvegarderAsync()
+    public async Task CreerFilm_WhenGivenValidArguments_ShouldCreateAndPersistNewFilm()
     {
         // Arrange
+        IFilm mockFilm = Mock.Of<IFilm>(f => f.Id == Guid.NewGuid());
         FilmRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<IFilm, bool>>>()))
             .ReturnsAsync(false);
         FilmRepositoryMock.Setup(r => r.AjouterAsync(It.IsAny<Film>()))
-            .ReturnsAsync(Mock.Of<IFilm>(f => f.Id == Guid.NewGuid()));
+            .ReturnsAsync(mockFilm);
 
         // Act
-        await Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now,
+        _ = await Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now,
             Array.Empty<Guid>(), Array.Empty<Guid>(), DureeValide);
 
         // Assert
-        UnitOfWorkMock.Verify(u => u.SauvegarderAsync(null), Times.Once);
+        FilmRepositoryMock.Verify(r => r.AjouterAsync(It.IsAny<Film>()), Times.Once);
+        UnitOfWorkMock.Verify(uow => uow.SauvegarderAsync(It.IsAny<CancellationToken?>()), Times.Once);
     }
 
     [Test]
-    public async Task CreerFilm_WhenGivenValidArguments_ReturnsNewFilmId()
+    public async Task CreerFilm_WhenGivenValidArguments_ShouldCreateAndReturnNewFilm()
     {
         // Arrange
-        Guid idFilm = Guid.NewGuid();
+        IFilm mockFilm = Mock.Of<IFilm>(f => f.Id == Guid.NewGuid());
         FilmRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<IFilm, bool>>>()))
             .ReturnsAsync(false);
         FilmRepositoryMock.Setup(r => r.AjouterAsync(It.IsAny<Film>()))
-            .ReturnsAsync(Mock.Of<IFilm>(f => f.Id == idFilm));
+            .ReturnsAsync(mockFilm);
 
         // Act
-        Guid result = await Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now,
+        Guid nouvFilm = await Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now,
             Array.Empty<Guid>(), Array.Empty<Guid>(), DureeValide);
 
         // Assert
-        Assert.That(idFilm, Is.EqualTo(result));
+        Assert.That(nouvFilm, Is.EqualTo(mockFilm.Id));
     }
 
     protected override void SetUpExt()

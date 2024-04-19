@@ -20,7 +20,7 @@ public class ProjectionCreationServiceTests : GenericServiceTests<ProjectionCrea
 
     [Test]
     public void
-        CreerProjection_WhenGivenIdFilmAndIdSalleAndDateHeureAlreadyPrensentInRepository_ThrowsAggregateExceptionContainingArgumentException()
+        CreerProjection_WhenGivenIdFilmAndIdSalleAndDateHeureAlreadyPrensentInRepository_ShouldThrowAggregateExceptionContainingArgumentException()
     {
         //Arrange
         ProjectionRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<IProjection, bool>>>()))
@@ -35,7 +35,7 @@ public class ProjectionCreationServiceTests : GenericServiceTests<ProjectionCrea
 
 
     [Test]
-    public void CreerProjection_WhenGivenInvalidDate_ThrowsAggregateExceptionContainingArgumentException()
+    public void CreerProjection_WhenGivenInvalidDate_ShouldThrowAggregateExceptionContainingArgumentException()
     {
         // Act & Assert
         AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
@@ -47,7 +47,7 @@ public class ProjectionCreationServiceTests : GenericServiceTests<ProjectionCrea
 
 
     [Test]
-    public void CreerProjection_WhenGivenInvalidFilm_ThrowsAggregateExceptionContainingArgumentException()
+    public void CreerProjection_WhenGivenInvalidFilm_ShouldThrowAggregateExceptionContainingArgumentException()
     {
         //Arrange
         FilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(IdFilmValide))
@@ -62,7 +62,7 @@ public class ProjectionCreationServiceTests : GenericServiceTests<ProjectionCrea
 
 
     [Test]
-    public void CreerProjection_WhenGivenInvalidSalle_ThrowsAggregateExceptionContainingArgumentException()
+    public void CreerProjection_WhenGivenInvalidSalle_ShouldThrowAggregateExceptionContainingArgumentException()
     {
         //Arrange
         SalleRepositoryMock.Setup(r => r.ObtenirParIdAsync(IdSalleValide))
@@ -76,9 +76,10 @@ public class ProjectionCreationServiceTests : GenericServiceTests<ProjectionCrea
     }
 
     [Test]
-    public async Task CreerProjection_WhenGivenValidArguments_ShouldAddProjectionToRepository()
+    public async Task CreerProjection_WhenGivenValidArguments_ShouldCreateAndReturnNewProjection()
     {
         //Arrange
+        IProjection mockProjection = Mock.Of<IProjection>(a => a.Id == Guid.NewGuid());
         ProjectionRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<IProjection, bool>>>()))
             .ReturnsAsync(false);
         FilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(IdFilmValide))
@@ -86,33 +87,34 @@ public class ProjectionCreationServiceTests : GenericServiceTests<ProjectionCrea
         SalleRepositoryMock.Setup(r => r.ObtenirParIdAsync(IdSalleValide))
             .ReturnsAsync(Mock.Of<ISalle>(cf => cf.Id == IdSalleValide));
         ProjectionRepositoryMock.Setup(r => r.AjouterAsync(It.IsAny<Projection>()))
-            .ReturnsAsync(Mock.Of<IProjection>(a => a.Id == Guid.NewGuid()));
-
-        // Act
-        await Service.CreerProjection(IdFilmValide, IdSalleValide, DateValide, false);
-
-        // Assert
-        ProjectionRepositoryMock.Verify(r => r.AjouterAsync(It.IsAny<Projection>()));
-    }
-
-    [Test]
-    public async Task CreerProjection_WhenGivenValidArguments_ShouldReturnGuidOfNewProjection()
-    {
-        //Arrange
-        ProjectionRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<IProjection, bool>>>()))
-            .ReturnsAsync(false);
-        FilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(IdFilmValide))
-            .ReturnsAsync(Mock.Of<IFilm>(cf => cf.Id == IdFilmValide));
-        SalleRepositoryMock.Setup(r => r.ObtenirParIdAsync(IdSalleValide))
-            .ReturnsAsync(Mock.Of<ISalle>(cf => cf.Id == IdSalleValide));
-        ProjectionRepositoryMock.Setup(r => r.AjouterAsync(It.IsAny<Projection>()))
-            .ReturnsAsync(Mock.Of<IProjection>(a => a.Id == Guid.NewGuid()));
+            .ReturnsAsync(mockProjection);
 
         // Act
         Guid projectionId = await Service.CreerProjection(IdFilmValide, IdSalleValide, DateValide, false);
 
         // Assert
-        Assert.That(projectionId, Is.Not.EqualTo(Guid.Empty));
+        Assert.That(projectionId, Is.EqualTo(mockProjection.Id));
+    }
+
+    [Test]
+    public async Task CreerProjection_WhenGivenValidArguments_ShouldPersistNewProjection()
+    {
+        //Arrange
+        ProjectionRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<IProjection, bool>>>()))
+            .ReturnsAsync(false);
+        FilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(IdFilmValide))
+            .ReturnsAsync(Mock.Of<IFilm>(cf => cf.Id == IdFilmValide));
+        SalleRepositoryMock.Setup(r => r.ObtenirParIdAsync(IdSalleValide))
+            .ReturnsAsync(Mock.Of<ISalle>(cf => cf.Id == IdSalleValide));
+        ProjectionRepositoryMock.Setup(r => r.AjouterAsync(It.IsAny<Projection>()))
+            .ReturnsAsync(Mock.Of<IProjection>(a => a.Id == Guid.NewGuid()));
+
+        // Act
+        _ = await Service.CreerProjection(IdFilmValide, IdSalleValide, DateValide, false);
+
+        // Assert
+        ProjectionRepositoryMock.Verify(r => r.AjouterAsync(It.IsAny<Projection>()), Times.Once);
+        UnitOfWorkMock.Verify(uow => uow.SauvegarderAsync(It.IsAny<CancellationToken?>()), Times.Once);
     }
 
     protected override void SetUpExt()

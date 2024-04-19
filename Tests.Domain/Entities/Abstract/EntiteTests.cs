@@ -9,7 +9,7 @@ namespace Tests.Domain.Entities.Abstract;
 public abstract class EntiteTests<TEntite> where TEntite : Entite
 {
     protected virtual TEntite Entite { get; set; } = null!;
-    protected virtual object?[] ArgsConstructeur => [];
+    protected abstract object?[] ArgsConstructeur { get; }
 
     [Test]
     public void Constructor_Always_ShouldCreateEntityOfTypeT()
@@ -22,23 +22,6 @@ public abstract class EntiteTests<TEntite> where TEntite : Entite
     {
         // Assert
         Assert.That(Entite.Id, Is.EqualTo(Guid.Empty));
-    }
-
-    protected TEntite CreateInstance(params object?[] args)
-    {
-        try
-        {
-            return (TEntite)Activator.CreateInstance(typeof(TEntite), args)!;
-        }
-        catch (TargetInvocationException e)
-        {
-            throw e.InnerException!;
-        }
-    }
-
-    protected TEntite CreateInstance()
-    {
-        return CreateInstance(ArgsConstructeur);
     }
 
     [Test]
@@ -240,6 +223,23 @@ public abstract class EntiteTests<TEntite> where TEntite : Entite
 
         // Assert
         Assert.That(entiteImpl.ToString(), Is.EqualTo($"{type} {id}"));
+    }
+
+    protected TEntite CreateInstance(params object?[] args)
+    {
+        try
+        {
+            return (TEntite)Activator.CreateInstance(typeof(TEntite), args)!;
+        }
+        catch (TargetInvocationException e)
+        {
+            throw e.InnerException!;
+        }
+    }
+
+    protected TEntite CreateInstance()
+    {
+        return CreateInstance(ArgsConstructeur);
     }
 
     private class EntiteImpl : Entite;

@@ -21,9 +21,9 @@ public class FilmQueryService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmQuery
         ICategorieFilm? categorie = await unitOfWork.CategorieFilmRepository.ObtenirParIdAsync(film.IdCategorie);
         IEnumerable<IRealisateur> realisateurs =
             (await unitOfWork.RealisateurRepository.ObtenirParIdsAsync(film.RealisateursParId))
-            .OrderBy(realisateur => realisateur.Prenom);
+            .OrderBy(realisateur => realisateur.Prenom).ThenBy(realisateur => realisateur.Nom);
         IEnumerable<IActeur> acteurs = (await unitOfWork.ActeurRepository.ObtenirParIdsAsync(film.ActeursParId))
-            .OrderBy(acteur => acteur.Prenom);
+            .OrderBy(acteur => acteur.Prenom).ThenBy(realisateur => realisateur.Nom);
 
         FilmDto filmDto = film.VersDto(categorie?.VersDto(), realisateurs.Select(r => r.VersDto()),
             acteurs.Select(a => a.VersDto()));

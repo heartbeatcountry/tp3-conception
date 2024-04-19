@@ -1,5 +1,3 @@
-using System.Reflection;
-
 using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Application.Interfaces.Repositories;
 using CineQuebec.Domain.Interfaces.Entities.Films;
@@ -29,18 +27,6 @@ public abstract class GenericServiceTests<TService> where TService : class
     protected Mock<IRepository<ICategorieFilm>> CategorieFilmRepositoryMock { get; private set; } = null!;
     protected Mock<IRepository<ISalle>> SalleRepositoryMock { get; private set; } = null!;
     protected Mock<IRepository<IProjection>> ProjectionRepositoryMock { get; private set; } = null!;
-
-    private static TService CreateInstance(params object?[] args)
-    {
-        try
-        {
-            return (TService)Activator.CreateInstance(typeof(TService), args)!;
-        }
-        catch (TargetInvocationException e)
-        {
-            throw e.InnerException!;
-        }
-    }
 
     [SetUp]
     public void SetUp()
@@ -77,4 +63,9 @@ public abstract class GenericServiceTests<TService> where TService : class
     }
 
     protected virtual void SetUpExt() { }
+
+    private static TService CreateInstance(params object?[] args)
+    {
+        return (TService)Activator.CreateInstance(typeof(TService), args)!;
+    }
 }

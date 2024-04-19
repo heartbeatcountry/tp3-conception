@@ -13,7 +13,24 @@ public class CategorieFilmCreationServiceTests : GenericServiceTests<CategorieFi
     private const string NomAffichageValide = "Thriller";
 
     [Test]
-    public async Task CreerCategorieFilm_WhenCategorieFilmEstUnique_ShouldAddCategorieFilmToRepository()
+    public async Task CreerCategorieFilm_WhenCategorieFilmIsUniqueAndValid_ShouldCreateAndReturnNewCategorieFilm()
+    {
+        // Arrange
+        ICategorieFilm mockCategorieFilm = Mock.Of<ICategorieFilm>(a => a.Id == Guid.NewGuid());
+        CategorieFilmRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<ICategorieFilm, bool>>>()))
+            .ReturnsAsync(false);
+        CategorieFilmRepositoryMock.Setup(r => r.AjouterAsync(It.IsAny<CategorieFilm>()))
+            .ReturnsAsync(mockCategorieFilm);
+
+        // Act
+        Guid categorieFilm = await Service.CreerCategorie(NomAffichageValide);
+
+        // Assert
+        Assert.That(categorieFilm, Is.EqualTo(mockCategorieFilm.Id));
+    }
+
+    [Test]
+    public async Task CreerCategorieFilm_WhenCategorieFilmIsUniqueAndValid_ShouldPersistNewCategorieFilm()
     {
         // Arrange
         CategorieFilmRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<ICategorieFilm, bool>>>()))
@@ -22,41 +39,11 @@ public class CategorieFilmCreationServiceTests : GenericServiceTests<CategorieFi
             .ReturnsAsync(Mock.Of<ICategorieFilm>(a => a.Id == Guid.NewGuid()));
 
         // Act
-        await Service.CreerCategorie(NomAffichageValide);
+        _ = await Service.CreerCategorie(NomAffichageValide);
 
         // Assert
-        CategorieFilmRepositoryMock.Verify(r => r.AjouterAsync(It.IsAny<CategorieFilm>()));
-    }
-
-    [Test]
-    public async Task CreerCategorieFilm_WhenCategorieFilmEstUnique_ShouldReturnGuidOfNewCategorieFilm()
-    {
-        // Arrange
-        CategorieFilmRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<ICategorieFilm, bool>>>()))
-            .ReturnsAsync(false);
-        CategorieFilmRepositoryMock.Setup(r => r.AjouterAsync(It.IsAny<CategorieFilm>()))
-            .ReturnsAsync(Mock.Of<ICategorieFilm>(a => a.Id == Guid.NewGuid()));
-
-        // Act
-        Guid categorieFilmId = await Service.CreerCategorie(NomAffichageValide);
-
-        // Assert
-        Assert.That(categorieFilmId, Is.Not.EqualTo(Guid.Empty));
-    }
-
-    [Test]
-    public void
-        CreerCategorieFilm_WhenCategorieFilmWithSameNomAffichageAlreadyExists_ShouldThrowAggregateExceptionContainingArgumentException()
-    {
-        // Arrange
-        CategorieFilmRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<ICategorieFilm, bool>>>()))
-            .ReturnsAsync(true);
-
-        // Act & Assert
-        AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
-            Service.CreerCategorie(NomAffichageValide));
-        Assert.That(aggregateException?.InnerExceptions,
-            Has.One.InstanceOf<ArgumentException>().With.Message.Contains("existe déjà"));
+        CategorieFilmRepositoryMock.Verify(r => r.AjouterAsync(It.IsAny<CategorieFilm>()), Times.Once);
+        UnitOfWorkMock.Verify(u => u.SauvegarderAsync(It.IsAny<CancellationToken?>()), Times.Once);
     }
 
     [Test]
@@ -69,7 +56,7 @@ public class CategorieFilmCreationServiceTests : GenericServiceTests<CategorieFi
             .ReturnsAsync(Mock.Of<ICategorieFilm>(a => a.Id == Guid.NewGuid()));
 
         // Act
-        await Service.CreerCategorie($" {NomAffichageValide} ");
+        _ = await Service.CreerCategorie($" {NomAffichageValide} ");
 
         // Assert
         CategorieFilmRepositoryMock.Verify(r =>
@@ -84,5 +71,20 @@ public class CategorieFilmCreationServiceTests : GenericServiceTests<CategorieFi
             Service.CreerCategorie("   "));
         Assert.That(aggregateException?.InnerExceptions,
             Has.One.InstanceOf<ArgumentException>().With.Message.Contains("ne doit pas être vide"));
+    }
+
+    [Test]
+    public void
+        CreerCategorieFilm_WhenOtherCategorieFilmWithSameNomAffichageAlreadyExists_ShouldThrowAggregateExceptionContainingArgumentException()
+    {
+        // Arrange
+        CategorieFilmRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<ICategorieFilm, bool>>>()))
+            .ReturnsAsync(true);
+
+        // Act & Assert
+        AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
+            Service.CreerCategorie(NomAffichageValide));
+        Assert.That(aggregateException?.InnerExceptions,
+            Has.One.InstanceOf<ArgumentException>().With.Message.Contains("existe déjà"));
     }
 }

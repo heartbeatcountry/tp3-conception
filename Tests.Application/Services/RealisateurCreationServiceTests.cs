@@ -23,7 +23,7 @@ public class RealisateurCreationServiceTests : GenericServiceTests<RealisateurCr
             .ReturnsAsync(Mock.Of<IRealisateur>(a => a.Id == Guid.NewGuid()));
 
         // Act
-        await Service.CreerRealisateur(PrenomValide, $" {NomValide} ");
+        _ = await Service.CreerRealisateur(PrenomValide, $" {NomValide} ");
 
         // Assert
         RealisateurRepositoryMock.Verify(r => r.AjouterAsync(It.Is<Realisateur>(a => a.Nom == NomValide)));
@@ -49,7 +49,7 @@ public class RealisateurCreationServiceTests : GenericServiceTests<RealisateurCr
             .ReturnsAsync(Mock.Of<IRealisateur>(a => a.Id == Guid.NewGuid()));
 
         // Act
-        await Service.CreerRealisateur($" {PrenomValide} ", NomValide);
+        _ = await Service.CreerRealisateur($" {PrenomValide} ", NomValide);
 
         // Assert
         RealisateurRepositoryMock.Verify(r => r.AjouterAsync(It.Is<Realisateur>(a => a.Prenom == PrenomValide)));
@@ -67,7 +67,24 @@ public class RealisateurCreationServiceTests : GenericServiceTests<RealisateurCr
     }
 
     [Test]
-    public async Task CreerRealisateur_WhenRealisateurEstUnique_ShouldAddRealisateurToRepository()
+    public async Task CreerRealisateur_WhenRealisateurEstUnique_ShouldCreateAndReturnNewRealisateur()
+    {
+        // Arrange
+        IRealisateur mockRealisateur = Mock.Of<IRealisateur>(a => a.Id == Guid.NewGuid());
+        RealisateurRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<IRealisateur, bool>>>()))
+            .ReturnsAsync(false);
+        RealisateurRepositoryMock.Setup(r => r.AjouterAsync(It.IsAny<Realisateur>()))
+            .ReturnsAsync(mockRealisateur);
+
+        // Act
+        Guid realisateurId = await Service.CreerRealisateur(PrenomValide, NomValide);
+
+        // Assert
+        Assert.That(realisateurId, Is.EqualTo(mockRealisateur.Id));
+    }
+
+    [Test]
+    public async Task CreerRealisateur_WhenRealisateurEstUnique_ShouldPersistNewRealisateur()
     {
         // Arrange
         RealisateurRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<IRealisateur, bool>>>()))
@@ -79,23 +96,8 @@ public class RealisateurCreationServiceTests : GenericServiceTests<RealisateurCr
         await Service.CreerRealisateur(PrenomValide, NomValide);
 
         // Assert
-        RealisateurRepositoryMock.Verify(r => r.AjouterAsync(It.IsAny<Realisateur>()));
-    }
-
-    [Test]
-    public async Task CreerRealisateur_WhenRealisateurEstUnique_ShouldReturnGuidOfNewRealisateur()
-    {
-        // Arrange
-        RealisateurRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<IRealisateur, bool>>>()))
-            .ReturnsAsync(false);
-        RealisateurRepositoryMock.Setup(r => r.AjouterAsync(It.IsAny<Realisateur>()))
-            .ReturnsAsync(Mock.Of<IRealisateur>(a => a.Id == Guid.NewGuid()));
-
-        // Act
-        Guid realisateurId = await Service.CreerRealisateur(PrenomValide, NomValide);
-
-        // Assert
-        Assert.That(realisateurId, Is.Not.EqualTo(Guid.Empty));
+        RealisateurRepositoryMock.Verify(r => r.AjouterAsync(It.IsAny<Realisateur>()), Times.Once);
+        UnitOfWorkMock.Verify(u => u.SauvegarderAsync(It.IsAny<CancellationToken?>()), Times.Once);
     }
 
     [Test]

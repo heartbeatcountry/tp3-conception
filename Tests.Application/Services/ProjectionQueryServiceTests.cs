@@ -12,7 +12,39 @@ namespace Tests.Application.Services;
 public class ProjectionQueryServiceTests : GenericServiceTests<ProjectionQueryService>
 {
     [Test]
-    public void ObtenirProjectionsAVenirPourFilm_Always_ShouldReturnProjections()
+    public async Task ObtenirProjectionsAVenirPourFilm_WhenFilmDoesNotExist_ShouldReturnEmptyList()
+    {
+        // Arrange
+        Guid idFilm = Guid.NewGuid();
+        FilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(idFilm)).ReturnsAsync((IFilm?)null);
+
+        // Act
+        IEnumerable<ProjectionDto> result = await Service.ObtenirProjectionsAVenirPourFilm(idFilm);
+
+        // Assert
+        Assert.That(result, Is.Empty);
+    }
+
+    [Test]
+    public async Task ObtenirProjectionsAVenirPourFilm_WhenFilmHasNoProjection_ShouldReturnEmptyList()
+    {
+        // Arrange
+        Guid idFilm = Guid.NewGuid();
+        IFilm film = Mock.Of<IFilm>(f => f.Id == idFilm);
+        FilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(idFilm)).ReturnsAsync(film);
+        ProjectionRepositoryMock.Setup(r => r.ObtenirTousAsync(It.IsAny<Expression<Func<IProjection, bool>>>(),
+                It.IsAny<Func<IQueryable<IProjection>, IOrderedQueryable<IProjection>>>()))
+            .ReturnsAsync(new List<IProjection>());
+
+        // Act
+        IEnumerable<ProjectionDto> result = await Service.ObtenirProjectionsAVenirPourFilm(idFilm);
+
+        // Assert
+        Assert.That(result, Is.Empty);
+    }
+
+    [Test]
+    public async Task ObtenirProjectionsAVenirPourFilm_WhenFilmHasProjections_ShouldReturnProjectionsOrderedByDate()
     {
         // Arrange
         Guid idFilm = Guid.NewGuid();
@@ -38,23 +70,17 @@ public class ProjectionQueryServiceTests : GenericServiceTests<ProjectionQuerySe
             .ReturnsAsync(projections);
 
         // Act
-        IEnumerable<ProjectionDto> result = Service.ObtenirProjectionsAVenirPourFilm(idFilm).Result;
+        IEnumerable<ProjectionDto> result = await Service.ObtenirProjectionsAVenirPourFilm(idFilm);
+        IEnumerable<ProjectionDto> projectionDtos = result as ProjectionDto[] ?? result.ToArray();
 
         // Assert
-        Assert.That(result.Count(), Is.EqualTo(3));
-    }
-
-    [Test]
-    public void ObtenirProjectionsAVenirPourFilm_WhenFilmDoesNotExist_ShouldReturnEmptyList()
-    {
-        // Arrange
-        Guid idFilm = Guid.NewGuid();
-        FilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(idFilm)).ReturnsAsync((IFilm?)null);
-
-        // Act
-        IEnumerable<ProjectionDto> result = Service.ObtenirProjectionsAVenirPourFilm(idFilm).Result;
-
-        // Assert
-        Assert.That(result.Count(), Is.EqualTo(0));
+        Assert.Multiple(() =>
+        {
+            Assert.That(projectionDtos, Has.Exactly(3).Items);
+            Assert.That(projectionDtos, Is.Ordered.By(nameof(ProjectionDto.DateHeure)));
+            Assert.That(projectionDtos.ElementAt(0).DateHeure, Is.EqualTo(projections.ElementAt(0).DateHeure));
+            Assert.That(projectionDtos.ElementAt(1).DateHeure, Is.EqualTo(projections.ElementAt(1).DateHeure));
+            Assert.That(projectionDtos.ElementAt(2).DateHeure, Is.EqualTo(projections.ElementAt(2).DateHeure));
+        });
     }
 }
