@@ -17,17 +17,27 @@ public class FilmDeletionService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmDe
             return false;
         }
 
+        await SupprimerProjections(unitOfWork, id);
+        SupprimerFilm(unitOfWork, film);
+
+        await unitOfWork.SauvegarderAsync();
+
+        return true;
+    }
+
+    private static async Task SupprimerProjections(IUnitOfWork unitOfWork, Guid idFilm)
+    {
         IEnumerable<IProjection> projections =
-            await unitOfWork.ProjectionRepository.ObtenirTousAsync(pr => pr.IdFilm == id);
+            await unitOfWork.ProjectionRepository.ObtenirTousAsync(pr => pr.IdFilm == idFilm);
 
         foreach (IProjection projection in projections)
         {
             unitOfWork.ProjectionRepository.Supprimer(projection);
         }
+    }
 
+    private static void SupprimerFilm(IUnitOfWork unitOfWork, IFilm film)
+    {
         unitOfWork.FilmRepository.Supprimer(film);
-        await unitOfWork.SauvegarderAsync();
-
-        return true;
     }
 }

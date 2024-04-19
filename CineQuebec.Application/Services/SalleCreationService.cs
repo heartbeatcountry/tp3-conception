@@ -1,76 +1,56 @@
 using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Application.Services.Abstract;
 using CineQuebec.Domain.Entities.Projections;
 using CineQuebec.Domain.Interfaces.Entities.Projections;
 
 namespace CineQuebec.Application.Services;
 
-public class SalleCreationService(IUnitOfWorkFactory unitOfWorkFactory) : ISalleCreationService
+public class SalleCreationService(IUnitOfWorkFactory unitOfWorkFactory) : ServiceAvecValidation, ISalleCreationService
 {
     public async Task<Guid> CreerSalle(byte numero, ushort nbSieges)
     {
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
-        IEnumerable<Exception> exceptions = await EffectuerValidations(unitOfWork, numero, nbSieges);
-
-        if (exceptions.ToArray() is { Length: > 0 } innerExceptions)
-        {
-            throw new AggregateException("Des erreurs se sont produites lors de la validation des données.",
-                innerExceptions);
-        }
-
-        Salle salle = new(numero, nbSieges);
-        ISalle salleAjoutee = await unitOfWork.SalleRepository.AjouterAsync(salle);
+        await EffectuerValidations(unitOfWork, numero, nbSieges);
+        ISalle salleAjoutee = await CreerNouvSalle(unitOfWork, numero, nbSieges);
 
         await unitOfWork.SauvegarderAsync();
         return salleAjoutee.Id;
     }
 
-    private static async Task<IEnumerable<Exception>> EffectuerValidations(IUnitOfWork unitOfWork, byte numero,
+    private static async Task EffectuerValidations(IUnitOfWork unitOfWork, byte numero,
         ushort nbSieges)
     {
-        List<Exception> exceptions = [];
-
-        exceptions.AddRange(ValiderNumero(numero));
-        exceptions.AddRange(ValiderNbSieges(nbSieges));
-        exceptions.AddRange(await ValiderSalleEstUnique(unitOfWork, numero));
-
-        return exceptions;
+        LeverAggregateExceptionAuBesoin(
+            ValiderNumero(numero),
+            ValiderNbSieges(nbSieges),
+            await ValiderSalleEstUnique(unitOfWork, numero)
+        );
     }
 
-    private static IEnumerable<Exception> ValiderNbSieges(ushort nbSieges)
+    private static async Task<ISalle> CreerNouvSalle(IUnitOfWork unitOfWork, byte numero,
+        ushort nbSieges)
     {
-        List<Exception> exceptions = [];
+        Salle salle = new(numero, nbSieges);
 
-        if (nbSieges == 0)
-        {
-            exceptions.Add(new ArgumentException("Le nombre de sièges de la salle doit être supérieur à 0."));
-        }
-
-        return exceptions;
+        return await unitOfWork.SalleRepository.AjouterAsync(salle);
     }
 
-    private static IEnumerable<Exception> ValiderNumero(byte numero)
+    private static ArgumentException? ValiderNbSieges(ushort nbSieges)
     {
-        List<Exception> exceptions = [];
-
-        if (numero == 0)
-        {
-            exceptions.Add(new ArgumentException("Le numéro de la salle doit être supérieur à 0."));
-        }
-
-        return exceptions;
+        return nbSieges == 0 ? new ArgumentException("Le nombre de sièges de la salle doit être supérieur à 0.") : null;
     }
 
-    private static async Task<IEnumerable<Exception>> ValiderSalleEstUnique(IUnitOfWork unitOfWork, byte numero)
+    private static ArgumentException? ValiderNumero(byte numero)
     {
-        List<Exception> exceptions = [];
+        return numero == 0 ? new ArgumentException("Le numéro de la salle doit être supérieur à 0.") : null;
+    }
 
-        if (await unitOfWork.SalleRepository.ExisteAsync(s => s.Numero == numero))
-        {
-            exceptions.Add(new ArgumentException("Une salle avec ce numéro existe déjà."));
-        }
-
-        return exceptions;
+    private static async Task<ArgumentException?> ValiderSalleEstUnique(IUnitOfWork unitOfWork, byte numero)
+    {
+        return await unitOfWork.SalleRepository.ExisteAsync(s => s.Numero == numero)
+            ? new ArgumentException("Une salle avec ce numéro existe déjà.")
+            : null;
     }
 }

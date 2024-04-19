@@ -1,11 +1,13 @@
 using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Application.Services.Abstract;
 using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 
 namespace CineQuebec.Application.Services;
 
-public class CategorieFilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) : ICategorieFilmCreationService
+public class CategorieFilmCreationService(IUnitOfWorkFactory unitOfWorkFactory)
+    : ServiceAvecValidation, ICategorieFilmCreationService
 {
     public async Task<Guid> CreerCategorie(string nomAffichage)
     {
@@ -23,16 +25,10 @@ public class CategorieFilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) 
 
     private static async Task EffectuerValidations(IUnitOfWork unitOfWork, string nomAffichage)
     {
-        List<Exception> exceptions = [];
-
-        exceptions.AddRange(ValiderNomAffichage(nomAffichage));
-        exceptions.AddRange(await ValiderCategorieFilmEstUnique(unitOfWork, nomAffichage));
-
-        if (exceptions.ToArray() is { Length: > 0 } innerExceptions)
-        {
-            throw new AggregateException("Des erreurs se sont produites lors de la validation des données.",
-                innerExceptions);
-        }
+        LeverAggregateExceptionAuBesoin(
+            ValiderNomAffichage(nomAffichage),
+            await ValiderCategorieFilmEstUnique(unitOfWork, nomAffichage)
+        );
     }
 
     private static async Task<ICategorieFilm> CreerCategorie(IUnitOfWork unitOfWork, string nomAffichage)
@@ -41,31 +37,24 @@ public class CategorieFilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) 
         return await unitOfWork.CategorieFilmRepository.AjouterAsync(categorieFilm);
     }
 
-    private static async Task<IEnumerable<Exception>> ValiderCategorieFilmEstUnique(IUnitOfWork unitOfWork,
+    private static async Task<ArgumentException?> ValiderCategorieFilmEstUnique(IUnitOfWork unitOfWork,
         string nomAffichage)
     {
-        List<Exception> exceptions = [];
-
         string nomAffichageLower = nomAffichage.ToLowerInvariant();
 
         if (await unitOfWork.CategorieFilmRepository.ExisteAsync(c =>
                 c.NomAffichage.ToLowerInvariant() == nomAffichageLower))
         {
-            exceptions.Add(new ArgumentException("Une catégorie de film avec le même nom d'affichage existe déjà."));
+            return new ArgumentException("Une catégorie de film avec le même nom d'affichage existe déjà.");
         }
 
-        return exceptions;
+        return null;
     }
 
-    private static IEnumerable<Exception> ValiderNomAffichage(string nomAffichage)
+    private static ArgumentException? ValiderNomAffichage(string nomAffichage)
     {
-        List<Exception> exceptions = [];
-
-        if (string.IsNullOrWhiteSpace(nomAffichage))
-        {
-            exceptions.Add(new ArgumentException("Le nom d'affichage de la catégorie ne doit pas être vide."));
-        }
-
-        return exceptions;
+        return string.IsNullOrWhiteSpace(nomAffichage)
+            ? new ArgumentException("Le nom d'affichage de la catégorie ne doit pas être vide.")
+            : null;
     }
 }

@@ -1,26 +1,22 @@
 ﻿using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Application.Services.Abstract;
 using CineQuebec.Domain.Entities.Projections;
 using CineQuebec.Domain.Interfaces.Entities.Projections;
 
 namespace CineQuebec.Application.Services;
 
-public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory) : IProjectionCreationService
+public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory)
+    : ServiceAvecValidation, IProjectionCreationService
 {
     public async Task<Guid> CreerProjection(Guid pFilm, Guid pSalle, DateTime pDateHeure, bool pEstAvantPremiere)
     {
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
-        IEnumerable<Exception> exceptions = await EffectuerValidations(unitOfWork, pFilm, pSalle, pDateHeure);
+        await EffectuerValidations(unitOfWork, pFilm, pSalle, pDateHeure);
 
-        if (exceptions.ToArray() is { Length: > 0 } innerExceptions)
-        {
-            throw new AggregateException("Des erreurs se sont produites lors de la validation des données.",
-                innerExceptions);
-        }
-
-        Projection projection = new(pFilm, pSalle, pDateHeure, pEstAvantPremiere);
-        IProjection projectionCreee = await unitOfWork.ProjectionRepository.AjouterAsync(projection);
+        IProjection projectionCreee =
+            await CreerNouvProjection(unitOfWork, pFilm, pSalle, pDateHeure, pEstAvantPremiere);
 
         await unitOfWork.SauvegarderAsync();
 
@@ -28,90 +24,80 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory) : I
     }
 
 
-    private static async Task<IEnumerable<Exception>> EffectuerValidations(IUnitOfWork unitOfWork, Guid pFilm,
+    private static async Task EffectuerValidations(IUnitOfWork unitOfWork, Guid pFilm,
         Guid pSalle, DateTime pDateHeure)
     {
-        List<Exception> exceptions = [];
-
-        exceptions.AddRange(await ValiderFilmExiste(unitOfWork, pFilm));
-        exceptions.AddRange(await ValiderSalleExiste(unitOfWork, pSalle));
-        exceptions.AddRange(await ValiderSalleDispo(unitOfWork, pSalle, pDateHeure));
-        exceptions.AddRange(await ValiderProjectionEstUnique(unitOfWork, pFilm, pSalle, pDateHeure));
-        exceptions.AddRange(ValiderDateHeure(pDateHeure));
-
-        return exceptions;
+        LeverAggregateExceptionAuBesoin(
+            await ValiderFilmExiste(unitOfWork, pFilm),
+            await ValiderSalleExiste(unitOfWork, pSalle),
+            await ValiderSalleDispo(unitOfWork, pSalle, pDateHeure),
+            await ValiderProjectionEstUnique(unitOfWork, pFilm, pSalle, pDateHeure),
+            ValiderDateHeure(pDateHeure)
+        );
     }
 
-    private static IEnumerable<Exception> ValiderDateHeure(DateTime pDateHeure)
+    private static async Task<IProjection> CreerNouvProjection(IUnitOfWork unitOfWork, Guid pFilm,
+        Guid pSalle, DateTime pDateHeure, bool pEstAvantPremiere)
     {
-        List<Exception> exceptions = [];
+        IProjection projection = new Projection(pFilm, pSalle, pDateHeure, pEstAvantPremiere);
 
-        if (pDateHeure < DateTime.Now)
-        {
-            exceptions.Add(new ArgumentOutOfRangeException(nameof(pDateHeure),
-                "La date de projection ne doit pas être dans le passé."));
-        }
-
-        return exceptions;
+        return await unitOfWork.ProjectionRepository.AjouterAsync(projection);
     }
 
-
-    private static async Task<IEnumerable<Exception>> ValiderFilmExiste(IUnitOfWork unitOfWork, Guid pFilm)
+    private static ArgumentOutOfRangeException? ValiderDateHeure(DateTime pDateHeure)
     {
-        List<Exception> exceptions = [];
-
-        if (await unitOfWork.FilmRepository.ObtenirParIdAsync(pFilm) is null)
-        {
-            exceptions.Add(new ArgumentException($"Le film avec l'identifiant {pFilm} n'existe pas.",
-                nameof(pFilm)));
-        }
-
-        return exceptions;
+        return pDateHeure < DateTime.Now
+            ? new ArgumentOutOfRangeException(nameof(pDateHeure),
+                "La date de projection ne doit pas être dans le passé.")
+            : null;
     }
 
 
-    private static async Task<IEnumerable<Exception>> ValiderProjectionEstUnique(IUnitOfWork unitOfWork, Guid pFilm,
+    private static async Task<ArgumentException?> ValiderFilmExiste(IUnitOfWork unitOfWork, Guid pFilm)
+    {
+        return await unitOfWork.FilmRepository.ObtenirParIdAsync(pFilm) is null
+            ? new ArgumentException($"Le film avec l'identifiant {pFilm} n'existe pas.",
+                nameof(pFilm))
+            : null;
+    }
+
+
+    private static async Task<ArgumentException?> ValiderProjectionEstUnique(IUnitOfWork unitOfWork, Guid pFilm,
         Guid pSalle, DateTime pDateHeure)
     {
-        List<Exception> exceptions = [];
-
         if (await unitOfWork.ProjectionRepository.ExisteAsync(f =>
                 f.IdFilm == pFilm && f.IdSalle == pSalle && f.DateHeure == pDateHeure))
         {
-            exceptions.Add(new ArgumentException(
+            return new ArgumentException(
                 "Une projection avec le même film, la même date et heure dans la même salle existe déjà.",
-                nameof(pFilm)));
+                nameof(pFilm));
         }
 
-        return exceptions;
+        return null;
     }
 
-    private static async Task<IEnumerable<Exception>> ValiderSalleDispo(IUnitOfWork unitOfWork, Guid pSalle,
+    private static async Task<ArgumentException?> ValiderSalleDispo(IUnitOfWork unitOfWork, Guid pSalle,
         DateTime pDateHeure)
     {
-        List<Exception> exceptions = [];
-
         if (await unitOfWork.ProjectionRepository.ExisteAsync(proj =>
                 proj.IdSalle == pSalle && proj.DateHeure == pDateHeure))
         {
-            exceptions.Add(new ArgumentException(
+            return new ArgumentException(
                 $"La salle avec l'identifiant {pSalle} n'est pas disponible pour la date {pDateHeure}.",
-                nameof(pSalle)));
+                nameof(pSalle));
         }
 
-        return exceptions;
+        return null;
     }
 
-    private static async Task<IEnumerable<Exception>> ValiderSalleExiste(IUnitOfWork unitOfWork, Guid pSalle)
+    private static async Task<ArgumentException?> ValiderSalleExiste(IUnitOfWork unitOfWork, Guid pSalle)
     {
-        List<Exception> exceptions = [];
-
         if (await unitOfWork.SalleRepository.ObtenirParIdAsync(pSalle) is null)
         {
-            exceptions.Add(new ArgumentException($"La salle avec l'identifiant {pSalle} n'existe pas.",
-                nameof(pSalle)));
+            return new ArgumentException($"La salle avec l'identifiant {pSalle} n'existe pas.",
+                nameof(pSalle));
         }
 
-        return exceptions;
+        return null;
     }
 }
