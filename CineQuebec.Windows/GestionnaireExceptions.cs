@@ -6,14 +6,6 @@ namespace CineQuebec.Windows;
 
 public class GestionnaireExceptions(IWindowManager windowManager)
 {
-    private static string ObtenirMsgSansParametre(Exception exception)
-    {
-        string message = exception.InnerException?.Message ?? exception.Message;
-        int indexOf = message.IndexOf(" (Parameter ", StringComparison.Ordinal);
-
-        return indexOf == -1 ? message : message[..indexOf];
-    }
-
     public void GererException(AggregateException aggregateException)
     {
         string message = aggregateException.InnerExceptions.Select(ObtenirMsgSansParametre)
@@ -35,5 +27,13 @@ public class GestionnaireExceptions(IWindowManager windowManager)
 
         windowManager.ShowMessageBox(message, "Problème dans le formulaire", MessageBoxButton.OK,
             MessageBoxImage.Warning);
+    }
+
+    private static string ObtenirMsgSansParametre(Exception exception)
+    {
+        string message = exception.InnerException?.Message ?? exception.Message;
+        int indexOf = message.IndexOf(" (Parameter ", StringComparison.Ordinal);
+
+        return indexOf == -1 ? message : message[..indexOf];
     }
 }

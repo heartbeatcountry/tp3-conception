@@ -98,27 +98,6 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
         _ = RefreshDetails();
     }
 
-    private async Task ChargerSalles()
-    {
-        DesactiverInterface();
-        IEnumerable<SalleDto> salles = await _salleQueryService.ObtenirToutes();
-        LstSalles = new BindableCollection<SalleDto>(salles);
-        SalleSelectionnee = LstSalles.FirstOrDefault();
-        ActiverInterface();
-    }
-
-    private void ActiverInterface()
-    {
-        FormulairEstActive = true;
-        Mouse.OverrideCursor = null;
-    }
-
-    private void DesactiverInterface()
-    {
-        FormulairEstActive = false;
-        Mouse.OverrideCursor = Cursors.Wait;
-    }
-
     public void AjouterSalle()
     {
         DialogNouvelleSalleViewModel dialog = _dialogFactory.CreateDialogNouvelleSalle();
@@ -128,23 +107,6 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
         if (dialog.AValide)
         {
             AjouterSalle(dialog.Numero, dialog.Capacite);
-        }
-    }
-
-    private async void AjouterSalle(byte numero, ushort capacite)
-    {
-        try
-        {
-            if (await _salleCreationService.CreerSalle(numero, capacite) is var nouvSalle)
-            {
-                _windowManager.ShowMessageBox("Salle ajoutée avec succès", "Succès", MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-                _ = ChargerSalles();
-            }
-        }
-        catch (Exception e)
-        {
-            _gestionnaireExceptions.GererException(e);
         }
     }
 
@@ -172,12 +134,6 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
         }
     }
 
-    private void AfficherErreur(string msg)
-    {
-        _windowManager.ShowMessageBox(msg, "Problèmes dans le formulaire", MessageBoxButton.OK,
-            MessageBoxImage.Warning);
-    }
-
 
     public void Annuler()
     {
@@ -202,5 +158,49 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
 
         Film = film;
         ActiverInterface();
+    }
+
+    private async Task ChargerSalles()
+    {
+        DesactiverInterface();
+        IEnumerable<SalleDto> salles = await _salleQueryService.ObtenirToutes();
+        LstSalles = new BindableCollection<SalleDto>(salles);
+        SalleSelectionnee = LstSalles.FirstOrDefault();
+        ActiverInterface();
+    }
+
+    private void ActiverInterface()
+    {
+        FormulairEstActive = true;
+        Mouse.OverrideCursor = null;
+    }
+
+    private void DesactiverInterface()
+    {
+        FormulairEstActive = false;
+        Mouse.OverrideCursor = Cursors.Wait;
+    }
+
+    private async void AjouterSalle(byte numero, ushort capacite)
+    {
+        try
+        {
+            if (await _salleCreationService.CreerSalle(numero, capacite) is var nouvSalle)
+            {
+                _windowManager.ShowMessageBox("Salle ajoutée avec succès", "Succès", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                _ = ChargerSalles();
+            }
+        }
+        catch (Exception e)
+        {
+            _gestionnaireExceptions.GererException(e);
+        }
+    }
+
+    private void AfficherErreur(string msg)
+    {
+        _windowManager.ShowMessageBox(msg, "Problèmes dans le formulaire", MessageBoxButton.OK,
+            MessageBoxImage.Warning);
     }
 }

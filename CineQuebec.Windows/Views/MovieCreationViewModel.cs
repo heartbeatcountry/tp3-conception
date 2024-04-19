@@ -19,8 +19,8 @@ public class MovieCreationViewModel : Screen, IScreenWithData
     private readonly ICategorieFilmQueryService _categorieFilmQueryService;
     private readonly IDialogFactory _dialogFactory;
     private readonly IFilmCreationService _filmCreationService;
-    private readonly IFilmUpdateService _filmUpdateService;
     private readonly IFilmQueryService _filmQueryService;
+    private readonly IFilmUpdateService _filmUpdateService;
     private readonly GestionnaireExceptions _gestionnaireExceptions;
     private readonly INavigationController _navigationController;
     private readonly IRealisateurCreationService _realisateurCreationService;
@@ -38,8 +38,8 @@ public class MovieCreationViewModel : Screen, IScreenWithData
     private BindableCollection<CategorieFilmDto> _lstCategories = [];
     private BindableCollection<RealisateurDto> _lstRealisateurs = [];
     private BindableCollection<RealisateurDto> _realisateursSelectionnes = [];
-    private string _titreFilm = String.Empty;
     private string _texteBoutonPrincipal = "Créer le film";
+    private string _titreFilm = String.Empty;
 
     public MovieCreationViewModel(INavigationController navigationController, IFilmCreationService filmCreationService,
         HeaderViewModel headerViewModel, IActeurQueryService acteurQueryService, IDialogFactory dialogFactory,
@@ -157,6 +157,106 @@ public class MovieCreationViewModel : Screen, IScreenWithData
         _ = ChargerFilm();
     }
 
+    public async Task ToutCharger()
+    {
+        await ChargerCategories();
+        await ChargerActeurs();
+        await ChargerRealisateurs();
+
+        if (_film is not null)
+        {
+            ConfigurerEnModeEdition();
+        }
+    }
+
+    public void OnActeursChange(object sender, SelectionChangedEventArgs evt)
+    {
+        ListBox listBox = (ListBox)sender;
+        ActeursSelectionnes = new BindableCollection<ActeurDto>(listBox.SelectedItems.Cast<ActeurDto>());
+    }
+
+    public void OnRealisateursChange(object sender, SelectionChangedEventArgs evt)
+    {
+        ListBox listBox = (ListBox)sender;
+        RealisateursSelectionnes = new BindableCollection<RealisateurDto>(listBox.SelectedItems.Cast<RealisateurDto>());
+    }
+
+    public void AjouterActeur()
+    {
+        DialogNomPrenomViewModel dialog = _dialogFactory.CreateDialogNomPrenom();
+        dialog.DisplayName = "Ajouter un acteur";
+        _windowManager.ShowDialog(dialog);
+
+        if (dialog.AValide)
+        {
+            AjouterActeur(dialog.Prenom, dialog.Nom);
+        }
+    }
+
+    public void AjouterRealisateur()
+    {
+        DialogNomPrenomViewModel dialog = _dialogFactory.CreateDialogNomPrenom();
+        dialog.DisplayName = "Ajouter un réalisateur";
+        _windowManager.ShowDialog(dialog);
+
+        if (dialog.AValide)
+        {
+            AjouterRealisateur(dialog.Prenom, dialog.Nom);
+        }
+    }
+
+    public void AjouterCategorie()
+    {
+        DialogNomAffichageViewModel dialog = _dialogFactory.CreateDialogNomAffichage();
+        dialog.DisplayName = "Ajouter une catégorie";
+        _windowManager.ShowDialog(dialog);
+
+        if (dialog.AValide)
+        {
+            AjouterCategorie(dialog.Nom);
+        }
+    }
+
+    public async void CreerFilm()
+    {
+        List<Guid> guidsActeurs = ActeursSelectionnes.Select(a => a.Id).ToList();
+        List<Guid> guidsRealisateurs = RealisateursSelectionnes.Select(r => r.Id).ToList();
+        Guid? guidCategorie = CategorieSelectionnee?.Id;
+        _ = ushort.TryParse(DureeFilm, out ushort duree);
+
+        if (guidCategorie is null)
+        {
+            AfficherErreur("Veuillez sélectionner une catégorie");
+            return;
+        }
+
+        try
+        {
+            if (_idFilm is { } id)
+            {
+                await _filmUpdateService.ModifierFilm(id, TitreFilm, DescriptionFilm, (Guid)guidCategorie!,
+                    DateSelectionnee, guidsActeurs, guidsRealisateurs, duree);
+
+                _windowManager.ShowMessageBox("Film modifié avec succès", "Succès", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                HeaderViewModel.GoBack();
+            }
+
+            else if (await _filmCreationService.CreerFilm(TitreFilm, DescriptionFilm, (Guid)guidCategorie!,
+                         DateSelectionnee,
+                         guidsActeurs, guidsRealisateurs, duree) is var nouvFilm)
+            {
+                _windowManager.ShowMessageBox("Film ajouté avec succès", "Succès", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                HeaderViewModel.GoBack();
+            }
+        }
+        catch (Exception e)
+        {
+            _gestionnaireExceptions.GererException(e);
+        }
+    }
+
     private void DesactiverInterface()
     {
         FormulairEstActive = false;
@@ -196,46 +296,10 @@ public class MovieCreationViewModel : Screen, IScreenWithData
         ActiverInterface();
     }
 
-    public async Task ToutCharger()
-    {
-        await ChargerCategories();
-        await ChargerActeurs();
-        await ChargerRealisateurs();
-
-        if (_film is not null)
-        {
-            ConfigurerEnModeEdition();
-        }
-    }
-
     private void AfficherErreur(string msg)
     {
         _windowManager.ShowMessageBox(msg, "Problèmes dans le formulaire", MessageBoxButton.OK,
             MessageBoxImage.Warning);
-    }
-
-    public void OnActeursChange(object sender, SelectionChangedEventArgs evt)
-    {
-        ListBox listBox = (ListBox)sender;
-        ActeursSelectionnes = new BindableCollection<ActeurDto>(listBox.SelectedItems.Cast<ActeurDto>());
-    }
-
-    public void OnRealisateursChange(object sender, SelectionChangedEventArgs evt)
-    {
-        ListBox listBox = (ListBox)sender;
-        RealisateursSelectionnes = new BindableCollection<RealisateurDto>(listBox.SelectedItems.Cast<RealisateurDto>());
-    }
-
-    public void AjouterActeur()
-    {
-        DialogNomPrenomViewModel dialog = _dialogFactory.CreateDialogNomPrenom();
-        dialog.DisplayName = "Ajouter un acteur";
-        _windowManager.ShowDialog(dialog);
-
-        if (dialog.AValide)
-        {
-            AjouterActeur(dialog.Prenom, dialog.Nom);
-        }
     }
 
     private async void AjouterActeur(string prenom, string nom)
@@ -252,18 +316,6 @@ public class MovieCreationViewModel : Screen, IScreenWithData
         catch (Exception e)
         {
             _gestionnaireExceptions.GererException(e);
-        }
-    }
-
-    public void AjouterRealisateur()
-    {
-        DialogNomPrenomViewModel dialog = _dialogFactory.CreateDialogNomPrenom();
-        dialog.DisplayName = "Ajouter un réalisateur";
-        _windowManager.ShowDialog(dialog);
-
-        if (dialog.AValide)
-        {
-            AjouterRealisateur(dialog.Prenom, dialog.Nom);
         }
     }
 
@@ -284,18 +336,6 @@ public class MovieCreationViewModel : Screen, IScreenWithData
         }
     }
 
-    public void AjouterCategorie()
-    {
-        DialogNomAffichageViewModel dialog = _dialogFactory.CreateDialogNomAffichage();
-        dialog.DisplayName = "Ajouter une catégorie";
-        _windowManager.ShowDialog(dialog);
-
-        if (dialog.AValide)
-        {
-            AjouterCategorie(dialog.Nom);
-        }
-    }
-
     private async void AjouterCategorie(string nom)
     {
         try
@@ -305,46 +345,6 @@ public class MovieCreationViewModel : Screen, IScreenWithData
                 _windowManager.ShowMessageBox("Catégorie ajoutée avec succès", "Succès", MessageBoxButton.OK,
                     MessageBoxImage.Information);
                 _ = ChargerCategories();
-            }
-        }
-        catch (Exception e)
-        {
-            _gestionnaireExceptions.GererException(e);
-        }
-    }
-
-    public async void CreerFilm()
-    {
-        List<Guid> guidsActeurs = ActeursSelectionnes.Select(a => a.Id).ToList();
-        List<Guid> guidsRealisateurs = RealisateursSelectionnes.Select(r => r.Id).ToList();
-        Guid? guidCategorie = CategorieSelectionnee?.Id;
-        _ = ushort.TryParse(DureeFilm, out ushort duree);
-
-        if (guidCategorie is null)
-        {
-            AfficherErreur("Veuillez sélectionner une catégorie");
-            return;
-        }
-
-        try
-        {
-            if (_idFilm is { } id)
-            {
-                await _filmUpdateService.ModifierFilm(id, TitreFilm, DescriptionFilm, (Guid)guidCategorie!,
-                    DateSelectionnee, guidsActeurs, guidsRealisateurs, duree);
-
-                _windowManager.ShowMessageBox("Film modifié avec succès", "Succès", MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-                HeaderViewModel.GoBack();
-            }
-
-            else if (await _filmCreationService.CreerFilm(TitreFilm, DescriptionFilm, (Guid)guidCategorie!,
-                         DateSelectionnee,
-                         guidsActeurs, guidsRealisateurs, duree) is var nouvFilm)
-            {
-                _windowManager.ShowMessageBox("Film ajouté avec succès", "Succès", MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-                HeaderViewModel.GoBack();
             }
         }
         catch (Exception e)

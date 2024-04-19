@@ -12,22 +12,6 @@ namespace CineQuebec.Windows;
 
 internal class MicrosoftDiModule : StyletIoCModule
 {
-    private static IConfiguration GetConfiguration()
-    {
-        return new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", false, true)
-            .AddJsonFile("appsettings.local.json", true, true)
-            .Build();
-    }
-
-    private static IServiceCollection ConfigureServices(IConfiguration configuration)
-    {
-        return new ServiceCollection()
-            .AddPersistenceServices(configuration)
-            .AddApplicationServices();
-    }
-
     protected override void Load()
     {
         IConfiguration configuration = GetConfiguration();
@@ -48,5 +32,21 @@ internal class MicrosoftDiModule : StyletIoCModule
                 singleton.InSingletonScope();
             }
         }
+    }
+
+    private static IConfiguration GetConfiguration()
+    {
+        return new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", false, true)
+            .AddJsonFile("appsettings.local.json", true, true)
+            .Build();
+    }
+
+    private static IServiceCollection ConfigureServices(IConfiguration configuration)
+    {
+        return new ServiceCollection()
+            .AddPersistenceServices(configuration)
+            .AddApplicationServices();
     }
 }

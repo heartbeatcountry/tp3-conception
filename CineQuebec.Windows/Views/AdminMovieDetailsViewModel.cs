@@ -84,51 +84,12 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
         _navigationController.NavigateTo<MovieCreationViewModel>();
     }
 
-    private void DesactiverInterface()
-    {
-        CanRafraichirTout = false;
-        Mouse.OverrideCursor = Cursors.Wait;
-    }
-
-    private void ActiverInterface()
-    {
-        CanRafraichirTout = true;
-        Mouse.OverrideCursor = null;
-    }
-
-    private async Task RafraichirDetails()
-    {
-        FilmDto? film = await _filmQueryService.ObtenirDetailsFilmParId(_filmId);
-
-        if (film is null)
-        {
-            HeaderViewModel.GoBack();
-            return;
-        }
-
-        Film = film;
-        Acteurs = new BindableCollection<ActeurDto>(film.Acteurs);
-        Realisateurs = new BindableCollection<RealisateurDto>(film.Realisateurs);
-    }
-
     public void RafraichirTout()
     {
         DesactiverInterface();
         _ = RafraichirDetails();
         _ = RafraichirProjections();
         ActiverInterface();
-    }
-
-    private async Task RafraichirProjections()
-    {
-        if (Film is null)
-        {
-            return;
-        }
-
-        IEnumerable<ProjectionDto>
-            projections = await _projectionQueryService.ObtenirProjectionsAVenirPourFilm(Film.Id);
-        Projections = new BindableCollection<ProjectionDto>(projections);
     }
 
     public void AjouterProjection()
@@ -197,6 +158,45 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
 
         _ = SupprimerProjectionAsync(projection.Id);
         _windowManager.ShowMessageBox("La projection a été supprimée avec succès.", "Suppression de projection");
+    }
+
+    private void DesactiverInterface()
+    {
+        CanRafraichirTout = false;
+        Mouse.OverrideCursor = Cursors.Wait;
+    }
+
+    private void ActiverInterface()
+    {
+        CanRafraichirTout = true;
+        Mouse.OverrideCursor = null;
+    }
+
+    private async Task RafraichirDetails()
+    {
+        FilmDto? film = await _filmQueryService.ObtenirDetailsFilmParId(_filmId);
+
+        if (film is null)
+        {
+            HeaderViewModel.GoBack();
+            return;
+        }
+
+        Film = film;
+        Acteurs = new BindableCollection<ActeurDto>(film.Acteurs);
+        Realisateurs = new BindableCollection<RealisateurDto>(film.Realisateurs);
+    }
+
+    private async Task RafraichirProjections()
+    {
+        if (Film is null)
+        {
+            return;
+        }
+
+        IEnumerable<ProjectionDto>
+            projections = await _projectionQueryService.ObtenirProjectionsAVenirPourFilm(Film.Id);
+        Projections = new BindableCollection<ProjectionDto>(projections);
     }
 
     private async Task SupprimerProjectionAsync(Guid projectionId)

@@ -45,18 +45,6 @@ public class AdminMovieListViewModel : Screen
         _navigationController.NavigateTo<MovieCreationViewModel>();
     }
 
-    private void DesactiverInterface()
-    {
-        CanRefreshFilms = false;
-        Mouse.OverrideCursor = Cursors.Wait;
-    }
-
-    private void ActiverInterface()
-    {
-        CanRefreshFilms = true;
-        Mouse.OverrideCursor = null;
-    }
-
     public async Task RefreshFilms()
     {
         DesactiverInterface();
@@ -93,5 +81,17 @@ public class AdminMovieListViewModel : Screen
     {
         DesactiverInterface();
         _navigationController.NavigateTo<AdminMovieDetailsViewModel>(id);
+    }
+
+    private void DesactiverInterface()
+    {
+        CanRefreshFilms = false;
+        Mouse.OverrideCursor = Cursors.Wait;
+    }
+
+    private void ActiverInterface()
+    {
+        CanRefreshFilms = true;
+        Mouse.OverrideCursor = null;
     }
 }
