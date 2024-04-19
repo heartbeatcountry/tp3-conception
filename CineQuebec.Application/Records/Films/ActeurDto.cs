@@ -3,7 +3,7 @@ using CineQuebec.Domain.Interfaces.Entities.Films;
 
 namespace CineQuebec.Application.Records.Films;
 
-public record class ActeurDto(Guid Id, string Prenom, string Nom) : PersonneDto(Id, Prenom, Nom);
+public record ActeurDto(Guid Id, string Prenom, string Nom) : PersonneDto(Id, Prenom, Nom);
 
 internal static class ActeurExtensions
 {

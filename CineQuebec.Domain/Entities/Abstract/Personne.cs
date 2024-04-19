@@ -14,17 +14,9 @@ public abstract class Personne : Entite, IComparable<Personne>, IPersonne
 
     public int CompareTo(Personne? other)
     {
-        if (ReferenceEquals(this, other))
-        {
-            return 0;
-        }
-
-        if (ReferenceEquals(null, other))
-        {
-            return 1;
-        }
-
-        return string.Compare(NomComplet, other.NomComplet, StringComparison.OrdinalIgnoreCase);
+        return ReferenceEquals(this, other) ? 0 :
+            other is null ? 1 :
+            string.Compare(NomComplet, other.NomComplet, StringComparison.OrdinalIgnoreCase);
     }
 
     public string Prenom { get; private set; } = string.Empty;

@@ -9,34 +9,36 @@ public class CategorieFilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) 
 {
     public async Task<Guid> CreerCategorie(string nomAffichage)
     {
-        nomAffichage = nomAffichage.Trim();
-
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
-        IEnumerable<Exception> exceptions = await EffectuerValidations(unitOfWork, nomAffichage);
+        nomAffichage = nomAffichage.Trim();
+        await EffectuerValidations(unitOfWork, nomAffichage);
 
-        if (exceptions.ToArray() is { Length: > 0 } innerExceptions)
-        {
-            throw new AggregateException("Des erreurs se sont produites lors de la validation des données.",
-                innerExceptions);
-        }
+        ICategorieFilm categorieFilmAjoute = await CreerCategorie(unitOfWork, nomAffichage);
 
-        CategorieFilm categorieFilm = new(nomAffichage);
-
-        ICategorieFilm categorieFilmAjoute = await unitOfWork.CategorieFilmRepository.AjouterAsync(categorieFilm);
         await unitOfWork.SauvegarderAsync();
 
         return categorieFilmAjoute.Id;
     }
 
-    private static async Task<IEnumerable<Exception>> EffectuerValidations(IUnitOfWork unitOfWork, string nomAffichage)
+    private static async Task EffectuerValidations(IUnitOfWork unitOfWork, string nomAffichage)
     {
         List<Exception> exceptions = [];
 
         exceptions.AddRange(ValiderNomAffichage(nomAffichage));
         exceptions.AddRange(await ValiderCategorieFilmEstUnique(unitOfWork, nomAffichage));
 
-        return exceptions;
+        if (exceptions.ToArray() is { Length: > 0 } innerExceptions)
+        {
+            throw new AggregateException("Des erreurs se sont produites lors de la validation des données.",
+                innerExceptions);
+        }
+    }
+
+    private static async Task<ICategorieFilm> CreerCategorie(IUnitOfWork unitOfWork, string nomAffichage)
+    {
+        CategorieFilm categorieFilm = new(nomAffichage);
+        return await unitOfWork.CategorieFilmRepository.AjouterAsync(categorieFilm);
     }
 
     private static async Task<IEnumerable<Exception>> ValiderCategorieFilmEstUnique(IUnitOfWork unitOfWork,

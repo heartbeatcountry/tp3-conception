@@ -1,3 +1,3 @@
 namespace CineQuebec.Application.Records.Abstract;
 
-public abstract record class PersonneDto(Guid Id, string Prenom, string Nom) : EntityDto(Id);
+public abstract record PersonneDto(Guid Id, string Prenom, string Nom) : EntityDto(Id);

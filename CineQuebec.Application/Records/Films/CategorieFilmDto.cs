@@ -3,7 +3,7 @@ using CineQuebec.Domain.Interfaces.Entities.Films;
 
 namespace CineQuebec.Application.Records.Films;
 
-public record class CategorieFilmDto(Guid Id, string NomAffichage) : EntityDto(Id);
+public record CategorieFilmDto(Guid Id, string NomAffichage) : EntityDto(Id);
 
 internal static class CategorieFilmExtensions
 {

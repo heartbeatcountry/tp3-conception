@@ -9,28 +9,19 @@ public class ActeurCreationService(IUnitOfWorkFactory unitOfWorkFactory) : IActe
 {
     public async Task<Guid> CreerActeur(string prenom, string nom)
     {
-        prenom = prenom.Trim();
-        nom = nom.Trim();
-
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
-        IEnumerable<Exception> exceptions = await EffectuerValidations(unitOfWork, prenom, nom);
+        (prenom, nom) = (prenom.Trim(), nom.Trim());
+        await EffectuerValidations(unitOfWork, prenom, nom);
 
-        if (exceptions.ToArray() is { Length: > 0 } innerExceptions)
-        {
-            throw new AggregateException("Des erreurs se sont produites lors de la validation des données.",
-                innerExceptions);
-        }
+        IActeur acteurAjoute = await CreerActeur(unitOfWork, prenom, nom);
 
-        Acteur acteur = new(prenom, nom);
-
-        IActeur acteurAjoute = await unitOfWork.ActeurRepository.AjouterAsync(acteur);
         await unitOfWork.SauvegarderAsync();
 
         return acteurAjoute.Id;
     }
 
-    private static async Task<IEnumerable<Exception>> EffectuerValidations(IUnitOfWork unitOfWork, string prenom,
+    private static async Task EffectuerValidations(IUnitOfWork unitOfWork, string prenom,
         string nom)
     {
         List<Exception> exceptions = [];
@@ -39,7 +30,17 @@ public class ActeurCreationService(IUnitOfWorkFactory unitOfWorkFactory) : IActe
         exceptions.AddRange(ValiderNom(nom));
         exceptions.AddRange(await ValiderActeurEstUnique(unitOfWork, prenom, nom));
 
-        return exceptions;
+        if (exceptions.ToArray() is { Length: > 0 } innerExceptions)
+        {
+            throw new AggregateException("Des erreurs se sont produites lors de la validation des données.",
+                innerExceptions);
+        }
+    }
+
+    private static async Task<IActeur> CreerActeur(IUnitOfWork unitOfWork, string prenom, string nom)
+    {
+        Acteur acteur = new(prenom, nom);
+        return await unitOfWork.ActeurRepository.AjouterAsync(acteur);
     }
 
     private static async Task<IEnumerable<Exception>> ValiderActeurEstUnique(IUnitOfWork unitOfWork, string prenom,

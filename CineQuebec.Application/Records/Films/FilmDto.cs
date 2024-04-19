@@ -3,7 +3,7 @@ using CineQuebec.Domain.Interfaces.Entities.Films;
 
 namespace CineQuebec.Application.Records.Films;
 
-public record class FilmDto(
+public record FilmDto(
     Guid Id,
     string Titre,
     string Description,

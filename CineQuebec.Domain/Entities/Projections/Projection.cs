@@ -26,17 +26,9 @@ public class Projection : Entite, IComparable<Projection>, IProjection
 
     public int CompareTo(Projection? other)
     {
-        if (ReferenceEquals(this, other))
-        {
-            return 0;
-        }
-
-        if (ReferenceEquals(null, other))
-        {
-            return 1;
-        }
-
-        return DateHeure.CompareTo(other.DateHeure);
+        return ReferenceEquals(this, other) ? 0 :
+            other is null ? 1 :
+            DateHeure.CompareTo(other.DateHeure);
     }
 
     public Guid IdFilm { get; private set; }

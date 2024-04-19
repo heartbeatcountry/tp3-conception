@@ -64,4 +64,9 @@ public sealed class UnitOfWork(DbContextOptions<ApplicationDbContext> contextOpt
 
         _disposed = true;
     }
+
+    ~UnitOfWork()
+    {
+        Dispose(false);
+    }
 }

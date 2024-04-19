@@ -11,8 +11,7 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory) : I
     {
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
-        IEnumerable<Exception> exceptions = await EffectuerValidations(unitOfWork, pFilm, pSalle, pDateHeure,
-            pEstAvantPremiere);
+        IEnumerable<Exception> exceptions = await EffectuerValidations(unitOfWork, pFilm, pSalle, pDateHeure);
 
         if (exceptions.ToArray() is { Length: > 0 } innerExceptions)
         {
@@ -30,7 +29,7 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory) : I
 
 
     private static async Task<IEnumerable<Exception>> EffectuerValidations(IUnitOfWork unitOfWork, Guid pFilm,
-        Guid pSalle, DateTime pDateHeure, bool pEstAvantPremiere)
+        Guid pSalle, DateTime pDateHeure)
     {
         List<Exception> exceptions = [];
 

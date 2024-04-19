@@ -22,17 +22,9 @@ public class Salle : Entite, IComparable<Salle>, ISalle
 
     public int CompareTo(Salle? other)
     {
-        if (ReferenceEquals(this, other))
-        {
-            return 0;
-        }
-
-        if (ReferenceEquals(null, other))
-        {
-            return 1;
-        }
-
-        return Numero.CompareTo(other.Numero);
+        return ReferenceEquals(this, other) ? 0 :
+            other is null ? 1 :
+            Numero.CompareTo(other.Numero);
     }
 
     public byte Numero { get; private set; }

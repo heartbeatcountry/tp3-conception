@@ -3,7 +3,7 @@ using CineQuebec.Domain.Interfaces.Entities.Projections;
 
 namespace CineQuebec.Application.Records.Projections;
 
-public record class SalleDto(Guid Id, byte Numero, ushort NbSieges) : EntityDto(Id);
+public record SalleDto(Guid Id, byte Numero, ushort NbSieges) : EntityDto(Id);
 
 internal static class SalleExtensions
 {

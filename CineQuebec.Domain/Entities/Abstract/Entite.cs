@@ -23,37 +23,12 @@ public abstract class Entite : IEquatable<Entite>, IEntite
 
     public bool Equals(Entite? autre)
     {
-        if (ReferenceEquals(null, autre))
-        {
-            return false;
-        }
-
-        if (ReferenceEquals(this, autre))
-        {
-            return true;
-        }
-
-        return Id.Equals(autre.Id);
+        return autre is not null && (ReferenceEquals(this, autre) || Id.Equals(autre.Id));
     }
 
     public override bool Equals(object? obj)
     {
-        if (ReferenceEquals(null, obj))
-        {
-            return false;
-        }
-
-        if (ReferenceEquals(this, obj))
-        {
-            return true;
-        }
-
-        if (obj.GetType() != GetType())
-        {
-            return false;
-        }
-
-        return Equals((Entite)obj);
+        return obj is not null && (ReferenceEquals(this, obj) || (obj.GetType() == GetType() && Equals((Entite)obj)));
     }
 
     public override int GetHashCode()

@@ -38,17 +38,9 @@ public class CategorieFilm : Entite, IComparable<CategorieFilm>, ICategorieFilm
 
     public int CompareTo(CategorieFilm? other)
     {
-        if (ReferenceEquals(this, other))
-        {
-            return 0;
-        }
-
-        if (ReferenceEquals(null, other))
-        {
-            return 1;
-        }
-
-        return string.Compare(NomAffichage, other.NomAffichage, StringComparison.Ordinal);
+        return ReferenceEquals(this, other) ? 0 :
+            other is null ? 1 :
+            string.Compare(NomAffichage, other.NomAffichage, StringComparison.Ordinal);
     }
 
     public new bool Equals(Entite? autre)
