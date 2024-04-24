@@ -1,6 +1,8 @@
 using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Persistence.DbContext;
+using CineQuebec.Persistence.Interfaces;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,6 +20,7 @@ public static class ConfigureServices
     {
         return services
             .AddMongoDb(configuration)
+            .AddApplicationDbContextFactory()
             .AddUnitOfWorkFactory();
     }
 
@@ -28,7 +31,19 @@ public static class ConfigureServices
         MongoClient mongoClient = new(mongoUrl);
         IMongoDatabase? mongoDatabase = mongoClient.GetDatabase(mongoUrl.DatabaseName ?? DefaultDatabaseName);
 
-        return services.AddSingleton(mongoDatabase);
+        DbContextOptions<ApplicationDbContext> dbContextOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseMongoDB(mongoDatabase.Client, mongoDatabase.DatabaseNamespace.DatabaseName)
+            .UseLazyLoadingProxies()
+            .Options;
+
+        return services
+            .AddSingleton(mongoDatabase)
+            .AddSingleton(dbContextOptions);
+    }
+
+    private static IServiceCollection AddApplicationDbContextFactory(this IServiceCollection services)
+    {
+        return services.AddSingleton<IApplicationDbContextFactory, ApplicationDbContextFactory>();
     }
 
     private static IServiceCollection AddUnitOfWorkFactory(this IServiceCollection services)

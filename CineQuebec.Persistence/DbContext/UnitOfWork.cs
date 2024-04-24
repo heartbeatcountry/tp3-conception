@@ -4,15 +4,14 @@ using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Domain.Entities.Projections;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Projections;
+using CineQuebec.Persistence.Interfaces;
 using CineQuebec.Persistence.Repositories;
-
-using Microsoft.EntityFrameworkCore;
 
 namespace CineQuebec.Persistence.DbContext;
 
-public sealed class UnitOfWork(DbContextOptions<ApplicationDbContext> contextOptions) : IUnitOfWork
+public sealed class UnitOfWork(IApplicationDbContextFactory applicationDbContextFactory) : IUnitOfWork
 {
-    private readonly ApplicationDbContext _context = new(contextOptions);
+    private readonly ApplicationDbContext _context = applicationDbContextFactory.Create();
 
     private IRepository<IActeur>? _acteurRepository;
 

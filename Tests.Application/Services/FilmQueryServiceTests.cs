@@ -58,7 +58,7 @@ public class FilmQueryServiceTests : GenericServiceTests<FilmQueryService>
         Assert.Multiple(() =>
         {
             Assert.That(filmDto, Is.Not.Null);
-            Assert.That(filmDto.Realisateurs, Has.Exactly(4).Items);
+            Assert.That(filmDto!.Realisateurs, Has.Exactly(4).Items);
             Assert.That(filmDto.Realisateurs,
                 Is.Ordered.By(nameof(RealisateurDto.Prenom)).Then.By(nameof(RealisateurDto.Nom)));
             Assert.That(filmDto.Realisateurs.ElementAt(0).Prenom, Is.EqualTo("A"));
