@@ -37,10 +37,12 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
 		<PackageReference Include="Stylet" Version="1.3.7" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\CineQuebec.AuthProxy\CineQuebec.AuthProxy.csproj" />
 	  <ProjectReference Include="..\CineQuebec.Persistence\CineQuebec.Persistence.csproj" />
 	</ItemGroup>
 
