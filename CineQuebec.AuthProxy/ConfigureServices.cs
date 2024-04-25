@@ -1,4 +1,5 @@
 using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Domain.Entities.Utilisateurs;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,6 +10,70 @@ public static class ConfigureServices
     public static IServiceCollection WrapServicesWithAuthProxy(this IServiceCollection services)
     {
         return services
-            .AjouterProxyAuthPourService<IActeurQueryService>();
+            .AjouterProxyAuthPourService<IActeurCreationService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Administrateur] = [nameof(IActeurCreationService.CreerActeur)]
+            })
+            .AjouterProxyAuthPourService<IActeurQueryService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Invite] = [nameof(IActeurQueryService.ObtenirTous)]
+            })
+            .AjouterProxyAuthPourService<ICategorieFilmCreationService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Administrateur] = [nameof(ICategorieFilmCreationService.CreerCategorie)]
+            })
+            .AjouterProxyAuthPourService<ICategorieFilmQueryService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Invite] = [nameof(ICategorieFilmQueryService.ObtenirToutes)]
+            })
+            .AjouterProxyAuthPourService<IFilmCreationService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Administrateur] = [nameof(IFilmCreationService.CreerFilm)]
+            })
+            .AjouterProxyAuthPourService<IFilmDeletionService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Administrateur] = [nameof(IFilmDeletionService.SupprimerFilm)]
+            })
+            .AjouterProxyAuthPourService<IFilmQueryService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Invite] =
+                [
+                    nameof(IFilmQueryService.ObtenirDetailsFilmParId),
+                    nameof(IFilmQueryService.ObtenirTousAlAffiche)
+                ],
+                [Role.Administrateur] = [nameof(IFilmQueryService.ObtenirTous)]
+            })
+            .AjouterProxyAuthPourService<IFilmUpdateService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Administrateur] = [nameof(IFilmUpdateService.ModifierFilm)]
+            })
+            .AjouterProxyAuthPourService<IProjectionCreationService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Administrateur] = [nameof(IProjectionCreationService.CreerProjection)]
+            })
+            .AjouterProxyAuthPourService<IProjectionDeletionService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Administrateur] = [nameof(IProjectionDeletionService.SupprimerProjection)]
+            })
+            .AjouterProxyAuthPourService<IProjectionQueryService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Invite] = [nameof(IProjectionQueryService.ObtenirProjectionsAVenirPourFilm)]
+            })
+            .AjouterProxyAuthPourService<IRealisateurCreationService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Administrateur] = [nameof(IRealisateurCreationService.CreerRealisateur)]
+            })
+            .AjouterProxyAuthPourService<IRealisateurQueryService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Invite] = [nameof(IRealisateurQueryService.ObtenirTous)]
+            })
+            .AjouterProxyAuthPourService<ISalleCreationService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Administrateur] = [nameof(ISalleCreationService.CreerSalle)]
+            })
+            .AjouterProxyAuthPourService<ISalleQueryService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Administrateur] = [nameof(ISalleQueryService.ObtenirToutes)]
+            });
     }
 }

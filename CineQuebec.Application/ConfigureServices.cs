@@ -10,6 +10,7 @@ public static class ConfigureServices
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         return services
+            .AddSingleton<IAuthenticationService, AuthenticationService>()
             .AddSingleton<IFilmQueryService, FilmQueryService>()
             .AddSingleton<IFilmCreationService, FilmCreationService>()
             .AddSingleton<IFilmDeletionService, FilmDeletionService>()

@@ -15,7 +15,8 @@ internal class MicrosoftDiModule : StyletIoCModule
 {
     protected override void Load()
     {
-        (IServiceCollection serviceCollection, IServiceProvider serviceProvider) = ConfigureServices();
+        IServiceCollection serviceCollection = ConfigureServices();
+        IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
         foreach (ServiceDescriptor service in serviceCollection)
         {
@@ -23,14 +24,12 @@ internal class MicrosoftDiModule : StyletIoCModule
         }
     }
 
-    private static (IServiceCollection serviceCollection, IServiceProvider serviceProvider) ConfigureServices()
+    private static IServiceCollection ConfigureServices()
     {
-        IServiceCollection serviceCollection = new ServiceCollection()
+        return new ServiceCollection()
             .AddPersistenceServices(GetConfiguration())
             .AddApplicationServices()
             .WrapServicesWithAuthProxy();
-
-        return (serviceCollection, serviceCollection.BuildServiceProvider());
     }
 
     private static IConfiguration GetConfiguration()
@@ -44,15 +43,8 @@ internal class MicrosoftDiModule : StyletIoCModule
 
     private void RegisterServiceWithStyletIoC(ServiceDescriptor service, IServiceProvider serviceProvider)
     {
-        IAsWeakBinding serviceReg = service switch
-        {
-            { ImplementationInstance: not null } => Bind(service.ServiceType)
-                .ToInstance(service.ImplementationInstance),
-            { ImplementationType: not null } => Bind(service.ServiceType).To(service.ImplementationType),
-            { ImplementationFactory: not null } => Bind(service.ServiceType)
-                .ToInstance(serviceProvider.GetRequiredService(service.ServiceType)),
-            _ => throw new InvalidOperationException("Unsupported service implementation")
-        };
+        IAsWeakBinding serviceReg = Bind(service.ServiceType)
+            .ToInstance(serviceProvider.GetRequiredService(service.ServiceType));
 
         if (service.Lifetime == ServiceLifetime.Singleton && serviceReg is IInScopeOrAsWeakBinding singleton)
         {
