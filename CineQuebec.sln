@@ -21,9 +21,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3rdparty", "3rdparty", "{56
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoDB.EntityFrameworkCore", "3rdparty\mongo-efcore-provider\src\MongoDB.EntityFrameworkCore\MongoDB.EntityFrameworkCore.csproj", "{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineQuebec.AuthProxy", "CineQuebec.AuthProxy\CineQuebec.AuthProxy.csproj", "{F74AF32A-3E94-4F4C-9C69-C5F638976A27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CineQuebec.AuthProxy", "CineQuebec.AuthProxy\CineQuebec.AuthProxy.csproj", "{F74AF32A-3E94-4F4C-9C69-C5F638976A27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Persistence", "Tests.Persistence\Tests.Persistence.csproj", "{A64EA6CD-C94E-4B65-8D17-AE06AD463BAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Persistence", "Tests.Persistence\Tests.Persistence.csproj", "{A64EA6CD-C94E-4B65-8D17-AE06AD463BAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.AuthProxy", "Tests.AuthProxy\Tests.AuthProxy.csproj", "{32F60555-04AB-4559-A449-D43351943EF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +69,10 @@ Global
 		{A64EA6CD-C94E-4B65-8D17-AE06AD463BAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A64EA6CD-C94E-4B65-8D17-AE06AD463BAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A64EA6CD-C94E-4B65-8D17-AE06AD463BAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32F60555-04AB-4559-A449-D43351943EF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32F60555-04AB-4559-A449-D43351943EF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32F60555-04AB-4559-A449-D43351943EF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32F60555-04AB-4559-A449-D43351943EF9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +82,7 @@ Global
 		{66D9C791-D09F-4151-ABDA-79BBA3E02062} = {01B05719-D678-4A75-ABBE-C6AAADCB6C6D}
 		{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726} = {56ECE20E-E839-4C7F-B31D-C1556FA426CF}
 		{A64EA6CD-C94E-4B65-8D17-AE06AD463BAF} = {01B05719-D678-4A75-ABBE-C6AAADCB6C6D}
+		{32F60555-04AB-4559-A449-D43351943EF9} = {01B05719-D678-4A75-ABBE-C6AAADCB6C6D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C52FB3C3-F7DC-49E7-859D-331517CE7486}

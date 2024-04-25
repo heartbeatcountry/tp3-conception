@@ -1,8 +1,6 @@
 ﻿using System.IO;
 
-using CineQuebec.Application;
 using CineQuebec.AuthProxy;
-using CineQuebec.Persistence;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,9 +25,8 @@ internal class MicrosoftDiModule : StyletIoCModule
     private static IServiceCollection ConfigureServices()
     {
         return new ServiceCollection()
-            .AddPersistenceServices(GetConfiguration())
-            .AddApplicationServices()
-            .WrapServicesWithAuthProxy();
+            .AddSingleton(GetConfiguration())
+            .AddProxiedServices();
     }
 
     private static IConfiguration GetConfiguration()

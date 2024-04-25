@@ -42,7 +42,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\CineQuebec.AuthProxy\CineQuebec.AuthProxy.csproj" />
-	  <ProjectReference Include="..\CineQuebec.Persistence\CineQuebec.Persistence.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

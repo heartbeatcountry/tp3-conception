@@ -1,5 +1,7 @@
+using CineQuebec.Application;
 using CineQuebec.Application.Interfaces.Services;
 using CineQuebec.Domain.Entities.Utilisateurs;
+using CineQuebec.Persistence;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,7 +9,15 @@ namespace CineQuebec.AuthProxy;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection WrapServicesWithAuthProxy(this IServiceCollection services)
+    public static IServiceCollection AddProxiedServices(this IServiceCollection services)
+    {
+        return services
+            .AddPersistenceServices()
+            .AddApplicationServices()
+            .WrapServicesWithAuthProxy();
+    }
+
+    private static IServiceCollection WrapServicesWithAuthProxy(this IServiceCollection services)
     {
         return services
             .AjouterProxyAuthPourService<IActeurCreationService>(new Dictionary<Role, IEnumerable<string>>
