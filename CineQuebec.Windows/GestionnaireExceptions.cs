@@ -1,37 +1,57 @@
-﻿using System.Windows;
+﻿using System.Security;
+using System.Windows;
+
+using CineQuebec.Windows.Views;
 
 using Stylet;
 
 namespace CineQuebec.Windows;
 
-public class GestionnaireExceptions(IWindowManager windowManager)
+public class GestionnaireExceptions(IWindowManager windowManager, INavigationController navigationController)
 {
-    public void GererException(AggregateException aggregateException)
+    public void GererException(Exception exception)
+    {
+        switch (exception)
+        {
+            case SecurityException securityException:
+                GererException(securityException);
+                return;
+            case AggregateException aggregateException:
+                GererException(aggregateException);
+                return;
+            default:
+                AfficherMessage(exception.Message, "Problème dans le formulaire");
+                return;
+        }
+    }
+
+    private void GererException(AggregateException aggregateException)
     {
         string message = aggregateException.InnerExceptions.Select(ObtenirMsgSansParametre)
             .Aggregate((a, b) => $"{a}\n{b}");
 
-        windowManager.ShowMessageBox(message, "Problèmes dans le formulaire", MessageBoxButton.OK,
-            MessageBoxImage.Warning);
+        AfficherMessage(message, "Problèmes dans le formulaire");
     }
 
-    public void GererException(Exception exception)
+    private void GererException(SecurityException securityException)
     {
-        if (exception is AggregateException aggregateException)
-        {
-            GererException(aggregateException);
-            return;
-        }
+        AfficherMessage(securityException.Message, "Problème d'authentification");
+        navigationController.NavigateTo<LoginViewModel>();
+    }
 
-        string message = ObtenirMsgSansParametre(exception);
-
-        windowManager.ShowMessageBox(message, "Problème dans le formulaire", MessageBoxButton.OK,
+    private void AfficherMessage(string message, string titre)
+    {
+        windowManager.ShowMessageBox(ObtenirMsgSansParametre(message), titre, MessageBoxButton.OK,
             MessageBoxImage.Warning);
     }
 
     private static string ObtenirMsgSansParametre(Exception exception)
     {
-        string message = exception.InnerException?.Message ?? exception.Message;
+        return ObtenirMsgSansParametre(exception.InnerException?.Message ?? exception.Message);
+    }
+
+    private static string ObtenirMsgSansParametre(string message)
+    {
         int indexOf = message.IndexOf(" (Parameter ", StringComparison.Ordinal);
 
         return indexOf == -1 ? message : message[..indexOf];

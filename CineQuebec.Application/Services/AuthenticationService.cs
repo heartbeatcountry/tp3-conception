@@ -16,11 +16,10 @@ public class AuthenticationService : IAuthenticationService
         return ClaimsPrincipal.Current ?? _cachedClaimsPrincipal;
     }
 
-    public Task<bool> AuthentifierThreadAsync(string nomUsager, string mdp)
+    public async Task AuthentifierThreadAsync(string nomUsager, string mdp)
     {
         ClaimsPrincipal claimsPrincipal = CreerClaimsPrincipal(nomUsager, Role.Utilisateur, Role.Administrateur);
         Thread.CurrentPrincipal = _cachedClaimsPrincipal = claimsPrincipal;
-        return Task.FromResult(true);
     }
 
     public void DeauthentifierThread()

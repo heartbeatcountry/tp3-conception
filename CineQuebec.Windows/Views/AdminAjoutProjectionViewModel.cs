@@ -148,7 +148,18 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
         }
 
         DesactiverInterface();
-        FilmDto? film = await _filmQueryService.ObtenirDetailsFilmParId((Guid)_filmId);
+        FilmDto? film;
+
+        try
+        {
+            film = await _filmQueryService.ObtenirDetailsFilmParId((Guid)_filmId);
+        }
+        catch (Exception exception)
+        {
+            ActiverInterface();
+            _gestionnaireExceptions.GererException(exception);
+            return;
+        }
 
         if (film is null)
         {
@@ -163,7 +174,20 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
     private async Task ChargerSalles()
     {
         DesactiverInterface();
-        IEnumerable<SalleDto> salles = await _salleQueryService.ObtenirToutes();
+
+        IEnumerable<SalleDto> salles;
+
+        try
+        {
+            salles = await _salleQueryService.ObtenirToutes();
+        }
+        catch (Exception e)
+        {
+            ActiverInterface();
+            _gestionnaireExceptions.GererException(e);
+            return;
+        }
+
         LstSalles = new BindableCollection<SalleDto>(salles);
         SalleSelectionnee = LstSalles.FirstOrDefault();
         ActiverInterface();

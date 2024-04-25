@@ -11,16 +11,18 @@ namespace CineQuebec.Windows.Views;
 public class AdminMovieListViewModel : Screen
 {
     private readonly IFilmQueryService _filmQueryService;
+    private readonly GestionnaireExceptions _gestionnaireExceptions;
     private readonly INavigationController _navigationController;
     private bool _afficherUniquementAlaffiche;
     private bool _canRefreshFilms = true;
     private BindableCollection<FilmDto> _films;
 
     public AdminMovieListViewModel(INavigationController navigationController, HeaderViewModel headerViewModel,
-        IFilmQueryService filmQueryService)
+        IFilmQueryService filmQueryService, GestionnaireExceptions gestionnaireExceptions)
     {
         _navigationController = navigationController;
         _filmQueryService = filmQueryService;
+        _gestionnaireExceptions = gestionnaireExceptions;
         headerViewModel.PreviousView = typeof(AdminHomeViewModel);
         HeaderViewModel = headerViewModel;
         _ = RefreshFilms();
@@ -48,9 +50,21 @@ public class AdminMovieListViewModel : Screen
     public async Task RefreshFilms()
     {
         DesactiverInterface();
-        IEnumerable<FilmDto> allFilms = _afficherUniquementAlaffiche
-            ? await _filmQueryService.ObtenirTousAlAffiche()
-            : await _filmQueryService.ObtenirTous();
+        IEnumerable<FilmDto> allFilms;
+
+        try
+        {
+            allFilms = _afficherUniquementAlaffiche
+                ? await _filmQueryService.ObtenirTousAlAffiche()
+                : await _filmQueryService.ObtenirTous();
+        }
+        catch (Exception exception)
+        {
+            _gestionnaireExceptions.GererException(exception);
+            ActiverInterface();
+            return;
+        }
+
         Films = new BindableCollection<FilmDto>(allFilms);
         ActiverInterface();
     }

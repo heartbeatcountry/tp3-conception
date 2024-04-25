@@ -15,6 +15,7 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
 {
     private readonly IFilmDeletionService _filmDeletionService;
     private readonly IFilmQueryService _filmQueryService;
+    private readonly GestionnaireExceptions _gestionnaireExceptions;
     private readonly INavigationController _navigationController;
     private readonly IProjectionDeletionService _projectionDeletionService;
     private readonly IProjectionQueryService _projectionQueryService;
@@ -27,7 +28,8 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
 
     public AdminMovieDetailsViewModel(INavigationController navigationController, HeaderViewModel headerViewModel,
         IFilmQueryService filmQueryService, IWindowManager windowManager, IFilmDeletionService filmDeletionService,
-        IProjectionDeletionService projectionDeletionService, IProjectionQueryService projectionQueryService)
+        IProjectionDeletionService projectionDeletionService, IProjectionQueryService projectionQueryService,
+        GestionnaireExceptions gestionnaireExceptions)
     {
         _navigationController = navigationController;
         _filmQueryService = filmQueryService;
@@ -35,6 +37,7 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
         _windowManager = windowManager;
         _projectionDeletionService = projectionDeletionService;
         _projectionQueryService = projectionQueryService;
+        _gestionnaireExceptions = gestionnaireExceptions;
 
         headerViewModel.PreviousView = typeof(AdminMovieListViewModel);
         HeaderViewModel = headerViewModel;
@@ -130,8 +133,13 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
 
         DesactiverInterface();
 
-        if (!await _filmDeletionService.SupprimerFilm(Film.Id))
+        try
         {
+            await _filmDeletionService.SupprimerFilm(Film.Id);
+        }
+        catch (Exception exception)
+        {
+            _gestionnaireExceptions.GererException(exception);
             return;
         }
 
@@ -174,7 +182,17 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
 
     private async Task RafraichirDetails()
     {
-        FilmDto? film = await _filmQueryService.ObtenirDetailsFilmParId(_filmId);
+        FilmDto? film;
+
+        try
+        {
+            film = await _filmQueryService.ObtenirDetailsFilmParId(_filmId);
+        }
+        catch (Exception exception)
+        {
+            _gestionnaireExceptions.GererException(exception);
+            return;
+        }
 
         if (film is null)
         {
@@ -194,15 +212,34 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
             return;
         }
 
-        IEnumerable<ProjectionDto>
+        IEnumerable<ProjectionDto> projections;
+
+        try
+        {
             projections = await _projectionQueryService.ObtenirProjectionsAVenirPourFilm(Film.Id);
+        }
+        catch (Exception exception)
+        {
+            _gestionnaireExceptions.GererException(exception);
+            return;
+        }
+
         Projections = new BindableCollection<ProjectionDto>(projections);
     }
 
     private async Task SupprimerProjectionAsync(Guid projectionId)
     {
         DesactiverInterface();
-        bool success = await _projectionDeletionService.SupprimerProjection(projectionId);
+        bool success = false;
+
+        try
+        {
+            success = await _projectionDeletionService.SupprimerProjection(projectionId);
+        }
+        catch (Exception exception)
+        {
+            _gestionnaireExceptions.GererException(exception);
+        }
 
         if (success)
         {

@@ -272,7 +272,19 @@ public class MovieCreationViewModel : Screen, IScreenWithData
     private async Task ChargerCategories()
     {
         DesactiverInterface();
-        IEnumerable<CategorieFilmDto> categories = await _categorieFilmQueryService.ObtenirToutes();
+        IEnumerable<CategorieFilmDto> categories;
+
+        try
+        {
+            categories = await _categorieFilmQueryService.ObtenirToutes();
+        }
+        catch (Exception exception)
+        {
+            _gestionnaireExceptions.GererException(exception);
+            ActiverInterface();
+            return;
+        }
+
         LstCategories = new BindableCollection<CategorieFilmDto>(categories);
         CategorieSelectionnee = LstCategories.FirstOrDefault();
         ActiverInterface();
@@ -281,7 +293,19 @@ public class MovieCreationViewModel : Screen, IScreenWithData
     private async Task ChargerActeurs()
     {
         DesactiverInterface();
-        IEnumerable<ActeurDto> acteurs = await _acteurQueryService.ObtenirTous();
+        IEnumerable<ActeurDto> acteurs;
+
+        try
+        {
+            acteurs = await _acteurQueryService.ObtenirTous();
+        }
+        catch (Exception exception)
+        {
+            _gestionnaireExceptions.GererException(exception);
+            ActiverInterface();
+            return;
+        }
+
         LstActeurs = new BindableCollection<ActeurDto>(acteurs);
         ActeursSelectionnes = [];
         ActiverInterface();
@@ -290,7 +314,19 @@ public class MovieCreationViewModel : Screen, IScreenWithData
     private async Task ChargerRealisateurs()
     {
         DesactiverInterface();
-        IEnumerable<RealisateurDto> realisateurs = await _realisateurQueryService.ObtenirTous();
+        IEnumerable<RealisateurDto> realisateurs;
+
+        try
+        {
+            realisateurs = await _realisateurQueryService.ObtenirTous();
+        }
+        catch (Exception exception)
+        {
+            _gestionnaireExceptions.GererException(exception);
+            ActiverInterface();
+            return;
+        }
+
         LstRealisateurs = new BindableCollection<RealisateurDto>(realisateurs);
         RealisateursSelectionnes = [];
         ActiverInterface();
@@ -360,7 +396,16 @@ public class MovieCreationViewModel : Screen, IScreenWithData
             return;
         }
 
-        _film = await _filmQueryService.ObtenirDetailsFilmParId((Guid)_idFilm);
+        try
+        {
+            _film = await _filmQueryService.ObtenirDetailsFilmParId((Guid)_idFilm);
+        }
+        catch (Exception exception)
+        {
+            _gestionnaireExceptions.GererException(exception);
+            return;
+        }
+
         ConfigurerEnModeEdition();
     }
 

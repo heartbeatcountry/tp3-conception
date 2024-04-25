@@ -26,16 +26,17 @@
                 <Label Content="{x:Static rs:Resource.connexion_username}"
                        Style="{StaticResource DefautLabel}" />
                 <TextBox Width="200" Style="{StaticResource DefautInput}"
+                         Text="{Binding NomUsager}"
                          Margin="0 0 0 10" />
 
                 <Label Content="{x:Static rs:Resource.connexion_password}"
                        Style="{StaticResource DefautLabel}" />
-                <TextBox Width="200"
-                         Style="{StaticResource DefautInput}"
+                <TextBox Width="200" Style="{StaticResource DefautInput}"
+                         Text="{Binding MotDePasse}"
                          Margin="0 0 0 20" />
 
                 <Button Content="{x:Static rs:Resource.connexion_connect}"
-                        Style="{StaticResource DefautButton}" Width="200" Command="{s:Action NavigateToAdminHome}" />
+                        Style="{StaticResource DefautButton}" Width="200" Command="{s:Action SeConnecter}" />
             </StackPanel>
         </Grid>
     </Grid>
