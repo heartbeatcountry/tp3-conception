@@ -1,11 +1,16 @@
 ﻿using System.Reflection;
 using System.Windows;
 
+using CineQuebec.Application.Interfaces.Services;
+
 using Stylet;
 
 namespace CineQuebec.Windows.Views.Components;
 
-public class HeaderViewModel(INavigationController navigationController) : Screen
+public class HeaderViewModel(
+    INavigationController navigationController,
+    IAuthenticationService authenticationService,
+    GestionnaireExceptions gestionnaireExceptions) : Screen
 {
     public Type? PreviousView { get; set; }
     public object? PreviousViewData { get; set; }
@@ -26,6 +31,15 @@ public class HeaderViewModel(INavigationController navigationController) : Scree
 
     public void Logout()
     {
+        try
+        {
+            authenticationService.DeauthentifierThread();
+        }
+        catch (Exception ex)
+        {
+            gestionnaireExceptions.GererException(ex);
+        }
+
         navigationController.NavigateTo<LoginViewModel>();
     }
 }
