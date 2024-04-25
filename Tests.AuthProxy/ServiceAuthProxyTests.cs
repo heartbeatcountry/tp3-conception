@@ -52,6 +52,7 @@ public class ServiceAuthProxyTests
 
         _methodMapping = [];
 
+        _claimsPrincipal = null;
         _proxy = null;
     }
 
