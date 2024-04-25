@@ -5,9 +5,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace CineQuebec.AuthProxy;
 
-internal static class ServiceCollectionExtensions
+public static class ServiceCollectionExtensions
 {
-    internal static IServiceCollection AjouterProxyAuthPourService<TService>(this IServiceCollection services,
+    public static IServiceCollection AjouterProxyAuthPourService<TService>(this IServiceCollection services,
         Dictionary<Role, IEnumerable<string>> methodMapping)
         where TService : class
     {

@@ -17,7 +17,7 @@ public static class ConfigureServices
             .WrapServicesWithAuthProxy();
     }
 
-    private static IServiceCollection WrapServicesWithAuthProxy(this IServiceCollection services)
+    public static IServiceCollection WrapServicesWithAuthProxy(this IServiceCollection services)
     {
         return services
             .AjouterProxyAuthPourService<IActeurCreationService>(new Dictionary<Role, IEnumerable<string>>

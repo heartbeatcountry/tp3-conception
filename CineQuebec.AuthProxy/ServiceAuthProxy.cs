@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using System.Security;
 using System.Security.Claims;
 
@@ -9,19 +10,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CineQuebec.AuthProxy;
 
-internal class ServiceAuthProxy<TService> : DispatchProxy where TService : class
+public class ServiceAuthProxy<TService> : DispatchProxy where TService : class
 {
     private IAuthenticationService _authenticationService = null!;
-    private IDictionary<string, Role> _methodMapping = new Dictionary<string, Role>();
+    private Dictionary<string, Role> _methodMapping = [];
     private TService _targetService = null!;
 
     public static TService CreerDispatchProxy(TService service, IServiceProvider serviceProvider,
         IDictionary<Role, IEnumerable<string>> methodMapping)
     {
-        if (Create<TService, ServiceAuthProxy<TService>>() is not ServiceAuthProxy<TService> proxy)
-        {
-            throw new InvalidOperationException("Impossible de créer le proxy");
-        }
+        ServiceAuthProxy<TService> proxy =
+            (Create<TService, ServiceAuthProxy<TService>>() as ServiceAuthProxy<TService>)!;
 
         proxy._targetService = service;
         proxy._authenticationService = serviceProvider.GetRequiredService<IAuthenticationService>();
@@ -34,10 +33,7 @@ internal class ServiceAuthProxy<TService> : DispatchProxy where TService : class
 
     protected override object? Invoke(MethodInfo? targetMethod, object?[]? args)
     {
-        if (targetMethod is null)
-        {
-            throw new InvalidOperationException("Le service cible n'a pas été initialisé.");
-        }
+        Debug.Assert(targetMethod != null, nameof(targetMethod) + " != null");
 
         if (targetMethod.IsPublic)
         {
