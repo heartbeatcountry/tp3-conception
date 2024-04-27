@@ -18,6 +18,7 @@ public abstract class GenericServiceTests<TService> where TService : class
     private IRepository<IFilm> _filmRepository = null!;
     private IPasswordHashingService _passwordHashingService = null!;
     private IPasswordValidationService _passwordValidationService = null!;
+    private IRepository<INoteFilm> _noteFilmRepository = null!;
     private IRepository<IProjection> _projectionRepository = null!;
     private IRepository<IRealisateur> _realisateurRepository = null!;
     private IRepository<ISalle> _salleRepository = null!;
@@ -38,6 +39,7 @@ public abstract class GenericServiceTests<TService> where TService : class
     protected Mock<IPasswordValidationService> PasswordValidationServiceMock { get; private set; } = null!;
     protected Mock<IPasswordHashingService> PasswordHashingServiceMock { get; private set; } = null!;
     protected Mock<IRepository<IFilm>> FilmRepositoryMock { get; private set; } = null!;
+    protected Mock<IRepository<INoteFilm>> NoteFilmRepositoryMock { get; private set; } = null!;
     protected Mock<IRepository<IActeur>> ActeurRepositoryMock { get; private set; } = null!;
     protected Mock<IRepository<IRealisateur>> RealisateurRepositoryMock { get; private set; } = null!;
     protected Mock<IRepository<ICategorieFilm>> CategorieFilmRepositoryMock { get; private set; } = null!;
@@ -51,6 +53,7 @@ public abstract class GenericServiceTests<TService> where TService : class
         UnitOfWorkFactoryMock = new Mock<IUnitOfWorkFactory>();
         UnitOfWorkMock = new Mock<IUnitOfWork>();
         FilmRepositoryMock = new Mock<IRepository<IFilm>>();
+        NoteFilmRepositoryMock = new Mock<IRepository<INoteFilm>>();
         ActeurRepositoryMock = new Mock<IRepository<IActeur>>();
         RealisateurRepositoryMock = new Mock<IRepository<IRealisateur>>();
         CategorieFilmRepositoryMock = new Mock<IRepository<ICategorieFilm>>();
@@ -65,6 +68,7 @@ public abstract class GenericServiceTests<TService> where TService : class
         _unitOfWorkFactory = UnitOfWorkFactoryMock.Object;
         _unitOfWork = UnitOfWorkMock.Object;
         _filmRepository = FilmRepositoryMock.Object;
+        _noteFilmRepository = NoteFilmRepositoryMock.Object;
         _acteurRepository = ActeurRepositoryMock.Object;
         _realisateurRepository = RealisateurRepositoryMock.Object;
         _categorieFilmRepository = CategorieFilmRepositoryMock.Object;
@@ -77,6 +81,7 @@ public abstract class GenericServiceTests<TService> where TService : class
         _passwordHashingService = PasswordHashingServiceMock.Object;
 
         UnitOfWorkMock.Setup(u => u.FilmRepository).Returns(_filmRepository);
+        UnitOfWorkMock.Setup(u => u.NoteFilmRepository).Returns(_noteFilmRepository);
         UnitOfWorkMock.Setup(u => u.ActeurRepository).Returns(_acteurRepository);
         UnitOfWorkMock.Setup(u => u.RealisateurRepository).Returns(_realisateurRepository);
         UnitOfWorkMock.Setup(u => u.CategorieFilmRepository).Returns(_categorieFilmRepository);
