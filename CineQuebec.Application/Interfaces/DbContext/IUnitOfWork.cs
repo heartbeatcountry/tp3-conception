@@ -14,6 +14,9 @@ public interface IUnitOfWork : IDisposable
     IRepository<IRealisateur> RealisateurRepository { get; }
 
     IRepository<IProjection> ProjectionRepository { get; }
+    IRepository<INoteFilm> NoteFilmRepository { get; }
+
+
     IRepository<ISalle> SalleRepository { get; }
 
     IRepository<IUtilisateur> UtilisateurRepository { get; }
