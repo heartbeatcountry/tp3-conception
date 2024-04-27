@@ -1,5 +1,6 @@
 ﻿using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities;
+using CineQuebec.Domain.Interfaces.Entities.Abstract;
 using CineQuebec.Persistence.DbContext;
 using CineQuebec.Persistence.Repositories;
 

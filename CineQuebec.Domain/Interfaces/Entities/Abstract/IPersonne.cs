@@ -1,4 +1,4 @@
-namespace CineQuebec.Domain.Interfaces.Entities;
+namespace CineQuebec.Domain.Interfaces.Entities.Abstract;
 
 public interface IPersonne : IEntite
 {

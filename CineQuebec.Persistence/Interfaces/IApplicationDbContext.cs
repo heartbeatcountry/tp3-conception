@@ -1,4 +1,5 @@
 using CineQuebec.Domain.Interfaces.Entities;
+using CineQuebec.Domain.Interfaces.Entities.Abstract;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

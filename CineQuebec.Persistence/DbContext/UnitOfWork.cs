@@ -2,8 +2,10 @@ using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Application.Interfaces.Repositories;
 using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Domain.Entities.Projections;
+using CineQuebec.Domain.Entities.Utilisateurs;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Projections;
+using CineQuebec.Domain.Interfaces.Entities.Utilisateur;
 using CineQuebec.Persistence.Interfaces;
 using CineQuebec.Persistence.Repositories;
 
@@ -25,6 +27,8 @@ public sealed class UnitOfWork(IApplicationDbContextFactory applicationDbContext
     private IRepository<IRealisateur>? _realisateurRepository;
     private IRepository<ISalle>? _salleRepository;
 
+    private IRepository<IUtilisateur>? _utilisateurRepository;
+
     public IRepository<ISalle> SalleRepository =>
         _salleRepository ??= new GenericRepository<Salle, ISalle>(_context);
 
@@ -42,6 +46,9 @@ public sealed class UnitOfWork(IApplicationDbContextFactory applicationDbContext
 
     public IRepository<IRealisateur> RealisateurRepository =>
         _realisateurRepository ??= new GenericRepository<Realisateur, IRealisateur>(_context);
+
+    public IRepository<IUtilisateur> UtilisateurRepository =>
+        _utilisateurRepository ??= new GenericRepository<Utilisateur, IUtilisateur>(_context);
 
     public void Dispose()
     {

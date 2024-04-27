@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-using CineQuebec.Domain.Interfaces.Entities;
+using CineQuebec.Domain.Interfaces.Entities.Abstract;
 
 namespace CineQuebec.Application.Interfaces.Repositories;
 
@@ -14,6 +14,8 @@ public interface IRepository<TIEntite> where TIEntite : IEntite
         Func<IQueryable<TIEntite>, IOrderedQueryable<TIEntite>>? trierPar = null);
 
     public Task<bool> ExisteAsync(Expression<Func<TIEntite, bool>> filtre);
+
+    public Task<TIEntite?> ObtenirAsync(Expression<Func<TIEntite, bool>> filtre);
 
     public Task<TIEntite> AjouterAsync(TIEntite entite);
     public TIEntite Modifier(TIEntite entite);
