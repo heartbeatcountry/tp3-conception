@@ -1,0 +1,28 @@
+name: .NET Core Desktop
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest  
+
+    steps:
+    - name: Clônage du dépôt GIT
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Configuration de .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Obtention des dépendances
+      run: dotnet restore
+    - name: Compilation
+      run: dotnet build --no-restore
+    - name: Exécution des tests unitaires
+      run: dotnet test --no-build --verbosity normal
