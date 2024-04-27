@@ -1,6 +1,14 @@
 # CineQuebec
 
+![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?logo=mongodb&logoColor=white)
+![.Net](https://img.shields.io/badge/C%23%20%2B%20WPF-5C2D91?logo=.net&logoColor=white)
+![Windows](https://img.shields.io/badge/Windows-0078D6?logo=windows&logoColor=white)
+[![.NET Core Desktop](https://github.com/heartbeatcountry/tp3-conception/actions/workflows/dotnet.yml/badge.svg)](https://github.com/heartbeatcountry/tp3-conception/actions/workflows/dotnet.yml)
+
+<br>
 Projet de Pascal & Cynthia.
+
+<br>
 
 ## **Attention!** Sous-module git
 
@@ -18,6 +26,8 @@ sous-module avec la commande suivante:
 git submodule update --init --recursive
 ```
 
+<br>
+
 ## Exportation de la Bd
 
 Vous trouverez dans le dossier [exportation-bd-mongo](./xportation-bd-mongo) une
@@ -25,6 +35,8 @@ exportation de la base de données MongoDb.
 
 > Cette exportation n'est pas nécessaire et le projet fonctionnera même sans
 > données dans la Bd.
+
+<br>
 
 ## Instructions pour le premier lancement
 
