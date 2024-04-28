@@ -2,7 +2,7 @@
 
 namespace CineQuebec.Application.Interfaces.Services;
 
-public interface IAuthenticationService
+public interface IUtilisateurAuthenticationService
 {
     Task AuthentifierThreadAsync(string courriel, string mdp);
     void DeauthentifierThread();

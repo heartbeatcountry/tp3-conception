@@ -28,7 +28,8 @@ public class Utilisateur : Personne, IUtilisateur
     }
 
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    private Utilisateur(Guid id, string prenom, string nom, string courriel, string hashMotDePasse, IEnumerable<Role> roles,
+    private Utilisateur(Guid id, string prenom, string nom, string courriel, string hashMotDePasse,
+        IEnumerable<Role> roles,
         IEnumerable<Guid> categoriesPrefereesParId, IEnumerable<Guid> acteursFavorisParId,
         IEnumerable<Guid> realisateursFavorisParId, IEnumerable<Guid> billetsParId) : this(prenom, nom, courriel,
         hashMotDePasse, roles)
@@ -101,6 +102,16 @@ public class Utilisateur : Personne, IUtilisateur
         SetRoles(_roles.Union(roles).ToHashSet());
     }
 
+    public void SetHashMotDePasse(string motDePasse)
+    {
+        if (string.IsNullOrWhiteSpace(motDePasse))
+        {
+            throw new ArgumentException("Le mot de passe ne doit pas être vide.", nameof(motDePasse));
+        }
+
+        HashMotDePasse = motDePasse.Trim();
+    }
+
     public new bool Equals(Entite? autre)
     {
         return autre is not null && (ReferenceEquals(this, autre) || Id.Equals(autre.Id) ||
@@ -134,16 +145,6 @@ public class Utilisateur : Personne, IUtilisateur
         }
 
         Courriel = courriel.Trim().ToLowerInvariant();
-    }
-
-    public void SetHashMotDePasse(string motDePasse)
-    {
-        if (string.IsNullOrWhiteSpace(motDePasse))
-        {
-            throw new ArgumentException("Le mot de passe ne doit pas être vide.", nameof(motDePasse));
-        }
-
-        HashMotDePasse = motDePasse.Trim();
     }
 
     private void SetRealisateursFavorisParId(IEnumerable<Guid> realisateurs)

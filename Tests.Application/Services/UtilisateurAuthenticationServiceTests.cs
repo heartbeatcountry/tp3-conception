@@ -9,7 +9,7 @@ using Moq;
 
 namespace Tests.Application.Services;
 
-internal class AuthenticationServiceTests : GenericServiceTests<AuthenticationService>
+internal class UtilisateurAuthenticationServiceTests : GenericServiceTests<UtilisateurAuthenticationService>
 {
     private const string CourrielValide = "courriel@valide.com";
     private const string MdpValide = "mdp";
@@ -60,7 +60,7 @@ internal class AuthenticationServiceTests : GenericServiceTests<AuthenticationSe
     public async Task AuthentifierThreadAsync_WhenGivenValidCredentials_ShouldInitializeClaimsPrincipal()
     {
         // Arrange
-        Role[] roles = new[] { Role.Utilisateur };
+        Role[] roles = [Role.Utilisateur];
         IUtilisateur utilisateurMock = Mock.Of<IUtilisateur>(u =>
             u.Courriel == CourrielValide && u.HashMotDePasse == MdpHache && u.Roles == roles);
         UtilisateurRepositoryMock.Setup(ur => ur.ObtenirAsync(It.IsAny<Expression<Func<IUtilisateur, bool>>>()))
@@ -99,7 +99,7 @@ internal class AuthenticationServiceTests : GenericServiceTests<AuthenticationSe
     public void AuthentifierThreadAsync_WhenPasswordIsWrong_ShouldThrowKeyNotFoundException()
     {
         // Arrange
-        Role[] roles = new[] { Role.Utilisateur };
+        Role[] roles = [Role.Utilisateur];
         IUtilisateur utilisateurMock = Mock.Of<IUtilisateur>(u =>
             u.Courriel == CourrielValide && u.HashMotDePasse == MdpHache && u.Roles == roles);
         UtilisateurRepositoryMock.Setup(ur => ur.ObtenirAsync(It.IsAny<Expression<Func<IUtilisateur, bool>>>()))
@@ -116,7 +116,7 @@ internal class AuthenticationServiceTests : GenericServiceTests<AuthenticationSe
     public async Task AuthentifierThreadAsync_WhenPasswordNeedsRehashing_ShouldRehashPassword()
     {
         // Arrange
-        Role[] roles = new[] { Role.Utilisateur };
+        Role[] roles = [Role.Utilisateur];
         IUtilisateur utilisateurMock = Mock.Of<IUtilisateur>(u =>
             u.Courriel == CourrielValide && u.HashMotDePasse == MdpHache && u.Roles == roles);
         UtilisateurRepositoryMock.Setup(ur => ur.ObtenirAsync(It.IsAny<Expression<Func<IUtilisateur, bool>>>()))

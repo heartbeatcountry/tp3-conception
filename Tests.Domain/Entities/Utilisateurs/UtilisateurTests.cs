@@ -24,7 +24,8 @@ public class UtilisateurTests : EntiteTests<Utilisateur>
     public void Constructor_WhenGivenNullOrWhitespacePrenom_ShouldThrowArgumentException()
     {
         // Act
-        var exception = Assert.Throws<ArgumentException>(() => CreateInstance(String.Empty, NomValide, CourrielValide,
+        ArgumentException? exception = Assert.Throws<ArgumentException>(() => CreateInstance(String.Empty, NomValide,
+            CourrielValide,
             HashMotDePasseValide, RolesValides));
 
         // Assert
@@ -35,7 +36,8 @@ public class UtilisateurTests : EntiteTests<Utilisateur>
     public void Constructor_WhenGivenNullOrWhitespaceNom_ShouldThrowArgumentException()
     {
         // Act
-        var exception = Assert.Throws<ArgumentException>(() => CreateInstance(PrenomValide, String.Empty, CourrielValide,
+        ArgumentException? exception = Assert.Throws<ArgumentException>(() => CreateInstance(PrenomValide, String.Empty,
+            CourrielValide,
             HashMotDePasseValide, RolesValides));
 
         // Assert
@@ -46,7 +48,8 @@ public class UtilisateurTests : EntiteTests<Utilisateur>
     public void Constructor_WhenGivenNullOrWhitespaceCourriel_ShouldThrowArgumentException()
     {
         // Act
-        var exception = Assert.Throws<ArgumentException>(() => CreateInstance(PrenomValide, NomValide, String.Empty,
+        ArgumentException? exception = Assert.Throws<ArgumentException>(() => CreateInstance(PrenomValide, NomValide,
+            String.Empty,
             HashMotDePasseValide, RolesValides));
 
         // Assert
@@ -57,7 +60,8 @@ public class UtilisateurTests : EntiteTests<Utilisateur>
     public void Constructor_WhenGivenNullOrWhitespaceHashMotDePasse_ShouldThrowArgumentException()
     {
         // Act
-        var exception = Assert.Throws<ArgumentException>(() => CreateInstance(PrenomValide, NomValide, CourrielValide,
+        ArgumentException? exception = Assert.Throws<ArgumentException>(() => CreateInstance(PrenomValide, NomValide,
+            CourrielValide,
             String.Empty, RolesValides));
 
         // Assert
@@ -68,7 +72,7 @@ public class UtilisateurTests : EntiteTests<Utilisateur>
     public void Constructor_WhenGiveNoRoles_ShouldAddUtilisateurRole()
     {
         // Assert
-        Assert.That(Entite.Roles, Is.EquivalentTo(new[] {Role.Utilisateur}));
+        Assert.That(Entite.Roles, Is.EquivalentTo(new[] { Role.Utilisateur }));
     }
 
     [Test]
@@ -124,7 +128,8 @@ public class UtilisateurTests : EntiteTests<Utilisateur>
     public void Equals_WhenGivenOtherInstanceWithDifferentCourrielAndId_ShouldReturnFalse()
     {
         // Arrange
-        Utilisateur autre = CreateInstance(PrenomValide, NomValide, AutreCourrielValide, HashMotDePasseValide, RolesValides);
+        Utilisateur autre = CreateInstance(PrenomValide, NomValide, AutreCourrielValide, HashMotDePasseValide,
+            RolesValides);
         autre.SetId(Guid.NewGuid());
 
         // Assert
@@ -225,7 +230,8 @@ public class UtilisateurTests : EntiteTests<Utilisateur>
     }
 
     [Test]
-    public void AddRealisateursFavoris_WhenGivenRealisateurNotPresentInRealisateursFavoris_ShouldAddRealisateurToRealisateursFavoris()
+    public void
+        AddRealisateursFavoris_WhenGivenRealisateurNotPresentInRealisateursFavoris_ShouldAddRealisateurToRealisateursFavoris()
     {
         // Arrange
         Guid realisateur = Guid.NewGuid();
@@ -249,7 +255,8 @@ public class UtilisateurTests : EntiteTests<Utilisateur>
     }
 
     [Test]
-    public void AddRealisateursFavoris_WhenGivenRealisateurPresentInRealisateursFavoris_ShouldNotAddRealisateurToRealisateursFavoris()
+    public void
+        AddRealisateursFavoris_WhenGivenRealisateurPresentInRealisateursFavoris_ShouldNotAddRealisateurToRealisateursFavoris()
     {
         // Arrange
         Guid realisateur = Guid.NewGuid();
@@ -290,7 +297,8 @@ public class UtilisateurTests : EntiteTests<Utilisateur>
     }
 
     [Test]
-    public void AddCategoriesPreferees_WhenGivenCategorieNotPresentInCategoriesPreferees_ShouldAddCategorieToCategoriesPreferees()
+    public void
+        AddCategoriesPreferees_WhenGivenCategorieNotPresentInCategoriesPreferees_ShouldAddCategorieToCategoriesPreferees()
     {
         // Arrange
         Guid categorie = Guid.NewGuid();
@@ -314,7 +322,8 @@ public class UtilisateurTests : EntiteTests<Utilisateur>
     }
 
     [Test]
-    public void AddCategoriesPreferees_WhenGivenCategoriePresentInCategoriesPreferees_ShouldNotAddCategorieToCategoriesPreferees()
+    public void
+        AddCategoriesPreferees_WhenGivenCategoriePresentInCategoriesPreferees_ShouldNotAddCategorieToCategoriesPreferees()
     {
         // Arrange
         Guid categorie = Guid.NewGuid();

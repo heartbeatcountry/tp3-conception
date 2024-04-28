@@ -6,7 +6,7 @@ namespace CineQuebec.Windows.Views;
 
 public class LoginViewModel(
     INavigationController navigationController,
-    IAuthenticationService authenticationService,
+    IUtilisateurAuthenticationService authenticationService,
     GestionnaireExceptions gestionnaireExceptions)
     : Screen
 {

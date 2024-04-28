@@ -1,6 +1,5 @@
 using CineQuebec.Application.Interfaces.Services;
 using CineQuebec.Application.Services;
-using CineQuebec.Application.Services.Abstract;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,8 +10,10 @@ public static class ConfigureServices
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         return services
+            .AddSingleton<IPasswordValidationService, PasswordValidationService>()
             .AddSingleton<IPasswordHashingService, PasswordHashingService>()
-            .AddSingleton<IAuthenticationService, AuthenticationService>()
+            .AddSingleton<IUtilisateurAuthenticationService, UtilisateurAuthenticationService>()
+            .AddSingleton<IUtilisateurCreationService, UtilisateurCreationService>()
             .AddSingleton<IFilmQueryService, FilmQueryService>()
             .AddSingleton<IFilmCreationService, FilmCreationService>()
             .AddSingleton<IFilmDeletionService, FilmDeletionService>()

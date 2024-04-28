@@ -21,8 +21,7 @@ internal interface ITestService
 
 public class ServiceAuthProxyTests
 {
-    private IAuthenticationService _authenticationService = null!;
-    private Mock<IAuthenticationService> _authenticationServiceMock = null!;
+    private Mock<IUtilisateurAuthenticationService> _authenticationServiceMock = null!;
     private ClaimsPrincipal? _claimsPrincipal;
     private Dictionary<Role, IEnumerable<string>> _methodMapping = null!;
 
@@ -30,6 +29,7 @@ public class ServiceAuthProxyTests
     private IServiceProvider _serviceProvider = null!;
     private ITestService _testService = null!;
     private Mock<ITestService> _testServiceMock = null!;
+    private IUtilisateurAuthenticationService _utilisateurAuthenticationService = null!;
 
     private ITestService Proxy => _proxy ??= ServiceAuthProxy<ITestService>
         .CreerDispatchProxy(_testService, _serviceProvider, _methodMapping);
@@ -37,17 +37,17 @@ public class ServiceAuthProxyTests
     [SetUp]
     public void Setup()
     {
-        _authenticationServiceMock = new Mock<IAuthenticationService>();
+        _authenticationServiceMock = new Mock<IUtilisateurAuthenticationService>();
         _authenticationServiceMock
             .Setup(a => a.ObtenirAutorisation())
             .Returns(() => _claimsPrincipal);
-        _authenticationService = _authenticationServiceMock.Object;
+        _utilisateurAuthenticationService = _authenticationServiceMock.Object;
 
         _testServiceMock = new Mock<ITestService>();
         _testService = _testServiceMock.Object;
 
         _serviceProvider = new ServiceCollection()
-            .AddSingleton(_authenticationService)
+            .AddSingleton(_utilisateurAuthenticationService)
             .BuildServiceProvider();
 
         _methodMapping = [];

@@ -1,7 +1,5 @@
 using CineQuebec.Application.Services;
 
-using Moq;
-
 namespace Tests.Application.Services;
 
 public class PasswordHashingServiceTests : GenericServiceTests<PasswordHashingService>

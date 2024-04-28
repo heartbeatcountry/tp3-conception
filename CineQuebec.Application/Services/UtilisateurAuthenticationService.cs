@@ -8,7 +8,9 @@ using CineQuebec.Domain.Interfaces.Entities.Utilisateur;
 
 namespace CineQuebec.Application.Services;
 
-public class AuthenticationService(IUnitOfWorkFactory unitOfWorkFactory, IPasswordHashingService passwordHashingService) : IAuthenticationService
+public class UtilisateurAuthenticationService(
+    IUnitOfWorkFactory unitOfWorkFactory,
+    IPasswordHashingService passwordHashingService) : IUtilisateurAuthenticationService
 {
     private const byte ExpirationEnHeures = 24;
     private ClaimsPrincipal? _cachedClaimsPrincipal;
@@ -24,6 +26,7 @@ public class AuthenticationService(IUnitOfWorkFactory unitOfWorkFactory, IPasswo
         {
             throw new ArgumentNullException(nameof(courriel), "L'adresse courriel ne doit pas être vide.");
         }
+
         if (string.IsNullOrWhiteSpace(mdp))
         {
             throw new ArgumentNullException(nameof(mdp), "Le mot de passe ne doit pas être vide.");
@@ -32,13 +35,18 @@ public class AuthenticationService(IUnitOfWorkFactory unitOfWorkFactory, IPasswo
         courriel = courriel.Trim().ToLowerInvariant();
         mdp = mdp.Trim();
 
-        var utilisateur = await ObtenirUtilisateurAsync(courriel);
+        IUtilisateur utilisateur = await ObtenirUtilisateurAsync(courriel);
 
         ValiderMdp(mdp, utilisateur.HashMotDePasse);
         await RehacherAuBesoin(utilisateur, mdp);
 
         Thread.CurrentPrincipal = _cachedClaimsPrincipal =
             CreerClaimsPrincipal(utilisateur.Courriel, utilisateur.Roles.ToArray());
+    }
+
+    public void DeauthentifierThread()
+    {
+        Thread.CurrentPrincipal = _cachedClaimsPrincipal = null;
     }
 
     private async Task<IUtilisateur> ObtenirUtilisateurAsync(string courriel)
@@ -69,18 +77,12 @@ public class AuthenticationService(IUnitOfWorkFactory unitOfWorkFactory, IPasswo
         }
     }
 
-    public void DeauthentifierThread()
-    {
-        Thread.CurrentPrincipal = _cachedClaimsPrincipal = null;
-    }
-
     private static ClaimsPrincipal CreerClaimsPrincipal(string nomUsager, params Role[] roles)
     {
         return new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-            {
-                new(ClaimTypes.Name, nomUsager),
-                new(ClaimTypes.Expiration, DateTime.Now
-                    .AddHours(ExpirationEnHeures).ToString("O", CultureInfo.InvariantCulture))
-            }.Union(roles.Select(role => new Claim(ClaimTypes.Role, role.ToString()))), "Basic"));
+        {
+            new(ClaimTypes.Name, nomUsager), new(ClaimTypes.Expiration, DateTime.Now
+                .AddHours(ExpirationEnHeures).ToString("O", CultureInfo.InvariantCulture))
+        }.Union(roles.Select(role => new Claim(ClaimTypes.Role, role.ToString()))), "Basic"));
     }
 }

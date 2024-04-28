@@ -43,8 +43,9 @@ public class ServiceCollectionExtensionsTests
     public void AjouterProxyAuthPourService_ShouldWrapServiceInServiceAuthProxy()
     {
         // Arrange
-        IAuthenticationService authenticationService = Mock.Of<IAuthenticationService>();
-        _services.AddSingleton(authenticationService);
+        IUtilisateurAuthenticationService utilisateurAuthenticationService =
+            Mock.Of<IUtilisateurAuthenticationService>();
+        _services.AddSingleton(utilisateurAuthenticationService);
 
         // Act
         _services.AjouterProxyAuthPourService<ITestService>([]);

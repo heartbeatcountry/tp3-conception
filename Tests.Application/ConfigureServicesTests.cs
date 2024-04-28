@@ -37,5 +37,9 @@ public class ConfigureServicesTests
         Assert.DoesNotThrow(() => provider.GetRequiredService<IProjectionDeletionService>());
         Assert.DoesNotThrow(() => provider.GetRequiredService<ISalleCreationService>());
         Assert.DoesNotThrow(() => provider.GetRequiredService<ISalleQueryService>());
+        Assert.DoesNotThrow(() => provider.GetRequiredService<IUtilisateurAuthenticationService>());
+        Assert.DoesNotThrow(() => provider.GetRequiredService<IUtilisateurCreationService>());
+        Assert.DoesNotThrow(() => provider.GetRequiredService<IPasswordHashingService>());
+        Assert.DoesNotThrow(() => provider.GetRequiredService<IPasswordValidationService>());
     }
 }

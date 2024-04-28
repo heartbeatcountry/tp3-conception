@@ -1,5 +1,4 @@
-﻿using CineQuebec.Domain.Interfaces.Entities;
-using CineQuebec.Domain.Interfaces.Entities.Abstract;
+﻿using CineQuebec.Domain.Interfaces.Entities.Abstract;
 
 namespace CineQuebec.Domain.Entities.Abstract;
 

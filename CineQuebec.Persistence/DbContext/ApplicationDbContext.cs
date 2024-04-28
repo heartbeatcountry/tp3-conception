@@ -3,7 +3,6 @@ using System.Reflection;
 
 using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Domain.Entities.Projections;
-using CineQuebec.Domain.Interfaces.Entities;
 using CineQuebec.Domain.Interfaces.Entities.Abstract;
 using CineQuebec.Persistence.Interfaces;
 

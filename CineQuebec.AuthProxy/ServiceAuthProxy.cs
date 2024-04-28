@@ -12,9 +12,9 @@ namespace CineQuebec.AuthProxy;
 
 public class ServiceAuthProxy<TService> : DispatchProxy where TService : class
 {
-    private IAuthenticationService _authenticationService = null!;
     private Dictionary<string, Role> _methodMapping = [];
     private TService _targetService = null!;
+    private IUtilisateurAuthenticationService _utilisateurAuthenticationService = null!;
 
     public static TService CreerDispatchProxy(TService service, IServiceProvider serviceProvider,
         IDictionary<Role, IEnumerable<string>> methodMapping)
@@ -23,7 +23,8 @@ public class ServiceAuthProxy<TService> : DispatchProxy where TService : class
             (Create<TService, ServiceAuthProxy<TService>>() as ServiceAuthProxy<TService>)!;
 
         proxy._targetService = service;
-        proxy._authenticationService = serviceProvider.GetRequiredService<IAuthenticationService>();
+        proxy._utilisateurAuthenticationService =
+            serviceProvider.GetRequiredService<IUtilisateurAuthenticationService>();
         proxy._methodMapping = methodMapping
             .SelectMany(kvp => kvp.Value, (kvp, s) => new { Role = kvp.Key, Method = s })
             .ToDictionary(x => x.Method, x => x.Role);
@@ -55,7 +56,7 @@ public class ServiceAuthProxy<TService> : DispatchProxy where TService : class
 
     private bool ClaimsPrincipalPossedeRole(Role roleRequis)
     {
-        ClaimsPrincipal? claimsPrincipal = _authenticationService.ObtenirAutorisation();
+        ClaimsPrincipal? claimsPrincipal = _utilisateurAuthenticationService.ObtenirAutorisation();
         return claimsPrincipal?.IsInRole(roleRequis.ToString()) ?? false;
     }
 }

@@ -9,7 +9,7 @@ namespace CineQuebec.Windows.Views.Components;
 
 public class HeaderViewModel(
     INavigationController navigationController,
-    IAuthenticationService authenticationService,
+    IUtilisateurAuthenticationService authenticationService,
     GestionnaireExceptions gestionnaireExceptions) : Screen
 {
     public Type? PreviousView { get; set; }
