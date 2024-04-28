@@ -11,7 +11,9 @@ public record FilmDto(
     IEnumerable<RealisateurDto> Realisateurs,
     IEnumerable<ActeurDto> Acteurs,
     DateTime DateSortieInternationale,
-    ushort DureeEnMinutes) : EntityDto(Id);
+    ushort DureeEnMinutes,
+    ushort NoteMoyenne
+    ) : EntityDto(Id);
 
 internal static class FilmExtensions
 {
@@ -21,6 +23,6 @@ internal static class FilmExtensions
     {
         return new FilmDto(film.Id, film.Titre, film.Description, categorie, realisateurs, acteurs,
             film.DateSortieInternationale,
-            film.DureeEnMinutes);
+            film.DureeEnMinutes, film.NoteMoyenne);
     }
 }

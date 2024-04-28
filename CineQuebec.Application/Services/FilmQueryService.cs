@@ -48,4 +48,16 @@ public class FilmQueryService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmQuery
             await unitOfWork.FilmRepository.ObtenirParIdsAsync(projections.Select(p => p.IdFilm));
         return films.Select(f => f.VersDto(null, [], []));
     }
+
+
+    public async Task<IEnumerable<FilmDto>> ObtenirTousAssiste()
+    {
+        
+
+        //TODO Doit-on créer l'entité "billet" pour pouvoir obtenir les films auxquels un utilisateur a assisté?
+
+        throw new NotImplementedException();
+        
+      
+    }
 }
