@@ -45,7 +45,7 @@ namespace CineQuebec.Application.Services
         {
             List<Exception> exceptions = [];
 
-            if (pNote <= 10 && pNote >= 0)
+            if (pNote >= 10 && pNote <= 0)
             {
                 exceptions.Add(new ArgumentOutOfRangeException(nameof(pNote),
                     "La notefilm doit être entre 0 et 10."));
@@ -85,6 +85,7 @@ namespace CineQuebec.Application.Services
             return exceptions;
         }
 
+        //TODO
         //private static async Task<IEnumerable<Exception>> ValiderUtilisateurExiste(IUnitOfWork unitOfWork, Guid pIdUtilisateur)
         //{
         //    List<Exception> exceptions = [];
