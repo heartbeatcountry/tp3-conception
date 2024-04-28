@@ -10,6 +10,7 @@ public class FilmTests : EntiteTests<Film>
     private const string AutreTitreValide = "Trouver Nemo";
     private const string DescriptionValide = "Un film de Peter Jackson";
     private const ushort DureeValide = 178;
+    private const ushort NoteMoyenneValide = 8;
 
     private static readonly Guid Acteur1 = Guid.NewGuid();
     private static readonly Guid Acteur2 = Guid.NewGuid();
@@ -122,6 +123,14 @@ public class FilmTests : EntiteTests<Film>
 #pragma warning disable NUnit2021
         Assert.That(Entite.DateSortieInternationale, Is.EqualTo(DateSortieInternationale));
 #pragma warning restore NUnit2021
+    }
+
+
+    [Test]
+    public void Constructor_WhenGivenValidNoteMoyenne_ShouldSetNoteMoyenne()
+    {
+        // Assert
+        Assert.That(Entite.NoteMoyenne, Is.EqualTo(NoteMoyenneValide));
     }
 
     [Test]

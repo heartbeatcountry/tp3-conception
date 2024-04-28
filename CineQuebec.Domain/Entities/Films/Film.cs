@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 using CineQuebec.Domain.Entities.Abstract;
@@ -12,7 +13,7 @@ public class Film : Entite, IComparable<Film>, IFilm
     private DateOnly _dateSortieInternationale = DateOnly.MinValue;
 
     public Film(string titre, string description, Guid idCategorie, DateTime dateSortieInternationale,
-        IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes)
+        IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes, ushort noteMoyenne)
     {
         SetTitre(titre);
         SetDescription(description);
@@ -21,12 +22,13 @@ public class Film : Entite, IComparable<Film>, IFilm
         AddActeurs(acteursParId);
         AddRealisateurs(realisateursParId);
         SetDureeEnMinutes(dureeEnMinutes);
+        SetNoteMoyenne(noteMoyenne);
     }
 
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
     private Film(Guid id, string titre, string description, Guid idCategorie, DateTime dateSortieInternationale,
-        IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes) : this(titre,
-        description, idCategorie, dateSortieInternationale, acteursParId, realisateursParId, dureeEnMinutes)
+        IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes, ushort noteMoyenne) : this(titre,
+        description, idCategorie, dateSortieInternationale, acteursParId, realisateursParId, dureeEnMinutes, noteMoyenne)
     {
         // Constructeur avec identifiant pour Entity Framework Core
         SetId(id);
@@ -61,6 +63,7 @@ public class Film : Entite, IComparable<Film>, IFilm
     public IEnumerable<Guid> ActeursParId { get; private set; } = [];
     public IEnumerable<Guid> RealisateursParId { get; private set; } = [];
     public ushort DureeEnMinutes { get; private set; }
+    public ushort NoteMoyenne { get; private set; }
 
     public void AddActeurs(IEnumerable<Guid> acteurs)
     {
@@ -142,11 +145,21 @@ public class Film : Entite, IComparable<Film>, IFilm
         RealisateursParId = _realisateursParId.ToArray().AsReadOnly();
     }
 
+
+
+
     public new bool Equals(Entite? autre)
     {
         return base.Equals(autre) || (autre is Film film &&
                                       string.Equals(Titre, film.Titre,
                                           StringComparison.OrdinalIgnoreCase) && DateSortieInternationale.Year ==
                                       film.DateSortieInternationale.Year && DureeEnMinutes == film.DureeEnMinutes);
+    }
+
+    public void SetNoteMoyenne(ushort noteFilm)
+    {
+        
+
+        noteFilm = noteFilm;
     }
 }

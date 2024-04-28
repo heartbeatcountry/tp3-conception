@@ -11,6 +11,7 @@ public interface IFilm : IEntite
     IEnumerable<Guid> ActeursParId { get; }
     IEnumerable<Guid> RealisateursParId { get; }
     ushort DureeEnMinutes { get; }
+    ushort NoteMoyenne { get; }
     void SetTitre(string titre);
     void SetDescription(string description);
     void SetCategorie(Guid categorie);
@@ -20,4 +21,5 @@ public interface IFilm : IEntite
     void SetDureeEnMinutes(ushort duree);
     void SetActeursParId(IEnumerable<Guid> acteurs);
     void SetRealisateursParId(IEnumerable<Guid> realisateurs);
+    void SetNoteMoyenne(ushort noteMoyenne);
 }
