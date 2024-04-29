@@ -1,4 +1,7 @@
-﻿using CineQuebec.Application.Interfaces.Services;
+﻿using System.Windows;
+using System.Windows.Controls;
+
+using CineQuebec.Application.Interfaces.Services;
 
 using Stylet;
 
@@ -7,6 +10,8 @@ namespace CineQuebec.Windows.Views;
 public class LoginViewModel(
     INavigationController navigationController,
     IUtilisateurAuthenticationService authenticationService,
+    IDialogFactory dialogFactory,
+    IWindowManager windowManager,
     GestionnaireExceptions gestionnaireExceptions)
     : Screen
 {
@@ -19,17 +24,11 @@ public class LoginViewModel(
         set => SetAndNotify(ref _nomUsager, value.Trim());
     }
 
-    public string MotDePasse
-    {
-        get => _motDePasse;
-        set => SetAndNotify(ref _motDePasse, value.Trim());
-    }
-
     public async Task SeConnecter()
     {
         try
         {
-            await authenticationService.AuthentifierThreadAsync(NomUsager, MotDePasse);
+            await authenticationService.AuthentifierThreadAsync(NomUsager, _motDePasse);
         }
         catch (Exception exception)
         {
@@ -38,5 +37,21 @@ public class LoginViewModel(
         }
 
         navigationController.NavigateTo<AdminHomeViewModel>();
+    }
+
+    public void OuvrirInscription()
+    {
+        DialogInscriptionUtilisateurViewModel dialog = dialogFactory.CreateDialogInscriptionUtilisateur();
+        windowManager.ShowDialog(dialog);
+
+        if (dialog.InscriptionReussie)
+        {
+            navigationController.NavigateTo<AdminHomeViewModel>();
+        }
+    }
+
+    public void OnMdpChange(object sender, RoutedEventArgs e)
+    {
+        _motDePasse = (sender as PasswordBox)?.Password ?? string.Empty;
     }
 }

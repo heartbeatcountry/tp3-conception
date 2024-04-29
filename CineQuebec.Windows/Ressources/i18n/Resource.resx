@@ -184,7 +184,7 @@
     <value>Mot de passe :</value>
   </data>
   <data name="connexion.username" xml:space="preserve">
-    <value>Utilisateur :</value>
+    <value>Adresse courriel :</value>
   </data>
   <data name="admin_menu_retour" xml:space="preserve">
     <value>Retour</value>
