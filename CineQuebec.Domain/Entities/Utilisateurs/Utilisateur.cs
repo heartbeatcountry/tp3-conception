@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 
 using CineQuebec.Domain.Entities.Abstract;
@@ -44,11 +43,31 @@ public class Utilisateur : Personne, IUtilisateur
 
     public string Courriel { get; private set; } = string.Empty;
     public string HashMotDePasse { get; private set; } = string.Empty;
-    public IEnumerable<Role> Roles => _roles.ToImmutableArray();
-    public IEnumerable<Guid> CategoriesPrefereesParId => _categoriesPrefereesParId.ToImmutableArray();
-    public IEnumerable<Guid> ActeursFavorisParId => _acteursFavorisParId.ToImmutableArray();
-    public IEnumerable<Guid> RealisateursFavorisParId => _realisateursFavorisParId.ToImmutableArray();
-    public IEnumerable<Guid> BilletsParId => _billetsParId.ToImmutableArray();
+    public IEnumerable<Role> Roles { get => [.. _roles]; private set => SetRoles(value); }
+
+    public IEnumerable<Guid> CategoriesPrefereesParId
+    {
+        get => [.. _categoriesPrefereesParId];
+        private set => SetCategoriesPrefereesParId(value);
+    }
+
+    public IEnumerable<Guid> ActeursFavorisParId
+    {
+        get => [.. _acteursFavorisParId];
+        private set => SetActeursFavorisParId(value);
+    }
+
+    public IEnumerable<Guid> RealisateursFavorisParId
+    {
+        get => [.. _realisateursFavorisParId];
+        private set => SetRealisateursFavorisParId(value);
+    }
+
+    public IEnumerable<Guid> BilletsParId
+    {
+        get => [.. _billetsParId];
+        private set => SetBilletsParId(value);
+    }
 
     public void AddActeursFavoris(IEnumerable<Guid> acteurs)
     {

@@ -3,6 +3,7 @@ using System.Reflection;
 
 using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Domain.Entities.Projections;
+using CineQuebec.Domain.Entities.Utilisateurs;
 using CineQuebec.Domain.Interfaces.Entities.Abstract;
 using CineQuebec.Persistence.Interfaces;
 
@@ -24,6 +25,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     private static readonly ValueConverter<IEnumerable<Guid>, string[]> GuidsToStringsConverter = new(
         guids => guids.Select(GuidToStringConverter).ToArray(),
         strings => strings.Select(StringToGuidConverter).ToHashSet());
+
+    private static readonly ValueConverter<IEnumerable<Role>, string[]> RolesToStringsConverter = new(
+        roles => roles.Select(role => role.ToString()).ToArray(),
+        strings => strings.Select(Enum.Parse<Role>).ToHashSet());
 
     private static readonly ValueConverter<DateTime, string> DateOnlyToStringConverter = new(
         dateTime => DateOnly.FromDateTime(dateTime).ToString(CultureInfo.InvariantCulture),
@@ -49,6 +54,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         EntityTypeBuilder<CategorieFilm> categorieFilms = builder.Entity<CategorieFilm>().ToCollection("categories");
         EntityTypeBuilder<Projection> projections = builder.Entity<Projection>().ToCollection("projections");
         EntityTypeBuilder<Salle> salles = builder.Entity<Salle>().ToCollection("salles");
+        EntityTypeBuilder<Utilisateur> utilisateurs = builder.Entity<Utilisateur>().ToCollection("utilisateurs");
 
         films
             .Property(film => film.Id)
@@ -87,6 +93,35 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         salles
             .Property(salle => salle.Id)
             .HasConversion<string>();
+
+        utilisateurs
+            .Property(utilisateur => utilisateur.Id)
+            .HasConversion<string>();
+
+        utilisateurs
+            .Property(utilisateur => utilisateur.Roles)
+            .HasConversion(RolesToStringsConverter)
+            .UsePropertyAccessMode(PropertyAccessMode.Property);
+
+        utilisateurs
+            .Property(utilisateur => utilisateur.BilletsParId)
+            .HasConversion(GuidsToStringsConverter)
+            .UsePropertyAccessMode(PropertyAccessMode.Property);
+
+        utilisateurs
+            .Property(utilisateur => utilisateur.CategoriesPrefereesParId)
+            .HasConversion(GuidsToStringsConverter)
+            .UsePropertyAccessMode(PropertyAccessMode.Property);
+
+        utilisateurs
+            .Property(utilisateur => utilisateur.RealisateursFavorisParId)
+            .HasConversion(GuidsToStringsConverter)
+            .UsePropertyAccessMode(PropertyAccessMode.Property);
+
+        utilisateurs
+            .Property(utilisateur => utilisateur.ActeursFavorisParId)
+            .HasConversion(GuidsToStringsConverter)
+            .UsePropertyAccessMode(PropertyAccessMode.Property);
 
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }

@@ -23,10 +23,11 @@ public class GenericRepository<TEntite, TIEntite> : IRepository<TIEntite>
         _dbSet = _context.Set<TEntite>();
     }
 
-    public Task<TIEntite?> ObtenirAsync(Expression<Func<TIEntite, bool>> filtre)
+    public async Task<TIEntite?> ObtenirAsync(Expression<Func<TIEntite, bool>> filtre)
     {
         Expression<Func<TEntite, bool>> filtreExp = filtre.ReplaceTypeParameter<TIEntite, TEntite, bool>();
-        return (_dbSet.FirstOrDefaultAsync(filtreExp) as Task<TIEntite?>)!;
+        TEntite? entite = await _dbSet.FirstOrDefaultAsync(filtreExp);
+        return entite as TIEntite;
     }
 
     public async Task<TIEntite> AjouterAsync(TIEntite entite)
