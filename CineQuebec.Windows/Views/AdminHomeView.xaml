@@ -13,6 +13,7 @@
         <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}" />
         <Grid VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="{Binding NavigationIsEnabled}">
             <Button x:Name="BtnAjouterFilm" Style="{StaticResource DefautButton}"
+                    Visibility="{Binding VisibilityAdmin}"
                     Command="{s:Action NavigateToFilmManagement}">
                 <StackPanel Margin="0,10" Width="130" HorizontalAlignment="Center">
                     <Image Height="65"
