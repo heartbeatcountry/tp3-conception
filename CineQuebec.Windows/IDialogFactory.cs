@@ -7,4 +7,5 @@ public interface IDialogFactory
     DialogNomPrenomViewModel CreateDialogNomPrenom();
     DialogNomAffichageViewModel CreateDialogNomAffichage();
     DialogNouvelleSalleViewModel CreateDialogNouvelleSalle();
+    DialogInscriptionUtilisateurViewModel CreateDialogInscriptionUtilisateur();
 }

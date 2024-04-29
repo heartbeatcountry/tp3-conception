@@ -277,7 +277,7 @@ namespace CineQuebec.Windows.Ressources.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utilisateur :.
+        ///   Looks up a localized string similar to Adresse courriel :.
         /// </summary>
         public static string connexion_username {
             get {
