@@ -21,9 +21,9 @@
                Source="/Ressources/images/logoCinema.png" />
         <DockPanel Grid.Row="1" Background="LightGray">
             <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15">
-                    <TextBlock Text="Vous n'avez pas de compte?"/>
-                    <Button Margin="20,0,0,0" Content="Créer un compte"
-                            Style="{StaticResource MenuButton}" Command="{s:Action OuvrirInscription}" />
+                <TextBlock Text="Vous n'avez pas de compte?" />
+                <Button Margin="20,0,0,0" Content="Créer un compte"
+                        Style="{StaticResource MenuButton}" Command="{s:Action OuvrirInscription}" />
             </StackPanel>
             <StackPanel Background="White">
                 <Grid HorizontalAlignment="Center" Margin="0,20" VerticalAlignment="Center">
@@ -36,8 +36,9 @@
 
                         <Label Content="{x:Static rs:Resource.connexion_password}"
                                Style="{StaticResource DefautLabel}" />
-                        <PasswordBox Width="200" Style="{StaticResource PasswordInput}" PasswordChanged="{s:Action OnMdpChange}"
-                                 Margin="0 0 0 20" />
+                        <PasswordBox Width="200" Style="{StaticResource PasswordInput}"
+                                     PasswordChanged="{s:Action OnMdpChange}"
+                                     Margin="0 0 0 20" />
 
                         <Button Content="{x:Static rs:Resource.connexion_connect}"
                                 Style="{StaticResource DefautButton}" Width="200" Command="{s:Action SeConnecter}" />

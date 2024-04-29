@@ -1,13 +1,25 @@
-﻿using CineQuebec.Windows.Views.Components;
+﻿using System.Windows;
+
+using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Domain.Entities.Utilisateurs;
+using CineQuebec.Windows.Views.Components;
 
 using Stylet;
 
 namespace CineQuebec.Windows.Views;
 
-public class AdminHomeViewModel(INavigationController navigationController, HeaderViewModel headerViewModel) : Screen
+public class AdminHomeViewModel(
+    INavigationController navigationController,
+    HeaderViewModel headerViewModel,
+    IUtilisateurAuthenticationService utilisateurAuthenticationService) : Screen
 {
     private bool _navigationIsEnabled = true;
     public HeaderViewModel HeaderViewModel => headerViewModel;
+
+    public bool EstAdmin =>
+        utilisateurAuthenticationService.ObtenirAutorisation()?.IsInRole(Role.Administrateur.ToString()) ?? false;
+
+    public Visibility VisibilityAdmin => EstAdmin ? Visibility.Visible : Visibility.Collapsed;
 
     public bool NavigationIsEnabled
     {
@@ -17,6 +29,11 @@ public class AdminHomeViewModel(INavigationController navigationController, Head
 
     public void NavigateToFilmManagement()
     {
+        if (!EstAdmin)
+        {
+            return;
+        }
+
         NavigationIsEnabled = false;
         navigationController.NavigateTo<AdminMovieListViewModel>();
     }
