@@ -14,7 +14,7 @@ public class PasswordValidationService : ServiceAvecValidation, IPasswordValidat
     private const string NomFichierMotsDePasseLesPlusCommuns = "MotsDePasseLesPlusCommuns.txt";
     public const byte LongueurMinimaleMdp = 10;
     public const byte LongueurMaximaleMdp = 128;
-    private static readonly string[] MotsDePasseLesPlusCommuns = LireFichierMotsDePasseLesPlusCommuns().ToArray();
+    private static readonly HashSet<string> MotsDePasseLesPlusCommuns = [.. LireFichierMotsDePasseLesPlusCommuns()];
 
     public void ValiderMdpEstSecuritaire(string mdp)
     {
@@ -26,9 +26,8 @@ public class PasswordValidationService : ServiceAvecValidation, IPasswordValidat
         );
     }
 
-    private static IEnumerable<SecurityException> ValiderLongueurMdp(string mdp)
+    private static IEnumerable<SecurityException> ValiderLongueurMdp(string trimmedMdp)
     {
-        string trimmedMdp = mdp.Trim();
         StringInfo mdpStringInfo = new(trimmedMdp);
 
         // On valide le nombre de caractères Unicode, plutôt que le nombre d'octets:
@@ -45,9 +44,9 @@ public class PasswordValidationService : ServiceAvecValidation, IPasswordValidat
         }
     }
 
-    private static IEnumerable<SecurityException> ValiderMdpCommun(string mdp)
+    private static IEnumerable<SecurityException> ValiderMdpCommun(string trimmedMdp)
     {
-        if (MotsDePasseLesPlusCommuns.Contains(mdp.Trim()))
+        if (MotsDePasseLesPlusCommuns.Contains(trimmedMdp.ToLowerInvariant()))
         {
             yield return new SecurityException(
                 "Le mot de passe est trop commun. Veuillez utiliser un mot de passe unique.");
@@ -64,7 +63,7 @@ public class PasswordValidationService : ServiceAvecValidation, IPasswordValidat
 
         while (!reader.EndOfStream && reader.ReadLine()?.Trim() is { Length: > 0 } ligne)
         {
-            yield return ligne;
+            yield return ligne.ToLowerInvariant();
         }
     }
 }
