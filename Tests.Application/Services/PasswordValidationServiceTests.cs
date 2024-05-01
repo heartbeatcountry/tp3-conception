@@ -6,9 +6,10 @@ namespace Tests.Application.Services;
 
 internal class PasswordValidationServiceTests : GenericServiceTests<PasswordValidationService>
 {
-    private const string MotDePasseCommun = "bonjour";
-    private const string MotDePasseTropCourt = "patate";
+    private const string MotDePasseCommun = "administrator";
+    private const string MotDePasseTropCourt = "12345";
     private const string MotDePasseValide = "j'aime le gratin dauphinois";
+    private const string MotDePasseFaibleEntropie = "aaaaaaaaaa@$";
     private readonly string _motDePasseTropLong = new('x', PasswordValidationService.LongueurMaximaleMdp + 1);
 
     [Test]
@@ -39,6 +40,16 @@ internal class PasswordValidationServiceTests : GenericServiceTests<PasswordVali
             Service.ValiderMdpEstSecuritaire(_motDePasseTropLong));
         Assert.That(aggregateException?.InnerExceptions,
             Has.One.InstanceOf<SecurityException>().With.Message.Contains("doit contenir au plus"));
+    }
+
+    [Test]
+    public void ValiderMdpEstSecuritaire_WhenGivenWeakPassword_ShouldThrowSecurityException()
+    {
+        // Act & Assert
+        AggregateException? aggregateException = Assert.Throws<AggregateException>(() =>
+            Service.ValiderMdpEstSecuritaire(MotDePasseFaibleEntropie));
+        Assert.That(aggregateException?.InnerExceptions,
+            Has.One.InstanceOf<SecurityException>().With.Message.Contains("caractères uniques"));
     }
 
     [Test]

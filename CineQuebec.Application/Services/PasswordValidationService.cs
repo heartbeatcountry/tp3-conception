@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Reflection;
 using System.Security;
+using System.Text;
 
 using CineQuebec.Application.Interfaces.Services;
 using CineQuebec.Application.Services.Abstract;
@@ -14,6 +15,7 @@ public class PasswordValidationService : ServiceAvecValidation, IPasswordValidat
     private const string NomFichierMotsDePasseLesPlusCommuns = "MotsDePasseLesPlusCommuns.txt";
     public const byte LongueurMinimaleMdp = 10;
     public const byte LongueurMaximaleMdp = 128;
+    public const byte NbCaracteresUniquesMin = 5;
     private static readonly HashSet<string> MotsDePasseLesPlusCommuns = [.. LireFichierMotsDePasseLesPlusCommuns()];
 
     public void ValiderMdpEstSecuritaire(string mdp)
@@ -22,7 +24,8 @@ public class PasswordValidationService : ServiceAvecValidation, IPasswordValidat
 
         LeverAggregateExceptionAuBesoin(
             ValiderLongueurMdp(trimmedMdp),
-            ValiderMdpCommun(trimmedMdp)
+            ValiderMdpCommun(trimmedMdp),
+            ValiderCaracteresUniques(trimmedMdp)
         );
     }
 
@@ -46,10 +49,19 @@ public class PasswordValidationService : ServiceAvecValidation, IPasswordValidat
 
     private static IEnumerable<SecurityException> ValiderMdpCommun(string trimmedMdp)
     {
-        if (MotsDePasseLesPlusCommuns.Contains(trimmedMdp.ToLowerInvariant()))
+        if (MotsDePasseLesPlusCommuns.Contains(NormaliserMdp(trimmedMdp)))
         {
             yield return new SecurityException(
                 "Le mot de passe est trop commun. Veuillez utiliser un mot de passe unique.");
+        }
+    }
+
+    private static IEnumerable<SecurityException> ValiderCaracteresUniques(string trimmedMdp)
+    {
+        if (CalculerNbCaracteresUniques(trimmedMdp) < NbCaracteresUniquesMin)
+        {
+            yield return new SecurityException(
+                $"Le mot de passe doit contenir au moins {NbCaracteresUniquesMin} caractères uniques.");
         }
     }
 
@@ -61,9 +73,37 @@ public class PasswordValidationService : ServiceAvecValidation, IPasswordValidat
         using Stream stream = assembly.GetManifestResourceStream(resourceName)!;
         using StreamReader reader = new(stream);
 
-        while (!reader.EndOfStream && reader.ReadLine()?.Trim() is { Length: > 0 } ligne)
+        while (!reader.EndOfStream && reader.ReadLine()?.Trim() is { Length: > 0 } mdp)
         {
-            yield return ligne.ToLowerInvariant();
+            if (mdp.Length >= LongueurMinimaleMdp && CalculerNbCaracteresUniques(mdp) >= NbCaracteresUniquesMin)
+            {
+                yield return NormaliserMdp(mdp);
+            }
         }
+    }
+
+    private static string NormaliserMdp(string mdp)
+    {
+        // Ce code peut être difficile à lire, mais en gros, il retire les accents et les caractères spéciaux
+        // d'un mot de passe, pour le comparer à une liste de mots de passe communs. Ainsi, véronica et veronica
+        // seraient considérés comme identiques lors de la vérification d'unicité.
+
+        return string.Concat(mdp.ToLowerInvariant()
+            .Normalize(NormalizationForm.FormD)
+            .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark))
+            .Normalize(NormalizationForm.FormC);
+    }
+
+    private static int CalculerNbCaracteresUniques(string trimmedMdp)
+    {
+        HashSet<string> textElementsUniques = [];
+        var textElements = StringInfo.GetTextElementEnumerator(trimmedMdp);
+
+        while (textElements.MoveNext())
+        {
+            textElementsUniques.Add(textElements.GetTextElement());
+        }
+
+        return textElementsUniques.Count;
     }
 }
