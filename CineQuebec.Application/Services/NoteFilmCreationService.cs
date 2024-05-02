@@ -5,10 +5,10 @@ using CineQuebec.Domain.Interfaces.Entities.Films;
 
 namespace CineQuebec.Application.Services
 {
-    public class NoteFilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) : INoteFillmCreationService
+    public class NoteFilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) : INoteFilmCreationService
     {
 
-        public async Task<Guid> CreerNoteFilm(Guid pIdUtilisateur, Guid pIdFilm, ushort pNote)
+        public async Task<Guid> NoterFilm(Guid pIdUtilisateur, Guid pIdFilm, ushort pNote)
         {
             using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 

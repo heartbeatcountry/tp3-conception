@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CineQuebec.Application.Interfaces.Services
 {
-    public interface INoteFillmCreationService
+    public interface INoteFilmCreationService
     {
-        Task<Guid> CreerNoteFilm(Guid pIdUtilisateur, Guid pIdFilm, ushort pNote);
+        Task<Guid> NoterFilm(Guid pIdUtilisateur, Guid pIdFilm, ushort pNote);
 
     }
 }

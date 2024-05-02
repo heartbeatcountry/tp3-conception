@@ -18,11 +18,26 @@ public class FilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) : Service
 
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
+<<<<<<< HEAD
         await EffectuerValidations(unitOfWork, titre, description, categorie, dateDeSortieInternationale, acteursParId,
             realisateursParId, duree);
 
         IFilm filmCree = await CreerFilm(unitOfWork, titre, description, categorie, dateDeSortieInternationale,
             acteursParId, realisateursParId, duree);
+=======
+        IEnumerable<Exception> exceptions = await EffectuerValidations(unitOfWork, titre, description, categorie,
+            dateDeSortieInternationale, acteursParId, realisateursParId, duree);
+
+        if (exceptions.ToArray() is { Length: > 0 } innerExceptions)
+        {
+            throw new AggregateException("Des erreurs se sont produites lors de la validation des données.",
+                innerExceptions);
+        }
+
+        Film film = new(titre, description, categorie, dateDeSortieInternationale, acteursParId, realisateursParId,
+            duree);
+        IFilm filmCree = await unitOfWork.FilmRepository.AjouterAsync(film);
+>>>>>>> 8a5e946 (Correction en lien avec commentaires du pull request)
 
         await unitOfWork.SauvegarderAsync();
 
@@ -33,6 +48,7 @@ public class FilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) : Service
         string description, Guid categorie, DateTime dateDeSortieInternationale, IEnumerable<Guid> acteurs,
         IEnumerable<Guid> realisateurs, ushort duree)
     {
+<<<<<<< HEAD
         LeverAggregateExceptionAuBesoin(
             ValiderTitre(titre),
             ValiderDescription(description),
@@ -43,6 +59,20 @@ public class FilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) : Service
             await ValiderRealisateursExistent(unitOfWork, realisateurs),
             await ValiderFilmEstUnique(unitOfWork, titre, dateDeSortieInternationale.Year, duree)
         );
+=======
+        List<Exception> exceptions = [];
+
+        exceptions.AddRange(ValiderTitre(titre));
+        exceptions.AddRange(ValiderDescription(description));
+        exceptions.AddRange(ValiderDuree(duree));
+        exceptions.AddRange(ValiderDateSortieInternationale(dateDeSortieInternationale));
+        exceptions.AddRange(await ValiderCategorieExiste(unitOfWork, categorie));
+        exceptions.AddRange(await ValiderActeursExistent(unitOfWork, acteurs));
+        exceptions.AddRange(await ValiderRealisateursExistent(unitOfWork, realisateurs));
+        exceptions.AddRange(await ValiderFilmEstUnique(unitOfWork, titre, dateDeSortieInternationale.Year, duree));
+
+        return exceptions;
+>>>>>>> 8a5e946 (Correction en lien avec commentaires du pull request)
     }
 
     private static async Task<IFilm> CreerFilm(IUnitOfWork unitOfWork, string titre, string description, Guid categorie,
@@ -138,4 +168,9 @@ public class FilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) : Service
             ? new ArgumentException("Le titre ne peut pas être vide.", nameof(titre))
             : null;
     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 8a5e946 (Correction en lien avec commentaires du pull request)
 }
