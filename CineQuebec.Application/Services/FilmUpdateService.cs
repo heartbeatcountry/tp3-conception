@@ -7,8 +7,32 @@ namespace CineQuebec.Application.Services;
 
 public class FilmUpdateService(IUnitOfWorkFactory unitOfWorkFactory) : ServiceAvecValidation, IFilmUpdateService
 {
+<<<<<<< HEAD
     public async Task ModifierFilm(Guid idFilm, string titre, string description, Guid categorie, DateTime
         dateDeSortieInternationale, IEnumerable<Guid> acteurs, IEnumerable<Guid> realisateurs, ushort duree)
+=======
+    private static async Task<IEnumerable<Exception>> EffectuerValidations(IUnitOfWork unitOfWork, Guid id,
+        string titre, string description, Guid categorie, DateTime dateDeSortieInternationale,
+        IEnumerable<Guid> acteurs, IEnumerable<Guid> realisateurs, ushort duree )
+    {
+        List<Exception> exceptions = [];
+
+        exceptions.AddRange(await ValiderFilmExiste(unitOfWork, id));
+        exceptions.AddRange(ValiderTitre(titre));
+        exceptions.AddRange(ValiderDescription(description));
+        exceptions.AddRange(ValiderDuree(duree));
+        exceptions.AddRange(ValiderDateSortieInternationale(dateDeSortieInternationale));
+        exceptions.AddRange(await ValiderCategorieExiste(unitOfWork, categorie));
+        exceptions.AddRange(await ValiderActeursExistent(unitOfWork, acteurs));
+        exceptions.AddRange(await ValiderRealisateursExistent(unitOfWork, realisateurs));
+        exceptions.AddRange(await ValiderFilmEstUnique(unitOfWork, id, titre, dateDeSortieInternationale.Year, duree));
+
+        return exceptions;
+    }
+
+    public async Task ModifierFilm(Guid idFilm, string titre, string description, Guid categorie, DateTime
+        dateDeSortieInternationale, IEnumerable<Guid> acteurs, IEnumerable<Guid> realisateurs, ushort duree )
+>>>>>>> 8a5e946 (Correction en lien avec commentaires du pull request)
     {
         titre = titre.Trim();
         description = description.Trim();
@@ -17,7 +41,11 @@ public class FilmUpdateService(IUnitOfWorkFactory unitOfWorkFactory) : ServiceAv
 
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
+<<<<<<< HEAD
         await EffectuerValidations(unitOfWork, idFilm, titre, description,
+=======
+        IEnumerable<Exception> exceptions = await EffectuerValidations(unitOfWork, idFilm, titre, description,
+>>>>>>> 8a5e946 (Correction en lien avec commentaires du pull request)
             categorie, dateDeSortieInternationale, acteursParId, realisateursParId, duree);
 
         await ModifierFilm(unitOfWork, idFilm, titre, description, categorie, dateDeSortieInternationale,
@@ -56,6 +84,10 @@ public class FilmUpdateService(IUnitOfWorkFactory unitOfWorkFactory) : ServiceAv
         film.SetActeursParId(acteursParId);
         film.SetRealisateursParId(realisateursParId);
         film.SetDureeEnMinutes(duree);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8a5e946 (Correction en lien avec commentaires du pull request)
 
         unitOfWork.FilmRepository.Modifier(film);
     }
@@ -155,8 +187,21 @@ public class FilmUpdateService(IUnitOfWorkFactory unitOfWorkFactory) : ServiceAv
 
     private static ArgumentException? ValiderTitre(string titre)
     {
+<<<<<<< HEAD
         return string.IsNullOrWhiteSpace(titre)
             ? new ArgumentException("Le titre ne peut pas être vide.", nameof(titre))
             : null;
     }
+=======
+        List<Exception> exceptions = [];
+
+        if (string.IsNullOrWhiteSpace(titre))
+        {
+            exceptions.Add(new ArgumentException("Le titre ne peut pas être vide.", nameof(titre)));
+        }
+
+        return exceptions;
+    }
+
+>>>>>>> 8a5e946 (Correction en lien avec commentaires du pull request)
 }

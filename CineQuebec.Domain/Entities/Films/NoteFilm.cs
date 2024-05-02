@@ -13,6 +13,8 @@ namespace CineQuebec.Domain.Entities.Films
 {
     public class NoteFilm : Entite, IComparable<NoteFilm>,  INoteFilm
     {
+        public const byte NoteMoyenneMinimum = 0;
+        public const byte NoteMoyenneMaximum = 10;
 
         public NoteFilm(Guid pIdUtilisateur, Guid pIdFilm, ushort pNote) {
 
@@ -59,10 +61,10 @@ namespace CineQuebec.Domain.Entities.Films
 
         public void SetNoteFilm(ushort pNoteObtenue)
         {
-            if (pNoteObtenue > 10  || pNoteObtenue < 0)
+            if (pNoteObtenue > NoteMoyenneMaximum || pNoteObtenue < NoteMoyenneMinimum)
             {
                 throw new ArgumentOutOfRangeException(nameof(Note),
-                    $"La note doit être comprise entre 0 et 10.");
+                    $"La note doit être comprise entre {NoteMoyenneMinimum} et {NoteMoyenneMaximum}.");
             }
             Note = pNoteObtenue;
         }

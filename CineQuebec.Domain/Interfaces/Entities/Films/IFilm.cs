@@ -21,5 +21,5 @@ public interface IFilm : IEntite
     void SetDureeEnMinutes(ushort duree);
     void SetActeursParId(IEnumerable<Guid> acteurs);
     void SetRealisateursParId(IEnumerable<Guid> realisateurs);
-    void SetNoteMoyenne(ushort noteMoyenne);
+    void SetNoteMoyenne(float? noteMoyenne);
 }

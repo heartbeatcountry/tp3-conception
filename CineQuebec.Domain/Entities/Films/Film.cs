@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Xml.Linq;
 
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities.Films;
@@ -11,9 +13,11 @@ public class Film : Entite, IComparable<Film>, IFilm
     private readonly HashSet<Guid> _acteursParId = [];
     private readonly HashSet<Guid> _realisateursParId = [];
     private DateOnly _dateSortieInternationale = DateOnly.MinValue;
+    public const byte NoteMoyenneMinimum = 0;
+    public const byte NoteMoyenneMaximum = 10;
 
     public Film(string titre, string description, Guid idCategorie, DateTime dateSortieInternationale,
-        IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes, ushort noteMoyenne)
+        IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes, float? noteMoyenne = null)
     {
         SetTitre(titre);
         SetDescription(description);
@@ -27,7 +31,7 @@ public class Film : Entite, IComparable<Film>, IFilm
 
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
     private Film(Guid id, string titre, string description, Guid idCategorie, DateTime dateSortieInternationale,
-        IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes, ushort noteMoyenne) : this(titre,
+        IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes, float? noteMoyenne) : this(titre,
         description, idCategorie, dateSortieInternationale, acteursParId, realisateursParId, dureeEnMinutes, noteMoyenne)
     {
         // Constructeur avec identifiant pour Entity Framework Core
@@ -156,10 +160,15 @@ public class Film : Entite, IComparable<Film>, IFilm
                                       film.DateSortieInternationale.Year && DureeEnMinutes == film.DureeEnMinutes);
     }
 
-    public void SetNoteMoyenne(ushort noteFilm)
+    public void SetNoteMoyenne(float? noteFilm)
     {
-        
+        if(noteFilm < NoteMoyenneMinimum || noteFilm > NoteMoyenneMaximum)
+        {
+            throw new ArgumentOutOfRangeException(nameof(noteFilm),
+                 $"La note moyenne doit être entre {NoteMoyenneMinimum} et {NoteMoyenneMaximum}.");
 
-        noteFilm = noteFilm;
+        }
+
+    
     }
 }

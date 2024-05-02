@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using CineQuebec.Application.Services;
 using CineQuebec.Domain.Entities.Films;
+using CineQuebec.Domain.Entities.Utilisateurs;
 using CineQuebec.Domain.Entities.Projections;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Projections;
@@ -33,25 +34,25 @@ namespace Tests.Application.Services
 
             // Act & Assert
             AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
-                Service.CreerNoteFilm(IdFilmValide, IdUtilisateurValide, NoteValide));
+                Service.NoterFilm(IdFilmValide, IdUtilisateurValide, NoteValide));
             Assert.That(aggregateException?.InnerExceptions,
                 Has.One.InstanceOf<ArgumentException>().With.Message.Contains("n'existe pas"));
         }
 
 
-        //[Test]
-        //public void CreerNoteFilm_WhenGivenInvalIdUtilisateur_ThrowsAggregateExceptionContainingArgumentException()
-        //{
-        //    //Arrange
-        //    UtilisateurRepositoryMock.Setup(r => r.ObtenirParIdAsync(IdUtilisateurValide))
-        //        .ReturnsAsync((Utilisateur?)null);
+        [Test]
+        public void CreerNoteFilm_WhenGivenInvalIdUtilisateur_ThrowsAggregateExceptionContainingArgumentException()
+        {
+            //Arrange
+            UtilisateurRepositoryMock.Setup(r => r.ObtenirParIdAsync(IdUtilisateurValide))
+                .ReturnsAsync((Utilisateur?)null);
 
-        //    // Act & Assert
-        //    AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
-        //          Service.CreerNoteFilm(IdFilmValide, IdUtilisateurValide, NoteValide));
-        //    Assert.That(aggregateException?.InnerExceptions,
-        //        Has.One.InstanceOf<ArgumentException>().With.Message.Contains("n'existe pas"));
-        //}
+            // Act & Assert
+            AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
+                  Service.NoterFilm(IdFilmValide, IdUtilisateurValide, NoteValide));
+            Assert.That(aggregateException?.InnerExceptions,
+                Has.One.InstanceOf<ArgumentException>().With.Message.Contains("n'existe pas"));
+        }
 
 
 
@@ -65,7 +66,7 @@ namespace Tests.Application.Services
 
             // Act & Assert
             AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
-                Service.CreerNoteFilm(IdFilmValide, IdUtilisateurValide, NoteValide));
+                Service.NoterFilm(IdFilmValide, IdUtilisateurValide, NoteValide));
             Assert.That(aggregateException?.InnerExceptions,
                 Has.One.InstanceOf<ArgumentException>().With.Message.Contains("existe déjà"));
         }
@@ -76,7 +77,7 @@ namespace Tests.Application.Services
         {
             // Act & Assert
             AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
-                Service.CreerNoteFilm(IdFilmValide, IdUtilisateurValide, NoteInvalide));
+                Service.NoterFilm(IdFilmValide, IdUtilisateurValide, NoteInvalide));
             Assert.That(aggregateException?.InnerExceptions,
                 Has.One.InstanceOf<ArgumentException>().With.Message
                     .Contains("La noteFilm doit être entre 0 et 10."));
