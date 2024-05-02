@@ -12,7 +12,7 @@ public record FilmDto(
     IEnumerable<ActeurDto> Acteurs,
     DateTime DateSortieInternationale,
     ushort DureeEnMinutes,
-    ushort NoteMoyenne
+    float NoteMoyenne
     ) : EntityDto(Id);
 
 internal static class FilmExtensions

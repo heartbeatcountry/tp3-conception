@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Security;
 using System.Security.Claims;
 
 using CineQuebec.Application.Interfaces.DbContext;
@@ -18,6 +19,18 @@ public class UtilisateurAuthenticationService(
     public ClaimsPrincipal? ObtenirAutorisation()
     {
         return ClaimsPrincipal.Current ?? _cachedClaimsPrincipal;
+    }
+
+    public Guid ObtenirIdUtilisateur()
+    {
+        var utilisateur = ObtenirAutorisation();
+
+        if (utilisateur  == null)
+        {
+            throw new SecurityException("L'utilisateur doit être authentifié");
+        }
+
+        return Guid.Parse(utilisateur.Claims.First(c => c.Type == ClaimTypes.PrimarySid).Value);
     }
 
     public async Task AuthentifierThreadAsync(string courriel, string mdp)
@@ -41,7 +54,7 @@ public class UtilisateurAuthenticationService(
         await RehacherAuBesoin(utilisateur, mdp);
 
         Thread.CurrentPrincipal = _cachedClaimsPrincipal =
-            CreerClaimsPrincipal(utilisateur.Courriel, utilisateur.Roles.ToArray());
+            CreerClaimsPrincipal(utilisateur.Id, utilisateur.Courriel, utilisateur.Roles.ToArray());
     }
 
     public void DeauthentifierThread()
@@ -77,10 +90,11 @@ public class UtilisateurAuthenticationService(
         }
     }
 
-    private static ClaimsPrincipal CreerClaimsPrincipal(string nomUsager, params Role[] roles)
+    private static ClaimsPrincipal CreerClaimsPrincipal(Guid idUsager, string nomUsager, params Role[] roles)
     {
         return new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
         {
+            new(ClaimTypes.PrimarySid, idUsager.ToString()),
             new(ClaimTypes.Name, nomUsager), new(ClaimTypes.Expiration, DateTime.Now
                 .AddHours(ExpirationEnHeures).ToString("O", CultureInfo.InvariantCulture))
         }.Union(roles.Select(role => new Claim(ClaimTypes.Role, role.ToString()))), "Basic"));

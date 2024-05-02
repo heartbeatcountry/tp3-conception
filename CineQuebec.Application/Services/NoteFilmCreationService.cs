@@ -1,26 +1,27 @@
-﻿using CineQuebec.Application.Interfaces.DbContext;
+﻿using System.Security;
+using System.Security.Claims;
+
+using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Application.Services.Abstract;
 using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 
 namespace CineQuebec.Application.Services
 {
-    public class NoteFilmCreationService(IUnitOfWorkFactory unitOfWorkFactory) : INoteFilmCreationService
+    public class NoteFilmCreationService(IUnitOfWorkFactory unitOfWorkFactory, IUtilisateurAuthenticationService utilisateurAuthenticationService) : ServiceAvecValidation, INoteFilmCreationService
     {
 
-        public async Task<Guid> NoterFilm(Guid pIdUtilisateur, Guid pIdFilm, ushort pNote)
+        public async Task<Guid> NoterFilm(Guid pIdFilm, byte pNote)
         {
             using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
-            IEnumerable<Exception> exceptions = await EffectuerValidations(unitOfWork, pIdUtilisateur, pIdFilm, pNote);
+            Guid idUtilisateur = utilisateurAuthenticationService.ObtenirIdUtilisateur();
 
-            if (exceptions.ToArray() is { Length: > 0 } innerExceptions)
-            {
-                throw new AggregateException("Des erreurs se sont produites lors de la validation des données.",
-                    innerExceptions);
-            }
 
-            NoteFilm notefilm = new(pIdUtilisateur, pIdFilm, pNote);
+            IEnumerable<Exception> exceptions = await EffectuerValidations(unitOfWork, idUtilisateur, pIdFilm, pNote);
+
+            NoteFilm notefilm = new(idUtilisateur!, pIdFilm, pNote);
             INoteFilm notefilmCreee = await unitOfWork.NoteFilmRepository.AjouterAsync(notefilm);
 
             await unitOfWork.SauvegarderAsync();
@@ -29,13 +30,19 @@ namespace CineQuebec.Application.Services
         }
 
 
-        private static async Task<IEnumerable<Exception>> EffectuerValidations(IUnitOfWork unitOfWork, Guid pIdUtilisateur, Guid pIdFilm, ushort pNote)
+        private static async Task EffectuerValidations(IUnitOfWork unitOfWork, Guid? pIdUtilisateur, Guid pIdFilm, byte pNote)
         {
+            LeverAggregateExceptionAuBesoin(
+                await ValiderFilmExiste(unitOfWork, pIdFilm),
+                await ValiderNoteFilmParUtilisateurUnique(unitOfWork, pIdFilm, pIdUtilisateur)
+            );
+
+
             List<Exception> exceptions = [];
 
-            exceptions.AddRange(await ValiderFilmExiste(unitOfWork, pIdFilm));
+            exceptions.AddRange();
             //exceptions.AddRange(await ValiderUtilisateurExiste(unitOfWork, pIdUtilisateur));
-            exceptions.AddRange(await ValiderNoteFilmParUtilisateurUnique(unitOfWork, pIdFilm, pIdUtilisateur));
+            exceptions.AddRange();
             exceptions.AddRange(ValiderNoteFilmValide(pNote));
 
             return exceptions;
