@@ -19,6 +19,9 @@ public abstract class ServiceAvecValidation
         {
             switch (dynException)
             {
+                case IAsyncEnumerable<Exception> iasyncEnum:
+                    exceptions.AddRange(iasyncEnum.ToBlockingEnumerable());
+                    break;
                 case IEnumerable<Exception> ienum:
                     exceptions.AddRange(ienum);
                     break;

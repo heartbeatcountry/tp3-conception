@@ -16,7 +16,7 @@ public class RealisateurCreationService(IUnitOfWorkFactory unitOfWorkFactory)
 
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
-        await EffectuerValidations(unitOfWork, prenom, nom);
+        EffectuerValidations(unitOfWork, prenom, nom);
         IRealisateur realisateurAjoute = await CreerNouvRealisateur(unitOfWork, prenom, nom);
 
         await unitOfWork.SauvegarderAsync();
@@ -24,13 +24,13 @@ public class RealisateurCreationService(IUnitOfWorkFactory unitOfWorkFactory)
         return realisateurAjoute.Id;
     }
 
-    private static async Task EffectuerValidations(IUnitOfWork unitOfWork, string prenom,
+    private static void EffectuerValidations(IUnitOfWork unitOfWork, string prenom,
         string nom)
     {
         LeverAggregateExceptionAuBesoin(
             ValiderPrenom(prenom),
             ValiderNom(nom),
-            await ValiderRealisateurEstUnique(unitOfWork, prenom, nom)
+            ValiderRealisateurEstUnique(unitOfWork, prenom, nom)
         );
     }
 
@@ -42,21 +42,24 @@ public class RealisateurCreationService(IUnitOfWorkFactory unitOfWorkFactory)
         return await unitOfWork.RealisateurRepository.AjouterAsync(realisateur);
     }
 
-    private static ArgumentException? ValiderNom(string nom)
+    private static IEnumerable<ArgumentException> ValiderNom(string nom)
     {
-        return string.IsNullOrWhiteSpace(nom)
-            ? new ArgumentException("Le nom de du realisateur ne doit pas être vide.")
-            : null;
+        if (string.IsNullOrWhiteSpace(nom))
+        {
+            yield return new ArgumentException("Le nom de du realisateur ne doit pas être vide.");
+        }
     }
 
-    private static ArgumentException? ValiderPrenom(string prenom)
+    private static IEnumerable<ArgumentException> ValiderPrenom(string prenom)
     {
-        return string.IsNullOrWhiteSpace(prenom)
-            ? new ArgumentException("Le prénom de du realisateur ne doit pas être vide.")
-            : null;
+        if (string.IsNullOrWhiteSpace(prenom))
+        {
+            yield return new ArgumentException("Le prénom de du realisateur ne doit pas être vide.");
+        }
     }
 
-    private static async Task<ArgumentException?> ValiderRealisateurEstUnique(IUnitOfWork unitOfWork, string prenom,
+    private static async IAsyncEnumerable<ArgumentException> ValiderRealisateurEstUnique(IUnitOfWork unitOfWork,
+        string prenom,
         string nom)
     {
         string prenomLower = prenom.ToLowerInvariant();
@@ -65,9 +68,7 @@ public class RealisateurCreationService(IUnitOfWorkFactory unitOfWorkFactory)
         if (await unitOfWork.RealisateurRepository.ExisteAsync(a =>
                 a.Prenom.ToLowerInvariant() == prenomLower && a.Nom.ToLowerInvariant() == nomLower))
         {
-            return new ArgumentException("Un realisateur avec le même prénom et nom existe déjà.");
+            yield return new ArgumentException("Un realisateur avec le même prénom et nom existe déjà.");
         }
-
-        return null;
     }
 }

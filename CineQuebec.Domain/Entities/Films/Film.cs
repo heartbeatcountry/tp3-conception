@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Xml.Linq;
 
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities.Films;
@@ -13,11 +10,9 @@ public class Film : Entite, IComparable<Film>, IFilm
     private readonly HashSet<Guid> _acteursParId = [];
     private readonly HashSet<Guid> _realisateursParId = [];
     private DateOnly _dateSortieInternationale = DateOnly.MinValue;
-    public const byte NoteMoyenneMinimum = 0;
-    public const byte NoteMoyenneMaximum = 10;
 
     public Film(string titre, string description, Guid idCategorie, DateTime dateSortieInternationale,
-        IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes, float? noteMoyenne = null)
+        IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes)
     {
         SetTitre(titre);
         SetDescription(description);
@@ -26,16 +21,18 @@ public class Film : Entite, IComparable<Film>, IFilm
         AddActeurs(acteursParId);
         AddRealisateurs(realisateursParId);
         SetDureeEnMinutes(dureeEnMinutes);
-        SetNoteMoyenne(noteMoyenne);
     }
 
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
     private Film(Guid id, string titre, string description, Guid idCategorie, DateTime dateSortieInternationale,
-        IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes, float? noteMoyenne) : this(titre,
-        description, idCategorie, dateSortieInternationale, acteursParId, realisateursParId, dureeEnMinutes, noteMoyenne)
+        IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes,
+        float? noteMoyenne, uint nombreDeNotes) : this(titre,
+        description, idCategorie, dateSortieInternationale, acteursParId, realisateursParId, dureeEnMinutes)
     {
         // Constructeur avec identifiant pour Entity Framework Core
         SetId(id);
+        SetNoteMoyenne(noteMoyenne);
+        SetNombreDeNotes(nombreDeNotes);
     }
 
     public int CompareTo(Film? other)
@@ -54,6 +51,8 @@ public class Film : Entite, IComparable<Film>, IFilm
         return dateComparison != 0 ? dateComparison : string.Compare(Titre, other.Titre, StringComparison.Ordinal);
     }
 
+    public uint NombreDeNotes { get; private set; }
+
     public string Titre { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;
     public Guid IdCategorie { get; private set; }
@@ -67,7 +66,7 @@ public class Film : Entite, IComparable<Film>, IFilm
     public IEnumerable<Guid> ActeursParId { get; private set; } = [];
     public IEnumerable<Guid> RealisateursParId { get; private set; } = [];
     public ushort DureeEnMinutes { get; private set; }
-    public ushort NoteMoyenne { get; private set; }
+    public float? NoteMoyenne { get; private set; }
 
     public void AddActeurs(IEnumerable<Guid> acteurs)
     {
@@ -149,7 +148,22 @@ public class Film : Entite, IComparable<Film>, IFilm
         RealisateursParId = _realisateursParId.ToArray().AsReadOnly();
     }
 
+    public void AjouterNote(byte note)
+    {
+        float? sommeNotes = NoteMoyenne != null ? NoteMoyenne! * NombreDeNotes : 0;
+        float? nouvelleMoyenne = (sommeNotes + note) / (NombreDeNotes + 1);
 
+        SetNoteMoyenne(nouvelleMoyenne);
+        SetNombreDeNotes(NombreDeNotes + 1);
+    }
+
+    public void ModifierNote(byte ancienneNote, byte nouvelleNote)
+    {
+        float? sommeNotes = NoteMoyenne != null ? NoteMoyenne! * NombreDeNotes : 0;
+        float? nouvelleMoyenne = (sommeNotes - ancienneNote + nouvelleNote) / NombreDeNotes;
+
+        SetNoteMoyenne(nouvelleMoyenne);
+    }
 
 
     public new bool Equals(Entite? autre)
@@ -160,15 +174,19 @@ public class Film : Entite, IComparable<Film>, IFilm
                                       film.DateSortieInternationale.Year && DureeEnMinutes == film.DureeEnMinutes);
     }
 
-    public void SetNoteMoyenne(float? noteFilm)
+    private void SetNoteMoyenne(float? noteFilm)
     {
-        if(noteFilm < NoteMoyenneMinimum || noteFilm > NoteMoyenneMaximum)
+        if (noteFilm is < NoteFilm.NoteMinimum or > NoteFilm.NoteMaximum)
         {
             throw new ArgumentOutOfRangeException(nameof(noteFilm),
-                 $"La note moyenne doit être entre {NoteMoyenneMinimum} et {NoteMoyenneMaximum}.");
-
+                $"La note moyenne doit être entre {NoteFilm.NoteMinimum} et {NoteFilm.NoteMaximum}.");
         }
 
-    
+        NoteMoyenne = noteFilm;
+    }
+
+    private void SetNombreDeNotes(uint nombreNotes)
+    {
+        NombreDeNotes = nombreNotes;
     }
 }

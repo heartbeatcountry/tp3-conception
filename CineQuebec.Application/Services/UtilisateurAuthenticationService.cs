@@ -21,11 +21,11 @@ public class UtilisateurAuthenticationService(
         return ClaimsPrincipal.Current ?? _cachedClaimsPrincipal;
     }
 
-    public Guid ObtenirIdUtilisateur()
+    public Guid ObtenirIdUtilisateurConnecte()
     {
-        var utilisateur = ObtenirAutorisation();
+        ClaimsPrincipal? utilisateur = ObtenirAutorisation();
 
-        if (utilisateur  == null)
+        if (utilisateur == null)
         {
             throw new SecurityException("L'utilisateur doit être authentifié");
         }
@@ -94,9 +94,9 @@ public class UtilisateurAuthenticationService(
     {
         return new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
         {
-            new(ClaimTypes.PrimarySid, idUsager.ToString()),
-            new(ClaimTypes.Name, nomUsager), new(ClaimTypes.Expiration, DateTime.Now
-                .AddHours(ExpirationEnHeures).ToString("O", CultureInfo.InvariantCulture))
+            new(ClaimTypes.PrimarySid, idUsager.ToString()), new(ClaimTypes.Name, nomUsager), new(ClaimTypes.Expiration,
+                DateTime.Now
+                    .AddHours(ExpirationEnHeures).ToString("O", CultureInfo.InvariantCulture))
         }.Union(roles.Select(role => new Claim(ClaimTypes.Role, role.ToString()))), "Basic"));
     }
 }

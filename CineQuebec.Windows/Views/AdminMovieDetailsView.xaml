@@ -43,11 +43,12 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"  > 
-                        
-                    <Label Content="Titre" Width="300"  />
-                        <Label  Content="{Binding Film.NoteMoyenne}" x:Name="NoteMoyenne" Width="60" HorizontalAlignment="Right"  />
-                    <Label Content="*" FontSize="15"  Padding="10 5" />
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+
+                        <Label Content="Titre" Width="300" />
+                        <Label Content="{Binding Film.NoteMoyenne}" x:Name="NoteMoyenne" Width="60"
+                               HorizontalAlignment="Right" />
+                        <Label Content="*" FontSize="15" Padding="10 5" />
 
 
                     </StackPanel>

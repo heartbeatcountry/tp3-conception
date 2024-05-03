@@ -1,24 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CineQuebec.Domain.Interfaces.Entities.Abstract;
 
-using CineQuebec.Domain.Interfaces.Entities.Abstract;
+namespace CineQuebec.Domain.Interfaces.Entities.Films;
 
-namespace CineQuebec.Domain.Interfaces.Entities.Films
+public interface INoteFilm : IEntite
 {
-    public interface INoteFilm : IEntite
-    {
-
-        Guid IdUtilisateur { get; }
-        Guid IdFilm{ get; }
-        ushort Note {  get; set; }
-        void SetUtilisateur(Guid pIdUtilisateur);
-        void SetFilm(Guid pIdFilm);
-        void SetNoteFilm(ushort pNoteObtenue);
-
-
-
-    }
+    Guid IdUtilisateur { get; }
+    Guid IdFilm { get; }
+    byte Note { get; }
+    void SetUtilisateur(Guid pIdUtilisateur);
+    void SetFilm(Guid pIdFilm);
+    void SetNoteFilm(byte pNoteObtenue);
 }

@@ -89,15 +89,15 @@ public class PasswordValidationService : ServiceAvecValidation, IPasswordValidat
         // seraient considérés comme identiques lors de la vérification d'unicité.
 
         return string.Concat(mdp.ToLowerInvariant()
-            .Normalize(NormalizationForm.FormD)
-            .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark))
+                .Normalize(NormalizationForm.FormD)
+                .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark))
             .Normalize(NormalizationForm.FormC);
     }
 
     private static int CalculerNbCaracteresUniques(string trimmedMdp)
     {
         HashSet<string> textElementsUniques = [];
-        var textElements = StringInfo.GetTextElementEnumerator(trimmedMdp);
+        TextElementEnumerator textElements = StringInfo.GetTextElementEnumerator(trimmedMdp);
 
         while (textElements.MoveNext())
         {

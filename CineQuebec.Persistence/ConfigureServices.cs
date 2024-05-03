@@ -41,7 +41,6 @@ public static class ConfigureServices
                 DbContextOptions<ApplicationDbContext> dbContextOptions =
                     new DbContextOptionsBuilder<ApplicationDbContext>()
                         .UseMongoDB(mongoDatabase.Client, mongoDatabase.DatabaseNamespace.DatabaseName)
-                        .UseLazyLoadingProxies()
                         .Options;
                 return dbContextOptions;
             });

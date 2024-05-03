@@ -12,20 +12,20 @@ public class SalleCreationService(IUnitOfWorkFactory unitOfWorkFactory) : Servic
     {
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
-        await EffectuerValidations(unitOfWork, numero, nbSieges);
+        EffectuerValidations(unitOfWork, numero, nbSieges);
         ISalle salleAjoutee = await CreerNouvSalle(unitOfWork, numero, nbSieges);
 
         await unitOfWork.SauvegarderAsync();
         return salleAjoutee.Id;
     }
 
-    private static async Task EffectuerValidations(IUnitOfWork unitOfWork, byte numero,
+    private static void EffectuerValidations(IUnitOfWork unitOfWork, byte numero,
         ushort nbSieges)
     {
         LeverAggregateExceptionAuBesoin(
             ValiderNumero(numero),
             ValiderNbSieges(nbSieges),
-            await ValiderSalleEstUnique(unitOfWork, numero)
+            ValiderSalleEstUnique(unitOfWork, numero)
         );
     }
 
@@ -37,20 +37,27 @@ public class SalleCreationService(IUnitOfWorkFactory unitOfWorkFactory) : Servic
         return await unitOfWork.SalleRepository.AjouterAsync(salle);
     }
 
-    private static ArgumentException? ValiderNbSieges(ushort nbSieges)
+    private static IEnumerable<ArgumentException> ValiderNbSieges(ushort nbSieges)
     {
-        return nbSieges == 0 ? new ArgumentException("Le nombre de sièges de la salle doit être supérieur à 0.") : null;
+        if (nbSieges == 0)
+        {
+            yield return new ArgumentException("Le nombre de sièges de la salle doit être supérieur à 0.");
+        }
     }
 
-    private static ArgumentException? ValiderNumero(byte numero)
+    private static IEnumerable<ArgumentException> ValiderNumero(byte numero)
     {
-        return numero == 0 ? new ArgumentException("Le numéro de la salle doit être supérieur à 0.") : null;
+        if (numero == 0)
+        {
+            yield return new ArgumentException("Le numéro de la salle doit être supérieur à 0.");
+        }
     }
 
-    private static async Task<ArgumentException?> ValiderSalleEstUnique(IUnitOfWork unitOfWork, byte numero)
+    private static async IAsyncEnumerable<ArgumentException> ValiderSalleEstUnique(IUnitOfWork unitOfWork, byte numero)
     {
-        return await unitOfWork.SalleRepository.ExisteAsync(s => s.Numero == numero)
-            ? new ArgumentException("Une salle avec ce numéro existe déjà.")
-            : null;
+        if (await unitOfWork.SalleRepository.ExisteAsync(s => s.Numero == numero))
+        {
+            yield return new ArgumentException("Une salle avec ce numéro existe déjà.");
+        }
     }
 }

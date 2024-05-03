@@ -17,15 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Application", "Tests.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Domain", "Tests.Domain\Tests.Domain.csproj", "{66D9C791-D09F-4151-ABDA-79BBA3E02062}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3rdparty", "3rdparty", "{56ECE20E-E839-4C7F-B31D-C1556FA426CF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoDB.EntityFrameworkCore", "3rdparty\mongo-efcore-provider\src\MongoDB.EntityFrameworkCore\MongoDB.EntityFrameworkCore.csproj", "{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CineQuebec.AuthProxy", "CineQuebec.AuthProxy\CineQuebec.AuthProxy.csproj", "{F74AF32A-3E94-4F4C-9C69-C5F638976A27}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Persistence", "Tests.Persistence\Tests.Persistence.csproj", "{A64EA6CD-C94E-4B65-8D17-AE06AD463BAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.AuthProxy", "Tests.AuthProxy\Tests.AuthProxy.csproj", "{32F60555-04AB-4559-A449-D43351943EF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.AuthProxy", "Tests.AuthProxy\Tests.AuthProxy.csproj", "{32F60555-04AB-4559-A449-D43351943EF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,10 +53,6 @@ Global
 		{66D9C791-D09F-4151-ABDA-79BBA3E02062}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66D9C791-D09F-4151-ABDA-79BBA3E02062}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66D9C791-D09F-4151-ABDA-79BBA3E02062}.Release|Any CPU.Build.0 = Release|Any CPU
-		{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F74AF32A-3E94-4F4C-9C69-C5F638976A27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F74AF32A-3E94-4F4C-9C69-C5F638976A27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F74AF32A-3E94-4F4C-9C69-C5F638976A27}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -80,7 +72,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{390BAE1A-32CD-4F45-B294-822407BB9AB8} = {01B05719-D678-4A75-ABBE-C6AAADCB6C6D}
 		{66D9C791-D09F-4151-ABDA-79BBA3E02062} = {01B05719-D678-4A75-ABBE-C6AAADCB6C6D}
-		{382B8F8A-F4D9-49C7-B2AA-DC270E5B2726} = {56ECE20E-E839-4C7F-B31D-C1556FA426CF}
 		{A64EA6CD-C94E-4B65-8D17-AE06AD463BAF} = {01B05719-D678-4A75-ABBE-C6AAADCB6C6D}
 		{32F60555-04AB-4559-A449-D43351943EF9} = {01B05719-D678-4A75-ABBE-C6AAADCB6C6D}
 	EndGlobalSection

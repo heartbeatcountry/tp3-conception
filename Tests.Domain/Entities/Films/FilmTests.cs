@@ -10,7 +10,7 @@ public class FilmTests : EntiteTests<Film>
     private const string AutreTitreValide = "Trouver Nemo";
     private const string DescriptionValide = "Un film de Peter Jackson";
     private const ushort DureeValide = 178;
-    private const ushort NoteMoyenneValide = 8;
+    private const byte NoteValide = 8;
 
     private static readonly Guid Acteur1 = Guid.NewGuid();
     private static readonly Guid Acteur2 = Guid.NewGuid();
@@ -120,17 +120,61 @@ public class FilmTests : EntiteTests<Film>
     public void Constructor_WhenGivenValidDateSortie_ShouldSetDateSortie()
     {
         // Assert
-#pragma warning disable NUnit2021
         Assert.That(Entite.DateSortieInternationale, Is.EqualTo(DateSortieInternationale));
-#pragma warning restore NUnit2021
     }
 
 
     [Test]
-    public void Constructor_WhenGivenValidNoteMoyenne_ShouldSetNoteMoyenne()
+    public void AjouterNote_WhenGivenValidNote_ShouldAdjustNoteMoyenne()
     {
+        // Arrange
+        Entite.AjouterNote(5);
+        float moyenneAttendue = (NoteValide + 5) / 2f;
+
+        // Act
+        Entite.AjouterNote(NoteValide);
+
         // Assert
-        Assert.That(Entite.NoteMoyenne, Is.EqualTo(NoteMoyenneValide));
+        Assert.That(Entite.NoteMoyenne, Is.EqualTo(moyenneAttendue));
+    }
+
+    [Test]
+    public void AjouterNote_WhenGivenValidNote_ShouldIncreaseNombreDeNotes()
+    {
+        // Act
+        Entite.AjouterNote(NoteValide);
+
+        // Assert
+        Assert.That(Entite.NombreDeNotes, Is.EqualTo(1));
+    }
+
+    [Test]
+    public void ModifierNote_WhenGivenValidNote_ShouldAdjustNoteMoyenne()
+    {
+        // Arrange
+        Entite.AjouterNote(5);
+        Entite.AjouterNote(8);
+        float moyenneAttendue = (5 + 10) / 2f;
+
+        // Act
+        Entite.ModifierNote(8, 10);
+
+        // Assert
+        Assert.That(Entite.NoteMoyenne, Is.EqualTo(moyenneAttendue));
+    }
+
+    [Test]
+    public void ModifierNote_WhenGivenValidNote_ShouldNotChangeNombreDeNotes()
+    {
+        // Arrange
+        Entite.AjouterNote(5);
+        Entite.AjouterNote(8);
+
+        // Act
+        Entite.ModifierNote(8, 10);
+
+        // Assert
+        Assert.That(Entite.NombreDeNotes, Is.EqualTo(2));
     }
 
     [Test]
@@ -188,9 +232,7 @@ public class FilmTests : EntiteTests<Film>
         Entite.SetDateSortieInternationale(nouvelleDateSortie);
 
         // Assert
-#pragma warning disable NUnit2021
         Assert.That(Entite.DateSortieInternationale, Is.EqualTo(nouvelleDateSortie));
-#pragma warning restore NUnit2021
     }
 
     [Test]

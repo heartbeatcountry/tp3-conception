@@ -13,29 +13,14 @@ namespace Tests.Application.Services;
 
 public abstract class GenericServiceTests<TService> where TService : class
 {
-    private IRepository<IActeur> _acteurRepository = null!;
-    private IRepository<ICategorieFilm> _categorieFilmRepository = null!;
-    private IRepository<IFilm> _filmRepository = null!;
-    private IPasswordHashingService _passwordHashingService = null!;
-    private IPasswordValidationService _passwordValidationService = null!;
-    private IRepository<INoteFilm> _noteFilmRepository = null!;
-    private IRepository<IProjection> _projectionRepository = null!;
-    private IRepository<IRealisateur> _realisateurRepository = null!;
-    private IRepository<ISalle> _salleRepository = null!;
-    private IUnitOfWork _unitOfWork = null!;
-    private IUnitOfWorkFactory _unitOfWorkFactory = null!;
-    private IUtilisateurAuthenticationService _utilisateurAuthenticationService = null!;
-    private IUtilisateurCreationService _utilisateurCreationService = null!;
-    private IRepository<IUtilisateur> _utilisateurRepository = null!;
-
+    private Mock<IUnitOfWorkFactory> _unitOfWorkFactoryMock = null!;
     protected TService Service { get; private set; } = null!;
-    private Mock<IUnitOfWorkFactory> UnitOfWorkFactoryMock { get; set; } = null!;
+
     protected Mock<IUnitOfWork> UnitOfWorkMock { get; private set; } = null!;
 
     protected Mock<IUtilisateurAuthenticationService> UtilisateurAuthenticationServiceMock { get; private set; } =
         null!;
 
-    protected Mock<IUtilisateurCreationService> UtilisateurCreationServiceMock { get; private set; } = null!;
     protected Mock<IPasswordValidationService> PasswordValidationServiceMock { get; private set; } = null!;
     protected Mock<IPasswordHashingService> PasswordHashingServiceMock { get; private set; } = null!;
     protected Mock<IRepository<IFilm>> FilmRepositoryMock { get; private set; } = null!;
@@ -50,7 +35,22 @@ public abstract class GenericServiceTests<TService> where TService : class
     [SetUp]
     public void SetUp()
     {
-        UnitOfWorkFactoryMock = new Mock<IUnitOfWorkFactory>();
+        CreateMocks();
+        ConfigureUnitOfWork();
+        IServiceProvider serviceProvider = SetupServiceInjection();
+
+        SetUpExt();
+
+        Service = serviceProvider.GetRequiredService<TService>();
+    }
+
+    protected virtual void SetUpExt()
+    {
+    }
+
+    private void CreateMocks()
+    {
+        _unitOfWorkFactoryMock = new Mock<IUnitOfWorkFactory>();
         UnitOfWorkMock = new Mock<IUnitOfWork>();
         FilmRepositoryMock = new Mock<IRepository<IFilm>>();
         NoteFilmRepositoryMock = new Mock<IRepository<INoteFilm>>();
@@ -61,53 +61,43 @@ public abstract class GenericServiceTests<TService> where TService : class
         ProjectionRepositoryMock = new Mock<IRepository<IProjection>>();
         UtilisateurRepositoryMock = new Mock<IRepository<IUtilisateur>>();
         UtilisateurAuthenticationServiceMock = new Mock<IUtilisateurAuthenticationService>();
-        UtilisateurCreationServiceMock = new Mock<IUtilisateurCreationService>();
         PasswordValidationServiceMock = new Mock<IPasswordValidationService>();
         PasswordHashingServiceMock = new Mock<IPasswordHashingService>();
+    }
 
-        _unitOfWorkFactory = UnitOfWorkFactoryMock.Object;
-        _unitOfWork = UnitOfWorkMock.Object;
-        _filmRepository = FilmRepositoryMock.Object;
-        _noteFilmRepository = NoteFilmRepositoryMock.Object;
-        _acteurRepository = ActeurRepositoryMock.Object;
-        _realisateurRepository = RealisateurRepositoryMock.Object;
-        _categorieFilmRepository = CategorieFilmRepositoryMock.Object;
-        _salleRepository = SalleRepositoryMock.Object;
-        _projectionRepository = ProjectionRepositoryMock.Object;
-        _utilisateurRepository = UtilisateurRepositoryMock.Object;
-        _utilisateurAuthenticationService = UtilisateurAuthenticationServiceMock.Object;
-        _utilisateurCreationService = UtilisateurCreationServiceMock.Object;
-        _passwordValidationService = PasswordValidationServiceMock.Object;
-        _passwordHashingService = PasswordHashingServiceMock.Object;
+    private void ConfigureUnitOfWork()
+    {
+        UnitOfWorkMock.Setup(u => u.FilmRepository).Returns(FilmRepositoryMock.Object);
+        UnitOfWorkMock.Setup(u => u.NoteFilmRepository).Returns(NoteFilmRepositoryMock.Object);
+        UnitOfWorkMock.Setup(u => u.ActeurRepository).Returns(ActeurRepositoryMock.Object);
+        UnitOfWorkMock.Setup(u => u.RealisateurRepository).Returns(RealisateurRepositoryMock.Object);
+        UnitOfWorkMock.Setup(u => u.CategorieFilmRepository).Returns(CategorieFilmRepositoryMock.Object);
+        UnitOfWorkMock.Setup(u => u.SalleRepository).Returns(SalleRepositoryMock.Object);
+        UnitOfWorkMock.Setup(u => u.ProjectionRepository).Returns(ProjectionRepositoryMock.Object);
+        UnitOfWorkMock.Setup(u => u.UtilisateurRepository).Returns(UtilisateurRepositoryMock.Object);
+        _unitOfWorkFactoryMock.Setup(f => f.Create()).Returns(UnitOfWorkMock.Object);
+    }
 
-        UnitOfWorkMock.Setup(u => u.FilmRepository).Returns(_filmRepository);
-        UnitOfWorkMock.Setup(u => u.NoteFilmRepository).Returns(_noteFilmRepository);
-        UnitOfWorkMock.Setup(u => u.ActeurRepository).Returns(_acteurRepository);
-        UnitOfWorkMock.Setup(u => u.RealisateurRepository).Returns(_realisateurRepository);
-        UnitOfWorkMock.Setup(u => u.CategorieFilmRepository).Returns(_categorieFilmRepository);
-        UnitOfWorkMock.Setup(u => u.SalleRepository).Returns(_salleRepository);
-        UnitOfWorkMock.Setup(u => u.ProjectionRepository).Returns(_projectionRepository);
-        UnitOfWorkMock.Setup(u => u.UtilisateurRepository).Returns(_utilisateurRepository);
-        UnitOfWorkFactoryMock.Setup(f => f.Create()).Returns(_unitOfWork);
-
-        ServiceCollection serviceCollection = new();
+    private ServiceProvider SetupServiceInjection()
+    {
+        ServiceCollection serviceCollection = [];
         serviceCollection.AddSingleton<TService>();
 
         Dictionary<Type, object> serviceTypesToMock = new()
         {
-            [typeof(IRepository<IActeur>)] = _acteurRepository,
-            [typeof(IRepository<ICategorieFilm>)] = _categorieFilmRepository,
-            [typeof(IRepository<IFilm>)] = _filmRepository,
-            [typeof(IRepository<IProjection>)] = _projectionRepository,
-            [typeof(IRepository<IRealisateur>)] = _realisateurRepository,
-            [typeof(IRepository<ISalle>)] = _salleRepository,
-            [typeof(IRepository<IUtilisateur>)] = _utilisateurRepository,
-            [typeof(IUnitOfWork)] = _unitOfWork,
-            [typeof(IUnitOfWorkFactory)] = _unitOfWorkFactory,
-            [typeof(IUtilisateurAuthenticationService)] = _utilisateurAuthenticationService,
-            [typeof(IUtilisateurCreationService)] = _utilisateurCreationService,
-            [typeof(IPasswordValidationService)] = _passwordValidationService,
-            [typeof(IPasswordHashingService)] = _passwordHashingService
+            [typeof(IRepository<IActeur>)] = ActeurRepositoryMock.Object,
+            [typeof(IRepository<ICategorieFilm>)] = CategorieFilmRepositoryMock.Object,
+            [typeof(IRepository<IFilm>)] = FilmRepositoryMock.Object,
+            [typeof(IRepository<IProjection>)] = ProjectionRepositoryMock.Object,
+            [typeof(IRepository<IRealisateur>)] = RealisateurRepositoryMock.Object,
+            [typeof(IRepository<ISalle>)] = SalleRepositoryMock.Object,
+            [typeof(IRepository<IUtilisateur>)] = UtilisateurRepositoryMock.Object,
+            [typeof(IRepository<INoteFilm>)] = NoteFilmRepositoryMock.Object,
+            [typeof(IUnitOfWork)] = UnitOfWorkMock.Object,
+            [typeof(IUnitOfWorkFactory)] = _unitOfWorkFactoryMock.Object,
+            [typeof(IUtilisateurAuthenticationService)] = UtilisateurAuthenticationServiceMock.Object,
+            [typeof(IPasswordValidationService)] = PasswordValidationServiceMock.Object,
+            [typeof(IPasswordHashingService)] = PasswordHashingServiceMock.Object
         };
 
         foreach (KeyValuePair<Type, object> serviceType in serviceTypesToMock
@@ -116,12 +106,6 @@ public abstract class GenericServiceTests<TService> where TService : class
             serviceCollection.AddSingleton(serviceType.Key, serviceType.Value);
         }
 
-        ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
-
-        SetUpExt();
-
-        Service = serviceProvider.GetRequiredService<TService>();
+        return serviceCollection.BuildServiceProvider();
     }
-
-    protected virtual void SetUpExt() { }
 }

@@ -13,7 +13,7 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory)
     {
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
-        await EffectuerValidations(unitOfWork, pFilm, pSalle, pDateHeure);
+        EffectuerValidations(unitOfWork, pFilm, pSalle, pDateHeure);
 
         IProjection projectionCreee =
             await CreerNouvProjection(unitOfWork, pFilm, pSalle, pDateHeure, pEstAvantPremiere);
@@ -24,14 +24,14 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory)
     }
 
 
-    private static async Task EffectuerValidations(IUnitOfWork unitOfWork, Guid pFilm,
+    private static void EffectuerValidations(IUnitOfWork unitOfWork, Guid pFilm,
         Guid pSalle, DateTime pDateHeure)
     {
         LeverAggregateExceptionAuBesoin(
-            await ValiderFilmExiste(unitOfWork, pFilm),
-            await ValiderSalleExiste(unitOfWork, pSalle),
-            await ValiderSalleDispo(unitOfWork, pSalle, pDateHeure),
-            await ValiderProjectionEstUnique(unitOfWork, pFilm, pSalle, pDateHeure),
+            ValiderFilmExiste(unitOfWork, pFilm),
+            ValiderSalleExiste(unitOfWork, pSalle),
+            ValiderSalleDispo(unitOfWork, pSalle, pDateHeure),
+            ValiderProjectionEstUnique(unitOfWork, pFilm, pSalle, pDateHeure),
             ValiderDateHeure(pDateHeure)
         );
     }
@@ -44,60 +44,55 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory)
         return await unitOfWork.ProjectionRepository.AjouterAsync(projection);
     }
 
-    private static ArgumentOutOfRangeException? ValiderDateHeure(DateTime pDateHeure)
+    private static IEnumerable<ArgumentOutOfRangeException> ValiderDateHeure(DateTime pDateHeure)
     {
-        return pDateHeure < DateTime.Now
-            ? new ArgumentOutOfRangeException(nameof(pDateHeure),
-                "La date de projection ne doit pas être dans le passé.")
-            : null;
+        if (pDateHeure < DateTime.Now)
+        {
+            yield return new ArgumentOutOfRangeException(nameof(pDateHeure),
+                "La date de projection ne doit pas être dans le passé.");
+        }
     }
 
-
-    private static async Task<ArgumentException?> ValiderFilmExiste(IUnitOfWork unitOfWork, Guid pFilm)
+    private static async IAsyncEnumerable<ArgumentException> ValiderFilmExiste(IUnitOfWork unitOfWork, Guid pFilm)
     {
-        return await unitOfWork.FilmRepository.ObtenirParIdAsync(pFilm) is null
-            ? new ArgumentException($"Le film avec l'identifiant {pFilm} n'existe pas.",
-                nameof(pFilm))
-            : null;
+        if (await unitOfWork.FilmRepository.ObtenirParIdAsync(pFilm) is null)
+        {
+            yield return new ArgumentException($"Le film avec l'identifiant {pFilm} n'existe pas.",
+                nameof(pFilm));
+        }
     }
 
-
-    private static async Task<ArgumentException?> ValiderProjectionEstUnique(IUnitOfWork unitOfWork, Guid pFilm,
+    private static async IAsyncEnumerable<ArgumentException> ValiderProjectionEstUnique(IUnitOfWork unitOfWork,
+        Guid pFilm,
         Guid pSalle, DateTime pDateHeure)
     {
         if (await unitOfWork.ProjectionRepository.ExisteAsync(f =>
                 f.IdFilm == pFilm && f.IdSalle == pSalle && f.DateHeure == pDateHeure))
         {
-            return new ArgumentException(
+            yield return new ArgumentException(
                 "Une projection avec le même film, la même date et heure dans la même salle existe déjà.",
                 nameof(pFilm));
         }
-
-        return null;
     }
 
-    private static async Task<ArgumentException?> ValiderSalleDispo(IUnitOfWork unitOfWork, Guid pSalle,
+    private static async IAsyncEnumerable<ArgumentException> ValiderSalleDispo(IUnitOfWork unitOfWork, Guid pSalle,
         DateTime pDateHeure)
     {
         if (await unitOfWork.ProjectionRepository.ExisteAsync(proj =>
                 proj.IdSalle == pSalle && proj.DateHeure == pDateHeure))
         {
-            return new ArgumentException(
+            yield return new ArgumentException(
                 $"La salle avec l'identifiant {pSalle} n'est pas disponible pour la date {pDateHeure}.",
                 nameof(pSalle));
         }
-
-        return null;
     }
 
-    private static async Task<ArgumentException?> ValiderSalleExiste(IUnitOfWork unitOfWork, Guid pSalle)
+    private static async IAsyncEnumerable<ArgumentException> ValiderSalleExiste(IUnitOfWork unitOfWork, Guid pSalle)
     {
         if (await unitOfWork.SalleRepository.ObtenirParIdAsync(pSalle) is null)
         {
-            return new ArgumentException($"La salle avec l'identifiant {pSalle} n'existe pas.",
+            yield return new ArgumentException($"La salle avec l'identifiant {pSalle} n'existe pas.",
                 nameof(pSalle));
         }
-
-        return null;
     }
 }

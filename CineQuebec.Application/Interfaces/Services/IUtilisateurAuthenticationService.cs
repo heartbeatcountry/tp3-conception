@@ -7,6 +7,5 @@ public interface IUtilisateurAuthenticationService
     Task AuthentifierThreadAsync(string courriel, string mdp);
     void DeauthentifierThread();
     ClaimsPrincipal? ObtenirAutorisation();
-
-    Guid ObtenirIdUtilisateur();
+    Guid ObtenirIdUtilisateurConnecte();
 }

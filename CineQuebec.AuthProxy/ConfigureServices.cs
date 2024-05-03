@@ -84,6 +84,10 @@ public static class ConfigureServices
             .AjouterProxyAuthPourService<ISalleQueryService>(new Dictionary<Role, IEnumerable<string>>
             {
                 [Role.Administrateur] = [nameof(ISalleQueryService.ObtenirToutes)]
+            })
+            .AjouterProxyAuthPourService<INoteFilmCreationService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Utilisateur] = [nameof(INoteFilmCreationService.NoterFilm)]
             });
     }
 }

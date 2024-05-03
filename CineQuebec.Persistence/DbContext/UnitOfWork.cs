@@ -22,12 +22,16 @@ public sealed class UnitOfWork(IApplicationDbContextFactory applicationDbContext
     private bool _disposed;
 
     private IRepository<IFilm>? _filmRepository;
+    private IRepository<INoteFilm>? _noteFilmRepository;
 
     private IRepository<IProjection>? _projectionRepository;
     private IRepository<IRealisateur>? _realisateurRepository;
     private IRepository<ISalle>? _salleRepository;
 
     private IRepository<IUtilisateur>? _utilisateurRepository;
+
+    public IRepository<INoteFilm> NoteFilmRepository =>
+        _noteFilmRepository ??= new GenericRepository<NoteFilm, INoteFilm>(_context);
 
     public IRepository<ISalle> SalleRepository =>
         _salleRepository ??= new GenericRepository<Salle, ISalle>(_context);

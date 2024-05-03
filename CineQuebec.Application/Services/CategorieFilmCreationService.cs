@@ -14,7 +14,7 @@ public class CategorieFilmCreationService(IUnitOfWorkFactory unitOfWorkFactory)
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
         nomAffichage = nomAffichage.Trim();
-        await EffectuerValidations(unitOfWork, nomAffichage);
+        EffectuerValidations(unitOfWork, nomAffichage);
 
         ICategorieFilm categorieFilmAjoute = await CreerCategorie(unitOfWork, nomAffichage);
 
@@ -23,11 +23,11 @@ public class CategorieFilmCreationService(IUnitOfWorkFactory unitOfWorkFactory)
         return categorieFilmAjoute.Id;
     }
 
-    private static async Task EffectuerValidations(IUnitOfWork unitOfWork, string nomAffichage)
+    private static void EffectuerValidations(IUnitOfWork unitOfWork, string nomAffichage)
     {
         LeverAggregateExceptionAuBesoin(
             ValiderNomAffichage(nomAffichage),
-            await ValiderCategorieFilmEstUnique(unitOfWork, nomAffichage)
+            ValiderCategorieFilmEstUnique(unitOfWork, nomAffichage)
         );
     }
 
@@ -37,7 +37,7 @@ public class CategorieFilmCreationService(IUnitOfWorkFactory unitOfWorkFactory)
         return await unitOfWork.CategorieFilmRepository.AjouterAsync(categorieFilm);
     }
 
-    private static async Task<ArgumentException?> ValiderCategorieFilmEstUnique(IUnitOfWork unitOfWork,
+    private static async IAsyncEnumerable<ArgumentException?> ValiderCategorieFilmEstUnique(IUnitOfWork unitOfWork,
         string nomAffichage)
     {
         string nomAffichageLower = nomAffichage.ToLowerInvariant();
@@ -45,16 +45,15 @@ public class CategorieFilmCreationService(IUnitOfWorkFactory unitOfWorkFactory)
         if (await unitOfWork.CategorieFilmRepository.ExisteAsync(c =>
                 c.NomAffichage.ToLowerInvariant() == nomAffichageLower))
         {
-            return new ArgumentException("Une catégorie de film avec le même nom d'affichage existe déjà.");
+            yield return new ArgumentException("Une catégorie de film avec le même nom d'affichage existe déjà.");
         }
-
-        return null;
     }
 
-    private static ArgumentException? ValiderNomAffichage(string nomAffichage)
+    private static IEnumerable<ArgumentException> ValiderNomAffichage(string nomAffichage)
     {
-        return string.IsNullOrWhiteSpace(nomAffichage)
-            ? new ArgumentException("Le nom d'affichage de la catégorie ne doit pas être vide.")
-            : null;
+        if (string.IsNullOrWhiteSpace(nomAffichage))
+        {
+            yield return new ArgumentException("Le nom d'affichage de la catégorie ne doit pas être vide.");
+        }
     }
 }

@@ -7,32 +7,8 @@ namespace CineQuebec.Application.Services;
 
 public class FilmUpdateService(IUnitOfWorkFactory unitOfWorkFactory) : ServiceAvecValidation, IFilmUpdateService
 {
-<<<<<<< HEAD
     public async Task ModifierFilm(Guid idFilm, string titre, string description, Guid categorie, DateTime
         dateDeSortieInternationale, IEnumerable<Guid> acteurs, IEnumerable<Guid> realisateurs, ushort duree)
-=======
-    private static async Task<IEnumerable<Exception>> EffectuerValidations(IUnitOfWork unitOfWork, Guid id,
-        string titre, string description, Guid categorie, DateTime dateDeSortieInternationale,
-        IEnumerable<Guid> acteurs, IEnumerable<Guid> realisateurs, ushort duree )
-    {
-        List<Exception> exceptions = [];
-
-        exceptions.AddRange(await ValiderFilmExiste(unitOfWork, id));
-        exceptions.AddRange(ValiderTitre(titre));
-        exceptions.AddRange(ValiderDescription(description));
-        exceptions.AddRange(ValiderDuree(duree));
-        exceptions.AddRange(ValiderDateSortieInternationale(dateDeSortieInternationale));
-        exceptions.AddRange(await ValiderCategorieExiste(unitOfWork, categorie));
-        exceptions.AddRange(await ValiderActeursExistent(unitOfWork, acteurs));
-        exceptions.AddRange(await ValiderRealisateursExistent(unitOfWork, realisateurs));
-        exceptions.AddRange(await ValiderFilmEstUnique(unitOfWork, id, titre, dateDeSortieInternationale.Year, duree));
-
-        return exceptions;
-    }
-
-    public async Task ModifierFilm(Guid idFilm, string titre, string description, Guid categorie, DateTime
-        dateDeSortieInternationale, IEnumerable<Guid> acteurs, IEnumerable<Guid> realisateurs, ushort duree )
->>>>>>> 8a5e946 (Correction en lien avec commentaires du pull request)
     {
         titre = titre.Trim();
         description = description.Trim();
@@ -41,11 +17,7 @@ public class FilmUpdateService(IUnitOfWorkFactory unitOfWorkFactory) : ServiceAv
 
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
-<<<<<<< HEAD
-        await EffectuerValidations(unitOfWork, idFilm, titre, description,
-=======
-        IEnumerable<Exception> exceptions = await EffectuerValidations(unitOfWork, idFilm, titre, description,
->>>>>>> 8a5e946 (Correction en lien avec commentaires du pull request)
+        EffectuerValidations(unitOfWork, idFilm, titre, description,
             categorie, dateDeSortieInternationale, acteursParId, realisateursParId, duree);
 
         await ModifierFilm(unitOfWork, idFilm, titre, description, categorie, dateDeSortieInternationale,
@@ -54,20 +26,20 @@ public class FilmUpdateService(IUnitOfWorkFactory unitOfWorkFactory) : ServiceAv
         await unitOfWork.SauvegarderAsync();
     }
 
-    private static async Task EffectuerValidations(IUnitOfWork unitOfWork, Guid id,
+    private static void EffectuerValidations(IUnitOfWork unitOfWork, Guid id,
         string titre, string description, Guid categorie, DateTime dateDeSortieInternationale,
         IEnumerable<Guid> acteurs, IEnumerable<Guid> realisateurs, ushort duree)
     {
         LeverAggregateExceptionAuBesoin(
-            await ValiderFilmExiste(unitOfWork, id),
+            ValiderFilmExiste(unitOfWork, id),
             ValiderTitre(titre),
             ValiderDescription(description),
             ValiderDuree(duree),
             ValiderDateSortieInternationale(dateDeSortieInternationale),
-            await ValiderCategorieExiste(unitOfWork, categorie),
-            await ValiderActeursExistent(unitOfWork, acteurs),
-            await ValiderRealisateursExistent(unitOfWork, realisateurs),
-            await ValiderFilmEstUnique(unitOfWork, id, titre, dateDeSortieInternationale.Year, duree)
+            ValiderCategorieExiste(unitOfWork, categorie),
+            ValiderActeursExistent(unitOfWork, acteurs),
+            ValiderRealisateursExistent(unitOfWork, realisateurs),
+            ValiderFilmEstUnique(unitOfWork, id, titre, dateDeSortieInternationale.Year, duree)
         );
     }
 
@@ -84,124 +56,100 @@ public class FilmUpdateService(IUnitOfWorkFactory unitOfWorkFactory) : ServiceAv
         film.SetActeursParId(acteursParId);
         film.SetRealisateursParId(realisateursParId);
         film.SetDureeEnMinutes(duree);
-<<<<<<< HEAD
-=======
-
->>>>>>> 8a5e946 (Correction en lien avec commentaires du pull request)
 
         unitOfWork.FilmRepository.Modifier(film);
     }
 
-    private static async Task<IEnumerable<ArgumentException>> ValiderActeursExistent(IUnitOfWork unitOfWork,
+    private static async IAsyncEnumerable<ArgumentException> ValiderActeursExistent(IUnitOfWork unitOfWork,
         IEnumerable<Guid> acteurs)
     {
-        List<ArgumentException> exceptions = [];
-
         foreach (Guid idActeur in acteurs)
         {
             if (await unitOfWork.ActeurRepository.ObtenirParIdAsync(idActeur) is null)
             {
-                exceptions.Add(new ArgumentException($"L'acteur avec l'identifiant {idActeur} n'existe pas.",
-                    nameof(acteurs)));
+                yield return new ArgumentException($"L'acteur avec l'identifiant {idActeur} n'existe pas.",
+                    nameof(acteurs));
             }
         }
-
-        return exceptions;
     }
 
-    private static async Task<ArgumentException?> ValiderCategorieExiste(IUnitOfWork unitOfWork, Guid categorie)
+    private static async IAsyncEnumerable<ArgumentException> ValiderCategorieExiste(IUnitOfWork unitOfWork,
+        Guid categorie)
     {
-        return await unitOfWork.CategorieFilmRepository.ObtenirParIdAsync(categorie) is null
-            ? new ArgumentException($"La catégorie de film avec l'identifiant {categorie} n'existe pas.",
-                nameof(categorie))
-            : null;
+        if (await unitOfWork.CategorieFilmRepository.ObtenirParIdAsync(categorie) is null)
+        {
+            yield return new ArgumentException($"La catégorie de film avec l'identifiant {categorie} n'existe pas.",
+                nameof(categorie));
+        }
     }
 
-    private static ArgumentOutOfRangeException? ValiderDateSortieInternationale(DateTime dateSortieInternationale)
+    private static IEnumerable<ArgumentOutOfRangeException> ValiderDateSortieInternationale(
+        DateTime dateSortieInternationale)
     {
-        return dateSortieInternationale <= DateTime.MinValue
-            ? new ArgumentOutOfRangeException(nameof(dateSortieInternationale),
-                $"La date de sortie internationale doit être supérieure à {DateOnly.MinValue}.")
-            : null;
+        if (dateSortieInternationale <= DateTime.MinValue)
+        {
+            yield return new ArgumentOutOfRangeException(nameof(dateSortieInternationale),
+                $"La date de sortie internationale doit être supérieure à {DateOnly.MinValue}.");
+        }
     }
 
-    private static ArgumentException? ValiderDescription(string description)
+    private static IEnumerable<ArgumentException> ValiderDescription(string description)
     {
-        return string.IsNullOrWhiteSpace(description)
-            ? new ArgumentException("La description ne peut pas être vide.", nameof(description))
-            : null;
+        if (string.IsNullOrWhiteSpace(description))
+        {
+            yield return new ArgumentException("La description ne peut pas être vide.", nameof(description));
+        }
     }
 
-    private static ArgumentOutOfRangeException? ValiderDuree(ushort duree)
+    private static IEnumerable<ArgumentOutOfRangeException> ValiderDuree(ushort duree)
     {
-        return duree == 0
-            ? new ArgumentOutOfRangeException(nameof(duree), "Le film doit durer plus de 0 minutes.")
-            : null;
+        if (duree == 0)
+        {
+            yield return new ArgumentOutOfRangeException(nameof(duree), "Le film doit durer plus de 0 minutes.");
+        }
     }
 
-    private static async Task<ArgumentException?> ValiderFilmEstUnique(IUnitOfWork unitOfWork, Guid id,
+    private static async IAsyncEnumerable<ArgumentException> ValiderFilmEstUnique(IUnitOfWork unitOfWork, Guid id,
         string titre, int annee, ushort duree)
     {
-        List<Exception> exceptions = [];
-
         string titreLower = titre.ToLowerInvariant();
 
         if (await unitOfWork.FilmRepository.ExisteAsync(f =>
                 f.Id != id && f.Titre.ToLowerInvariant() == titreLower && f.DateSortieInternationale.Year == annee &&
                 f.DureeEnMinutes == duree))
         {
-            return new ArgumentException(
+            yield return new ArgumentException(
                 "Un film avec le même titre, la même année de sortie et la même durée existe déjà.", nameof(titre));
         }
-
-        return null;
     }
 
-    private static async Task<ArgumentException?> ValiderFilmExiste(IUnitOfWork unitOfWork, Guid id)
+    private static async IAsyncEnumerable<ArgumentException> ValiderFilmExiste(IUnitOfWork unitOfWork, Guid id)
     {
         if (await unitOfWork.FilmRepository.ObtenirParIdAsync(id) is null)
         {
-            return new ArgumentException($"Le film avec l'identifiant {id} n'existe pas.",
+            yield return new ArgumentException($"Le film avec l'identifiant {id} n'existe pas.",
                 nameof(id));
         }
-
-        return null;
     }
 
-    private static async Task<IEnumerable<ArgumentException>> ValiderRealisateursExistent(IUnitOfWork unitOfWork,
+    private static async IAsyncEnumerable<ArgumentException> ValiderRealisateursExistent(IUnitOfWork unitOfWork,
         IEnumerable<Guid> realisateurs)
     {
-        List<ArgumentException> exceptions = [];
-
         foreach (Guid idRealisateur in realisateurs)
         {
             if (await unitOfWork.RealisateurRepository.ObtenirParIdAsync(idRealisateur) is null)
             {
-                exceptions.Add(new ArgumentException($"Le réalisateur avec l'identifiant {idRealisateur} n'existe pas.",
-                    nameof(realisateurs)));
+                yield return new ArgumentException($"Le réalisateur avec l'identifiant {idRealisateur} n'existe pas.",
+                    nameof(realisateurs));
             }
         }
-
-        return exceptions;
     }
 
-    private static ArgumentException? ValiderTitre(string titre)
+    private static IEnumerable<ArgumentException> ValiderTitre(string titre)
     {
-<<<<<<< HEAD
-        return string.IsNullOrWhiteSpace(titre)
-            ? new ArgumentException("Le titre ne peut pas être vide.", nameof(titre))
-            : null;
-    }
-=======
-        List<Exception> exceptions = [];
-
         if (string.IsNullOrWhiteSpace(titre))
         {
-            exceptions.Add(new ArgumentException("Le titre ne peut pas être vide.", nameof(titre)));
+            yield return new ArgumentException("Le titre ne peut pas être vide.", nameof(titre));
         }
-
-        return exceptions;
     }
-
->>>>>>> 8a5e946 (Correction en lien avec commentaires du pull request)
 }

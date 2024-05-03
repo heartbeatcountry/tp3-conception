@@ -52,12 +52,8 @@ public class FilmQueryService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmQuery
 
     public async Task<IEnumerable<FilmDto>> ObtenirTousAssiste()
     {
-        
-
-        //TODO Doit-on créer l'entité "billet" pour pouvoir obtenir les films auxquels un utilisateur a assisté?
+        //TODO Doit-on crï¿½er l'entitï¿½ "billet" pour pouvoir obtenir les films auxquels un utilisateur a assistï¿½?
 
         throw new NotImplementedException();
-        
-      
     }
 }

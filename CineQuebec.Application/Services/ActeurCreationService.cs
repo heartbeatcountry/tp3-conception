@@ -14,7 +14,7 @@ public class ActeurCreationService(IUnitOfWorkFactory unitOfWorkFactory)
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
         (prenom, nom) = (prenom.Trim(), nom.Trim());
-        await EffectuerValidations(unitOfWork, prenom, nom);
+        EffectuerValidations(unitOfWork, prenom, nom);
 
         IActeur acteurAjoute = await CreerActeur(unitOfWork, prenom, nom);
 
@@ -23,13 +23,13 @@ public class ActeurCreationService(IUnitOfWorkFactory unitOfWorkFactory)
         return acteurAjoute.Id;
     }
 
-    private static async Task EffectuerValidations(IUnitOfWork unitOfWork, string prenom,
+    private static void EffectuerValidations(IUnitOfWork unitOfWork, string prenom,
         string nom)
     {
         LeverAggregateExceptionAuBesoin(
             ValiderPrenom(prenom),
             ValiderNom(nom),
-            await ValiderActeurEstUnique(unitOfWork, prenom, nom)
+            ValiderActeurEstUnique(unitOfWork, prenom, nom)
         );
     }
 
@@ -39,7 +39,8 @@ public class ActeurCreationService(IUnitOfWorkFactory unitOfWorkFactory)
         return await unitOfWork.ActeurRepository.AjouterAsync(acteur);
     }
 
-    private static async Task<ArgumentException?> ValiderActeurEstUnique(IUnitOfWork unitOfWork, string prenom,
+    private static async IAsyncEnumerable<ArgumentException> ValiderActeurEstUnique(IUnitOfWork unitOfWork,
+        string prenom,
         string nom)
     {
         string prenomLower = prenom.ToLowerInvariant();
@@ -48,23 +49,23 @@ public class ActeurCreationService(IUnitOfWorkFactory unitOfWorkFactory)
         if (await unitOfWork.ActeurRepository.ExisteAsync(a =>
                 a.Prenom.ToLowerInvariant() == prenomLower && a.Nom.ToLowerInvariant() == nomLower))
         {
-            return new ArgumentException("Un acteur avec le même prénom et nom existe déjà.");
+            yield return new ArgumentException("Un acteur avec le même prénom et nom existe déjà.");
         }
-
-        return null;
     }
 
-    private static ArgumentException? ValiderNom(string nom)
+    private static IEnumerable<ArgumentException> ValiderNom(string nom)
     {
-        return string.IsNullOrWhiteSpace(nom)
-            ? new ArgumentException("Le nom de l'acteur ne doit pas être vide.")
-            : null;
+        if (string.IsNullOrWhiteSpace(nom))
+        {
+            yield return new ArgumentException("Le nom de l'acteur ne doit pas être vide.");
+        }
     }
 
-    private static ArgumentException? ValiderPrenom(string prenom)
+    private static IEnumerable<ArgumentException> ValiderPrenom(string prenom)
     {
-        return string.IsNullOrWhiteSpace(prenom)
-            ? new ArgumentException("Le prénom de l'acteur ne doit pas être vide.")
-            : null;
+        if (string.IsNullOrWhiteSpace(prenom))
+        {
+            yield return new ArgumentException("Le prénom de l'acteur ne doit pas être vide.");
+        }
     }
 }

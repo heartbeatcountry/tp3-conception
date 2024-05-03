@@ -1,93 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
 
 using CineQuebec.Domain.Entities.Abstract;
-using CineQuebec.Domain.Interfaces.Entities;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 
-namespace CineQuebec.Domain.Entities.Films
+namespace CineQuebec.Domain.Entities.Films;
+
+public class NoteFilm : Entite, INoteFilm
 {
-    public class NoteFilm : Entite, IComparable<NoteFilm>,  INoteFilm
+    public const byte NoteMinimum = 1;
+    public const byte NoteMaximum = 10;
+
+    public NoteFilm(Guid pIdUtilisateur, Guid pIdFilm, byte pNote)
     {
-        public const byte NoteMoyenneMinimum = 0;
-        public const byte NoteMoyenneMaximum = 10;
+        SetUtilisateur(pIdUtilisateur);
+        SetFilm(pIdFilm);
+        SetNoteFilm(pNote);
+    }
 
-        public NoteFilm(Guid pIdUtilisateur, Guid pIdFilm, ushort pNote) {
+    [SuppressMessage("ReSharper", "UnusedMember.Local")]
+    private NoteFilm(Guid id, Guid pIdUtilisateur, Guid pIdFilm, byte pNote) : this(pIdUtilisateur, pIdFilm, pNote)
+    {
+        // Constructeur avec identifiant pour Entity Framework Core
+        SetId(id);
+    }
 
-            SetUtilisateur(pIdUtilisateur);
-            SetFilm(pIdFilm);
-            SetNoteFilm(pNote);
+    public Guid IdUtilisateur { get; private set; } = Guid.Empty;
+    public Guid IdFilm { get; private set; } = Guid.Empty;
+    public byte Note { get; private set; } = NoteMinimum;
 
-        }
-
-        [SuppressMessage("ReSharper", "UnusedMember.Local")]
-        private NoteFilm(Guid id, Guid pIdUtilisateur, Guid pIdFilm, ushort pNote) : this(pIdUtilisateur,
-        pIdFilm,
-        pNote)
+    public void SetUtilisateur(Guid pIdUtilisateur)
+    {
+        if (pIdUtilisateur == Guid.Empty)
         {
-            // Constructeur avec identifiant pour Entity Framework Core
-            SetId(id);
+            throw new ArgumentNullException(nameof(pIdUtilisateur), "Le guid de l'utilisateur ne peut pas être nul.");
         }
 
-        public Guid IdUtilisateur { get; set; } = Guid.Empty; 
-        public Guid IdFilm { get; set; } = Guid.Empty; 
-        public ushort Note {  get; set; }
+        IdUtilisateur = pIdUtilisateur;
+    }
 
-
-        public void SetUtilisateur(Guid pIdUtilisateur)
+    public void SetFilm(Guid pIdFilm)
+    {
+        if (pIdFilm == Guid.Empty)
         {
-            if (pIdUtilisateur == Guid.Empty)
-            {
-                throw new ArgumentNullException("Le guid de l'utilisateur ne peut pas être nul.", nameof(pIdUtilisateur));
-            }
-
-            IdUtilisateur = pIdUtilisateur;
+            throw new ArgumentNullException(nameof(pIdFilm), "Le guid du film ne peut pas être nul.");
         }
 
-        public void SetFilm(Guid pIdFilm)
+        IdFilm = pIdFilm;
+    }
+
+
+    public void SetNoteFilm(byte pNoteObtenue)
+    {
+        if (pNoteObtenue is > NoteMaximum or < NoteMinimum)
         {
-            if (pIdFilm == Guid.Empty)
-            {
-                throw new ArgumentNullException(nameof(pIdFilm), "Le guid du film ne peut pas être nul.");
-            }
-
-            IdFilm = pIdFilm;
+            throw new ArgumentOutOfRangeException(nameof(pNoteObtenue),
+                $"La note doit être comprise entre {NoteMinimum} et {NoteMaximum}.");
         }
 
-
-        public void SetNoteFilm(ushort pNoteObtenue)
-        {
-            if (pNoteObtenue > NoteMoyenneMaximum || pNoteObtenue < NoteMoyenneMinimum)
-            {
-                throw new ArgumentOutOfRangeException(nameof(Note),
-                    $"La note doit être comprise entre {NoteMoyenneMinimum} et {NoteMoyenneMaximum}.");
-            }
-            Note = pNoteObtenue;
-        }
-
-        public int CompareTo(NoteFilm? other)
-        {
-            if (ReferenceEquals(this, other))
-            {
-                return 0;
-            }
-
-            if (ReferenceEquals(null, other))
-            {
-                return 1;
-            }
-
-            int idFilmComparison = IdFilm.CompareTo(other.IdFilm);
-            if (idFilmComparison != 0)
-            {
-                return idFilmComparison; 
-            }
-
-            return IdUtilisateur.CompareTo(other.IdUtilisateur);
-        }
+        Note = pNoteObtenue;
     }
 }

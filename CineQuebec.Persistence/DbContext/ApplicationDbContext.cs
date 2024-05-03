@@ -55,6 +55,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         EntityTypeBuilder<Projection> projections = builder.Entity<Projection>().ToCollection("projections");
         EntityTypeBuilder<Salle> salles = builder.Entity<Salle>().ToCollection("salles");
         EntityTypeBuilder<Utilisateur> utilisateurs = builder.Entity<Utilisateur>().ToCollection("utilisateurs");
+        EntityTypeBuilder<NoteFilm> noteFilms = builder.Entity<NoteFilm>().ToCollection("notes");
 
         films
             .Property(film => film.Id)
@@ -122,6 +123,18 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .Property(utilisateur => utilisateur.ActeursFavorisParId)
             .HasConversion(GuidsToStringsConverter)
             .UsePropertyAccessMode(PropertyAccessMode.Property);
+
+        noteFilms
+            .Property(noteFilm => noteFilm.Id)
+            .HasConversion<string>();
+
+        noteFilms
+            .Property(noteFilm => noteFilm.IdUtilisateur)
+            .HasConversion<string>();
+
+        noteFilms
+            .Property(noteFilm => noteFilm.IdFilm)
+            .HasConversion<string>();
 
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }

@@ -27,7 +27,7 @@ public partial class UtilisateurCreationService(
 
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
-        await EffectuerValidations(unitOfWork, prenom, nom, courriel, mdp);
+        EffectuerValidations(unitOfWork, prenom, nom, courriel, mdp);
 
         IUtilisateur utilisateur = await CreerUtilisateur(unitOfWork, prenom, nom, courriel, mdp);
         await unitOfWork.SauvegarderAsync();
@@ -38,7 +38,7 @@ public partial class UtilisateurCreationService(
     [GeneratedRegex("^(?:[a-zA-Z]|[à-ü]|[À-Ü]|[- ])+$", RegexOptions.IgnoreCase)]
     private static partial Regex PrenomNomRegex();
 
-    private async Task EffectuerValidations(IUnitOfWork unitOfWork, string prenom, string nom, string courriel,
+    private void EffectuerValidations(IUnitOfWork unitOfWork, string prenom, string nom, string courriel,
         string mdp)
     {
         LeverAggregateExceptionAuBesoin(
@@ -46,7 +46,7 @@ public partial class UtilisateurCreationService(
             ValiderSyntaxeNom(nom),
             ValiderSyntaxeCourriel(courriel),
             ValiderSyntaxeMdp(mdp),
-            await ValiderCourrielEstUnique(unitOfWork, courriel)
+            ValiderCourrielEstUnique(unitOfWork, courriel)
         );
     }
 
@@ -112,10 +112,13 @@ public partial class UtilisateurCreationService(
         }
     }
 
-    private static async Task<ArgumentException?> ValiderCourrielEstUnique(IUnitOfWork unitOfWork, string courriel)
+    private static async IAsyncEnumerable<ArgumentException> ValiderCourrielEstUnique(IUnitOfWork unitOfWork,
+        string courriel)
     {
-        return await unitOfWork.UtilisateurRepository.ExisteAsync(u => u.Courriel == courriel)
-            ? new ArgumentException("Un utilisateur avec cette adresse courriel existe déjà.", nameof(courriel))
-            : null;
+        if (await unitOfWork.UtilisateurRepository.ExisteAsync(u => u.Courriel == courriel))
+        {
+            yield return new ArgumentException("Un utilisateur avec cette adresse courriel existe déjà.",
+                nameof(courriel));
+        }
     }
 }
