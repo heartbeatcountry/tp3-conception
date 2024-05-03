@@ -192,4 +192,7 @@
   <data name="admin.ajout_description_film" xml:space="preserve">
     <value>Description :</value>
   </data>
+  <data name="abonne.afficher_films_assites" xml:space="preserve">
+    <value>Films déjà vu</value>
+  </data>
 </root>

@@ -89,7 +89,12 @@ public static class ConfigureServices
                 [Role.Invite] =
                 [
                     nameof(IFilmQueryService.ObtenirDetailsFilmParId),
-                    nameof(IFilmQueryService.ObtenirTousAlAffiche)
+                    nameof(IFilmQueryService.ObtenirTousAlAffiche),
+                    nameof(IFilmQueryService.ObtenirTous)
+                ],
+                [Role.Utilisateur] =
+                [
+                    nameof(IFilmQueryService.ObtenirFilmsAssistesParUtilisateur),
                 ],
                 [Role.Administrateur] =
                 [
@@ -162,6 +167,10 @@ public static class ConfigureServices
                 [
                     nameof(ISalleQueryService.ObtenirToutes)
                 ]
+            })
+            .AjouterProxyAuthPourService<IBilletQueryService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Utilisateur] = [nameof(IBilletQueryService.ObtenirTous)]
             })
             .AjouterProxyAuthPourService<INoteFilmCreationService>(new Dictionary<Role, IEnumerable<string>>
             {

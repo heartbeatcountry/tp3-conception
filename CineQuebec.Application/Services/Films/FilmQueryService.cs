@@ -1,12 +1,17 @@
 using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Application.Interfaces.Services.Films;
+using CineQuebec.Application.Interfaces.Services.Identity;
+using CineQuebec.Application.Interfaces.Services.Projections;
 using CineQuebec.Application.Records.Films;
+using CineQuebec.Application.Services.Identity;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Projections;
 
 namespace CineQuebec.Application.Services.Films;
 
-public class FilmQueryService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmQueryService
+public class FilmQueryService(
+    IUnitOfWorkFactory unitOfWorkFactory,
+    IUtilisateurAuthenticationService utilisateurAuthenticationService) : IFilmQueryService
 {
     public async Task<FilmDto?> ObtenirDetailsFilmParId(Guid id)
     {
@@ -50,10 +55,27 @@ public class FilmQueryService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmQuery
     }
 
 
-    public async Task<IEnumerable<FilmDto>> ObtenirTousAssiste()
+    public async Task<IEnumerable<FilmDto>> ObtenirFilmsAssistesParUtilisateur()
     {
-        //TODO Doit-on cr�er l'entit� "billet" pour pouvoir obtenir les films auxquels un utilisateur a assist�?
+        using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
-        throw new NotImplementedException();
+
+      Guid idUtilisateur = utilisateurAuthenticationService.ObtenirIdUtilisateurConnecte();
+
+
+        IEnumerable<IBillet> billetsUtilisateur =
+            await unitOfWork.BilletRepository.ObtenirTousAsync(b => b.IdUtilisateur == idUtilisateur);
+
+        IEnumerable<Guid> idsProjections = billetsUtilisateur.Select(billet => billet.IdProjection);
+
+        IEnumerable<IProjection> projections =
+            await unitOfWork.ProjectionRepository.ObtenirTousAsync(p => idsProjections.Contains(p.Id));
+
+        IEnumerable<Guid> idsFilms = projections.Select(projection => projection.IdFilm);
+
+        IEnumerable<IFilm> filmsAssistes =
+            await unitOfWork.FilmRepository.ObtenirTousAsync(f => idsFilms.Contains(f.Id));
+
+        return filmsAssistes.Select(f => f.VersDto(null, [], []));
     }
 }

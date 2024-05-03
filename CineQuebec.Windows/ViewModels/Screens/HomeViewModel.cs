@@ -23,6 +23,7 @@ public class HomeViewModel(
         utilisateurAuthenticationService.ObtenirAutorisation()?.IsInRole(Role.Administrateur.ToString()) ?? false;
 
     public Visibility VisibilityAdmin => EstAdmin ? Visibility.Visible : Visibility.Collapsed;
+    public Visibility VisibilityAbonne => !EstAdmin ? Visibility.Visible : Visibility.Collapsed;
 
     public bool NavigationIsEnabled
     {
@@ -39,6 +40,17 @@ public class HomeViewModel(
 
         NavigationIsEnabled = false;
         navigationController.NavigateTo<IAdminMovieListViewModel>();
+    }
+
+    public void NavigateToFilmAbonne()
+    {
+        if (EstAdmin)
+        {
+            return;
+        }
+
+        NavigationIsEnabled = false;
+        navigationController.NavigateTo<IAbonneMovieListViewModel>();
     }
 
     public void NavigateToPreferences()

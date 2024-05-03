@@ -49,6 +49,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         base.OnModelCreating(builder);
 
         EntityTypeBuilder<Film> films = builder.Entity<Film>().ToCollection("films");
+        EntityTypeBuilder<Billet> billets = builder.Entity<Billet>().ToCollection("billets");
         EntityTypeBuilder<Acteur> acteurs = builder.Entity<Acteur>().ToCollection("acteurs");
         EntityTypeBuilder<Realisateur> realisateurs = builder.Entity<Realisateur>().ToCollection("realisateurs");
         EntityTypeBuilder<CategorieFilm> categorieFilms = builder.Entity<CategorieFilm>().ToCollection("categories");

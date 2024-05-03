@@ -44,6 +44,9 @@ public sealed class UnitOfWork(IApplicationDbContextFactory applicationDbContext
     public IRepository<IFilm> FilmRepository =>
         _filmRepository ??= new GenericRepository<Film, IFilm>(_context);
 
+    public IRepository<IBillet> BilletRepository =>
+        _billetRepository ??= new GenericRepository<Billet, IBillet>(_context);
+
     public IRepository<IProjection> ProjectionRepository =>
         _projectionRepository ??= new GenericRepository<Projection, IProjection>(_context);
 

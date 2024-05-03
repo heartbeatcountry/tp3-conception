@@ -16,10 +16,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Resources\10_000_MotsDePasseLesPlusCommuns.txt" />
-      <EmbeddedResource Include="Resources\10_000_MotsDePasseLesPlusCommuns.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </EmbeddedResource>
+        <None Remove="Resources\10_000_MotsDePasseLesPlusCommuns.txt" />
+        <EmbeddedResource Include="Resources\10_000_MotsDePasseLesPlusCommuns.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
     </ItemGroup>
 
 </Project>

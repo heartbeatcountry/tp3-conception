@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 using CineQuebec.Application.Interfaces.Services.Films;
@@ -148,18 +147,6 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
         _ = ChargerFilm();
     }
 
-    private async Task ToutCharger()
-    {
-        await ChargerCategories();
-        await ChargerActeurs();
-        await ChargerRealisateurs();
-
-        if (_film is not null)
-        {
-            ConfigurerEnModeEdition();
-        }
-    }
-
     public void AjouterActeur()
     {
         IDialogNomPrenomViewModel dialog = _dialogFactory.CreateDialogNomPrenom();
@@ -198,8 +185,9 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
 
     public async void CreerFilm()
     {
-        var acteursSelectionnes = LstActeurs.Where(a => a.IsSelected).Select(a => a.Item.Id).ToHashSet();
-        var realisateursSelectionnes = LstRealisateurs.Where(r => r.IsSelected).Select(r => r.Item.Id).ToHashSet();
+        HashSet<Guid> acteursSelectionnes = LstActeurs.Where(a => a.IsSelected).Select(a => a.Item.Id).ToHashSet();
+        HashSet<Guid> realisateursSelectionnes =
+            LstRealisateurs.Where(r => r.IsSelected).Select(r => r.Item.Id).ToHashSet();
         Guid? guidCategorie = CategorieSelectionnee?.Id;
         _ = ushort.TryParse(DureeFilm, out ushort duree);
 
@@ -233,6 +221,18 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
         catch (Exception e)
         {
             _gestionnaireExceptions.GererException(e);
+        }
+    }
+
+    private async Task ToutCharger()
+    {
+        await ChargerCategories();
+        await ChargerActeurs();
+        await ChargerRealisateurs();
+
+        if (_film is not null)
+        {
+            ConfigurerEnModeEdition();
         }
     }
 

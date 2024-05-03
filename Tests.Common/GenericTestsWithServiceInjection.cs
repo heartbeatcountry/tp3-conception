@@ -99,6 +99,7 @@ public abstract class GenericTestsWithServiceInjection<TService> where TService 
         UtilisateurCreationServiceMock = new Mock<IUtilisateurCreationService>();
         PasswordValidationServiceMock = new Mock<IPasswordValidationService>();
         PasswordHashingServiceMock = new Mock<IPasswordHashingService>();
+        BilletRepositoryMock = new Mock<IRepository<IBillet>>();
     }
 
     private void ConfigureUnitOfWork()
