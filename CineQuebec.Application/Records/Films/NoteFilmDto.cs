@@ -6,7 +6,7 @@ namespace CineQuebec.Application.Records.Films;
 public record class NoteFilmDto(
     Guid Id,
     FilmDto? IdFilm,
-    ushort Note
+    byte Note
 ) : EntityDto(Id);
 
 internal static class NoteFilmExtensions

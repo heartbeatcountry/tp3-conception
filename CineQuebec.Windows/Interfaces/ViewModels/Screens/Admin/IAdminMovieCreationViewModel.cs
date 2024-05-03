@@ -1,6 +1,4 @@
-﻿using System.Windows.Controls;
-
-using CineQuebec.Application.Records.Films;
+﻿using CineQuebec.Application.Records.Films;
 using CineQuebec.Windows.Interfaces.ViewModels.Components;
 using CineQuebec.Windows.Records;
 

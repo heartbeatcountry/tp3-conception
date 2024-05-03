@@ -22,7 +22,22 @@
                     <Setter Property="Background" Value="PapayaWhip" />
                 </Style>
             </WrapPanel.Resources>
-            <Button x:Name="BtnAjouterFilm" Style="{StaticResource MainNavButton}"
+            <Button Style="{StaticResource MainNavButton}"
+                    Command="{s:Action NavigateToFilmAbonne}">
+                <StackPanel Margin="0,10" Width="130" HorizontalAlignment="Center">
+                    <Image Height="65"
+                           Source="/Ressources/Images/projections.png" Width="68" />
+
+                    <Label Style="{StaticResource DefautLabel}" HorizontalAlignment="Center">
+                        <Label.Content>
+                            <AccessText TextAlignment="Center" TextWrapping="Wrap"
+                                        Text="Voir les films et projections" />
+                        </Label.Content>
+                    </Label>
+
+                </StackPanel>
+            </Button>
+            <Button Style="{StaticResource MainNavButton}"
                     Command="{s:Action NavigateToPreferences}">
                 <StackPanel Margin="0,10" Width="130" HorizontalAlignment="Center">
                     <Image Height="65"
@@ -66,7 +81,6 @@
                                         Text="Octroyer des récompenses" />
                         </Label.Content>
                     </Label>
-
                 </StackPanel>
             </Button>
         </WrapPanel>
