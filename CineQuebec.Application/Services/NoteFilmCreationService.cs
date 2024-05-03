@@ -2,7 +2,6 @@
 using CineQuebec.Application.Interfaces.Services;
 using CineQuebec.Application.Services.Abstract;
 using CineQuebec.Domain.Entities.Films;
-using CineQuebec.Domain.Interfaces.Entities.Films;
 
 namespace CineQuebec.Application.Services;
 
@@ -19,12 +18,17 @@ public class NoteFilmCreationService(
 
         EffectuerValidations(unitOfWork, pIdFilm, pNote);
 
-        NoteFilm notefilm = new(idUtilisateur, pIdFilm, pNote);
-        INoteFilm notefilmCreee = await unitOfWork.NoteFilmRepository.AjouterAsync(notefilm);
+        // TODO: si l'utilisateur a déjà noté le film, mettre à jour la note existante
+        //       sinon, créer une nouvelle note
 
-        await unitOfWork.SauvegarderAsync();
+        //NoteFilm notefilm = new(idUtilisateur, pIdFilm, pNote);
+        //INoteFilm notefilmCreee = await unitOfWork.NoteFilmRepository.AjouterAsync(notefilm);
 
-        return notefilmCreee.Id;
+        //await unitOfWork.SauvegarderAsync();
+
+        //return notefilmCreee.Id;
+
+        throw new NotImplementedException();
     }
 
 
