@@ -1,13 +1,13 @@
-﻿<Window x:Class="CineQuebec.Windows.Views.DialogNomPrenomView"
+﻿<Window x:Class="CineQuebec.Windows.Views.Dialogs.DialogNouvelleSalleView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:views="clr-namespace:CineQuebec.Windows.Views"
         xmlns:s="https://github.com/canton7/Stylet"
+        xmlns:dialogs="clr-namespace:CineQuebec.Windows.ViewModels.Dialogs"
         mc:Ignorable="d"
         Title="Entrez un nom et prénom"
-        d:DataContext="{d:DesignInstance views:DialogNomPrenomViewModel}"
+        d:DataContext="{d:DesignInstance dialogs:DialogNouvelleSalleViewModel}"
         Width="300" Height="150">
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -23,11 +23,11 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Content="Nom :" />
-        <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Nom, Mode=TwoWay}" />
+        <Label Grid.Row="0" Grid.Column="0" Content="Numéro :" />
+        <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding NumeroStr, Mode=TwoWay}" />
 
-        <Label Grid.Row="2" Grid.Column="0" Content="Prénom :" />
-        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Prenom, Mode=TwoWay}" />
+        <Label Grid.Row="2" Grid.Column="0" Content="Nb de sièges :" />
+        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding CapaciteStr, Mode=TwoWay}" />
 
         <Button Grid.Row="4" Grid.Column="2" Content="Valider" Command="{s:Action Valider}"
                 Style="{StaticResource DefautButton}" Margin="10" />

@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:CineQuebec.Windows.Views.Components"
              xmlns:s="https://github.com/canton7/Stylet"
              xmlns:rs="clr-namespace:CineQuebec.Windows.Ressources.i18n"
-             d:DataContext="{d:DesignInstance local:HeaderViewModel}"
+             xmlns:components="clr-namespace:CineQuebec.Windows.ViewModels.Components"
+             d:DataContext="{d:DesignInstance components:HeaderViewModel}"
              s:View.ActionTarget="{Binding}"
              mc:Ignorable="d"
              d:DesignHeight="40" d:DesignWidth="800">

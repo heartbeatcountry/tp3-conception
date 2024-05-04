@@ -2,28 +2,28 @@
 
 using CineQuebec.Application.Interfaces.Services;
 using CineQuebec.Application.Records.Films;
-using CineQuebec.Windows.Views.Components;
+using CineQuebec.Windows.ViewModels.Components;
 
 using Stylet;
 
-namespace CineQuebec.Windows.Views;
+namespace CineQuebec.Windows.ViewModels.Screens.Admin;
 
 public class AdminMovieListViewModel : Screen
 {
     private readonly IFilmQueryService _filmQueryService;
-    private readonly GestionnaireExceptions _gestionnaireExceptions;
+    private readonly IGestionnaireExceptions _gestionnaireExceptions;
     private readonly INavigationController _navigationController;
     private bool _afficherUniquementAlaffiche;
     private bool _canRefreshFilms = true;
     private BindableCollection<FilmDto> _films;
 
     public AdminMovieListViewModel(INavigationController navigationController, HeaderViewModel headerViewModel,
-        IFilmQueryService filmQueryService, GestionnaireExceptions gestionnaireExceptions)
+        IFilmQueryService filmQueryService, IGestionnaireExceptions gestionnaireExceptions)
     {
         _navigationController = navigationController;
         _filmQueryService = filmQueryService;
         _gestionnaireExceptions = gestionnaireExceptions;
-        headerViewModel.PreviousView = typeof(AdminHomeViewModel);
+        headerViewModel.PreviousView = typeof(HomeViewModel);
         HeaderViewModel = headerViewModel;
         _ = RefreshFilms();
     }
@@ -44,7 +44,7 @@ public class AdminMovieListViewModel : Screen
 
     public void AddNewFilm()
     {
-        _navigationController.NavigateTo<MovieCreationViewModel>();
+        _navigationController.NavigateTo<AdminMovieCreationViewModel>();
     }
 
     public async Task RefreshFilms()

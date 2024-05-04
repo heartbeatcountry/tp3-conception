@@ -2,21 +2,22 @@
 using System.Windows.Controls;
 
 using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Windows.ViewModels.Dialogs;
 
 using Stylet;
 
-namespace CineQuebec.Windows.Views;
+namespace CineQuebec.Windows.ViewModels.Screens;
 
 public class LoginViewModel(
     INavigationController navigationController,
     IUtilisateurAuthenticationService authenticationService,
     IDialogFactory dialogFactory,
     IWindowManager windowManager,
-    GestionnaireExceptions gestionnaireExceptions)
+    IGestionnaireExceptions gestionnaireExceptions)
     : Screen
 {
-    private string _motDePasse = String.Empty;
-    private string _nomUsager = String.Empty;
+    private string _motDePasse = string.Empty;
+    private string _nomUsager = string.Empty;
 
     public string NomUsager
     {
@@ -36,7 +37,7 @@ public class LoginViewModel(
             return;
         }
 
-        navigationController.NavigateTo<AdminHomeViewModel>();
+        navigationController.NavigateTo<HomeViewModel>();
     }
 
     public void OuvrirInscription()
@@ -46,7 +47,7 @@ public class LoginViewModel(
 
         if (dialog.InscriptionReussie)
         {
-            navigationController.NavigateTo<AdminHomeViewModel>();
+            navigationController.NavigateTo<HomeViewModel>();
         }
     }
 

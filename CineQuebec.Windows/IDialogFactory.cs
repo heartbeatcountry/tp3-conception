@@ -1,4 +1,4 @@
-﻿using CineQuebec.Windows.Views;
+﻿using CineQuebec.Windows.ViewModels.Dialogs;
 
 namespace CineQuebec.Windows;
 

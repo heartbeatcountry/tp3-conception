@@ -2,13 +2,14 @@
 
 using CineQuebec.Application.Interfaces.Services;
 using CineQuebec.Domain.Entities.Utilisateurs;
-using CineQuebec.Windows.Views.Components;
+using CineQuebec.Windows.ViewModels.Components;
+using CineQuebec.Windows.ViewModels.Screens.Admin;
 
 using Stylet;
 
-namespace CineQuebec.Windows.Views;
+namespace CineQuebec.Windows.ViewModels.Screens;
 
-public class AdminHomeViewModel(
+public class HomeViewModel(
     INavigationController navigationController,
     HeaderViewModel headerViewModel,
     IUtilisateurAuthenticationService utilisateurAuthenticationService) : Screen

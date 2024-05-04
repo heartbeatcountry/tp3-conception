@@ -2,15 +2,16 @@
 using System.Windows;
 
 using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Windows.ViewModels.Screens;
 
 using Stylet;
 
-namespace CineQuebec.Windows.Views.Components;
+namespace CineQuebec.Windows.ViewModels.Components;
 
 public class HeaderViewModel(
     INavigationController navigationController,
     IUtilisateurAuthenticationService authenticationService,
-    GestionnaireExceptions gestionnaireExceptions) : Screen
+    IGestionnaireExceptions gestionnaireExceptions) : Screen
 {
     public Type? PreviousView { get; set; }
     public object? PreviousViewData { get; set; }

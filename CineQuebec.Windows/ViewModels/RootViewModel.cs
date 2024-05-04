@@ -1,6 +1,6 @@
 ﻿using Stylet;
 
-namespace CineQuebec.Windows.Views;
+namespace CineQuebec.Windows.ViewModels;
 
 public class RootViewModel : Conductor<IScreen>, INavigationControllerDelegateFn
 {

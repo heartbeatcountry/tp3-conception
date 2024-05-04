@@ -1,10 +1,10 @@
-﻿using CineQuebec.Windows.Views;
+﻿using CineQuebec.Windows.ViewModels.Dialogs;
 
 using Moq;
 
 using Tests.Windows.Views.Abstract;
 
-namespace Tests.Windows.Views;
+namespace Tests.Windows.ViewModels.Dialogs;
 
 public class DialogNomPrenomViewModelTests : GenericViewModelTests<DialogNomPrenomViewModel>
 {

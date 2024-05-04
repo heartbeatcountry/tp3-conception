@@ -1,4 +1,5 @@
-﻿using CineQuebec.Windows.Views;
+﻿using CineQuebec.Windows.ViewModels;
+using CineQuebec.Windows.ViewModels.Screens;
 
 using Stylet;
 
@@ -13,7 +14,7 @@ public class Bootstrapper : Bootstrapper<RootViewModel>
         builder.AddModule(new MicrosoftDiModule());
         builder.Bind<IDialogFactory>().ToAbstractFactory();
         builder.Bind<NavigationController>().And<INavigationController>().To<NavigationController>().InSingletonScope();
-        builder.Bind<GestionnaireExceptions>().ToSelf().InSingletonScope();
+        builder.Bind<IGestionnaireExceptions>().To<GestionnaireExceptions>().InSingletonScope();
     }
 
     protected override void OnLaunch()

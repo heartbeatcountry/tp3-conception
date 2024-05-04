@@ -5,18 +5,16 @@ using CineQuebec.Application.Interfaces.Services;
 
 using Stylet;
 
-namespace CineQuebec.Windows.Views;
+namespace CineQuebec.Windows.ViewModels.Dialogs;
 
 public class DialogInscriptionUtilisateurViewModel(
     IUtilisateurCreationService utilisateurCreationService,
     IUtilisateurAuthenticationService utilisateurAuthenticationService,
-    GestionnaireExceptions gestionnaireExceptions) : Screen
+    IGestionnaireExceptions gestionnaireExceptions) : Screen
 {
-    private string _confirmationMotDePasse = String.Empty;
-    private string _courriel = String.Empty;
-    private string _motDePasse = String.Empty;
-    private string _nom = String.Empty;
-    private string _prenom = String.Empty;
+    private string _courriel = string.Empty;
+    private string _nom = string.Empty;
+    private string _prenom = string.Empty;
 
     public bool InscriptionReussie { get; private set; }
 
@@ -37,6 +35,9 @@ public class DialogInscriptionUtilisateurViewModel(
         get => _courriel;
         set => SetAndNotify(ref _courriel, value);
     }
+
+    public string MotDePasse { private get; set; } = string.Empty;
+    public string ConfirmationMotDePasse { private get; set; } = string.Empty;
 
     public void Annuler()
     {
@@ -63,17 +64,17 @@ public class DialogInscriptionUtilisateurViewModel(
 
     public void OnMdpChange(object sender, RoutedEventArgs e)
     {
-        _motDePasse = (sender as PasswordBox)?.Password ?? string.Empty;
+        MotDePasse = (sender as PasswordBox)?.Password ?? string.Empty;
     }
 
     public void OnConfirmationMdpChange(object sender, RoutedEventArgs e)
     {
-        _confirmationMotDePasse = (sender as PasswordBox)?.Password ?? string.Empty;
+        ConfirmationMotDePasse = (sender as PasswordBox)?.Password ?? string.Empty;
     }
 
     private void ValiderConfirmationMotDePasse()
     {
-        if (_motDePasse != _confirmationMotDePasse)
+        if (MotDePasse != ConfirmationMotDePasse)
         {
             throw new ArgumentException("Les mots de passe ne correspondent pas.");
         }
@@ -81,11 +82,11 @@ public class DialogInscriptionUtilisateurViewModel(
 
     private async Task TenterDeCreerLeCompte()
     {
-        await utilisateurCreationService.CreerUtilisateurAsync(Nom, Prenom, Courriel, _motDePasse);
+        await utilisateurCreationService.CreerUtilisateurAsync(Nom, Prenom, Courriel, MotDePasse);
     }
 
     private async Task ConnecterLeCompte()
     {
-        await utilisateurAuthenticationService.AuthentifierThreadAsync(Courriel, _motDePasse);
+        await utilisateurAuthenticationService.AuthentifierThreadAsync(Courriel, MotDePasse);
     }
 }

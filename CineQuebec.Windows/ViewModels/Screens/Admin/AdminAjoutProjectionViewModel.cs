@@ -4,17 +4,18 @@ using System.Windows.Input;
 using CineQuebec.Application.Interfaces.Services;
 using CineQuebec.Application.Records.Films;
 using CineQuebec.Application.Records.Projections;
-using CineQuebec.Windows.Views.Components;
+using CineQuebec.Windows.ViewModels.Components;
+using CineQuebec.Windows.ViewModels.Dialogs;
 
 using Stylet;
 
-namespace CineQuebec.Windows.Views;
+namespace CineQuebec.Windows.ViewModels.Screens.Admin;
 
 public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
 {
     private readonly IDialogFactory _dialogFactory;
     private readonly IFilmQueryService _filmQueryService;
-    private readonly GestionnaireExceptions _gestionnaireExceptions;
+    private readonly IGestionnaireExceptions _gestionnaireExceptions;
     private readonly IProjectionCreationService _projectionCreationService;
     private readonly ISalleCreationService _salleCreationService;
     private readonly ISalleQueryService _salleQueryService;
@@ -31,7 +32,7 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData
     public AdminAjoutProjectionViewModel(HeaderViewModel headerViewModel, IFilmQueryService filmQueryService,
         IProjectionCreationService projectionCreationService, ISalleCreationService salleCreationService,
         ISalleQueryService salleQueryService, IWindowManager windowManager, IDialogFactory dialogFactory,
-        GestionnaireExceptions gestionnaireExceptions)
+        IGestionnaireExceptions gestionnaireExceptions)
     {
         _filmQueryService = filmQueryService;
         _projectionCreationService = projectionCreationService;

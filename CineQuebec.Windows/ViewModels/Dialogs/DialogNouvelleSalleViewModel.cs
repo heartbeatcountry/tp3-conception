@@ -1,11 +1,11 @@
 ﻿using Stylet;
 
-namespace CineQuebec.Windows.Views;
+namespace CineQuebec.Windows.ViewModels.Dialogs;
 
 public class DialogNouvelleSalleViewModel : Screen
 {
-    private string _capaciteStr = String.Empty;
-    private string _numeroStr = String.Empty;
+    private string _capaciteStr = string.Empty;
+    private string _numeroStr = string.Empty;
 
     public bool AValide { get; private set; }
 
@@ -21,11 +21,12 @@ public class DialogNouvelleSalleViewModel : Screen
         set => SetAndNotify(ref _capaciteStr, value);
     }
 
-    public byte Numero => Byte.TryParse(NumeroStr, out byte numero) ? numero : (byte)0;
-    public ushort Capacite => UInt16.TryParse(CapaciteStr, out ushort capacite) ? capacite : (ushort)0;
+    public byte Numero => byte.TryParse(NumeroStr, out byte numero) ? numero : (byte)0;
+    public ushort Capacite => ushort.TryParse(CapaciteStr, out ushort capacite) ? capacite : (ushort)0;
 
     public void Annuler()
     {
+        AValide = false;
         RequestClose(false);
     }
 

@@ -1,11 +1,11 @@
 ﻿using Stylet;
 
-namespace CineQuebec.Windows.Views;
+namespace CineQuebec.Windows.ViewModels.Dialogs;
 
 public class DialogNomPrenomViewModel : Screen
 {
-    private string _nom = String.Empty;
-    private string _prenom = String.Empty;
+    private string _nom = string.Empty;
+    private string _prenom = string.Empty;
 
     public bool AValide { get; private set; }
 

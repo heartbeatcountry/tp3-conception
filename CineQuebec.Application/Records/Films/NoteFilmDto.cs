@@ -1,15 +1,13 @@
 ﻿using CineQuebec.Application.Records.Abstract;
-using CineQuebec.Application.Records.Films;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 
-namespace CineQuebec.Application.Records.Films
-{
-    public record class NoteFilmDto(
-        Guid Id,
-        FilmDto? IdFilm,
-        ushort Note
-    ) : EntityDto(Id);
-}
+namespace CineQuebec.Application.Records.Films;
+
+public record class NoteFilmDto(
+    Guid Id,
+    FilmDto? IdFilm,
+    ushort Note
+) : EntityDto(Id);
 
 internal static class NoteFilmExtensions
 {

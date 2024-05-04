@@ -1,13 +1,14 @@
 ﻿using System.Security;
 using System.Windows;
 
-using CineQuebec.Windows.Views;
+using CineQuebec.Windows.ViewModels.Screens;
 
 using Stylet;
 
 namespace CineQuebec.Windows;
 
 public class GestionnaireExceptions(IWindowManager windowManager, INavigationController navigationController)
+    : IGestionnaireExceptions
 {
     public void GererException(Exception exception)
     {

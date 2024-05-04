@@ -1,10 +1,10 @@
 ﻿using Stylet;
 
-namespace CineQuebec.Windows.Views;
+namespace CineQuebec.Windows.ViewModels.Dialogs;
 
 public class DialogNomAffichageViewModel : Screen
 {
-    private string _nom = String.Empty;
+    private string _nom = string.Empty;
 
     public bool AValide { get; private set; }
 
@@ -16,6 +16,7 @@ public class DialogNomAffichageViewModel : Screen
 
     public void Annuler()
     {
+        AValide = false;
         RequestClose(false);
     }
 

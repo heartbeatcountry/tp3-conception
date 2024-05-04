@@ -5,13 +5,14 @@ using System.Windows.Input;
 
 using CineQuebec.Application.Interfaces.Services;
 using CineQuebec.Application.Records.Films;
-using CineQuebec.Windows.Views.Components;
+using CineQuebec.Windows.ViewModels.Components;
+using CineQuebec.Windows.ViewModels.Dialogs;
 
 using Stylet;
 
-namespace CineQuebec.Windows.Views;
+namespace CineQuebec.Windows.ViewModels.Screens.Admin;
 
-public class MovieCreationViewModel : Screen, IScreenWithData
+public class AdminMovieCreationViewModel : Screen, IScreenWithData
 {
     private readonly IActeurCreationService _acteurCreationService;
     private readonly IActeurQueryService _acteurQueryService;
@@ -21,7 +22,7 @@ public class MovieCreationViewModel : Screen, IScreenWithData
     private readonly IFilmCreationService _filmCreationService;
     private readonly IFilmQueryService _filmQueryService;
     private readonly IFilmUpdateService _filmUpdateService;
-    private readonly GestionnaireExceptions _gestionnaireExceptions;
+    private readonly IGestionnaireExceptions _gestionnaireExceptions;
     private readonly INavigationController _navigationController;
     private readonly IRealisateurCreationService _realisateurCreationService;
     private readonly IRealisateurQueryService _realisateurQueryService;
@@ -29,8 +30,8 @@ public class MovieCreationViewModel : Screen, IScreenWithData
     private BindableCollection<ActeurDto> _acteursSelectionnes = [];
     private CategorieFilmDto? _categorieSelectionnee;
     private DateTime _dateSelectionnee = DateTime.Now;
-    private string _descriptionFilm = String.Empty;
-    private string _dureeFilm = String.Empty;
+    private string _descriptionFilm = string.Empty;
+    private string _dureeFilm = string.Empty;
     private FilmDto? _film;
     private bool _formulairEstActive = true;
     private Guid? _idFilm;
@@ -39,15 +40,16 @@ public class MovieCreationViewModel : Screen, IScreenWithData
     private BindableCollection<RealisateurDto> _lstRealisateurs = [];
     private BindableCollection<RealisateurDto> _realisateursSelectionnes = [];
     private string _texteBoutonPrincipal = "Créer le film";
-    private string _titreFilm = String.Empty;
+    private string _titreFilm = string.Empty;
 
-    public MovieCreationViewModel(INavigationController navigationController, IFilmCreationService filmCreationService,
+    public AdminMovieCreationViewModel(INavigationController navigationController,
+        IFilmCreationService filmCreationService,
         HeaderViewModel headerViewModel, IActeurQueryService acteurQueryService, IDialogFactory dialogFactory,
         IRealisateurQueryService realisateurQueryService, ICategorieFilmQueryService categorieFilmQueryService,
         IWindowManager windowManager, IActeurCreationService acteurCreationService,
         IFilmUpdateService filmUpdateService,
         IRealisateurCreationService realisateurCreationService, IFilmQueryService filmQueryService,
-        ICategorieFilmCreationService categorieFilmCreationService, GestionnaireExceptions gestionnaireExceptions)
+        ICategorieFilmCreationService categorieFilmCreationService, IGestionnaireExceptions gestionnaireExceptions)
     {
         _navigationController = navigationController;
         _filmCreationService = filmCreationService;

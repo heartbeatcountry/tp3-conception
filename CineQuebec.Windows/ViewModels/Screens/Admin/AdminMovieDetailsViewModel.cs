@@ -5,17 +5,17 @@ using System.Windows.Input;
 using CineQuebec.Application.Interfaces.Services;
 using CineQuebec.Application.Records.Films;
 using CineQuebec.Application.Records.Projections;
-using CineQuebec.Windows.Views.Components;
+using CineQuebec.Windows.ViewModels.Components;
 
 using Stylet;
 
-namespace CineQuebec.Windows.Views;
+namespace CineQuebec.Windows.ViewModels.Screens.Admin;
 
 public class AdminMovieDetailsViewModel : Screen, IScreenWithData
 {
     private readonly IFilmDeletionService _filmDeletionService;
     private readonly IFilmQueryService _filmQueryService;
-    private readonly GestionnaireExceptions _gestionnaireExceptions;
+    private readonly IGestionnaireExceptions _gestionnaireExceptions;
     private readonly INavigationController _navigationController;
     private readonly IProjectionDeletionService _projectionDeletionService;
     private readonly IProjectionQueryService _projectionQueryService;
@@ -29,7 +29,7 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
     public AdminMovieDetailsViewModel(INavigationController navigationController, HeaderViewModel headerViewModel,
         IFilmQueryService filmQueryService, IWindowManager windowManager, IFilmDeletionService filmDeletionService,
         IProjectionDeletionService projectionDeletionService, IProjectionQueryService projectionQueryService,
-        GestionnaireExceptions gestionnaireExceptions)
+        IGestionnaireExceptions gestionnaireExceptions)
     {
         _navigationController = navigationController;
         _filmQueryService = filmQueryService;
@@ -84,7 +84,7 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
 
     public void AddNewFilm()
     {
-        _navigationController.NavigateTo<MovieCreationViewModel>();
+        _navigationController.NavigateTo<AdminMovieCreationViewModel>();
     }
 
     public void RafraichirTout()
@@ -112,7 +112,7 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
             return;
         }
 
-        _navigationController.NavigateTo<MovieCreationViewModel>(Film.Id);
+        _navigationController.NavigateTo<AdminMovieCreationViewModel>(Film.Id);
     }
 
     public async void SupprimerFilm()
