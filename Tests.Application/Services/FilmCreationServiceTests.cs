@@ -26,7 +26,7 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
         // Act & Assert
         AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
             Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now,
-                [Guid.NewGuid()], Array.Empty<Guid>(), DureeValide));
+                [Guid.NewGuid()], [], DureeValide));
         Assert.That(aggregateException?.InnerExceptions,
             Has.One.InstanceOf<ArgumentException>().With.Message.Contains("n'existe pas"));
     }
@@ -41,8 +41,8 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
 
         // Act & Assert
         AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
-            Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now, Array.Empty<Guid>(),
-                Array.Empty<Guid>(), DureeValide));
+            Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now, [],
+                [], DureeValide));
         Assert.That(aggregateException?.InnerExceptions,
             Has.One.InstanceOf<ArgumentException>().With.Message.Contains("n'existe pas"));
     }
@@ -52,8 +52,8 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
     {
         // Act & Assert
         AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
-            Service.CreerFilm(TitreValide, "", _idCategorieValide, DateTime.Now, Array.Empty<Guid>(),
-                Array.Empty<Guid>(), DureeValide));
+            Service.CreerFilm(TitreValide, "", _idCategorieValide, DateTime.Now, [],
+                [], DureeValide));
         Assert.That(aggregateException?.InnerExceptions,
             Has.One.InstanceOf<ArgumentException>().With.Message.Contains("description ne peut pas être vide"));
     }
@@ -63,8 +63,8 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
     {
         // Act & Assert
         AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
-            Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now, Array.Empty<Guid>(),
-                Array.Empty<Guid>(), 0));
+            Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now, [],
+                [], 0));
         Assert.That(aggregateException?.InnerExceptions,
             Has.One.InstanceOf<ArgumentException>().With.Message.Contains("doit durer plus de 0 minutes"));
     }
@@ -75,7 +75,7 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
         // Act & Assert
         AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
             Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.MinValue,
-                Array.Empty<Guid>(), Array.Empty<Guid>(), DureeValide));
+                [], [], DureeValide));
         Assert.That(aggregateException?.InnerExceptions,
             Has.One.InstanceOf<ArgumentException>().With.Message
                 .Contains("date de sortie internationale doit être supérieure à"));
@@ -86,8 +86,8 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
     {
         // Act & Assert
         AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
-            Service.CreerFilm("", DescriptionValide, _idCategorieValide, DateTime.Now, Array.Empty<Guid>(),
-                Array.Empty<Guid>(), DureeValide));
+            Service.CreerFilm("", DescriptionValide, _idCategorieValide, DateTime.Now, [],
+                [], DureeValide));
         Assert.That(aggregateException?.InnerExceptions,
             Has.One.InstanceOf<ArgumentException>().With.Message.Contains("titre ne peut pas être vide"));
     }
@@ -102,7 +102,7 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
 
         // Act & Assert
         AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
-            Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now, Array.Empty<Guid>(),
+            Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now, [],
                 [Guid.NewGuid()], DureeValide));
         Assert.That(aggregateException?.InnerExceptions,
             Has.One.InstanceOf<ArgumentException>().With.Message.Contains("n'existe pas"));
@@ -118,8 +118,8 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
 
         // Act & Assert
         AggregateException? aggregateException = Assert.ThrowsAsync<AggregateException>(() =>
-            Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now, Array.Empty<Guid>(),
-                Array.Empty<Guid>(), DureeValide));
+            Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now, [],
+                [], DureeValide));
         Assert.That(aggregateException?.InnerExceptions,
             Has.One.InstanceOf<ArgumentException>().With.Message.Contains("existe déjà"));
     }
@@ -136,7 +136,7 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
 
         // Act
         _ = await Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now,
-            Array.Empty<Guid>(), Array.Empty<Guid>(), DureeValide);
+            [], [], DureeValide);
 
         // Assert
         FilmRepositoryMock.Verify(r => r.AjouterAsync(It.IsAny<Film>()), Times.Once);
@@ -155,14 +155,17 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
 
         // Act
         Guid nouvFilm = await Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now,
-            Array.Empty<Guid>(), Array.Empty<Guid>(), DureeValide);
+            [], [], DureeValide);
 
         // Assert
         Assert.That(nouvFilm, Is.EqualTo(mockFilm.Id));
     }
 
-    protected override void SetUpExt()
+    [SetUp]
+    public new void SetUp()
     {
+        base.SetUp();
+
         CategorieFilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(_idCategorieValide))
             .ReturnsAsync(Mock.Of<ICategorieFilm>(cf => cf.Id == _idCategorieValide));
     }

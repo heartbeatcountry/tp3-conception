@@ -117,8 +117,11 @@ public class ProjectionCreationServiceTests : GenericServiceTests<ProjectionCrea
         UnitOfWorkMock.Verify(uow => uow.SauvegarderAsync(It.IsAny<CancellationToken?>()), Times.Once);
     }
 
-    protected override void SetUpExt()
+    [SetUp]
+    public new void SetUp()
     {
+        base.SetUp();
+
         FilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(IdFilmValide))
             .ReturnsAsync(Mock.Of<IFilm>(cf => cf.Id == IdFilmValide));
 

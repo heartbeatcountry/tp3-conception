@@ -36,6 +36,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\CineQuebec.Application\CineQuebec.Application.csproj" />
+        <ProjectReference Include="..\Tests.Common\Tests.Common.csproj" />
     </ItemGroup>
 
 </Project>

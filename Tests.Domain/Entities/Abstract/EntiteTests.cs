@@ -101,7 +101,7 @@ public abstract class EntiteTests<TEntite> where TEntite : Entite
     public void Instance_WhenAddingToHashSet_ShouldNotAddOtherInstanceWithSameId()
     {
         // Arrange
-        HashSet<TEntite> hashSet = new();
+        HashSet<TEntite> hashSet = [];
         Entite.SetId(Guid.NewGuid());
         TEntite autre = CreateInstance();
         autre.SetId(Entite.Id);

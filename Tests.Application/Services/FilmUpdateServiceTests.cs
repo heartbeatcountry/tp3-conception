@@ -154,8 +154,11 @@ public class FilmUpdateServiceTests : GenericServiceTests<FilmUpdateService>
         UnitOfWorkMock.Verify(u => u.SauvegarderAsync(null), Times.Once);
     }
 
-    protected override void SetUpExt()
+    [SetUp]
+    public new void SetUp()
     {
+        base.SetUp();
+
         CategorieFilmRepositoryMock.Setup(r => r.ObtenirParIdAsync(_idCategorieValide))
             .ReturnsAsync(Mock.Of<ICategorieFilm>(cf => cf.Id == _idCategorieValide));
 
