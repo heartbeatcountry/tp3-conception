@@ -20,6 +20,7 @@ public abstract class GenericTestsWithServiceInjection<TService> where TService 
     protected Mock<IUtilisateurAuthenticationService> UtilisateurAuthenticationServiceMock { get; private set; } =
         null!;
 
+    protected Mock<IUtilisateurCreationService> UtilisateurCreationServiceMock { get; private set; } = null!;
     protected Mock<IPasswordValidationService> PasswordValidationServiceMock { get; private set; } = null!;
     protected Mock<IPasswordHashingService> PasswordHashingServiceMock { get; private set; } = null!;
     protected Mock<IRepository<IFilm>> FilmRepositoryMock { get; private set; } = null!;
@@ -34,7 +35,7 @@ public abstract class GenericTestsWithServiceInjection<TService> where TService 
     protected ServiceProvider ServiceProvider { get; private set; } = null!;
 
     [SetUp]
-    public void SetUp()
+    public virtual void SetUp()
     {
         CreateMocks();
         ConfigureUnitOfWork();
@@ -47,7 +48,7 @@ public abstract class GenericTestsWithServiceInjection<TService> where TService 
         ServiceProvider?.Dispose();
     }
 
-    protected IServiceCollection BuildServiceCollection()
+    protected virtual IServiceCollection BuildServiceCollection()
     {
         ServiceCollection serviceCollection = [];
         serviceCollection.AddSingleton<TService>();
@@ -65,6 +66,7 @@ public abstract class GenericTestsWithServiceInjection<TService> where TService 
             [typeof(IUnitOfWork)] = UnitOfWorkMock.Object,
             [typeof(IUnitOfWorkFactory)] = _unitOfWorkFactoryMock.Object,
             [typeof(IUtilisateurAuthenticationService)] = UtilisateurAuthenticationServiceMock.Object,
+            [typeof(IUtilisateurCreationService)] = UtilisateurCreationServiceMock.Object,
             [typeof(IPasswordValidationService)] = PasswordValidationServiceMock.Object,
             [typeof(IPasswordHashingService)] = PasswordHashingServiceMock.Object
         };
@@ -91,6 +93,7 @@ public abstract class GenericTestsWithServiceInjection<TService> where TService 
         ProjectionRepositoryMock = new Mock<IRepository<IProjection>>();
         UtilisateurRepositoryMock = new Mock<IRepository<IUtilisateur>>();
         UtilisateurAuthenticationServiceMock = new Mock<IUtilisateurAuthenticationService>();
+        UtilisateurCreationServiceMock = new Mock<IUtilisateurCreationService>();
         PasswordValidationServiceMock = new Mock<IPasswordValidationService>();
         PasswordHashingServiceMock = new Mock<IPasswordHashingService>();
     }

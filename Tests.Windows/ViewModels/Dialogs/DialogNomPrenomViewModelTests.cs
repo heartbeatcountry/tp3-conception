@@ -2,7 +2,7 @@
 
 using Moq;
 
-using Tests.Windows.Views.Abstract;
+using Tests.Windows.ViewModels.Abstract;
 
 namespace Tests.Windows.ViewModels.Dialogs;
 
