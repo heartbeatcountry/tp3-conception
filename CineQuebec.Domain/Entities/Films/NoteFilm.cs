@@ -10,15 +10,15 @@ public class NoteFilm : Entite, INoteFilm
     public const byte NoteMinimum = 1;
     public const byte NoteMaximum = 10;
 
-    public NoteFilm(Guid pIdUtilisateur, Guid pIdFilm, byte pNote)
+    public NoteFilm(Guid idUtilisateur, Guid idFilm, byte note)
     {
-        SetUtilisateur(pIdUtilisateur);
-        SetFilm(pIdFilm);
-        SetNoteFilm(pNote);
+        SetIdUtilisateur(idUtilisateur);
+        SetIdFilm(idFilm);
+        SetNote(note);
     }
 
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    private NoteFilm(Guid id, Guid pIdUtilisateur, Guid pIdFilm, byte pNote) : this(pIdUtilisateur, pIdFilm, pNote)
+    private NoteFilm(Guid id, Guid idUtilisateur, Guid idFilm, byte note) : this(idUtilisateur, idFilm, note)
     {
         // Constructeur avec identifiant pour Entity Framework Core
         SetId(id);
@@ -28,7 +28,7 @@ public class NoteFilm : Entite, INoteFilm
     public Guid IdFilm { get; private set; } = Guid.Empty;
     public byte Note { get; private set; } = NoteMinimum;
 
-    public void SetUtilisateur(Guid pIdUtilisateur)
+    public void SetIdUtilisateur(Guid pIdUtilisateur)
     {
         if (pIdUtilisateur == Guid.Empty)
         {
@@ -38,7 +38,7 @@ public class NoteFilm : Entite, INoteFilm
         IdUtilisateur = pIdUtilisateur;
     }
 
-    public void SetFilm(Guid pIdFilm)
+    public void SetIdFilm(Guid pIdFilm)
     {
         if (pIdFilm == Guid.Empty)
         {
@@ -49,7 +49,7 @@ public class NoteFilm : Entite, INoteFilm
     }
 
 
-    public void SetNoteFilm(byte pNoteObtenue)
+    public void SetNote(byte pNoteObtenue)
     {
         if (pNoteObtenue is > NoteMaximum or < NoteMinimum)
         {
