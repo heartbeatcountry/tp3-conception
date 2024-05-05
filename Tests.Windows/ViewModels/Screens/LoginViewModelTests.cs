@@ -138,7 +138,7 @@ public class LoginViewModelTests : GenericViewModelTests<LoginViewModel>
         PasswordBox passwordBox = new() { Password = mdp };
 
         // Act
-        ViewModel.OnMdpChange(passwordBox);
+        ViewModel.OnMdpChange(passwordBox, null!);
         ViewModel.SeConnecter().Wait();
 
         // Assert

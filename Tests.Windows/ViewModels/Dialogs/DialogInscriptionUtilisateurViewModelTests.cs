@@ -1,4 +1,5 @@
 ﻿using System.Security;
+using System.Windows.Controls;
 
 using CineQuebec.Windows.ViewModels.Dialogs;
 
@@ -94,5 +95,56 @@ public class DialogInscriptionUtilisateurViewModelTests : GenericViewModelTests<
         // Assert
         Assert.That(ViewModel.InscriptionReussie, Is.False);
         ConductorMock.Verify(c => c.CloseItem(ViewModel), Times.Once);
+    }
+
+    [Test]
+    public void OnMdpChange_WhenCalled_ShouldSetMotDePasse()
+    {
+        // NOTE: le setter de MotDePasse est privé pour des raisons de sécurité, alors
+        //       on observe le mot de passe dans le mock de création de compte à la place
+
+        // Arrange
+        const string mdp = "mdp";
+        PasswordBox passwordBox = new() { Password = mdp };
+        ViewModel.Courriel = Courriel;
+        ViewModel.Prenom = Prenom;
+        ViewModel.Nom = Nom;
+        ViewModel.OnConfirmationMdpChange(passwordBox, null!);
+
+        // Act
+        ViewModel.OnMdpChange(passwordBox, null!);
+        ViewModel.Valider().Wait();
+
+        // Assert
+        UtilisateurCreationServiceMock.Verify(
+            ucs =>
+                ucs.CreerUtilisateurAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), mdp),
+            Times.Once);
+    }
+
+    [Test]
+    public void OnConfirmationMdpChange_WhenCalled_ShouldSetMotDePasse()
+    {
+        // NOTE: le setter de ConfirmationMotDePasse est privé pour des raisons de
+        //       sécurité, alors on observe le mot de passe dans le mock de création
+        //       de compte à la place
+
+        // Arrange
+        const string mdp = "mdp";
+        PasswordBox passwordBox = new() { Password = mdp };
+        ViewModel.Courriel = Courriel;
+        ViewModel.Prenom = Prenom;
+        ViewModel.Nom = Nom;
+        ViewModel.OnMdpChange(passwordBox, null!);
+
+        // Act
+        ViewModel.OnConfirmationMdpChange(passwordBox, null!);
+        ViewModel.Valider().Wait();
+
+        // Assert
+        UtilisateurCreationServiceMock.Verify(
+            ucs =>
+                ucs.CreerUtilisateurAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), mdp),
+            Times.Once);
     }
 }

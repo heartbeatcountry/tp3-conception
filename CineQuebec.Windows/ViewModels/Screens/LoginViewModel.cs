@@ -89,7 +89,7 @@ public class LoginViewModel(
         }
     }
 
-    public void OnMdpChange(object sender)
+    public void OnMdpChange(object sender, RoutedEventArgs _)
     {
         _motDePasse = (sender as PasswordBox)?.Password ?? string.Empty;
     }
