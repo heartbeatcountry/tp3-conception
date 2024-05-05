@@ -22,26 +22,33 @@
         <DockPanel Grid.Row="1" Background="LightGray">
             <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15">
                 <TextBlock Text="Vous n'avez pas de compte?" />
-                <Button Margin="20,0,0,0" Content="Créer un compte"
+                <Button Margin="20,0,0,0" Content="Créer un compte" IsEnabled="{Binding CanOuvrirInscription}"
                         Style="{StaticResource MenuButton}" Command="{s:Action OuvrirInscription}" />
             </StackPanel>
             <StackPanel Background="White">
                 <Grid HorizontalAlignment="Center" Margin="0,20" VerticalAlignment="Center">
-                    <StackPanel VerticalAlignment="Center">
-                        <Label Content="{x:Static rs:Resource.connexion_username}"
-                               Style="{StaticResource DefautLabel}" />
-                        <TextBox Width="200" Style="{StaticResource DefautInput}"
-                                 Text="{Binding NomUsager}"
-                                 Margin="0 0 0 10" />
+                    <StackPanel VerticalAlignment="Bottom">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Label Content="{x:Static rs:Resource.connexion_username}"
+                                   Style="{StaticResource DefautLabel}" />
+                            <TextBox Width="200" Style="{StaticResource DefautInput}"
+                                     Text="{Binding NomUsager}"
+                                     Margin="0 0 0 10" />
 
-                        <Label Content="{x:Static rs:Resource.connexion_password}"
-                               Style="{StaticResource DefautLabel}" />
-                        <PasswordBox Width="200" Style="{StaticResource PasswordInput}"
-                                     PasswordChanged="{s:Action OnMdpChange}"
-                                     Margin="0 0 0 20" />
+                            <Label Content="{x:Static rs:Resource.connexion_password}"
+                                   Style="{StaticResource DefautLabel}" />
+                            <PasswordBox Width="200" Style="{StaticResource PasswordInput}"
+                                         PasswordChanged="{s:Action OnMdpChange}"
+                                         Margin="0 0 0 20" />
 
-                        <Button Content="{x:Static rs:Resource.connexion_connect}"
-                                Style="{StaticResource DefautButton}" Width="200" Command="{s:Action SeConnecter}" />
+                            <Button Content="{x:Static rs:Resource.connexion_connect}"
+                                    IsEnabled="{Binding CanSeConnecter}"
+                                    Style="{StaticResource DefautButton}" Width="200" Command="{s:Action SeConnecter}" />
+                        </StackPanel>
+                        <TextBlock Margin="0,20,0,0"
+                                   Text="Veuillez patienter lors de la connexion à la base de données..."
+                                   FontStyle="Italic" FontFamily="Segoe UI Semibold"
+                                   Visibility="{Binding VisibiliteTexteConnexion}" />
                     </StackPanel>
                 </Grid>
             </StackPanel>

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 using CineQuebec.Application.Interfaces.Services;
 using CineQuebec.Windows.ViewModels.Dialogs;
@@ -16,8 +17,31 @@ public class LoginViewModel(
     IGestionnaireExceptions gestionnaireExceptions)
     : Screen
 {
+    private bool _canOuvrirInscription = true;
+    private bool _canSeConnecter = true;
+    private bool _connexionBdEtablie;
     private string _motDePasse = string.Empty;
     private string _nomUsager = string.Empty;
+    private Visibility _visibiliteTexteConnexion = Visibility.Hidden;
+
+    public Visibility VisibiliteTexteConnexion
+    {
+        get => _visibiliteTexteConnexion;
+        private set
+        {
+            if (_connexionBdEtablie)
+            {
+                return;
+            }
+
+            if (value == Visibility.Hidden)
+            {
+                _connexionBdEtablie = true;
+            }
+
+            SetAndNotify(ref _visibiliteTexteConnexion, value);
+        }
+    }
 
     public string NomUsager
     {
@@ -25,14 +49,28 @@ public class LoginViewModel(
         set => SetAndNotify(ref _nomUsager, value.Trim());
     }
 
+    public bool CanSeConnecter
+    {
+        get => _canSeConnecter;
+        private set => SetAndNotify(ref _canSeConnecter, value);
+    }
+
+    public bool CanOuvrirInscription
+    {
+        get => _canOuvrirInscription;
+        private set => SetAndNotify(ref _canOuvrirInscription, value);
+    }
+
     public async Task SeConnecter()
     {
         try
         {
+            DesactiverInterface();
             await authenticationService.AuthentifierThreadAsync(NomUsager, _motDePasse);
         }
         catch (Exception exception)
         {
+            ActiverInterface();
             gestionnaireExceptions.GererException(exception);
             return;
         }
@@ -54,5 +92,21 @@ public class LoginViewModel(
     public void OnMdpChange(object sender, RoutedEventArgs e)
     {
         _motDePasse = (sender as PasswordBox)?.Password ?? string.Empty;
+    }
+
+    private void DesactiverInterface()
+    {
+        CanSeConnecter = false;
+        CanOuvrirInscription = false;
+        VisibiliteTexteConnexion = Visibility.Visible;
+        Mouse.OverrideCursor = Cursors.Wait;
+    }
+
+    private void ActiverInterface()
+    {
+        CanSeConnecter = true;
+        CanOuvrirInscription = true;
+        VisibiliteTexteConnexion = Visibility.Hidden;
+        Mouse.OverrideCursor = null;
     }
 }
