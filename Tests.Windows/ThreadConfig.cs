@@ -1,0 +1,1 @@
+﻿[assembly: RequiresThread(ApartmentState.STA)]

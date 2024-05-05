@@ -16,6 +16,8 @@ public abstract class GenericViewModelTests<TViewModel> : GenericTestsWithServic
     protected Mock<Conductor<TViewModel>> ConductorMock { get; private set; } = null!;
     protected Mock<IDialogFactory> DialogFactoryMock { get; private set; } = null!;
     protected Mock<IGestionnaireExceptions> GestionnaireExceptionsMock { get; private set; } = null!;
+    protected Mock<INavigationController> NavigationControllerMock { get; private set; } = null!;
+    protected Mock<IWindowManager> WindowManagerMock { get; private set; } = null!;
     protected TViewModel ViewModel { get; private set; } = null!;
 
     [SetUp]
@@ -24,6 +26,8 @@ public abstract class GenericViewModelTests<TViewModel> : GenericTestsWithServic
         DialogFactoryMock = new Mock<IDialogFactory>();
         GestionnaireExceptionsMock = new Mock<IGestionnaireExceptions>();
         ConductorMock = new Mock<Conductor<TViewModel>>();
+        NavigationControllerMock = new Mock<INavigationController>();
+        WindowManagerMock = new Mock<IWindowManager>();
 
         base.SetUp();
 
@@ -36,6 +40,8 @@ public abstract class GenericViewModelTests<TViewModel> : GenericTestsWithServic
     {
         return base.BuildServiceCollection()
             .AddSingleton(DialogFactoryMock.Object)
-            .AddSingleton(GestionnaireExceptionsMock.Object);
+            .AddSingleton(GestionnaireExceptionsMock.Object)
+            .AddSingleton(NavigationControllerMock.Object)
+            .AddSingleton(WindowManagerMock.Object);
     }
 }

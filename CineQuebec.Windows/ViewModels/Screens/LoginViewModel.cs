@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using CineQuebec.Application.Interfaces.Services;
-using CineQuebec.Windows.ViewModels.Dialogs;
+using CineQuebec.Windows.Interfaces.ViewModels.Dialogs;
 
 using Stylet;
 
@@ -80,7 +80,7 @@ public class LoginViewModel(
 
     public void OuvrirInscription()
     {
-        DialogInscriptionUtilisateurViewModel dialog = dialogFactory.CreateDialogInscriptionUtilisateur();
+        IDialogInscriptionUtilisateurViewModel dialog = dialogFactory.CreateDialogInscriptionUtilisateur();
         windowManager.ShowDialog(dialog);
 
         if (dialog.InscriptionReussie)
@@ -89,7 +89,7 @@ public class LoginViewModel(
         }
     }
 
-    public void OnMdpChange(object sender, RoutedEventArgs e)
+    public void OnMdpChange(object sender)
     {
         _motDePasse = (sender as PasswordBox)?.Password ?? string.Empty;
     }

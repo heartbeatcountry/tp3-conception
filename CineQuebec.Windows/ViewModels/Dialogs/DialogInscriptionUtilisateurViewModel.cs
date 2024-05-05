@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 
 using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Windows.Interfaces.ViewModels.Dialogs;
 
 using Stylet;
 
@@ -10,7 +11,7 @@ namespace CineQuebec.Windows.ViewModels.Dialogs;
 public class DialogInscriptionUtilisateurViewModel(
     IUtilisateurCreationService utilisateurCreationService,
     IUtilisateurAuthenticationService utilisateurAuthenticationService,
-    IGestionnaireExceptions gestionnaireExceptions) : Screen
+    IGestionnaireExceptions gestionnaireExceptions) : Screen, IDialogInscriptionUtilisateurViewModel
 {
     private string _courriel = string.Empty;
     private string _nom = string.Empty;
