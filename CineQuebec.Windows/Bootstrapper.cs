@@ -1,4 +1,5 @@
-﻿using CineQuebec.Windows.Interfaces.ViewModels.Dialogs;
+﻿using System.Reflection;
+
 using CineQuebec.Windows.ViewModels;
 using CineQuebec.Windows.ViewModels.Screens;
 
@@ -13,9 +14,10 @@ public class Bootstrapper : Bootstrapper<RootViewModel>
     protected override void ConfigureIoC(IStyletIoCBuilder builder)
     {
         builder.AddModule(new MicrosoftDiModule());
+        builder.Bind<IDialogFactory>().ToAbstractFactory();
         builder.Bind<NavigationController>().And<INavigationController>().To<NavigationController>().InSingletonScope();
         builder.Bind<IGestionnaireExceptions>().ToAllImplementations().InSingletonScope();
-        BindDialogs(builder);
+        BindViewModelInterfaces(builder);
     }
 
     protected override void OnLaunch()
@@ -25,9 +27,14 @@ public class Bootstrapper : Bootstrapper<RootViewModel>
         navigationController.NavigateTo<LoginViewModel>();
     }
 
-    private static void BindDialogs(IStyletIoCBuilder builder)
+    private static void BindViewModelInterfaces(IStyletIoCBuilder builder)
     {
-        builder.Bind<IDialogFactory>().ToAbstractFactory();
-        builder.Bind<IDialogInscriptionUtilisateurViewModel>().ToAllImplementations();
+        IEnumerable<Type> viewModelInterfaces = Assembly.GetExecutingAssembly()
+            .GetTypes().Where(t => t.IsInterface && t.Name.EndsWith("ViewModel", StringComparison.InvariantCulture));
+
+        foreach (Type viewModelInterface in viewModelInterfaces)
+        {
+            builder.Bind(viewModelInterface).ToAllImplementations();
+        }
     }
 }
