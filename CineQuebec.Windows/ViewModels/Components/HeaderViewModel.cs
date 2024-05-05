@@ -13,10 +13,13 @@ public class HeaderViewModel(
     IUtilisateurAuthenticationService authenticationService,
     IGestionnaireExceptions gestionnaireExceptions) : Screen
 {
-    public Type? PreviousView { get; set; }
-    public object? PreviousViewData { get; set; }
+    private readonly MethodInfo _navigateToMethodInfo =
+        typeof(INavigationController).GetMethod(nameof(INavigationController.NavigateTo))!;
 
-    public bool CanGoBack => PreviousView?.GetInterface(nameof(IScreen)) != null;
+    public Type? PreviousView { private get; set; }
+    public object? PreviousViewData { private get; set; }
+
+    private bool CanGoBack => PreviousView?.GetInterface(nameof(IScreen)) != null;
     public Visibility BackButtonVisibility => CanGoBack ? Visibility.Visible : Visibility.Collapsed;
 
     public void GoBack()
@@ -26,8 +29,9 @@ public class HeaderViewModel(
             return;
         }
 
-        MethodInfo method = navigationController.GetType().GetMethod("NavigateTo")!;
-        method.MakeGenericMethod(PreviousView!).Invoke(navigationController, [PreviousViewData]);
+        _navigateToMethodInfo
+            .MakeGenericMethod(PreviousView!)
+            .Invoke(navigationController, [PreviousViewData]);
     }
 
     public void Logout()
