@@ -1,4 +1,5 @@
 using CineQuebec.Application.Records.Projections;
+using CineQuebec.Application.Services.Projections;
 using CineQuebec.Domain.Interfaces.Entities.Projections;
 
 using Moq;

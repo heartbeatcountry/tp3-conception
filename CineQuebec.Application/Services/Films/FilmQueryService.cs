@@ -42,11 +42,11 @@ public class FilmQueryService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmQuery
     {
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
         IEnumerable<IProjection> projections =
-            (await unitOfWork.ProjectionRepository.ObtenirTousAsync(pr => pr.DateHeure >= DateTime.Now,
-                iq => iq.OrderBy(pr => pr.DateHeure))).OrderBy(pr => pr.DateHeure);
+            await unitOfWork.ProjectionRepository.ObtenirTousAsync(pr => pr.DateHeure >= DateTime.Now);
         IEnumerable<IFilm> films =
-            await unitOfWork.FilmRepository.ObtenirParIdsAsync(projections.Select(p => p.IdFilm));
-        return films.Select(f => f.VersDto(null, [], []));
+            await unitOfWork.FilmRepository.ObtenirParIdsAsync(projections.Select(p => p.IdFilm).Distinct());
+        return films.Select(f => f.VersDto(null, [], [])).OrderBy(film => film.Titre)
+            .ThenBy(film => film.DateSortieInternationale);
     }
 
 

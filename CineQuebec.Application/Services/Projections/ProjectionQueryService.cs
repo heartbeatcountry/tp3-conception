@@ -23,6 +23,6 @@ public class ProjectionQueryService(IUnitOfWorkFactory unitOfWorkFactory) : IPro
 
         return projections.Select(pf =>
                 pf.VersDto(null, salles.FirstOrDefault(s => s.Id == pf.IdSalle)?.VersDto()))
-            .OrderBy(projection => projection.DateHeure);
+            .OrderBy(projection => projection.DateHeure).ThenBy(projection => projection.Salle?.Numero);
     }
 }
