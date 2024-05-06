@@ -90,6 +90,42 @@ public static class ConfigureServices
             .AjouterProxyAuthPourService<INoteFilmCreationService>(new Dictionary<Role, IEnumerable<string>>
             {
                 [Role.Utilisateur] = [nameof(INoteFilmCreationService.NoterFilm)]
+            })
+            .AjouterProxyAuthPourService<ICategoriesPrefereesQueryService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Utilisateur] = [nameof(ICategoriesPrefereesQueryService.ObtenirCategoriesPreferees)]
+            })
+            .AjouterProxyAuthPourService<ICategoriesPrefereesUpdateService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Utilisateur] =
+                [
+                    nameof(ICategoriesPrefereesUpdateService.AjouterCategoriePreferee),
+                    nameof(ICategoriesPrefereesUpdateService.RetirerCategoriePreferee)
+                ]
+            })
+            .AjouterProxyAuthPourService<IActeursFavorisQueryService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Utilisateur] = [nameof(IActeursFavorisQueryService.ObtenirActeursFavoris)]
+            })
+            .AjouterProxyAuthPourService<IActeursFavorisUpdateService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Utilisateur] =
+                [
+                    nameof(IActeursFavorisUpdateService.AjouterActeurFavori),
+                    nameof(IActeursFavorisUpdateService.RetirerActeurFavori)
+                ]
+            })
+            .AjouterProxyAuthPourService<IRealisateursFavorisQueryService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Utilisateur] = [nameof(IRealisateursFavorisQueryService.ObtenirRealisateursFavoris)]
+            })
+            .AjouterProxyAuthPourService<IRealisateursFavorisUpdateService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Utilisateur] =
+                [
+                    nameof(IRealisateursFavorisUpdateService.AjouterRealisateurFavori),
+                    nameof(IRealisateursFavorisUpdateService.RetirerRealisateurFavori)
+                ]
             });
     }
 }

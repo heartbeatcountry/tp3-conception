@@ -35,6 +35,12 @@ public static class ConfigureServices
             .AddSingleton<IProjectionDeletionService, ProjectionDeletionService>()
             .AddSingleton<ISalleCreationService, SalleCreationService>()
             .AddSingleton<INoteFilmCreationService, NoteFilmCreationService>()
-            .AddSingleton<ISalleQueryService, SalleQueryService>();
+            .AddSingleton<ISalleQueryService, SalleQueryService>()
+            .AddSingleton<ICategoriesPrefereesQueryService, CategoriesPrefereesQueryService>()
+            .AddSingleton<ICategoriesPrefereesUpdateService, CategoriesPrefereesUpdateService>()
+            .AddSingleton<IActeursFavorisQueryService, ActeursFavorisQueryService>()
+            .AddSingleton<IActeursFavorisUpdateService, ActeursFavorisUpdateService>()
+            .AddSingleton<IRealisateursFavorisQueryService, RealisateursFavorisQueryService>()
+            .AddSingleton<IRealisateursFavorisUpdateService, RealisateursFavorisUpdateService>();
     }
 }
