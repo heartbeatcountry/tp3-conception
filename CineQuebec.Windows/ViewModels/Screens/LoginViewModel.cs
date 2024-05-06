@@ -75,6 +75,7 @@ public class LoginViewModel(
             return;
         }
 
+        Mouse.OverrideCursor = null;
         navigationController.NavigateTo<HomeViewModel>();
     }
 
