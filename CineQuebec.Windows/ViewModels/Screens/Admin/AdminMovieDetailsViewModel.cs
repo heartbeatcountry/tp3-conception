@@ -2,7 +2,8 @@
 using System.Windows;
 using System.Windows.Input;
 
-using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Application.Interfaces.Services.Films;
+using CineQuebec.Application.Interfaces.Services.Projections;
 using CineQuebec.Application.Records.Films;
 using CineQuebec.Application.Records.Projections;
 using CineQuebec.Windows.ViewModels.Components;

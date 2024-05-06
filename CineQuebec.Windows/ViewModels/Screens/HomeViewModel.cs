@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Application.Interfaces.Services.Identity;
 using CineQuebec.Domain.Entities.Utilisateurs;
 using CineQuebec.Windows.ViewModels.Components;
 using CineQuebec.Windows.ViewModels.Screens.Admin;

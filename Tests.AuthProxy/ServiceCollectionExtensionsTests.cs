@@ -1,4 +1,4 @@
-﻿using CineQuebec.Application.Interfaces.Services;
+﻿using CineQuebec.Application.Interfaces.Services.Identity;
 using CineQuebec.AuthProxy;
 
 using Microsoft.Extensions.DependencyInjection;

@@ -1,5 +1,7 @@
 using CineQuebec.Application;
-using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Application.Interfaces.Services.Films;
+using CineQuebec.Application.Interfaces.Services.Preferences;
+using CineQuebec.Application.Interfaces.Services.Projections;
 using CineQuebec.Domain.Entities.Utilisateurs;
 using CineQuebec.Persistence;
 

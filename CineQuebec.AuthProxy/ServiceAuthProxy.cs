@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Security;
 using System.Security.Claims;
 
-using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Application.Interfaces.Services.Identity;
 using CineQuebec.Domain.Entities.Utilisateurs;
 
 using Microsoft.Extensions.DependencyInjection;

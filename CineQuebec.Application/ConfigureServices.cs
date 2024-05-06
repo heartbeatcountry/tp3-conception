@@ -1,5 +1,11 @@
-using CineQuebec.Application.Interfaces.Services;
-using CineQuebec.Application.Services;
+using CineQuebec.Application.Interfaces.Services.Films;
+using CineQuebec.Application.Interfaces.Services.Identity;
+using CineQuebec.Application.Interfaces.Services.Preferences;
+using CineQuebec.Application.Interfaces.Services.Projections;
+using CineQuebec.Application.Services.Films;
+using CineQuebec.Application.Services.Identity;
+using CineQuebec.Application.Services.Preferences;
+using CineQuebec.Application.Services.Projections;
 
 using Microsoft.Extensions.DependencyInjection;
 

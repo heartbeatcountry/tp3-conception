@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Windows;
 
-using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Application.Interfaces.Services.Identity;
 using CineQuebec.Windows.ViewModels.Screens;
 
 using Stylet;

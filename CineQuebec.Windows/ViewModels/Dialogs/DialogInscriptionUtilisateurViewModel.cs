@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Application.Interfaces.Services.Identity;
 using CineQuebec.Windows.Interfaces.ViewModels.Dialogs;
 
 using Stylet;

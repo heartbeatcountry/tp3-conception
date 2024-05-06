@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Application.Interfaces.Services.Films;
 using CineQuebec.Application.Records.Films;
 using CineQuebec.Windows.ViewModels.Components;
 

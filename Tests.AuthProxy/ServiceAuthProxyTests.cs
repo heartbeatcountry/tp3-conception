@@ -2,7 +2,7 @@
 using System.Security;
 using System.Security.Claims;
 
-using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Application.Interfaces.Services.Identity;
 using CineQuebec.AuthProxy;
 using CineQuebec.Domain.Entities.Utilisateurs;
 

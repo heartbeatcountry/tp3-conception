@@ -1,6 +1,6 @@
 ﻿using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Application.Interfaces.Repositories;
-using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Application.Interfaces.Services.Identity;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Projections;
 using CineQuebec.Domain.Interfaces.Entities.Utilisateur;

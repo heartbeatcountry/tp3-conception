@@ -1,6 +1,7 @@
 using CineQuebec.Application;
 using CineQuebec.Application.Interfaces.DbContext;
-using CineQuebec.Application.Interfaces.Services;
+using CineQuebec.Application.Interfaces.Services.Films;
+using CineQuebec.Application.Interfaces.Services.Projections;
 using CineQuebec.AuthProxy;
 
 using Microsoft.Extensions.DependencyInjection;

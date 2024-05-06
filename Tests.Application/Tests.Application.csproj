@@ -39,4 +39,8 @@
         <ProjectReference Include="..\Tests.Common\Tests.Common.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Services\Preferences\" />
+    </ItemGroup>
+
 </Project>
