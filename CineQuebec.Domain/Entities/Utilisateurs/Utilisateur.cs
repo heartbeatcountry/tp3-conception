@@ -83,6 +83,11 @@ public class Utilisateur : Personne, IUtilisateur
         SetActeursFavorisParId(copie);
     }
 
+    public void RemoveActeursFavoris(IEnumerable<Guid> acteurs)
+    {
+        _acteursFavorisParId.RemoveWhere(acteurs.Contains);
+    }
+
     public void AddBillets(IEnumerable<Guid> billets)
     {
         SetBilletsParId(_billetsParId.Union(billets));
@@ -102,6 +107,11 @@ public class Utilisateur : Personne, IUtilisateur
         SetCategoriesPrefereesParId(copie);
     }
 
+    public void RemoveCategoriesPreferees(IEnumerable<Guid> categories)
+    {
+        _categoriesPrefereesParId.RemoveWhere(categories.Contains);
+    }
+
     public void AddRealisateursFavoris(IEnumerable<Guid> realisateurs)
     {
         HashSet<Guid> copie = _realisateursFavorisParId.Union(realisateurs).ToHashSet();
@@ -114,6 +124,11 @@ public class Utilisateur : Personne, IUtilisateur
         }
 
         SetRealisateursFavorisParId(copie);
+    }
+
+    public void RemoveRealisateursFavoris(IEnumerable<Guid> realisateurs)
+    {
+        _realisateursFavorisParId.RemoveWhere(realisateurs.Contains);
     }
 
     public void AddRoles(IEnumerable<Role> roles)

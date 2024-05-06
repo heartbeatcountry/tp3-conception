@@ -42,6 +42,11 @@ public class GenericRepository<TEntite, TIEntite> : IRepository<TIEntite>
         return await _dbSet.AnyAsync(filtreExp);
     }
 
+    public async Task<bool> ExisteAsync(Guid id)
+    {
+        return await _dbSet.AnyAsync(e => e.Id == id);
+    }
+
     public TIEntite Modifier(TIEntite entite)
     {
         _dbSet.Attach((entite as TEntite)!);

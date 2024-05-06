@@ -13,9 +13,12 @@ public interface IUtilisateur : IPersonne
     IEnumerable<Guid> RealisateursFavorisParId { get; }
     IEnumerable<Guid> BilletsParId { get; }
     void AddActeursFavoris(IEnumerable<Guid> acteurs);
+    void RemoveActeursFavoris(IEnumerable<Guid> acteurs);
     void AddBillets(IEnumerable<Guid> billets);
     void AddCategoriesPreferees(IEnumerable<Guid> categories);
+    void RemoveCategoriesPreferees(IEnumerable<Guid> categories);
     void AddRealisateursFavoris(IEnumerable<Guid> realisateurs);
+    void RemoveRealisateursFavoris(IEnumerable<Guid> realisateurs);
     void AddRoles(IEnumerable<Role> roles);
     void SetHashMotDePasse(string motDePasse);
 }

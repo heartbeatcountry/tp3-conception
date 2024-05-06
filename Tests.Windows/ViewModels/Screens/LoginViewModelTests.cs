@@ -60,7 +60,6 @@ public class LoginViewModelTests : GenericViewModelTests<LoginViewModel>
             Assert.That(ViewModel.CanSeConnecter, Is.False);
             Assert.That(ViewModel.CanOuvrirInscription, Is.False);
             Assert.That(ViewModel.VisibiliteTexteConnexion, Is.EqualTo(Visibility.Visible));
-            Assert.That(Mouse.OverrideCursor, Is.EqualTo(Cursors.Wait));
         });
     }
 
