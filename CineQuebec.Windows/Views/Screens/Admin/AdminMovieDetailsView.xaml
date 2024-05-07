@@ -64,7 +64,7 @@
                                Text="{Binding Film.DateSortieInternationale, StringFormat={}{0:yyyy-MM-dd}}" />
                     <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Content="Description" />
                     <ScrollViewer Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3">
-                        <TextBlock Text="{Binding Film.Description}" />
+                        <TextBlock Text="{Binding Film.Description}" TextWrapping="Wrap" />
                     </ScrollViewer>
                 </Grid>
                 <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
