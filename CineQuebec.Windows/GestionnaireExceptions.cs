@@ -26,6 +26,30 @@ public class GestionnaireExceptions(IWindowManager windowManager, INavigationCon
         }
     }
 
+    public void GererException(Action action)
+    {
+        try
+        {
+            action();
+        }
+        catch (Exception exception)
+        {
+            GererException(exception);
+        }
+    }
+
+    public async Task GererExceptionAsync(Func<Task> action)
+    {
+        try
+        {
+            await action();
+        }
+        catch (Exception exception)
+        {
+            GererException(exception);
+        }
+    }
+
     private void GererException(AggregateException aggregateException)
     {
         string message = aggregateException.InnerExceptions.Select(ObtenirMsgSansParametre)
