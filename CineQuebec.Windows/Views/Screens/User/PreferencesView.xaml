@@ -21,6 +21,8 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <ContentControl Grid.Column="0" s:View.Model="{Binding ActeursFavorisViewModel}"/>
+            <ContentControl Grid.Column="2" s:View.Model="{Binding RealisateursFavorisViewModel}"/>
+            <ContentControl Grid.Column="4" s:View.Model="{Binding CategoriesPrefereesViewModel}"/>
         </Grid>
     </DockPanel>
 </UserControl>

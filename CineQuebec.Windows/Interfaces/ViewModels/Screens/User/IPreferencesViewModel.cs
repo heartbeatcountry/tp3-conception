@@ -6,4 +6,6 @@ public interface IPreferencesViewModel
 {
     public IHeaderViewModel HeaderViewModel { get; }
     public IActeursFavorisViewModel ActeursFavorisViewModel { get; }
+    public IRealisateursFavorisViewModel RealisateursFavorisViewModel { get; }
+    public ICategoriesPrefereesViewModel CategoriesPrefereesViewModel { get; }
 }
