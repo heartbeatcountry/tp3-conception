@@ -23,6 +23,7 @@
 		<None Remove="Ressources\images\logoCinema.png" />
 		<None Remove="Ressources\images\logoCinemaWithoutText.png" />
 		<None Remove="Ressources\images\logoMark.png" />
+		<None Remove="Ressources\images\preferences.png" />
 		<None Remove="Ressources\images\projections.png" />
 	</ItemGroup>
 
@@ -52,6 +53,9 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Ressources\images\logoMark.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Ressources\images\preferences.png">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Resource>
 		<Resource Include="Ressources\images\projections.png">

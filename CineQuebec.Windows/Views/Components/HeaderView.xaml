@@ -11,12 +11,18 @@
              mc:Ignorable="d"
              d:DesignHeight="40" d:DesignWidth="800">
     <DockPanel Height="40" VerticalAlignment="Top">
-        <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-            <Image HorizontalAlignment="Left" UseLayoutRounding="True"
-                   Source="/Ressources/images/logoCinemaWithoutText.png" MaxWidth="40px" />
-            <Image HorizontalAlignment="Left" UseLayoutRounding="True"
-                   Source="/Ressources/images/logoMark.png" Margin="8,5,0,0" Height="35" Width="156" />
-        </StackPanel>
+        <Button DockPanel.Dock="Left" Command="{s:Action GoToHome}" Cursor="Hand">
+            <Button.Template>
+                <ControlTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image HorizontalAlignment="Left" UseLayoutRounding="True"
+                               Source="/Ressources/images/logoCinemaWithoutText.png" MaxWidth="40px" />
+                        <Image HorizontalAlignment="Left" UseLayoutRounding="True"
+                               Source="/Ressources/images/logoMark.png" Margin="8,5,0,0" Height="35" Width="156" />
+                    </StackPanel>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
             <Button x:Name="BtnPrecedent" Visibility="{Binding BackButtonVisibility}"
                     Style="{StaticResource MenuButton}" Command="{s:Action GoBack}">
