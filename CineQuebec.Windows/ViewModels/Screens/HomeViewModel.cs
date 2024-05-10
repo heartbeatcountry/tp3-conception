@@ -3,8 +3,9 @@
 using CineQuebec.Application.Interfaces.Services.Identity;
 using CineQuebec.Domain.Entities.Utilisateurs;
 using CineQuebec.Windows.Interfaces.ViewModels.Components;
-using CineQuebec.Windows.ViewModels.Screens.Admin;
-using CineQuebec.Windows.ViewModels.Screens.User;
+using CineQuebec.Windows.Interfaces.ViewModels.Screens;
+using CineQuebec.Windows.Interfaces.ViewModels.Screens.Admin;
+using CineQuebec.Windows.Interfaces.ViewModels.Screens.User;
 
 using Stylet;
 
@@ -13,7 +14,7 @@ namespace CineQuebec.Windows.ViewModels.Screens;
 public class HomeViewModel(
     INavigationController navigationController,
     IHeaderViewModel headerViewModel,
-    IUtilisateurAuthenticationService utilisateurAuthenticationService) : Screen
+    IUtilisateurAuthenticationService utilisateurAuthenticationService) : Screen, IHomeViewModel
 {
     private bool _navigationIsEnabled = true;
     public IHeaderViewModel HeaderViewModel => headerViewModel;
@@ -37,12 +38,12 @@ public class HomeViewModel(
         }
 
         NavigationIsEnabled = false;
-        navigationController.NavigateTo<AdminMovieListViewModel>();
+        navigationController.NavigateTo<IAdminMovieListViewModel>();
     }
 
     public void NavigateToPreferences()
     {
         NavigationIsEnabled = false;
-        navigationController.NavigateTo<PreferencesViewModel>();
+        navigationController.NavigateTo<IPreferencesViewModel>();
     }
 }

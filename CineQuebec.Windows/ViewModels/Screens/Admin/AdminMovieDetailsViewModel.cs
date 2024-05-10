@@ -6,13 +6,15 @@ using CineQuebec.Application.Interfaces.Services.Films;
 using CineQuebec.Application.Interfaces.Services.Projections;
 using CineQuebec.Application.Records.Films;
 using CineQuebec.Application.Records.Projections;
-using CineQuebec.Windows.ViewModels.Components;
+using CineQuebec.Windows.Interfaces;
+using CineQuebec.Windows.Interfaces.ViewModels.Components;
+using CineQuebec.Windows.Interfaces.ViewModels.Screens.Admin;
 
 using Stylet;
 
 namespace CineQuebec.Windows.ViewModels.Screens.Admin;
 
-public class AdminMovieDetailsViewModel : Screen, IScreenWithData
+public class AdminMovieDetailsViewModel : Screen, IAdminMovieDetailsViewModel
 {
     private readonly IFilmDeletionService _filmDeletionService;
     private readonly IFilmQueryService _filmQueryService;
@@ -27,7 +29,7 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
     private BindableCollection<ProjectionDto> _projections = [];
     private BindableCollection<RealisateurDto> _realisateurs = [];
 
-    public AdminMovieDetailsViewModel(INavigationController navigationController, HeaderViewModel headerViewModel,
+    public AdminMovieDetailsViewModel(INavigationController navigationController, IHeaderViewModel headerViewModel,
         IFilmQueryService filmQueryService, IWindowManager windowManager, IFilmDeletionService filmDeletionService,
         IProjectionDeletionService projectionDeletionService, IProjectionQueryService projectionQueryService,
         IGestionnaireExceptions gestionnaireExceptions)
@@ -40,7 +42,7 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
         _projectionQueryService = projectionQueryService;
         _gestionnaireExceptions = gestionnaireExceptions;
 
-        headerViewModel.PreviousView = typeof(AdminMovieListViewModel);
+        headerViewModel.PreviousView = typeof(IAdminMovieListViewModel);
         HeaderViewModel = headerViewModel;
     }
 
@@ -70,7 +72,7 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
         private set => SetAndNotify(ref _projections, value);
     }
 
-    public HeaderViewModel HeaderViewModel { get; }
+    public IHeaderViewModel HeaderViewModel { get; }
 
     public void SetData(object data)
     {
@@ -85,7 +87,7 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
 
     public void AddNewFilm()
     {
-        _navigationController.NavigateTo<AdminMovieCreationViewModel>();
+        _navigationController.NavigateTo<IAdminMovieCreationViewModel>();
     }
 
     public void RafraichirTout()
@@ -103,7 +105,7 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
             return;
         }
 
-        _navigationController.NavigateTo<AdminAjoutProjectionViewModel>(Film.Id);
+        _navigationController.NavigateTo<IAdminAjoutProjectionViewModel>(Film.Id);
     }
 
     public void ModifierFilm()
@@ -113,7 +115,7 @@ public class AdminMovieDetailsViewModel : Screen, IScreenWithData
             return;
         }
 
-        _navigationController.NavigateTo<AdminMovieCreationViewModel>(Film.Id);
+        _navigationController.NavigateTo<IAdminMovieCreationViewModel>(Film.Id);
     }
 
     public async void SupprimerFilm()

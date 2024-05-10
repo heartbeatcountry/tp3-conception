@@ -5,14 +5,16 @@ using System.Windows.Input;
 
 using CineQuebec.Application.Interfaces.Services.Films;
 using CineQuebec.Application.Records.Films;
-using CineQuebec.Windows.ViewModels.Components;
-using CineQuebec.Windows.ViewModels.Dialogs;
+using CineQuebec.Windows.Interfaces;
+using CineQuebec.Windows.Interfaces.ViewModels.Components;
+using CineQuebec.Windows.Interfaces.ViewModels.Dialogs;
+using CineQuebec.Windows.Interfaces.ViewModels.Screens.Admin;
 
 using Stylet;
 
 namespace CineQuebec.Windows.ViewModels.Screens.Admin;
 
-public class AdminMovieCreationViewModel : Screen, IScreenWithData
+public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
 {
     private readonly IActeurCreationService _acteurCreationService;
     private readonly IActeurQueryService _acteurQueryService;
@@ -44,7 +46,7 @@ public class AdminMovieCreationViewModel : Screen, IScreenWithData
 
     public AdminMovieCreationViewModel(INavigationController navigationController,
         IFilmCreationService filmCreationService,
-        HeaderViewModel headerViewModel, IActeurQueryService acteurQueryService, IDialogFactory dialogFactory,
+        IHeaderViewModel headerViewModel, IActeurQueryService acteurQueryService, IDialogFactory dialogFactory,
         IRealisateurQueryService realisateurQueryService, ICategorieFilmQueryService categorieFilmQueryService,
         IWindowManager windowManager, IActeurCreationService acteurCreationService,
         IFilmUpdateService filmUpdateService,
@@ -66,12 +68,12 @@ public class AdminMovieCreationViewModel : Screen, IScreenWithData
         _dialogFactory = dialogFactory;
 
         HeaderViewModel = headerViewModel;
-        headerViewModel.PreviousView = typeof(AdminMovieListViewModel);
+        headerViewModel.PreviousView = typeof(IAdminMovieListViewModel);
 
         _ = ToutCharger();
     }
 
-    public HeaderViewModel HeaderViewModel { get; }
+    public IHeaderViewModel HeaderViewModel { get; }
 
     public string TitreFilm
     {
@@ -185,7 +187,7 @@ public class AdminMovieCreationViewModel : Screen, IScreenWithData
 
     public void AjouterActeur()
     {
-        DialogNomPrenomViewModel dialog = _dialogFactory.CreateDialogNomPrenom();
+        IDialogNomPrenomViewModel dialog = _dialogFactory.CreateDialogNomPrenom();
         dialog.DisplayName = "Ajouter un acteur";
         _windowManager.ShowDialog(dialog);
 
@@ -197,7 +199,7 @@ public class AdminMovieCreationViewModel : Screen, IScreenWithData
 
     public void AjouterRealisateur()
     {
-        DialogNomPrenomViewModel dialog = _dialogFactory.CreateDialogNomPrenom();
+        IDialogNomPrenomViewModel dialog = _dialogFactory.CreateDialogNomPrenom();
         dialog.DisplayName = "Ajouter un réalisateur";
         _windowManager.ShowDialog(dialog);
 
@@ -209,7 +211,7 @@ public class AdminMovieCreationViewModel : Screen, IScreenWithData
 
     public void AjouterCategorie()
     {
-        DialogNomAffichageViewModel dialog = _dialogFactory.CreateDialogNomAffichage();
+        IDialogNomAffichageViewModel dialog = _dialogFactory.CreateDialogNomAffichage();
         dialog.DisplayName = "Ajouter une catégorie";
         _windowManager.ShowDialog(dialog);
 
@@ -430,8 +432,8 @@ public class AdminMovieCreationViewModel : Screen, IScreenWithData
             new BindableCollection<RealisateurDto>(LstRealisateurs.Where(r =>
                 _film.Realisateurs.Any(r2 => r2.Id == r.Id)));
 
-        HeaderViewModel.DisplayName = "Modifier un film";
-        HeaderViewModel.PreviousView = typeof(AdminMovieDetailsViewModel);
+        DisplayName = "Modifier un film";
+        HeaderViewModel.PreviousView = typeof(IAdminMovieDetailsViewModel);
         HeaderViewModel.PreviousViewData = _film.Id;
         TexteBoutonPrincipal = "Modifier le film";
     }

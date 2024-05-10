@@ -1,12 +1,12 @@
 ﻿using CineQuebec.Windows.Interfaces.ViewModels.Dialogs;
 using CineQuebec.Windows.ViewModels.Dialogs;
 
-namespace CineQuebec.Windows;
+namespace CineQuebec.Windows.Interfaces;
 
 public interface IDialogFactory
 {
-    DialogNomPrenomViewModel CreateDialogNomPrenom();
-    DialogNomAffichageViewModel CreateDialogNomAffichage();
-    DialogNouvelleSalleViewModel CreateDialogNouvelleSalle();
+    IDialogNomPrenomViewModel CreateDialogNomPrenom();
+    IDialogNomAffichageViewModel CreateDialogNomAffichage();
+    IDialogNouvelleSalleViewModel CreateDialogNouvelleSalle();
     IDialogInscriptionUtilisateurViewModel CreateDialogInscriptionUtilisateur();
 }

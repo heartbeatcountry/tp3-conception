@@ -4,6 +4,7 @@ using CineQuebec.Application.Interfaces.Services.Films;
 using CineQuebec.Application.Interfaces.Services.Preferences;
 using CineQuebec.Application.Records.Films;
 using CineQuebec.Domain.Entities.Utilisateurs;
+using CineQuebec.Windows.Interfaces;
 using CineQuebec.Windows.Interfaces.ViewModels.Components;
 using CineQuebec.Windows.Records;
 

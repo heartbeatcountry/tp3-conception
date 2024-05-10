@@ -2,8 +2,9 @@
 using System.Windows;
 
 using CineQuebec.Application.Interfaces.Services.Identity;
+using CineQuebec.Windows.Interfaces;
 using CineQuebec.Windows.Interfaces.ViewModels.Components;
-using CineQuebec.Windows.ViewModels.Screens;
+using CineQuebec.Windows.Interfaces.ViewModels.Screens;
 
 using Stylet;
 
@@ -43,7 +44,7 @@ public class HeaderViewModel(
             return;
         }
 
-        navigationController.NavigateTo<HomeViewModel>();
+        navigationController.NavigateTo<IHomeViewModel>();
     }
 
     public void Logout()
@@ -57,6 +58,6 @@ public class HeaderViewModel(
             gestionnaireExceptions.GererException(ex);
         }
 
-        navigationController.NavigateTo<LoginViewModel>();
+        navigationController.NavigateTo<ILoginViewModel>();
     }
 }
