@@ -9,6 +9,7 @@ using CineQuebec.Windows.Interfaces;
 using CineQuebec.Windows.Interfaces.ViewModels.Components;
 using CineQuebec.Windows.Interfaces.ViewModels.Dialogs;
 using CineQuebec.Windows.Interfaces.ViewModels.Screens.Admin;
+using CineQuebec.Windows.Records;
 
 using Stylet;
 
@@ -29,7 +30,6 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
     private readonly IRealisateurCreationService _realisateurCreationService;
     private readonly IRealisateurQueryService _realisateurQueryService;
     private readonly IWindowManager _windowManager;
-    private BindableCollection<ActeurDto> _acteursSelectionnes = [];
     private CategorieFilmDto? _categorieSelectionnee;
     private DateTime _dateSelectionnee = DateTime.Now;
     private string _descriptionFilm = string.Empty;
@@ -37,10 +37,9 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
     private FilmDto? _film;
     private bool _formulairEstActive = true;
     private Guid? _idFilm;
-    private BindableCollection<ActeurDto> _lstActeurs = [];
+    private BindableCollection<SelectedItemWrapper<ActeurDto>> _lstActeurs = [];
     private BindableCollection<CategorieFilmDto> _lstCategories = [];
-    private BindableCollection<RealisateurDto> _lstRealisateurs = [];
-    private BindableCollection<RealisateurDto> _realisateursSelectionnes = [];
+    private BindableCollection<SelectedItemWrapper<RealisateurDto>> _lstRealisateurs = [];
     private string _texteBoutonPrincipal = "Créer le film";
     private string _titreFilm = string.Empty;
 
@@ -96,31 +95,19 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
     public BindableCollection<CategorieFilmDto> LstCategories
     {
         get => _lstCategories;
-        set => SetAndNotify(ref _lstCategories, value);
+        private set => SetAndNotify(ref _lstCategories, value);
     }
 
-    public BindableCollection<ActeurDto> LstActeurs
+    public BindableCollection<SelectedItemWrapper<ActeurDto>> LstActeurs
     {
         get => _lstActeurs;
-        set => SetAndNotify(ref _lstActeurs, value);
+        private set => SetAndNotify(ref _lstActeurs, value);
     }
 
-    public BindableCollection<RealisateurDto> LstRealisateurs
+    public BindableCollection<SelectedItemWrapper<RealisateurDto>> LstRealisateurs
     {
         get => _lstRealisateurs;
-        set => SetAndNotify(ref _lstRealisateurs, value);
-    }
-
-    public BindableCollection<ActeurDto> ActeursSelectionnes
-    {
-        get => _acteursSelectionnes;
-        set => SetAndNotify(ref _acteursSelectionnes, value);
-    }
-
-    public BindableCollection<RealisateurDto> RealisateursSelectionnes
-    {
-        get => _realisateursSelectionnes;
-        set => SetAndNotify(ref _realisateursSelectionnes, value);
+        private set => SetAndNotify(ref _lstRealisateurs, value);
     }
 
     public CategorieFilmDto? CategorieSelectionnee
@@ -135,7 +122,7 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
     public bool FormulairEstActive
     {
         get => _formulairEstActive;
-        set => SetAndNotify(ref _formulairEstActive, value);
+        private set => SetAndNotify(ref _formulairEstActive, value);
     }
 
     public DateTime DateSelectionnee
@@ -147,7 +134,7 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
     public string TexteBoutonPrincipal
     {
         get => _texteBoutonPrincipal;
-        set => SetAndNotify(ref _texteBoutonPrincipal, value);
+        private set => SetAndNotify(ref _texteBoutonPrincipal, value);
     }
 
     public void SetData(object data)
@@ -161,7 +148,7 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
         _ = ChargerFilm();
     }
 
-    public async Task ToutCharger()
+    private async Task ToutCharger()
     {
         await ChargerCategories();
         await ChargerActeurs();
@@ -171,18 +158,6 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
         {
             ConfigurerEnModeEdition();
         }
-    }
-
-    public void OnActeursChange(object sender, SelectionChangedEventArgs evt)
-    {
-        ListBox listBox = (ListBox)sender;
-        ActeursSelectionnes = new BindableCollection<ActeurDto>(listBox.SelectedItems.Cast<ActeurDto>());
-    }
-
-    public void OnRealisateursChange(object sender, SelectionChangedEventArgs evt)
-    {
-        ListBox listBox = (ListBox)sender;
-        RealisateursSelectionnes = new BindableCollection<RealisateurDto>(listBox.SelectedItems.Cast<RealisateurDto>());
     }
 
     public void AjouterActeur()
@@ -223,8 +198,8 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
 
     public async void CreerFilm()
     {
-        List<Guid> guidsActeurs = ActeursSelectionnes.Select(a => a.Id).ToList();
-        List<Guid> guidsRealisateurs = RealisateursSelectionnes.Select(r => r.Id).ToList();
+        var acteursSelectionnes = LstActeurs.Where(a => a.IsSelected).Select(a => a.Item.Id).ToHashSet();
+        var realisateursSelectionnes = LstRealisateurs.Where(r => r.IsSelected).Select(r => r.Item.Id).ToHashSet();
         Guid? guidCategorie = CategorieSelectionnee?.Id;
         _ = ushort.TryParse(DureeFilm, out ushort duree);
 
@@ -239,7 +214,7 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
             if (_idFilm is { } id)
             {
                 await _filmUpdateService.ModifierFilm(id, TitreFilm, DescriptionFilm, (Guid)guidCategorie!,
-                    DateSelectionnee, guidsActeurs, guidsRealisateurs, duree);
+                    DateSelectionnee, acteursSelectionnes, realisateursSelectionnes, duree);
 
                 _windowManager.ShowMessageBox("Film modifié avec succès", "Succès", MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -248,7 +223,7 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
 
             else if (await _filmCreationService.CreerFilm(TitreFilm, DescriptionFilm, (Guid)guidCategorie!,
                          DateSelectionnee,
-                         guidsActeurs, guidsRealisateurs, duree) is var nouvFilm)
+                         acteursSelectionnes, realisateursSelectionnes, duree) is var nouvFilm)
             {
                 _windowManager.ShowMessageBox("Film ajouté avec succès", "Succès", MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -310,8 +285,8 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
             return;
         }
 
-        LstActeurs = new BindableCollection<ActeurDto>(acteurs);
-        ActeursSelectionnes = [];
+        LstActeurs.Clear();
+        LstActeurs.AddRange(acteurs.Select(dto => new SelectedItemWrapper<ActeurDto>(dto, false)));
         ActiverInterface();
     }
 
@@ -331,8 +306,8 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
             return;
         }
 
-        LstRealisateurs = new BindableCollection<RealisateurDto>(realisateurs);
-        RealisateursSelectionnes = [];
+        LstRealisateurs.Clear();
+        LstRealisateurs.AddRange(realisateurs.Select(dto => new SelectedItemWrapper<RealisateurDto>(dto, false)));
         ActiverInterface();
     }
 
@@ -426,11 +401,16 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
         DureeFilm = _film.DureeEnMinutes.ToString(CultureInfo.InvariantCulture);
         DateSelectionnee = _film.DateSortieInternationale;
         CategorieSelectionnee = LstCategories.FirstOrDefault(c => c.Id == _film.Categorie?.Id);
-        ActeursSelectionnes =
-            new BindableCollection<ActeurDto>(LstActeurs.Where(a => _film.Acteurs.Any(a2 => a2.Id == a.Id)));
-        RealisateursSelectionnes =
-            new BindableCollection<RealisateurDto>(LstRealisateurs.Where(r =>
-                _film.Realisateurs.Any(r2 => r2.Id == r.Id)));
+
+        foreach (SelectedItemWrapper<ActeurDto> acteur in LstActeurs)
+        {
+            acteur.IsSelected = _film.Acteurs.Any(a => a.Id == acteur.Item.Id);
+        }
+
+        foreach (SelectedItemWrapper<RealisateurDto> realisateur in LstRealisateurs)
+        {
+            realisateur.IsSelected = _film.Realisateurs.Any(r => r.Id == realisateur.Item.Id);
+        }
 
         DisplayName = "Modifier un film";
         HeaderViewModel.PreviousView = typeof(IAdminMovieDetailsViewModel);
