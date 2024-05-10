@@ -2,6 +2,7 @@
 
 using CineQuebec.Application.Records.Films;
 using CineQuebec.Windows.Interfaces.ViewModels.Components;
+using CineQuebec.Windows.Records;
 
 using Stylet;
 
@@ -13,19 +14,14 @@ public interface IAdminMovieCreationViewModel : IScreenWithData
     string TitreFilm { get; set; }
     string DescriptionFilm { get; set; }
     string DureeFilm { get; set; }
-    BindableCollection<CategorieFilmDto> LstCategories { get; set; }
-    BindableCollection<ActeurDto> LstActeurs { get; set; }
-    BindableCollection<RealisateurDto> LstRealisateurs { get; set; }
-    BindableCollection<ActeurDto> ActeursSelectionnes { get; set; }
-    BindableCollection<RealisateurDto> RealisateursSelectionnes { get; set; }
+    BindableCollection<CategorieFilmDto> LstCategories { get; }
+    BindableCollection<SelectedItemWrapper<ActeurDto>> LstActeurs { get; }
+    BindableCollection<SelectedItemWrapper<RealisateurDto>> LstRealisateurs { get; }
     CategorieFilmDto? CategorieSelectionnee { get; set; }
     bool CanCreateFilm { get; }
-    bool FormulairEstActive { get; set; }
+    bool FormulairEstActive { get; }
     DateTime DateSelectionnee { get; set; }
-    string TexteBoutonPrincipal { get; set; }
-    Task ToutCharger();
-    void OnActeursChange(object sender, SelectionChangedEventArgs evt);
-    void OnRealisateursChange(object sender, SelectionChangedEventArgs evt);
+    string TexteBoutonPrincipal { get; }
     void AjouterActeur();
     void AjouterRealisateur();
     void AjouterCategorie();

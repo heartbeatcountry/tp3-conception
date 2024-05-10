@@ -92,17 +92,22 @@
 
                 <Label Content="{x:Static rs:Resource.admin_ajout_acteurs_film}" Grid.Row="1"
                        Grid.Column="5" VerticalAlignment="Center" />
-                <ListBox ItemsSource="{Binding LstActeurs}" SelectionChanged="{s:Action OnActeursChange}"
+                <ListBox ItemsSource="{Binding LstActeurs}"
                          SelectionMode="Multiple" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="3" Grid.RowSpan="2"
                          BorderBrush="Black" BorderThickness="2" Margin="111,10,0,11">
                     <ListBox.Effect>
                         <DropShadowEffect />
                     </ListBox.Effect>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                <Label Content="{Binding Prenom}" Margin="0,0,5,0" />
-                                <Label Content="{Binding Nom}" />
+                                <Label Content="{Binding Item.Prenom}" Margin="0,0,5,0" />
+                                <Label Content="{Binding Item.Nom}" />
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -111,18 +116,22 @@
                 <Label x:Name="LblRealisateursFilm" Content="{x:Static rs:Resource.admin_ajout_realisateurs_film}"
                        Grid.Row="3"
                        Grid.Column="5" VerticalAlignment="Center" />
-                <ListBox SelectionMode="Multiple" ItemsSource="{Binding LstRealisateurs}"
-                         SelectionChanged="{s:Action OnRealisateursChange}" Grid.Row="3" Grid.Column="5"
+                <ListBox SelectionMode="Multiple" ItemsSource="{Binding LstRealisateurs}" Grid.Row="3" Grid.Column="5"
                          Grid.ColumnSpan="3" Grid.RowSpan="2"
                          BorderBrush="Black" BorderThickness="2" Margin="111,10,0,10">
                     <ListBox.Effect>
                         <DropShadowEffect />
                     </ListBox.Effect>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                <Label Content="{Binding Prenom}" Margin="0,0,5,0" />
-                                <Label Content="{Binding Nom}" />
+                                <Label Content="{Binding Item.Prenom}" Margin="0,0,5,0" />
+                                <Label Content="{Binding Item.Nom}" />
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
