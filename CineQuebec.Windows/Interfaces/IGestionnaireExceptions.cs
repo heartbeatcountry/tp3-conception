@@ -1,4 +1,4 @@
-﻿namespace CineQuebec.Windows;
+﻿namespace CineQuebec.Windows.Interfaces;
 
 public interface IGestionnaireExceptions
 {

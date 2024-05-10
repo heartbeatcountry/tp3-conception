@@ -16,7 +16,7 @@ public interface INavigationControllerDelegateFn
 
 public interface IScreenWithData : IScreen
 {
-    void SetData(object data);
+    public void SetData(object data);
 }
 
 public class NavigationController(IContainer container)

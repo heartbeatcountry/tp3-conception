@@ -1,8 +1,10 @@
-﻿using Stylet;
+﻿using CineQuebec.Windows.Interfaces.ViewModels.Dialogs;
+
+using Stylet;
 
 namespace CineQuebec.Windows.ViewModels.Dialogs;
 
-public class DialogNomPrenomViewModel : Screen
+public class DialogNomPrenomViewModel : Screen, IDialogNomPrenomViewModel
 {
     private string _nom = string.Empty;
     private string _prenom = string.Empty;

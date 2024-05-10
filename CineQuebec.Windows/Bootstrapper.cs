@@ -1,7 +1,8 @@
 ﻿using System.Reflection;
 
+using CineQuebec.Windows.Interfaces;
+using CineQuebec.Windows.Interfaces.ViewModels.Screens;
 using CineQuebec.Windows.ViewModels;
-using CineQuebec.Windows.ViewModels.Screens;
 
 using Stylet;
 
@@ -24,7 +25,7 @@ public class Bootstrapper : Bootstrapper<RootViewModel>
     {
         NavigationController? navigationController = Container.Get<NavigationController>();
         navigationController.Delegate = RootViewModel;
-        navigationController.NavigateTo<LoginViewModel>();
+        navigationController.NavigateTo<ILoginViewModel>();
     }
 
     private static void BindViewModelInterfaces(IStyletIoCBuilder builder)

@@ -1,7 +1,8 @@
 ﻿using System.Security;
 using System.Windows;
 
-using CineQuebec.Windows.ViewModels.Screens;
+using CineQuebec.Windows.Interfaces;
+using CineQuebec.Windows.Interfaces.ViewModels.Screens;
 
 using Stylet;
 
@@ -61,7 +62,7 @@ public class GestionnaireExceptions(IWindowManager windowManager, INavigationCon
     private void GererException(SecurityException securityException)
     {
         AfficherMessage(securityException.Message, "Problème d'authentification");
-        navigationController.NavigateTo<LoginViewModel>();
+        navigationController.NavigateTo<ILoginViewModel>();
     }
 
     private void AfficherMessage(string message, string titre)

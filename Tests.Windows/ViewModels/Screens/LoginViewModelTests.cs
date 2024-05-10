@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using CineQuebec.Windows.Interfaces.ViewModels.Dialogs;
+using CineQuebec.Windows.Interfaces.ViewModels.Screens;
 using CineQuebec.Windows.ViewModels.Screens;
 
 using Moq;
@@ -45,7 +46,7 @@ public class LoginViewModelTests : GenericViewModelTests<LoginViewModel>
         ViewModel.OuvrirInscription();
 
         // Assert
-        NavigationControllerMock.Verify(n => n.NavigateTo<HomeViewModel>(null));
+        NavigationControllerMock.Verify(n => n.NavigateTo<IHomeViewModel>(null));
     }
 
     [Test]
@@ -126,7 +127,7 @@ public class LoginViewModelTests : GenericViewModelTests<LoginViewModel>
         ViewModel.SeConnecter().Wait();
 
         // Assert
-        NavigationControllerMock.Verify(n => n.NavigateTo<HomeViewModel>(null));
+        NavigationControllerMock.Verify(n => n.NavigateTo<IHomeViewModel>(null));
     }
 
     [Test]

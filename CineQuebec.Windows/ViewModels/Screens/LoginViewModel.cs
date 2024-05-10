@@ -3,7 +3,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using CineQuebec.Application.Interfaces.Services.Identity;
+using CineQuebec.Windows.Interfaces;
 using CineQuebec.Windows.Interfaces.ViewModels.Dialogs;
+using CineQuebec.Windows.Interfaces.ViewModels.Screens;
 
 using Stylet;
 
@@ -15,7 +17,7 @@ public class LoginViewModel(
     IDialogFactory dialogFactory,
     IWindowManager windowManager,
     IGestionnaireExceptions gestionnaireExceptions)
-    : Screen
+    : Screen, ILoginViewModel
 {
     private bool _canOuvrirInscription = true;
     private bool _canSeConnecter = true;
@@ -76,7 +78,7 @@ public class LoginViewModel(
         }
 
         Mouse.OverrideCursor = null;
-        navigationController.NavigateTo<HomeViewModel>();
+        navigationController.NavigateTo<IHomeViewModel>();
     }
 
     public void OuvrirInscription()
@@ -86,7 +88,7 @@ public class LoginViewModel(
 
         if (dialog.InscriptionReussie)
         {
-            navigationController.NavigateTo<HomeViewModel>();
+            navigationController.NavigateTo<IHomeViewModel>();
         }
     }
 

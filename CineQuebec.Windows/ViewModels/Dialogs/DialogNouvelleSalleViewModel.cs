@@ -1,8 +1,10 @@
-﻿using Stylet;
+﻿using CineQuebec.Windows.Interfaces.ViewModels.Dialogs;
+
+using Stylet;
 
 namespace CineQuebec.Windows.ViewModels.Dialogs;
 
-public class DialogNouvelleSalleViewModel : Screen
+public class DialogNouvelleSalleViewModel : Screen, IDialogNouvelleSalleViewModel
 {
     private string _capaciteStr = string.Empty;
     private string _numeroStr = string.Empty;

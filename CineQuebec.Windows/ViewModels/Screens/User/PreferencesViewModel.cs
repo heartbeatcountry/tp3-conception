@@ -1,4 +1,5 @@
 ﻿using CineQuebec.Windows.Interfaces.ViewModels.Components;
+using CineQuebec.Windows.Interfaces.ViewModels.Screens;
 using CineQuebec.Windows.Interfaces.ViewModels.Screens.User;
 
 using Stylet;
@@ -16,7 +17,7 @@ public class PreferencesViewModel : Screen, IPreferencesViewModel
         RealisateursFavorisViewModel = realisateursFavorisViewModel;
         CategoriesPrefereesViewModel = categoriesPrefereesViewModel;
 
-        HeaderViewModel.PreviousView = typeof(HomeViewModel);
+        HeaderViewModel.PreviousView = typeof(IHomeViewModel);
     }
 
     public IHeaderViewModel HeaderViewModel { get; }

@@ -1,4 +1,5 @@
 ﻿using CineQuebec.Windows;
+using CineQuebec.Windows.Interfaces;
 
 using Microsoft.Extensions.DependencyInjection;
 

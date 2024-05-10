@@ -1,8 +1,10 @@
 ﻿using System.Windows;
 
+using Stylet;
+
 namespace CineQuebec.Windows.Interfaces.ViewModels.Dialogs;
 
-public interface IDialogInscriptionUtilisateurViewModel
+public interface IDialogInscriptionUtilisateurViewModel : IScreen
 {
     bool InscriptionReussie { get; }
     string Nom { get; set; }
@@ -14,5 +16,4 @@ public interface IDialogInscriptionUtilisateurViewModel
     Task Valider();
     void OnMdpChange(object sender, RoutedEventArgs e);
     void OnConfirmationMdpChange(object sender, RoutedEventArgs e);
-    void Refresh();
 }

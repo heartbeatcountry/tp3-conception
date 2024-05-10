@@ -2,13 +2,16 @@
 
 using CineQuebec.Application.Interfaces.Services.Films;
 using CineQuebec.Application.Records.Films;
-using CineQuebec.Windows.ViewModels.Components;
+using CineQuebec.Windows.Interfaces;
+using CineQuebec.Windows.Interfaces.ViewModels.Components;
+using CineQuebec.Windows.Interfaces.ViewModels.Screens;
+using CineQuebec.Windows.Interfaces.ViewModels.Screens.Admin;
 
 using Stylet;
 
 namespace CineQuebec.Windows.ViewModels.Screens.Admin;
 
-public class AdminMovieListViewModel : Screen
+public class AdminMovieListViewModel : Screen, IAdminMovieListViewModel
 {
     private readonly IFilmQueryService _filmQueryService;
     private readonly IGestionnaireExceptions _gestionnaireExceptions;
@@ -17,13 +20,13 @@ public class AdminMovieListViewModel : Screen
     private bool _canRefreshFilms = true;
     private BindableCollection<FilmDto> _films;
 
-    public AdminMovieListViewModel(INavigationController navigationController, HeaderViewModel headerViewModel,
+    public AdminMovieListViewModel(INavigationController navigationController, IHeaderViewModel headerViewModel,
         IFilmQueryService filmQueryService, IGestionnaireExceptions gestionnaireExceptions)
     {
         _navigationController = navigationController;
         _filmQueryService = filmQueryService;
         _gestionnaireExceptions = gestionnaireExceptions;
-        headerViewModel.PreviousView = typeof(HomeViewModel);
+        headerViewModel.PreviousView = typeof(IHomeViewModel);
         HeaderViewModel = headerViewModel;
         _ = RefreshFilms();
     }
@@ -40,11 +43,11 @@ public class AdminMovieListViewModel : Screen
         private set => SetAndNotify(ref _films, value);
     }
 
-    public HeaderViewModel HeaderViewModel { get; }
+    public IHeaderViewModel HeaderViewModel { get; }
 
     public void AddNewFilm()
     {
-        _navigationController.NavigateTo<AdminMovieCreationViewModel>();
+        _navigationController.NavigateTo<IAdminMovieCreationViewModel>();
     }
 
     public async Task RefreshFilms()
@@ -94,7 +97,7 @@ public class AdminMovieListViewModel : Screen
     public void ConsulterFilm(Guid id)
     {
         DesactiverInterface();
-        _navigationController.NavigateTo<AdminMovieDetailsViewModel>(id);
+        _navigationController.NavigateTo<IAdminMovieDetailsViewModel>(id);
     }
 
     private void DesactiverInterface()
