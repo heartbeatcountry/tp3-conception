@@ -7,10 +7,14 @@ namespace CineQuebec.Windows.ViewModels.Screens.User;
 
 public class PreferencesViewModel : Screen, IPreferencesViewModel
 {
-    public PreferencesViewModel(IHeaderViewModel headerViewModel, IActeursFavorisViewModel acteursFavorisViewModel)
+    public PreferencesViewModel(IHeaderViewModel headerViewModel, IActeursFavorisViewModel acteursFavorisViewModel,
+        IRealisateursFavorisViewModel realisateursFavorisViewModel,
+        ICategoriesPrefereesViewModel categoriesPrefereesViewModel)
     {
         HeaderViewModel = headerViewModel;
         ActeursFavorisViewModel = acteursFavorisViewModel;
+        RealisateursFavorisViewModel = realisateursFavorisViewModel;
+        CategoriesPrefereesViewModel = categoriesPrefereesViewModel;
 
         HeaderViewModel.PreviousView = typeof(HomeViewModel);
     }
@@ -18,4 +22,6 @@ public class PreferencesViewModel : Screen, IPreferencesViewModel
     public IHeaderViewModel HeaderViewModel { get; }
 
     public IActeursFavorisViewModel ActeursFavorisViewModel { get; }
+    public IRealisateursFavorisViewModel RealisateursFavorisViewModel { get; }
+    public ICategoriesPrefereesViewModel CategoriesPrefereesViewModel { get; }
 }
