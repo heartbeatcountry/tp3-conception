@@ -5,24 +5,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance user:PreferencesViewModel}"
-             xmlns:rs="clr-namespace:CineQuebec.Windows.Ressources.i18n"
              xmlns:s="https://github.com/canton7/Stylet"
-             xmlns:screens="clr-namespace:CineQuebec.Windows.ViewModels.Screens"
              xmlns:user="clr-namespace:CineQuebec.Windows.ViewModels.Screens.User"
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel Margin="10">
-        <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}"/>
+        <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}" />
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="5"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="5"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <ContentControl Grid.Column="0" s:View.Model="{Binding ActeursFavorisViewModel}"/>
-            <ContentControl Grid.Column="2" s:View.Model="{Binding RealisateursFavorisViewModel}"/>
-            <ContentControl Grid.Column="4" s:View.Model="{Binding CategoriesPrefereesViewModel}"/>
+            <ContentControl Grid.Column="0" s:View.Model="{Binding ActeursFavorisViewModel}" />
+            <ContentControl Grid.Column="2" s:View.Model="{Binding RealisateursFavorisViewModel}" />
+            <ContentControl Grid.Column="4" s:View.Model="{Binding CategoriesPrefereesViewModel}" />
         </Grid>
     </DockPanel>
 </UserControl>

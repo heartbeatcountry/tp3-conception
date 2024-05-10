@@ -11,7 +11,8 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel Margin="10">
         <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}" />
-        <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" IsEnabled="{Binding NavigationIsEnabled}">
+        <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"
+                   IsEnabled="{Binding NavigationIsEnabled}">
             <WrapPanel.Resources>
                 <Style x:Key="MainNavButton" TargetType="{x:Type Button}" BasedOn="{StaticResource DefautButton}">
                     <Setter Property="Margin" Value="10,0" />
