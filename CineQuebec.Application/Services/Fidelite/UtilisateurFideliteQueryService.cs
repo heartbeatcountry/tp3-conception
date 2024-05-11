@@ -49,12 +49,10 @@ public class UtilisateurFideliteQueryService(IUnitOfWorkFactory unitOfWorkFactor
 
         foreach (Guid idUtilisateur in idsUtilisateursFideles)
         {
-            IUtilisateur? utilisateur = await unitOfWork.UtilisateurRepository.ObtenirAsync(u =>
-                u.Id == idUtilisateur &&
-                (u.ActeursFavorisParId.Any(film.ActeursParId.Contains) ||
-                 u.RealisateursFavorisParId.Any(film.RealisateursParId.Contains)));
+            IUtilisateur? utilisateur = await unitOfWork.UtilisateurRepository.ObtenirParIdAsync(idUtilisateur);
 
-            if (utilisateur != null)
+            if (utilisateur != null && (utilisateur.ActeursFavorisParId.Any(film.ActeursParId.Contains) ||
+                                        utilisateur.RealisateursFavorisParId.Any(film.RealisateursParId.Contains)))
             {
                 utilisateursFideles.Add(utilisateur.VersDto());
             }
@@ -71,10 +69,9 @@ public class UtilisateurFideliteQueryService(IUnitOfWorkFactory unitOfWorkFactor
 
         foreach (Guid idUtilisateur in idsUtilisateursFideles)
         {
-            IUtilisateur? utilisateur = await unitOfWork.UtilisateurRepository.ObtenirAsync(u =>
-                u.Id == idUtilisateur && u.CategoriesPrefereesParId.Contains(film.IdCategorie));
+            IUtilisateur? utilisateur = await unitOfWork.UtilisateurRepository.ObtenirParIdAsync(idUtilisateur);
 
-            if (utilisateur != null)
+            if (utilisateur != null && utilisateur.CategoriesPrefereesParId.Contains(film.IdCategorie))
             {
                 utilisateursFideles.Add(utilisateur.VersDto());
             }
@@ -87,7 +84,7 @@ public class UtilisateurFideliteQueryService(IUnitOfWorkFactory unitOfWorkFactor
     {
         IEnumerable<IBillet> billets = await unitOfWork.BilletRepository.ObtenirTousAsync();
         return billets.GroupBy(b => b.IdUtilisateur)
-            .OrderBy(g => g.Count())
+            .OrderByDescending(g => g.Count())
             .Select(g => g.Key);
     }
 }

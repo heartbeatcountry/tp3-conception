@@ -31,6 +31,7 @@ public abstract class GenericTestsWithServiceInjection<TService> where TService 
     protected Mock<IRepository<ISalle>> SalleRepositoryMock { get; private set; } = null!;
     protected Mock<IRepository<IProjection>> ProjectionRepositoryMock { get; private set; } = null!;
     protected Mock<IRepository<IUtilisateur>> UtilisateurRepositoryMock { get; private set; } = null!;
+    protected Mock<IRepository<IBillet>> BilletRepositoryMock { get; private set; } = null!;
 
     protected ServiceProvider ServiceProvider { get; private set; } = null!;
 
@@ -63,6 +64,7 @@ public abstract class GenericTestsWithServiceInjection<TService> where TService 
             [typeof(IRepository<ISalle>)] = SalleRepositoryMock.Object,
             [typeof(IRepository<IUtilisateur>)] = UtilisateurRepositoryMock.Object,
             [typeof(IRepository<INoteFilm>)] = NoteFilmRepositoryMock.Object,
+            [typeof(IRepository<IBillet>)] = BilletRepositoryMock.Object,
             [typeof(IUnitOfWork)] = UnitOfWorkMock.Object,
             [typeof(IUnitOfWorkFactory)] = _unitOfWorkFactoryMock.Object,
             [typeof(IUtilisateurAuthenticationService)] = UtilisateurAuthenticationServiceMock.Object,
@@ -91,6 +93,7 @@ public abstract class GenericTestsWithServiceInjection<TService> where TService 
         CategorieFilmRepositoryMock = new Mock<IRepository<ICategorieFilm>>();
         SalleRepositoryMock = new Mock<IRepository<ISalle>>();
         ProjectionRepositoryMock = new Mock<IRepository<IProjection>>();
+        BilletRepositoryMock = new Mock<IRepository<IBillet>>();
         UtilisateurRepositoryMock = new Mock<IRepository<IUtilisateur>>();
         UtilisateurAuthenticationServiceMock = new Mock<IUtilisateurAuthenticationService>();
         UtilisateurCreationServiceMock = new Mock<IUtilisateurCreationService>();
@@ -108,6 +111,7 @@ public abstract class GenericTestsWithServiceInjection<TService> where TService 
         UnitOfWorkMock.Setup(u => u.SalleRepository).Returns(SalleRepositoryMock.Object);
         UnitOfWorkMock.Setup(u => u.ProjectionRepository).Returns(ProjectionRepositoryMock.Object);
         UnitOfWorkMock.Setup(u => u.UtilisateurRepository).Returns(UtilisateurRepositoryMock.Object);
+        UnitOfWorkMock.Setup(u => u.BilletRepository).Returns(BilletRepositoryMock.Object);
         _unitOfWorkFactoryMock.Setup(f => f.Create()).Returns(UnitOfWorkMock.Object);
     }
 
