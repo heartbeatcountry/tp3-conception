@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 
 using CineQuebec.Domain.Entities.Abstract;
+using CineQuebec.Domain.Exceptions.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 
 namespace CineQuebec.Domain.Entities.Films;
@@ -23,7 +24,7 @@ public class Acteur(string prenom, string nom) : Personne(prenom, nom), IActeur
     {
         if (idFilm == Guid.Empty)
         {
-            throw new ArgumentException("L'identifiant du film ne peut pas être vide.", nameof(idFilm));
+            throw new FilmGuidNullException("L'identifiant du film ne peut pas être vide.", nameof(idFilm));
         }
 
         return _joueDansFilmsAvecId.Add(idFilm);

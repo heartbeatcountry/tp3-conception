@@ -1,4 +1,5 @@
 using CineQuebec.Domain.Entities.Films;
+using CineQuebec.Domain.Exceptions.Entities.Films;
 
 using Tests.Domain.Entities.Abstract;
 
@@ -12,8 +13,7 @@ public class RealisateurTests : PersonneTests<Realisateur>
     public void AjouterFilm_WhenGivenFilmWithEmptyGuid_ShouldThrowArgumentException()
     {
         // Act & Assert
-        Assert.That(() => Entite.AjouterFilm(Guid.Empty),
-            Throws.ArgumentException.With.Message.Contains("ne peut pas être vide"));
+        Assert.That(() => Entite.AjouterFilm(Guid.Empty), Throws.InstanceOf<FilmGuidNullException>());
     }
 
     [Test]

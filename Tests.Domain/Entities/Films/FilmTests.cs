@@ -1,4 +1,5 @@
 using CineQuebec.Domain.Entities.Films;
+using CineQuebec.Domain.Exceptions.Entities.Films;
 
 using Tests.Domain.Entities.Abstract;
 
@@ -75,7 +76,7 @@ public class FilmTests : EntiteTests<Film>
     public void Constructor_WhenGivenNullCategorie_ShouldThrowArgumentException()
     {
         Assert.That(() => CreateInstance(TitreValide, DescriptionValide, Guid.Empty, DateSortieInternationale,
-            AucunActeurs, AucunRealisateurs, DureeValide), Throws.ArgumentException);
+            AucunActeurs, AucunRealisateurs, DureeValide), Throws.InstanceOf<CategorieGuidNullException>());
     }
 
     [Test]
@@ -84,9 +85,9 @@ public class FilmTests : EntiteTests<Film>
         Assert.Multiple(() =>
         {
             Assert.That(() => CreateInstance(TitreValide, string.Empty, CategorieFilm, DateSortieInternationale,
-                AucunActeurs, AucunRealisateurs, DureeValide), Throws.ArgumentException);
+                AucunActeurs, AucunRealisateurs, DureeValide), Throws.InstanceOf<DescriptionOutOfRangeException>());
             Assert.That(() => CreateInstance(TitreValide, " ", CategorieFilm, DateSortieInternationale,
-                AucunActeurs, AucunRealisateurs, DureeValide), Throws.ArgumentException);
+                AucunActeurs, AucunRealisateurs, DureeValide), Throws.InstanceOf<DescriptionOutOfRangeException>());
         });
     }
 
@@ -96,9 +97,9 @@ public class FilmTests : EntiteTests<Film>
         Assert.Multiple(() =>
         {
             Assert.That(() => CreateInstance(string.Empty, DescriptionValide, CategorieFilm, DateSortieInternationale,
-                AucunActeurs, AucunRealisateurs, DureeValide), Throws.ArgumentException);
+                AucunActeurs, AucunRealisateurs, DureeValide), Throws.InstanceOf<TitreOutOfRangeException>());
             Assert.That(() => CreateInstance(" ", DescriptionValide, CategorieFilm, DateSortieInternationale,
-                AucunActeurs, AucunRealisateurs, DureeValide), Throws.ArgumentException);
+                AucunActeurs, AucunRealisateurs, DureeValide), Throws.InstanceOf<TitreOutOfRangeException>());
         });
     }
 
@@ -239,7 +240,7 @@ public class FilmTests : EntiteTests<Film>
     public void SetDateSortieInternationale_WhenGivenZeroDate_ShouldThrowArgumentOutOfRangeException()
     {
         Assert.That(() => Entite.SetDateSortieInternationale(DateTime.MinValue), Throws
-            .InstanceOf<ArgumentOutOfRangeException>());
+            .InstanceOf<DateSortieOutOfRangeException>());
     }
 
     [Test]
@@ -258,7 +259,7 @@ public class FilmTests : EntiteTests<Film>
     [Test]
     public void SetDureeEnMinutes_WhenGivenZeroDuree_ShouldThrowArgumentNullException()
     {
-        Assert.That(() => Entite.SetDureeEnMinutes(0), Throws.InstanceOf<ArgumentOutOfRangeException>());
+        Assert.That(() => Entite.SetDureeEnMinutes(0), Throws.InstanceOf<DureeOutOfRangeException>());
     }
 
     [Test]

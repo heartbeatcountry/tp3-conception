@@ -1,11 +1,17 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
+using CineQuebec.Domain.Exceptions.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities.Abstract;
 
 namespace CineQuebec.Domain.Entities.Abstract;
 
 public abstract class Personne : Entite, IComparable<Personne>, IPersonne
 {
+    public const byte LongueurMinNom = 1;
+    public const byte LongueurMaxNom = 50;
+    public const byte LongueurMinPrenom = 1;
+    public const byte LongueurMaxPrenom = 50;
+
     protected Personne(string prenom, string nom)
     {
         SetPrenom(prenom);
@@ -26,9 +32,12 @@ public abstract class Personne : Entite, IComparable<Personne>, IPersonne
 
     public void SetNom(string nom)
     {
-        if (string.IsNullOrWhiteSpace(nom))
+        nom = nom.Trim();
+
+        if (nom.Length is < LongueurMinNom or > LongueurMaxNom)
         {
-            throw new ArgumentException("Le nom ne peut pas être vide.", nameof(nom));
+            throw new PersonneNomOutOfRangeException(
+                $"Le nom doit contenir entre {LongueurMinNom} et {LongueurMaxNom} caractères.", nameof(nom));
         }
 
         Nom = nom.Trim();
@@ -36,9 +45,13 @@ public abstract class Personne : Entite, IComparable<Personne>, IPersonne
 
     public void SetPrenom(string prenom)
     {
-        if (string.IsNullOrWhiteSpace(prenom))
+        prenom = prenom.Trim();
+
+        if (prenom.Length is < LongueurMinPrenom or > LongueurMaxPrenom)
         {
-            throw new ArgumentException("Le prénom ne peut pas être vide.", nameof(prenom));
+            throw new PersonnePrenomOutOfRangeException(
+                $"Le prénom doit contenir entre {LongueurMinPrenom} et {LongueurMaxPrenom} caractères.",
+                nameof(prenom));
         }
 
         Prenom = prenom.Trim();

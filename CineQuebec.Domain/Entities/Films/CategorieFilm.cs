@@ -1,12 +1,16 @@
 using System.Diagnostics.CodeAnalysis;
 
 using CineQuebec.Domain.Entities.Abstract;
+using CineQuebec.Domain.Exceptions.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 
 namespace CineQuebec.Domain.Entities.Films;
 
 public class CategorieFilm : Entite, IComparable<CategorieFilm>, ICategorieFilm
 {
+    public const byte LongueurMinNomAffichage = 1;
+    public const byte LongueurMaxNomAffichage = 50;
+
     public CategorieFilm(string nomAffichage)
     {
         SetNomAffichage(nomAffichage);
@@ -23,9 +27,13 @@ public class CategorieFilm : Entite, IComparable<CategorieFilm>, ICategorieFilm
 
     public void SetNomAffichage(string nomAffichage)
     {
-        if (string.IsNullOrWhiteSpace(nomAffichage))
+        nomAffichage = nomAffichage.Trim();
+
+        if (nomAffichage.Length is < LongueurMinNomAffichage or > LongueurMaxNomAffichage)
         {
-            throw new ArgumentException("Le nom d'affichage ne peut pas être vide.", nameof(nomAffichage));
+            throw new NomAffichageOutOfRangeException(
+                $"Le nom d'affichage doit contenir entre {LongueurMinNomAffichage} et {LongueurMaxNomAffichage} caractères.",
+                nameof(nomAffichage));
         }
 
         NomAffichage = nomAffichage.Trim();

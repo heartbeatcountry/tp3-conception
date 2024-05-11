@@ -1,12 +1,24 @@
 using System.Diagnostics.CodeAnalysis;
 
 using CineQuebec.Domain.Entities.Abstract;
+using CineQuebec.Domain.Exceptions.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 
 namespace CineQuebec.Domain.Entities.Films;
 
 public class Film : Entite, IComparable<Film>, IFilm
 {
+    public const byte MinRealisateurs = 1;
+    public const byte MaxRealisateurs = 6;
+    public const byte MinActeurs = 1;
+    public const byte MaxActeurs = 128;
+    public const byte DureeMinimum = 1;
+    public const byte DureeMaximum = 255;
+    public const byte LongueurMinTitre = 1;
+    public const byte LongueurMaxTitre = 128;
+    public const byte LongueurMinDescription = 1;
+    public const ushort LongueurMaxDescription = 1024;
+
     private readonly HashSet<Guid> _acteursParId = [];
     private readonly HashSet<Guid> _realisateursParId = [];
     private DateOnly _dateSortieInternationale = DateOnly.MinValue;
@@ -70,19 +82,37 @@ public class Film : Entite, IComparable<Film>, IFilm
 
     public void AddActeurs(IEnumerable<Guid> acteurs)
     {
-        SetActeursParId(ActeursParId.Union(acteurs));
+        HashSet<Guid> nouvActeurs = ActeursParId.Union(acteurs).ToHashSet();
+
+        if (nouvActeurs.Count is < MinActeurs or > MaxActeurs)
+        {
+            throw new NbActeursOutOfRangeException(
+                $"Le film doit avoir entre {MinActeurs} et {MaxActeurs} acteurs.",
+                nameof(acteurs));
+        }
+
+        SetActeursParId(nouvActeurs);
     }
 
     public void AddRealisateurs(IEnumerable<Guid> realisateurs)
     {
-        SetRealisateursParId(RealisateursParId.Union(realisateurs));
+        HashSet<Guid> nouvRealisateurs = RealisateursParId.Union(realisateurs).ToHashSet();
+
+        if (nouvRealisateurs.Count is < MinRealisateurs or > MaxRealisateurs)
+        {
+            throw new NbRealisateursOutOfRangeException(
+                $"Le film doit avoir entre {MinRealisateurs} et {MaxRealisateurs} réalisateurs.",
+                nameof(realisateurs));
+        }
+
+        SetRealisateursParId(nouvRealisateurs);
     }
 
     public void SetCategorie(Guid categorie)
     {
         if (categorie == Guid.Empty)
         {
-            throw new ArgumentException("Le guid de la catégorie ne peut pas être nul.", nameof(categorie));
+            throw new CategorieGuidNullException(nameof(categorie), "Le guid de la catégorie ne peut pas être nul.");
         }
 
         IdCategorie = categorie;
@@ -92,8 +122,9 @@ public class Film : Entite, IComparable<Film>, IFilm
     {
         if (dateSortieInternationale == DateTime.MinValue)
         {
-            throw new ArgumentOutOfRangeException(nameof(dateSortieInternationale),
-                $"La date de sortie internationale doit être supérieure à {DateOnly.MinValue}.");
+            throw new DateSortieOutOfRangeException(
+                $"La date de sortie internationale doit être supérieure à {DateOnly.MinValue}.",
+                nameof(dateSortieInternationale));
         }
 
         DateSortieInternationale = dateSortieInternationale;
@@ -101,19 +132,24 @@ public class Film : Entite, IComparable<Film>, IFilm
 
     public void SetDescription(string description)
     {
-        if (string.IsNullOrWhiteSpace(description))
+        description = description.Trim();
+
+        if (description.Length is < LongueurMinDescription or > LongueurMaxDescription)
         {
-            throw new ArgumentException("La description ne peut pas être vide.", nameof(description));
+            throw new DescriptionOutOfRangeException(
+                $"La description doit contenir entre {LongueurMinDescription} et {LongueurMaxDescription} caractères.",
+                nameof(description));
         }
 
-        Description = description.Trim();
+        Description = description;
     }
 
     public void SetDureeEnMinutes(ushort duree)
     {
-        if (duree == 0)
+        if (duree is < DureeMinimum or > DureeMaximum)
         {
-            throw new ArgumentOutOfRangeException(nameof(duree), "Le film doit durer plus de 0 minutes.");
+            throw new DureeOutOfRangeException($"Le film doit durer entre {DureeMinimum} et {DureeMaximum} minutes.",
+                nameof(duree));
         }
 
         DureeEnMinutes = duree;
@@ -121,12 +157,16 @@ public class Film : Entite, IComparable<Film>, IFilm
 
     public void SetTitre(string titre)
     {
-        if (string.IsNullOrWhiteSpace(titre))
+        titre = titre.Trim();
+
+        if (titre.Length is < LongueurMinTitre or > LongueurMaxTitre)
         {
-            throw new ArgumentException("Le titre ne peut pas être vide.", nameof(titre));
+            throw new TitreOutOfRangeException(
+                $"Le titre doit contenir entre {LongueurMinTitre} et {LongueurMaxTitre} caractères.",
+                nameof(titre));
         }
 
-        Titre = titre.Trim();
+        Titre = titre;
     }
 
     public override string ToString()

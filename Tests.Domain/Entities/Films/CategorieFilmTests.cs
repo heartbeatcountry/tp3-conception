@@ -1,4 +1,5 @@
 using CineQuebec.Domain.Entities.Films;
+using CineQuebec.Domain.Exceptions.Entities.Films;
 
 using Tests.Domain.Entities.Abstract;
 
@@ -49,8 +50,8 @@ public class CategorieFilmTests : EntiteTests<CategorieFilm>
     {
         Assert.Multiple(() =>
         {
-            Assert.That(() => CreateInstance(string.Empty), Throws.ArgumentException);
-            Assert.That(() => CreateInstance(" "), Throws.ArgumentException);
+            Assert.That(() => CreateInstance(string.Empty), Throws.InstanceOf<NomAffichageOutOfRangeException>());
+            Assert.That(() => CreateInstance(" "), Throws.InstanceOf<NomAffichageOutOfRangeException>());
         });
     }
 
@@ -80,8 +81,9 @@ public class CategorieFilmTests : EntiteTests<CategorieFilm>
     {
         Assert.Multiple(() =>
         {
-            Assert.That(() => Entite.SetNomAffichage(string.Empty), Throws.ArgumentException);
-            Assert.That(() => Entite.SetNomAffichage(" "), Throws.ArgumentException);
+            Assert.That(() => Entite.SetNomAffichage(string.Empty),
+                Throws.InstanceOf<NomAffichageOutOfRangeException>());
+            Assert.That(() => Entite.SetNomAffichage(" "), Throws.InstanceOf<NomAffichageOutOfRangeException>());
         });
     }
 

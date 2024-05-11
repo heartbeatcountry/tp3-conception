@@ -1,4 +1,5 @@
 using CineQuebec.Domain.Entities.Utilisateurs;
+using CineQuebec.Domain.Exceptions.Entities.Abstract;
 
 using Tests.Domain.Entities.Abstract;
 
@@ -23,25 +24,19 @@ public class UtilisateurTests : EntiteTests<Utilisateur>
     [Test]
     public void Constructor_WhenGivenNullOrWhitespacePrenom_ShouldThrowArgumentException()
     {
-        // Act
-        ArgumentException? exception = Assert.Throws<ArgumentException>(() => CreateInstance(String.Empty, NomValide,
-            CourrielValide,
-            HashMotDePasseValide, RolesValides));
-
-        // Assert
-        Assert.That(exception.Message, Does.Contain("prénom ne peut pas être vide"));
+        // Act & Assert
+        Assert.That(
+            () => CreateInstance(String.Empty, NomValide, CourrielValide, HashMotDePasseValide, RolesValides),
+            Throws.InstanceOf<PersonnePrenomOutOfRangeException>());
     }
 
     [Test]
     public void Constructor_WhenGivenNullOrWhitespaceNom_ShouldThrowArgumentException()
     {
-        // Act
-        ArgumentException? exception = Assert.Throws<ArgumentException>(() => CreateInstance(PrenomValide, String.Empty,
-            CourrielValide,
-            HashMotDePasseValide, RolesValides));
-
-        // Assert
-        Assert.That(exception.Message, Does.Contain("nom ne peut pas être vide"));
+        // Act & Assert
+        Assert.That(
+            () => CreateInstance(PrenomValide, String.Empty, CourrielValide, HashMotDePasseValide, RolesValides),
+            Throws.InstanceOf<PersonneNomOutOfRangeException>());
     }
 
     [Test]

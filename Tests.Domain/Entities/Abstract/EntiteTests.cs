@@ -1,6 +1,7 @@
 using System.Reflection;
 
 using CineQuebec.Domain.Entities.Abstract;
+using CineQuebec.Domain.Exceptions.Entities.Abstract;
 
 // ReSharper disable EqualExpressionComparison
 
@@ -180,7 +181,7 @@ public abstract class EntiteTests<TEntite> where TEntite : Entite
     public void SetId_WhenGivenEmptyGuid_ShouldThrowArgumentNullException()
     {
         // Assert
-        Assert.That(() => Entite.SetId(Guid.Empty), Throws.ArgumentNullException);
+        Assert.That(() => Entite.SetId(Guid.Empty), Throws.InstanceOf<EntityGuidNullException>());
     }
 
     [Test]

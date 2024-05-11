@@ -1,4 +1,5 @@
-﻿using CineQuebec.Domain.Interfaces.Entities.Abstract;
+﻿using CineQuebec.Domain.Exceptions.Entities.Abstract;
+using CineQuebec.Domain.Interfaces.Entities.Abstract;
 
 namespace CineQuebec.Domain.Entities.Abstract;
 
@@ -10,7 +11,7 @@ public abstract class Entite : IEquatable<Entite>, IEntite
     {
         if (id == Guid.Empty)
         {
-            throw new ArgumentNullException(nameof(id), "L'identifiant ne peut pas être nul.");
+            throw new EntityGuidNullException("L'identifiant ne peut pas être nul.", nameof(id));
         }
 
         Id = id;

@@ -1,4 +1,5 @@
 using CineQuebec.Domain.Entities.Abstract;
+using CineQuebec.Domain.Exceptions.Entities.Abstract;
 
 namespace Tests.Domain.Entities.Abstract;
 
@@ -90,8 +91,9 @@ public abstract class PersonneTests<T> : EntiteTests<T> where T : Personne
     {
         Assert.Multiple(() =>
         {
-            Assert.That(() => CreateInstance(PrenomValide, string.Empty), Throws.ArgumentException);
-            Assert.That(() => CreateInstance(PrenomValide, " "), Throws.ArgumentException);
+            Assert.That(() => CreateInstance(PrenomValide, string.Empty),
+                Throws.InstanceOf<PersonneNomOutOfRangeException>());
+            Assert.That(() => CreateInstance(PrenomValide, " "), Throws.InstanceOf<PersonneNomOutOfRangeException>());
         });
     }
 
@@ -107,8 +109,9 @@ public abstract class PersonneTests<T> : EntiteTests<T> where T : Personne
     {
         Assert.Multiple(() =>
         {
-            Assert.That(() => CreateInstance(string.Empty, NomValide), Throws.ArgumentException);
-            Assert.That(() => CreateInstance(" ", NomValide), Throws.ArgumentException);
+            Assert.That(() => CreateInstance(string.Empty, NomValide),
+                Throws.InstanceOf<PersonnePrenomOutOfRangeException>());
+            Assert.That(() => CreateInstance(" ", NomValide), Throws.InstanceOf<PersonnePrenomOutOfRangeException>());
         });
     }
 
@@ -151,8 +154,8 @@ public abstract class PersonneTests<T> : EntiteTests<T> where T : Personne
     {
         Assert.Multiple(() =>
         {
-            Assert.That(() => Entite.SetPrenom(string.Empty), Throws.ArgumentException);
-            Assert.That(() => Entite.SetPrenom(" "), Throws.ArgumentException);
+            Assert.That(() => Entite.SetPrenom(string.Empty), Throws.InstanceOf<PersonnePrenomOutOfRangeException>());
+            Assert.That(() => Entite.SetPrenom(" "), Throws.InstanceOf<PersonnePrenomOutOfRangeException>());
         });
     }
 

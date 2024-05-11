@@ -129,14 +129,20 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
     {
         // Arrange
         IFilm mockFilm = Mock.Of<IFilm>(f => f.Id == Guid.NewGuid());
+        IActeur mockActeur = Mock.Of<IActeur>(a => a.Id == Guid.NewGuid());
+        IRealisateur mockRealisateur = Mock.Of<IRealisateur>(r => r.Id == Guid.NewGuid());
         FilmRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<IFilm, bool>>>()))
             .ReturnsAsync(false);
         FilmRepositoryMock.Setup(r => r.AjouterAsync(It.IsAny<Film>()))
             .ReturnsAsync(mockFilm);
+        ActeurRepositoryMock.Setup(r => r.ObtenirParIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(mockActeur);
+        RealisateurRepositoryMock.Setup(r => r.ObtenirParIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(mockRealisateur);
 
         // Act
         _ = await Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now,
-            [], [], DureeValide);
+            [mockActeur.Id], [mockRealisateur.Id], DureeValide);
 
         // Assert
         FilmRepositoryMock.Verify(r => r.AjouterAsync(It.IsAny<Film>()), Times.Once);
@@ -148,14 +154,20 @@ public class FilmCreationServiceTests : GenericServiceTests<FilmCreationService>
     {
         // Arrange
         IFilm mockFilm = Mock.Of<IFilm>(f => f.Id == Guid.NewGuid());
+        IActeur mockActeur = Mock.Of<IActeur>(a => a.Id == Guid.NewGuid());
+        IRealisateur mockRealisateur = Mock.Of<IRealisateur>(r => r.Id == Guid.NewGuid());
         FilmRepositoryMock.Setup(r => r.ExisteAsync(It.IsAny<Expression<Func<IFilm, bool>>>()))
             .ReturnsAsync(false);
         FilmRepositoryMock.Setup(r => r.AjouterAsync(It.IsAny<Film>()))
             .ReturnsAsync(mockFilm);
+        ActeurRepositoryMock.Setup(r => r.ObtenirParIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(mockActeur);
+        RealisateurRepositoryMock.Setup(r => r.ObtenirParIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(mockRealisateur);
 
         // Act
         Guid nouvFilm = await Service.CreerFilm(TitreValide, DescriptionValide, _idCategorieValide, DateTime.Now,
-            [], [], DureeValide);
+            [mockActeur.Id], [mockRealisateur.Id], DureeValide);
 
         // Assert
         Assert.That(nouvFilm, Is.EqualTo(mockFilm.Id));
