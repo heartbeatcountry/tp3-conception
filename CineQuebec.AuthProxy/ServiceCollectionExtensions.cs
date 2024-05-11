@@ -1,4 +1,6 @@
-﻿using CineQuebec.Domain.Entities.Utilisateurs;
+﻿using System.Security;
+
+using CineQuebec.Domain.Entities.Utilisateurs;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -15,6 +17,21 @@ public static class ServiceCollectionExtensions
                      .Where(s => s.ServiceType == typeof(TService)).ToArray())
         {
             services.Replace(CreerNouveauServiceDescriptor<TService>(descriptor, methodMapping));
+        }
+
+        return services;
+    }
+
+    public static IServiceCollection BloquerToutAutreServiceSansAutorisationExplicite(this IServiceCollection services)
+    {
+        foreach (ServiceDescriptor descriptor in services.Where(d =>
+                     !ConfigureServices.ServicesAutorisesSansProxy.Contains(d.ServiceType) &&
+                     (d.ServiceType?.Name?.EndsWith("Service") ?? false) &&
+                     d.ImplementationFactory is null))
+        {
+            throw new SecurityException(
+                $"Le service {descriptor.ServiceType.Name} n'est pas autorisé à être utilisé sans proxy d'authentification. " +
+                "Le service doit être ajouté à ConfigureServices dans la couche AuthProxy.");
         }
 
         return services;
