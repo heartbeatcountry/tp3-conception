@@ -56,6 +56,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         EntityTypeBuilder<Salle> salles = builder.Entity<Salle>().ToCollection("salles");
         EntityTypeBuilder<Utilisateur> utilisateurs = builder.Entity<Utilisateur>().ToCollection("utilisateurs");
         EntityTypeBuilder<NoteFilm> noteFilms = builder.Entity<NoteFilm>().ToCollection("notes");
+        EntityTypeBuilder<Billet> billets = builder.Entity<Billet>().ToCollection("billets");
 
         films
             .Property(film => film.Id)
@@ -134,6 +135,18 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         noteFilms
             .Property(noteFilm => noteFilm.IdFilm)
+            .HasConversion<string>();
+
+        billets
+            .Property(billet => billet.Id)
+            .HasConversion<string>();
+
+        billets
+            .Property(billet => billet.IdProjection)
+            .HasConversion<string>();
+
+        billets
+            .Property(billet => billet.IdUtilisateur)
             .HasConversion<string>();
 
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

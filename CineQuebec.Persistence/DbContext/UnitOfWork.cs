@@ -16,6 +16,7 @@ public sealed class UnitOfWork(IApplicationDbContextFactory applicationDbContext
     private readonly ApplicationDbContext _context = applicationDbContextFactory.Create();
 
     private IRepository<IActeur>? _acteurRepository;
+    private IRepository<IBillet>? _billetRepository;
 
     private IRepository<ICategorieFilm>? _categorieFilmRepository;
 
@@ -23,11 +24,9 @@ public sealed class UnitOfWork(IApplicationDbContextFactory applicationDbContext
 
     private IRepository<IFilm>? _filmRepository;
     private IRepository<INoteFilm>? _noteFilmRepository;
-
     private IRepository<IProjection>? _projectionRepository;
     private IRepository<IRealisateur>? _realisateurRepository;
     private IRepository<ISalle>? _salleRepository;
-
     private IRepository<IUtilisateur>? _utilisateurRepository;
 
     public IRepository<INoteFilm> NoteFilmRepository =>
@@ -53,6 +52,9 @@ public sealed class UnitOfWork(IApplicationDbContextFactory applicationDbContext
 
     public IRepository<IUtilisateur> UtilisateurRepository =>
         _utilisateurRepository ??= new GenericRepository<Utilisateur, IUtilisateur>(_context);
+
+    public IRepository<IBillet> BilletRepository =>
+        _billetRepository ??= new GenericRepository<Billet, IBillet>(_context);
 
     public void Dispose()
     {

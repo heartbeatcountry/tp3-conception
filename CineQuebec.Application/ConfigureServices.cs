@@ -1,7 +1,9 @@
+using CineQuebec.Application.Interfaces.Services.Fidelite;
 using CineQuebec.Application.Interfaces.Services.Films;
 using CineQuebec.Application.Interfaces.Services.Identity;
 using CineQuebec.Application.Interfaces.Services.Preferences;
 using CineQuebec.Application.Interfaces.Services.Projections;
+using CineQuebec.Application.Services.Fidelite;
 using CineQuebec.Application.Services.Films;
 using CineQuebec.Application.Services.Identity;
 using CineQuebec.Application.Services.Preferences;
@@ -20,6 +22,7 @@ public static class ConfigureServices
             .AddSingleton<IPasswordHashingService, PasswordHashingService>()
             .AddSingleton<IUtilisateurAuthenticationService, UtilisateurAuthenticationService>()
             .AddSingleton<IUtilisateurCreationService, UtilisateurCreationService>()
+            .AddSingleton<IUtilisateurFideliteQueryService, UtilisateurFideliteQueryService>()
             .AddSingleton<IFilmQueryService, FilmQueryService>()
             .AddSingleton<IFilmCreationService, FilmCreationService>()
             .AddSingleton<IFilmDeletionService, FilmDeletionService>()
