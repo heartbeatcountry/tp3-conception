@@ -24,13 +24,11 @@ public class AbonneMovieListViewModel : Screen, IAbonneMovieListViewModel
     private readonly Guid utilisateur;
     private bool _canRefreshFilms = true;
     private BindableCollection<FilmDto> _films;
-
     private FilmDto _filmSelectionne;
-
     //private NoteFilmDto _noteFilm;
-    private List<int> _notes;
-    private bool AfficherDejaVusComboBox;
+
     private StatutAffichage statut = StatutAffichage.AfficherAlAffiche;
+    private bool AfficherDejaVusComboBox;
 
     public AbonneMovieListViewModel(INavigationController navigationController, IHeaderViewModel headerViewModel,
         IFilmQueryService filmQueryService, IGestionnaireExceptions gestionnaireExceptions,
@@ -50,11 +48,7 @@ public class AbonneMovieListViewModel : Screen, IAbonneMovieListViewModel
         _ = RefreshFilms();
     }
 
-    public List<int> Notes
-    {
-        get => _notes;
-        set => SetAndNotify(ref _notes, value);
-    }
+
 
     public FilmDto FilmSelectionne
     {
@@ -69,26 +63,7 @@ public class AbonneMovieListViewModel : Screen, IAbonneMovieListViewModel
         }
     }
 
-    //public NoteFilmDto NoteFilm
-    //{
-    //    get => _noteFilm;
 
-    //    set
-    //    {
-    //        if (_noteFilm != value)
-    //        {
-    //            _noteFilm = value;
-    //            SetAndNotify(ref _noteFilm, value);
-    //            if (FilmSelectionne != null)
-
-    //            {
-    //                MettreAJourNoteFilmPourUtilisateur(FilmSelectionne.Id, _noteFilm.Note);
-    //            }
-    //        }
-    //    }
-    //}
-
-    public Visibility AfficherComboBox => AfficherDejaVusComboBox ? Visibility.Visible : Visibility.Collapsed;
 
     public bool CanRefreshFilms
     {
@@ -180,11 +155,6 @@ public class AbonneMovieListViewModel : Screen, IAbonneMovieListViewModel
         statut = StatutAffichage.AfficherAlAffiche;
         _ = RefreshFilms();
     }
-
-    //private void MettreAJourNoteFilmPourUtilisateur(Guid filmSelectionne, byte nouvelleNote)
-    //{
-    //    _noteFilmCreationService.NoterFilm(filmSelectionne, nouvelleNote);
-    //}
 
     private void DesactiverInterface()
     {

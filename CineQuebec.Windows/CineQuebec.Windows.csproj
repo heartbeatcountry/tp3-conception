@@ -20,6 +20,7 @@
 	<ItemGroup>
 		<None Remove="appsettings.json" />
 		<None Remove="appsettings.local.json" />
+		<None Remove="Ressources\images\etoile.png" />
 		<None Remove="Ressources\images\logoCinema.png" />
 		<None Remove="Ressources\images\logoCinemaWithoutText.png" />
 		<None Remove="Ressources\images\logoMark.png" />
@@ -47,6 +48,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Resource Include="Ressources\images\etoile.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Resource>
 		<Resource Include="Ressources\images\logoCinema.png">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Resource>

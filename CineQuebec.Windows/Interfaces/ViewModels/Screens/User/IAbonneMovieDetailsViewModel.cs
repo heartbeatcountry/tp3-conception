@@ -13,7 +13,6 @@ public interface IAbonneMovieDetailsViewModel : IScreenWithData
     FilmDto? Film { get; }
     IHeaderViewModel HeaderViewModel { get; }
     NoteFilmDto NoteFilm { get; set; }
-    List<byte> NotesPossibles { get; }
     BindableCollection<ProjectionDto> Projections { get; }
     BindableCollection<RealisateurDto> Realisateurs { get; }
 
