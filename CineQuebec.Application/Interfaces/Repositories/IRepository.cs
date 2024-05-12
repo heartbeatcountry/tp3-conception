@@ -13,6 +13,8 @@ public interface IRepository<TIEntite> where TIEntite : IEntite
     public Task<IEnumerable<TIEntite>> ObtenirTousAsync(Expression<Func<TIEntite, bool>>? filtre = null,
         Func<IQueryable<TIEntite>, IOrderedQueryable<TIEntite>>? trierPar = null);
 
+    public Task<int> CompterAsync(Expression<Func<TIEntite, bool>>? filtre = null);
+
     public Task<bool> ExisteAsync(Expression<Func<TIEntite, bool>> filtre);
     public Task<bool> ExisteAsync(Guid id);
 

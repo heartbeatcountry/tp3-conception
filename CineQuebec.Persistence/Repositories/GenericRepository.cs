@@ -80,6 +80,19 @@ public class GenericRepository<TEntite, TIEntite> : IRepository<TIEntite>
             : await query.ToArrayAsync() as IEnumerable<TIEntite>)!;
     }
 
+    public async Task<int> CompterAsync(Expression<Func<TIEntite, bool>>? filtre = null)
+    {
+        IQueryable<TEntite> query = _dbSet;
+
+        if (filtre != null)
+        {
+            Expression<Func<TEntite, bool>> filtreExp = filtre.ReplaceTypeParameter<TIEntite, TEntite, bool>();
+            query = query.Where(filtreExp);
+        }
+
+        return await query.CountAsync();
+    }
+
     public void Supprimer(TIEntite entite)
     {
         if (_context.Entry(entite).State == EntityState.Detached)

@@ -124,6 +124,17 @@ public static class ConfigureServices
                     nameof(IProjectionQueryService.ObtenirProjectionsAVenirPourFilm)
                 ]
             })
+            .AjouterProxyAuthPourService<IBilletCreationService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Utilisateur] =
+                [
+                    nameof(IBilletCreationService.ReserverProjection)
+                ],
+                [Role.Administrateur] =
+                [
+                    nameof(IBilletCreationService.OffrirBilletGratuit)
+                ]
+            })
             .AjouterProxyAuthPourService<IRealisateurCreationService>(new Dictionary<Role, IEnumerable<string>>
             {
                 [Role.Administrateur] =

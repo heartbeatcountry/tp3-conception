@@ -36,6 +36,7 @@ public static class ConfigureServices
             .AddSingleton<IProjectionCreationService, ProjectionCreationService>()
             .AddSingleton<IProjectionQueryService, ProjectionQueryService>()
             .AddSingleton<IProjectionDeletionService, ProjectionDeletionService>()
+            .AddSingleton<IBilletCreationService, BilletCreationService>()
             .AddSingleton<ISalleCreationService, SalleCreationService>()
             .AddSingleton<INoteFilmCreationService, NoteFilmCreationService>()
             .AddSingleton<ISalleQueryService, SalleQueryService>()
