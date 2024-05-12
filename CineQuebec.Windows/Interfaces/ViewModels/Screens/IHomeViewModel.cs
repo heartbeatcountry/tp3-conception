@@ -14,4 +14,5 @@ public interface IHomeViewModel : IScreen
     bool NavigationIsEnabled { get; set; }
     void NavigateToFilmManagement();
     void NavigateToPreferences();
+    void NavigateToRecompenses();
 }

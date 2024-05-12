@@ -46,4 +46,10 @@ public class HomeViewModel(
         NavigationIsEnabled = false;
         navigationController.NavigateTo<IPreferencesViewModel>();
     }
+
+    public void NavigateToRecompenses()
+    {
+        NavigationIsEnabled = false;
+        navigationController.NavigateTo<IAdminOffrirBilletsViewModel>();
+    }
 }
