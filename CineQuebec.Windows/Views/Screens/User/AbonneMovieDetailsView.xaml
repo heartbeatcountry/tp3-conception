@@ -50,10 +50,10 @@
                         <Label Content="{Binding Film.NoteMoyenne}" x:Name="NoteMoyenne" Width="30"
                                HorizontalAlignment="Right" />
 
-                        <Image Source="/Ressources/images/star.png" Width="15" />
+                        <Image Source="/Ressources/images/etoile.png"  Width="15"/>
                         <Button Content="Noter" Command="{s:Action NoterFilm}" Margin="15 5"
-                                Style="{StaticResource DefautButton}"
-                                CommandParameter="{Binding}" />
+            Style="{StaticResource DefautButton}"   Visibility="{Binding VisibilityDejaVu}"
+              CommandParameter="{Binding}" />
 
 
                     </StackPanel>
@@ -78,7 +78,7 @@
                 <Grid Grid.Column="0">
                     <Image Source="/Ressources/images/logoCinemaWithoutText.png" Margin="10 5 " />
 
-
+                  
                 </Grid>
             </Grid>
             <DockPanel Margin="0,5,0,0">
