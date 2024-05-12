@@ -25,6 +25,7 @@
 		<None Remove="Ressources\images\logoMark.png" />
 		<None Remove="Ressources\images\preferences.png" />
 		<None Remove="Ressources\images\projections.png" />
+		<None Remove="Ressources\images\recompenses.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -60,6 +61,9 @@
 		</Resource>
 		<Resource Include="Ressources\images\projections.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Ressources\images\recompenses.png">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Resource>
 	</ItemGroup>
 

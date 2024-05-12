@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="CineQuebec.Windows.Views.Screens.Admin.AdminOffrirBilletsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance admin:AdminOffrirBilletsViewModel}"
+             xmlns:s="https://github.com/canton7/Stylet"
+             xmlns:films="clr-namespace:CineQuebec.Application.Records.Films;assembly=CineQuebec.Application"
+             xmlns:admin="clr-namespace:CineQuebec.Windows.ViewModels.Screens.Admin"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <DockPanel Margin="10">
+        <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}" />
+        <DockPanel Margin="0,10,0,0">
+            <DockPanel DockPanel.Dock="Bottom" Margin="0,10,0,0">
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Margin="0,0,15,0" Content="Rafraîchir" Command="{s:Action ToutRafraichir}"
+                            Style="{StaticResource DefautButton}" />
+                    <Button Content="Récompenser ces abonnés" Command="{s:Action AddNewFilm}"
+                            Style="{StaticResource DefautButton}" />
+                </StackPanel>
+            </DockPanel>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="8" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.Row="0" Content="1- Choisir un film présentement à l'affiche:"/>
+                    <ComboBox Grid.Column="0" Grid.Row="2" ItemsSource="{Binding LstFilms}"
+                              SelectedItem="{Binding FilmSelectionne}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Titre}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Label Grid.Column="2" Grid.Row="0" Content="2- Choisir une projection à venir pour ce film:"/>
+                    <ComboBox Grid.Column="2" Grid.Row="2" ItemsSource="{Binding LstProjections}"
+                              SelectedItem="{Binding ProjectionSelectionnee}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding DateHeure}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Content="3- Choisir les abonnés à récompenser:"/>
+                    <ListBox ItemsSource="{Binding LstUtilisateurs}"
+                             SelectionMode="Multiple" Grid.ColumnSpan="3" Grid.Row="6" Grid.Column="0">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <Label Content="{Binding Item.Prenom}" />
+                                    <Label Content="{Binding Item.Nom}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+            </Grid>
+                
+        </DockPanel>
+    </DockPanel>
+</UserControl>
