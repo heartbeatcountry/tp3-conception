@@ -94,11 +94,7 @@ public static class ConfigureServices
                 ],
                 [Role.Utilisateur] =
                 [
-                    nameof(IFilmQueryService.ObtenirFilmsAssistesParUtilisateur),
-                ],
-                [Role.Administrateur] =
-                [
-                    nameof(IFilmQueryService.ObtenirTous)
+                    nameof(IFilmQueryService.ObtenirFilmsAssistesParUtilisateur)
                 ]
             })
             .AjouterProxyAuthPourService<IFilmUpdateService>(new Dictionary<Role, IEnumerable<string>>

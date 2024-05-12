@@ -4,7 +4,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:s="https://github.com/canton7/Stylet"
-        xmlns:dialogs="clr-namespace:CineQuebec.Windows.ViewModels.Dialogs"
         mc:Ignorable="d"
         Title="Réservation"
         Width="300" Height="150">
@@ -22,10 +21,10 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-    
+
         <Label Grid.Row="2" Grid.Column="0" Content="Nb de billets :" />
-        <ComboBox Grid.Row="2" Grid.Column="2" SelectedItem="{Binding NbBillets}"></ComboBox>
-        
+        <ComboBox Grid.Row="2" Grid.Column="2" SelectedItem="{Binding NbBillets}" />
+
 
         <Button Grid.Row="4" Grid.Column="2" Content="Valider" Command="{s:Action Valider}"
                 Style="{StaticResource DefautButton}" Margin="10" />

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-
+// ReSharper disable once RedundantUsingDirective
 using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace CineQuebec.Persistence.DbContext;
@@ -57,7 +57,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         EntityTypeBuilder<Salle> salles = builder.Entity<Salle>().ToCollection("salles");
         EntityTypeBuilder<Utilisateur> utilisateurs = builder.Entity<Utilisateur>().ToCollection("utilisateurs");
         EntityTypeBuilder<NoteFilm> noteFilms = builder.Entity<NoteFilm>().ToCollection("notes");
-        EntityTypeBuilder<Billet> billets = builder.Entity<Billet>().ToCollection("billets");
 
         films
             .Property(film => film.Id)

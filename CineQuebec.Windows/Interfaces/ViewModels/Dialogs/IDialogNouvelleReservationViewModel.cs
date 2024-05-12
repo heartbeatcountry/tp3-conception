@@ -1,10 +1,5 @@
-﻿namespace CineQuebec.Windows.ViewModels.Dialogs
+﻿namespace CineQuebec.Windows.ViewModels.Dialogs;
+
+public interface IDialogNouvelleReservationViewModel
 {
-    public interface IDialogNouvelleReservationViewModel
-    {
-
-
-
-
-    }
 }
