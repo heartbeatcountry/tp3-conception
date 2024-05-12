@@ -17,13 +17,13 @@ public class HomeViewModel(
     IUtilisateurAuthenticationService utilisateurAuthenticationService) : Screen, IHomeViewModel
 {
     private bool _navigationIsEnabled = true;
+    public Visibility VisibilityAbonne => !EstAdmin ? Visibility.Visible : Visibility.Collapsed;
     public IHeaderViewModel HeaderViewModel => headerViewModel;
 
     public bool EstAdmin =>
         utilisateurAuthenticationService.ObtenirAutorisation()?.IsInRole(Role.Administrateur.ToString()) ?? false;
 
     public Visibility VisibilityAdmin => EstAdmin ? Visibility.Visible : Visibility.Collapsed;
-    public Visibility VisibilityAbonne => !EstAdmin ? Visibility.Visible : Visibility.Collapsed;
 
     public bool NavigationIsEnabled
     {
@@ -42,17 +42,6 @@ public class HomeViewModel(
         navigationController.NavigateTo<IAdminMovieListViewModel>();
     }
 
-    public void NavigateToFilmAbonne()
-    {
-        if (EstAdmin)
-        {
-            return;
-        }
-
-        NavigationIsEnabled = false;
-        navigationController.NavigateTo<IAbonneMovieListViewModel>();
-    }
-
     public void NavigateToPreferences()
     {
         NavigationIsEnabled = false;
@@ -63,5 +52,11 @@ public class HomeViewModel(
     {
         NavigationIsEnabled = false;
         navigationController.NavigateTo<IAdminOffrirBilletsViewModel>();
+    }
+
+    public void NavigateToFilmAbonne()
+    {
+        NavigationIsEnabled = false;
+        navigationController.NavigateTo<IAbonneMovieListViewModel>();
     }
 }

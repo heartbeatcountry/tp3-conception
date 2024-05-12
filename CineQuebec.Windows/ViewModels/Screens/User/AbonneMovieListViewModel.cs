@@ -5,10 +5,10 @@ using CineQuebec.Application.Interfaces.Services.Films;
 using CineQuebec.Application.Interfaces.Services.Identity;
 using CineQuebec.Application.Interfaces.Services.Preferences;
 using CineQuebec.Application.Records.Films;
+using CineQuebec.Windows.Interfaces;
 using CineQuebec.Windows.Interfaces.ViewModels.Components;
 using CineQuebec.Windows.Interfaces.ViewModels.Screens;
 using CineQuebec.Windows.Interfaces.ViewModels.Screens.User;
-using CineQuebec.Windows.ViewModels.Screens.Admin;
 
 using Stylet;
 
@@ -17,21 +17,23 @@ namespace CineQuebec.Windows.ViewModels.Screens.User;
 public class AbonneMovieListViewModel : Screen, IAbonneMovieListViewModel
 {
     private readonly IFilmQueryService _filmQueryService;
-    private readonly GestionnaireExceptions _gestionnaireExceptions;
+    private readonly IGestionnaireExceptions _gestionnaireExceptions;
     private readonly INavigationController _navigationController;
     private readonly INoteFilmCreationService _noteFilmCreationService;
     private readonly IUtilisateurAuthenticationService _utilisateurAuthenticationService;
     private readonly Guid utilisateur;
     private bool _canRefreshFilms = true;
     private BindableCollection<FilmDto> _films;
+
     private FilmDto _filmSelectionne;
+
     //private NoteFilmDto _noteFilm;
     private List<int> _notes;
-    private StatutAffichage statut = StatutAffichage.AfficherAlAffiche;
     private bool AfficherDejaVusComboBox;
+    private StatutAffichage statut = StatutAffichage.AfficherAlAffiche;
 
     public AbonneMovieListViewModel(INavigationController navigationController, IHeaderViewModel headerViewModel,
-        IFilmQueryService filmQueryService, GestionnaireExceptions gestionnaireExceptions,
+        IFilmQueryService filmQueryService, IGestionnaireExceptions gestionnaireExceptions,
         IUtilisateurAuthenticationService utilisateurAuthenticationService,
         INoteFilmCreationService noteFilmCreationService)
     {

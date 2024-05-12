@@ -7,7 +7,6 @@
              d:DataContext="{d:DesignInstance user:AbonneMovieListViewModel}"
              xmlns:s="https://github.com/canton7/Stylet"
              xmlns:films="clr-namespace:CineQuebec.Application.Records.Films;assembly=CineQuebec.Application"
-             xmlns:screens="clr-namespace:CineQuebec.Windows.ViewModels.Screens"
              xmlns:user="clr-namespace:CineQuebec.Windows.ViewModels.Screens.User"
              d:DesignHeight="450" d:DesignWidth="800">
 

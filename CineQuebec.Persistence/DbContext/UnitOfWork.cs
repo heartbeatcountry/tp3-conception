@@ -56,9 +56,6 @@ public sealed class UnitOfWork(IApplicationDbContextFactory applicationDbContext
     public IRepository<IUtilisateur> UtilisateurRepository =>
         _utilisateurRepository ??= new GenericRepository<Utilisateur, IUtilisateur>(_context);
 
-    public IRepository<IBillet> BilletRepository =>
-        _billetRepository ??= new GenericRepository<Billet, IBillet>(_context);
-
     public void Dispose()
     {
         Dispose(true);

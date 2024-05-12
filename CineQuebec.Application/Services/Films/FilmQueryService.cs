@@ -1,9 +1,7 @@
 using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Application.Interfaces.Services.Films;
 using CineQuebec.Application.Interfaces.Services.Identity;
-using CineQuebec.Application.Interfaces.Services.Projections;
 using CineQuebec.Application.Records.Films;
-using CineQuebec.Application.Services.Identity;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Projections;
 
@@ -60,7 +58,7 @@ public class FilmQueryService(
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
 
-      Guid idUtilisateur = utilisateurAuthenticationService.ObtenirIdUtilisateurConnecte();
+        Guid idUtilisateur = utilisateurAuthenticationService.ObtenirIdUtilisateurConnecte();
 
 
         IEnumerable<IBillet> billetsUtilisateur =
