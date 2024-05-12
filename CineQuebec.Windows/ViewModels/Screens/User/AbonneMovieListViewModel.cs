@@ -42,7 +42,7 @@ public class AbonneMovieListViewModel : Screen, IAbonneMovieListViewModel
         _gestionnaireExceptions = gestionnaireExceptions;
         HeaderViewModel = headerViewModel;
         HeaderViewModel.PreviousView = typeof(IHomeViewModel);
-        Notes = Enumerable.Range(0, 11).ToList();
+
         utilisateur = _utilisateurAuthenticationService.ObtenirIdUtilisateurConnecte();
 
         _ = RefreshFilms();
