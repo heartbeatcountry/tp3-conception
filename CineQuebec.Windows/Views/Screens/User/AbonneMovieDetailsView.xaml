@@ -50,10 +50,10 @@
                         <Label Content="{Binding Film.NoteMoyenne}" x:Name="NoteMoyenne" Width="30"
                                HorizontalAlignment="Right" />
 
-                        <Image Source="/Ressources/images/etoile.png"  Width="15"/>
+                        <Image Source="/Ressources/images/etoile.png" Width="15" />
                         <Button Content="Noter" Command="{s:Action NoterFilm}" Margin="15 5"
-            Style="{StaticResource DefautButton}"   Visibility="{Binding VisibilityDejaVu}"
-              CommandParameter="{Binding}" />
+                                Style="{StaticResource DefautButton}" Visibility="{Binding VisibilityDejaVu}"
+                                CommandParameter="{Binding}" />
 
 
                     </StackPanel>
@@ -73,13 +73,8 @@
                     </ScrollViewer>
                 </Grid>
                 <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
-
-
-                <Grid Grid.Column="0">
-                    <Image Source="/Ressources/images/logoCinemaWithoutText.png" Margin="10 5 " />
-
-                  
-                </Grid>
+                <Image Grid.Column="0" Grid.Row="0" Source="/Ressources/images/logoCinemaWithoutText.png"
+                       Margin="10 5 " />
             </Grid>
             <DockPanel Margin="0,5,0,0">
                 <StackPanel Margin="0,5,0,0" DockPanel.Dock="Bottom" Orientation="Horizontal"
@@ -98,7 +93,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <Label Grid.Row="0" Grid.Column="0" Content="Réalisateur.trice.s" />
+                        <Label Grid.Row="0" Grid.Column="0" Content="Réalisateur.trice.s" Background="LightGray" />
                         <ListView Margin="0,0,0,5" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Realisateurs}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
@@ -109,7 +104,7 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                        <Label Grid.Row="2" Grid.Column="0" Content="Acteur.trice.s" />
+                        <Label Grid.Row="2" Grid.Column="0" Content="Acteur.trice.s" Background="LightGray" />
                         <ListView Grid.Row="3" Grid.Column="0" ItemsSource="{Binding Acteurs}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>

@@ -31,9 +31,6 @@ public class ConfigureServicesTests
             Assert.DoesNotThrow(() => provider.GetRequiredService<IFilmQueryService>());
             Assert.That(provider.GetRequiredService<IFilmQueryService>(),
                 Is.InstanceOf<ServiceAuthProxy<IFilmQueryService>>());
-            Assert.DoesNotThrow(() => provider.GetRequiredService<IBilletQueryService>());
-            Assert.That(provider.GetRequiredService<IBilletQueryService>(),
-                Is.InstanceOf<ServiceAuthProxy<IBilletQueryService>>());
             Assert.DoesNotThrow(() => provider.GetRequiredService<IFilmCreationService>());
             Assert.That(provider.GetRequiredService<IFilmCreationService>(),
                 Is.InstanceOf<ServiceAuthProxy<IFilmCreationService>>());

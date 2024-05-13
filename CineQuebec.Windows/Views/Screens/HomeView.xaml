@@ -46,7 +46,7 @@
                     <Label Style="{StaticResource DefautLabel}" HorizontalAlignment="Center">
                         <Label.Content>
                             <AccessText TextAlignment="Center" TextWrapping="Wrap"
-                                        Text="Mes préférences" />
+                                        Text="Configurer mes préférences" />
                         </Label.Content>
                     </Label>
 
