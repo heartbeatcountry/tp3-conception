@@ -48,14 +48,15 @@
                         <Label Content="Titre" Width="300" />
                         <Label Content="{Binding Film.NoteMoyenne}" x:Name="NoteMoyenne" Width="60"
                                HorizontalAlignment="Right" />
-                        <Label Content="*" FontSize="15" Padding="10 5" />
+                        <Label Content="*" FontSize="15" Padding="0,5,10 5" />
 
 
                     </StackPanel>
                     <TextBlock Margin="0,5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                               Text="{Binding Film.Titre}" />
+                               Text="{Binding Film.Titre}" TextWrapping="Wrap" />
                     <Label Grid.Row="2" Grid.Column="0" Content="Catégorie" />
-                    <TextBlock Margin="0,5" Grid.Row="3" Grid.Column="0" Text="{Binding Film.Categorie.NomAffichage}" />
+                    <TextBlock Margin="0,5" Grid.Row="3" Grid.Column="0" TextWrapping="Wrap"
+                               Text="{Binding Film.Categorie.NomAffichage}" />
                     <Label Grid.Row="2" Grid.Column="2" Content="Durée" />
                     <TextBlock Margin="0,5" Grid.Row="3" Grid.Column="2"
                                Text="{Binding Film.DureeEnMinutes, StringFormat={}{0} minutes}" />

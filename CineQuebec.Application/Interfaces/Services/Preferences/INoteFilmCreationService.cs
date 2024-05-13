@@ -2,5 +2,5 @@
 
 public interface INoteFilmCreationService
 {
-    Task<Guid> NoterFilm(Guid pIdFilm, byte pNote);
+    Task<float> NoterFilm(Guid pIdFilm, byte pNote);
 }

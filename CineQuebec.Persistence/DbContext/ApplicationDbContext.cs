@@ -31,8 +31,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         strings => strings.Select(Enum.Parse<Role>).ToHashSet());
 
     private static readonly ValueConverter<DateTime, string> DateOnlyToStringConverter = new(
-        dateTime => DateOnly.FromDateTime(dateTime).ToString(CultureInfo.InvariantCulture),
-        str => DateOnly.Parse(str).ToDateTime(TimeOnly.MinValue));
+        dateTime => DateOnly.FromDateTime(dateTime).ToString("o", CultureInfo.InvariantCulture),
+        str => DateOnly.ParseExact(str, "o", CultureInfo.InvariantCulture, DateTimeStyles.None)
+            .ToDateTime(TimeOnly.MinValue));
 
     public new EntityEntry<TEntite> Entry<TEntite>(TEntite entite) where TEntite : class, IEntite
     {
@@ -63,6 +64,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasConversion<string>();
 
         films
+            .Property(film => film.IdCategorie)
+            .HasConversion<string>();
+
+        films
             .Property(film => film.ActeursParId)
             .HasConversion(GuidsToStringsConverter)
             .UsePropertyAccessMode(PropertyAccessMode.Property);
@@ -90,6 +95,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         projections
             .Property(projection => projection.Id)
+            .HasConversion<string>();
+
+        projections
+            .Property(projection => projection.IdFilm)
+            .HasConversion<string>();
+
+        projections
+            .Property(projection => projection.IdSalle)
             .HasConversion<string>();
 
         salles
