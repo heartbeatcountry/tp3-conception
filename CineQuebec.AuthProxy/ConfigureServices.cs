@@ -24,14 +24,6 @@ public static class ConfigureServices
         typeof(IPasswordValidationService)
     ];
 
-    public static IServiceCollection AddProxiedServices(this IServiceCollection services)
-    {
-        return services
-            .AddPersistenceServices()
-            .AddApplicationServices()
-            .WrapServicesWithAuthProxy();
-    }
-
     public static IServiceCollection WrapServicesWithAuthProxy(this IServiceCollection services)
     {
         return services
@@ -159,6 +151,10 @@ public static class ConfigureServices
             })
             .AjouterProxyAuthPourService<ISalleQueryService>(new Dictionary<Role, IEnumerable<string>>
             {
+                [Role.Utilisateur] =
+                [
+                    nameof(ISalleQueryService.ObtenirNbPlacesRestantes)
+                ],
                 [Role.Administrateur] =
                 [
                     nameof(ISalleQueryService.ObtenirToutes)
@@ -231,5 +227,13 @@ public static class ConfigureServices
                 ]
             })
             .BloquerToutAutreServiceSansAutorisationExplicite();
+    }
+
+    public static IServiceCollection AddProxiedServices(this IServiceCollection services)
+    {
+        return services
+            .AddPersistenceServices()
+            .AddApplicationServices()
+            .WrapServicesWithAuthProxy();
     }
 }

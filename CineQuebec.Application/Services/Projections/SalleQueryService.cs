@@ -15,4 +15,18 @@ public class SalleQueryService(IUnitOfWorkFactory unitOfWorkFactory) : ISalleQue
 
         return salles.Select(s => s.VersDto()).OrderBy(salle => salle.Numero);
     }
+
+    public async Task<ushort> ObtenirNbPlacesRestantes(Guid idProjection)
+    {
+        using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
+
+        IProjection projection = await unitOfWork.ProjectionRepository.ObtenirParIdAsync(idProjection) ??
+                                 throw new KeyNotFoundException("Impossible de trouver la projection");
+        ISalle salle = await unitOfWork.SalleRepository.ObtenirParIdAsync(projection.IdSalle) ??
+                       throw new KeyNotFoundException("Impossible de trouver la salle");
+        int nbBilletsVendus = await unitOfWork.BilletRepository.CompterAsync(b => b.IdProjection == idProjection);
+        ushort nbPlacesRestantes = (ushort)Math.Max(0, salle.NbSieges - nbBilletsVendus);
+
+        return nbPlacesRestantes;
+    }
 }

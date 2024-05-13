@@ -2,6 +2,6 @@
 
 public interface IBilletCreationService
 {
-    Task ReserverProjection(Guid idProjection);
+    Task ReserverProjection(Guid idProjection, ushort nbBillets = 1);
     Task OffrirBilletGratuit(Guid idProjection, Guid idUtilisateur);
 }

@@ -90,6 +90,18 @@ public class AbonneMovieDetailsViewModel : Screen, IScreenWithData, IAbonneMovie
         }
     }
 
+    public void ReserverProjection(ProjectionDto projection)
+    {
+        IDialogNouvelleReservationViewModel dialog = _dialogFactory.CreateDialogNouvelleReservation();
+        dialog.SetData(projection);
+        _windowManager.ShowDialog(dialog);
+
+        if (dialog.AchatReussi)
+        {
+            _windowManager.ShowMessageBox("Achat réussi avec succès.", "Succès");
+        }
+    }
+
     public void SetData(object data)
     {
         if (data is not Guid filmId)

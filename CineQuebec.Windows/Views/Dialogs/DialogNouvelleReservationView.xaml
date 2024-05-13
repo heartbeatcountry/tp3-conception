@@ -3,7 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:s="https://github.com/canton7/Stylet"
+        xmlns:s="https://github.com/canton7/Stylet" 
+        xmlns:dialogs="clr-namespace:CineQuebec.Windows.ViewModels.Dialogs"
+        d:DataContext="{d:DesignInstance dialogs:DialogNouvelleReservationViewModel}"
         mc:Ignorable="d"
         Title="Réservation"
         Width="300" Height="150">
@@ -21,9 +23,16 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+            <Run Text="Représentation du " />
+            <Run Text="{Binding Projection.DateHeure, StringFormat={}{0:yyyy-MM-dd}, FallbackValue='yyyy-MM-dd'}" />
+            <Run Text=" à " />
+            <Run Text="{Binding Projection.DateHeure, StringFormat={}{0:HH\:mm}, FallbackValue='HH:mm'}" />
+        </TextBlock>
 
         <Label Grid.Row="2" Grid.Column="0" Content="Nb de billets :" />
-        <ComboBox Grid.Row="2" Grid.Column="2" SelectedItem="{Binding NbBillets}" />
+        <ComboBox Grid.Row="2" Grid.Column="2" SelectedItem="{Binding NbBillets, Mode=TwoWay}"
+                  ItemsSource="{Binding NbBilletsPossibles}" />
 
 
         <Button Grid.Row="4" Grid.Column="2" Content="Valider" Command="{s:Action Valider}"

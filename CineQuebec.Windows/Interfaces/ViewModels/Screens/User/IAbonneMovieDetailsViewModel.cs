@@ -15,4 +15,5 @@ public interface IAbonneMovieDetailsViewModel : IScreenWithData
     BindableCollection<ProjectionDto> Projections { get; }
     BindableCollection<RealisateurDto> Realisateurs { get; }
     void NoterFilm();
+    void ReserverProjection(ProjectionDto projection);
 }
