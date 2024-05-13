@@ -43,105 +43,148 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
-
-                        <Label Content="Titre" Width="330" />
-                        <Label Content="Note:" Width="40" />
-                        <Label Content="{Binding Film.NoteMoyenne}" x:Name="NoteMoyenne" Width="30"
-                               HorizontalAlignment="Right" />
-
-                        <Image Source="/Ressources/images/etoile.png" Width="15" />
-                        <Button Content="Noter" Command="{s:Action NoterFilm}" Margin="15 5"
-                                Style="{StaticResource DefautButton}" Visibility="{Binding VisibilityDejaVu}"
-                                CommandParameter="{Binding}" />
-
-
-                    </StackPanel>
-                    <TextBlock Margin="0,5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                               Text="{Binding Film.Titre}" />
+                    <Label Content="Titre" Grid.Row="0" Grid.Column="0" />
+                    <TextBlock Margin="0,5" Grid.Row="1" Grid.Column="0"
+                               Text="{Binding Film.Titre}" TextWrapping="Wrap" />
+                    <Label Grid.Row="0" Grid.Column="2" Content="Date de sortie internationale" />
+                    <TextBlock Margin="0,5" Grid.Row="1" Grid.Column="2"
+                               Text="{Binding Film.DateSortieInternationale, StringFormat={}{0:yyyy-MM-dd}}" />
                     <Label Grid.Row="2" Grid.Column="0" Content="Catégorie" />
-                    <TextBlock Margin="0,5" Grid.Row="3" Grid.Column="0" Text="{Binding Film.Categorie.NomAffichage}" />
+                    <TextBlock Margin="0,5" Grid.Row="3" Grid.Column="0" TextWrapping="Wrap"
+                               Text="{Binding Film.Categorie.NomAffichage}" />
                     <Label Grid.Row="2" Grid.Column="2" Content="Durée" />
                     <TextBlock Margin="0,5" Grid.Row="3" Grid.Column="2"
                                Text="{Binding Film.DureeEnMinutes, StringFormat={}{0} minutes}" />
-                    <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Content="Date de sortie internationale" />
-                    <TextBlock Margin="0,5" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3"
-                               Text="{Binding Film.DateSortieInternationale, StringFormat={}{0:yyyy-MM-dd}}" />
+                    <Label Grid.Row="4" Grid.Column="0" Content="Évaluation moyenne" />
+                    <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="0">
+                        <TextBlock VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Film.NoteMoyenne}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                            <Run Text="{Binding Film.NoteMoyenne, StringFormat={}{0:#.#}}" />
+                            <Run Text="/ 10" />
+                        </TextBlock>
+                        <TextBlock VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Film.NoteMoyenne}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                            <Run Text="- film non évalué -" />
+                        </TextBlock>
+                        <Image Source="/Ressources/images/etoile.png" Margin="5,0,0,0" Width="16" />
+                    </StackPanel>
+                    <Label Grid.Row="4" Grid.Column="2" Content="Mon évaluation" />
+                    <DockPanel Grid.Row="5" Grid.Column="2">
+                        <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center">
+                            <Button Content="Évaluer" VerticalAlignment="Center" Command="{s:Action NoterFilm}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding MaNote, Mode=OneWay}" Value="0">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                                <Run Text="{Binding MaNote, StringFormat={}{0:#}, Mode=OneWay}" />
+                                <Run Text="/ 10" />
+                            </TextBlock>
+                            <TextBlock VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding MaNote, Mode=OneWay}" Value="0">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                                <Run Text="- film non évalué -" />
+                            </TextBlock>
+                            <Image Source="/Ressources/images/etoile.png" Margin="5,0,0,0" Width="16" />
+                        </StackPanel>
+                    </DockPanel>
                     <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Content="Description" />
                     <ScrollViewer Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3">
-                        <TextBlock Text="{Binding Film.Description}" />
+                        <TextBlock Text="{Binding Film.Description}" TextWrapping="Wrap" />
                     </ScrollViewer>
                 </Grid>
-                <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
                 <Image Grid.Column="0" Grid.Row="0" Source="/Ressources/images/logoCinemaWithoutText.png"
                        Margin="10 5 " />
             </Grid>
-            <DockPanel Margin="0,5,0,0">
-                <StackPanel Margin="0,5,0,0" DockPanel.Dock="Bottom" Orientation="Horizontal"
-                            HorizontalAlignment="Right">
-                    <Button Content="Rafraîchir" Command="{s:Action RafraichirTout}"
-                            Style="{StaticResource DefautButton}" />
+            <Grid Margin="0,5,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Content="Réalisateur.trice.s" Background="LightGray" />
+                <ListView Margin="0,0,0,5" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Realisateurs}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <TextBlock Text="{Binding Prenom}" Margin="0,0,5,0" />
+                                <TextBlock Text="{Binding Nom}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Label Grid.Row="2" Grid.Column="0" Content="Acteur.trice.s" Background="LightGray" />
+                <ListView Grid.Row="3" Grid.Column="0" ItemsSource="{Binding Acteurs}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <TextBlock Text="{Binding Prenom}" Margin="0,0,5,0" />
+                                <TextBlock Text="{Binding Nom}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
-                </StackPanel>
-                <DockPanel>
-
-                    <Grid Width="260">
-
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0" Grid.Column="0" Content="Réalisateur.trice.s" Background="LightGray" />
-                        <ListView Margin="0,0,0,5" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Realisateurs}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                        <TextBlock Text="{Binding Prenom}" Margin="0,0,5,0" />
-                                        <TextBlock Text="{Binding Nom}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                        <Label Grid.Row="2" Grid.Column="0" Content="Acteur.trice.s" Background="LightGray" />
-                        <ListView Grid.Row="3" Grid.Column="0" ItemsSource="{Binding Acteurs}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                        <TextBlock Text="{Binding Prenom}" Margin="0,0,5,0" />
-                                        <TextBlock Text="{Binding Nom}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-
-
-                    </Grid>
-
-
-                    <Label DockPanel.Dock="Top" Content="Projections planifiées pour ce film" Background="LightGray" />
-                    <ListView ItemsSource="{Binding Projections}">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="Date" Width="150"
-                                                DisplayMemberBinding="{Binding DateHeure, StringFormat={}{0:yyyy-MM-dd}}" />
-                                <GridViewColumn Header="Heure" Width="100"
-                                                DisplayMemberBinding="{Binding DateHeure, StringFormat={}{0:HH\:mm}}" />
-                                <GridViewColumn Header="Actions" Width="120">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate DataType="{x:Type films:ProjectionDto}">
-                                            <Button Content="Réserver" Command="{s:Action ReserverProjection}"
-                                                    Style="{StaticResource BoutonBase}"
-                                                    CommandParameter="{Binding}" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </DockPanel>
-            </DockPanel>
+                <Label Grid.Row="0" Grid.Column="2" DockPanel.Dock="Top" Content="Projections planifiées pour ce film"
+                       Background="LightGray" />
+                <ListView Grid.Row="0" Grid.Column="2" Grid.RowSpan="4" ItemsSource="{Binding Projections}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Date" Width="150"
+                                            DisplayMemberBinding="{Binding DateHeure, StringFormat={}{0:yyyy-MM-dd}}" />
+                            <GridViewColumn Header="Heure" Width="100"
+                                            DisplayMemberBinding="{Binding DateHeure, StringFormat={}{0:HH\:mm}}" />
+                            <GridViewColumn Header="Actions" Width="120">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate DataType="{x:Type films:ProjectionDto}">
+                                        <Button Content="Réserver" Command="{s:Action ReserverProjection}"
+                                                Style="{StaticResource BoutonBase}"
+                                                CommandParameter="{Binding}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
         </DockPanel>
     </DockPanel>
 </UserControl>

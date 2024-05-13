@@ -28,13 +28,15 @@
                 <ItemsControl ItemsSource="{Binding Films}" IsEnabled="{Binding CanRefreshFilms}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button Command="{s:Action ConsulterFilm}" CommandParameter="{Binding Id}" Margin="10" Width="160" MinHeight="180" HorizontalAlignment="Center">
+                            <Button Command="{s:Action ConsulterFilm}" CommandParameter="{Binding Id}" Margin="10"
+                                    Width="160" MinHeight="180" HorizontalAlignment="Center">
                                 <Button.Template>
                                     <ControlTemplate>
-                                        <Border Background="GhostWhite" BorderBrush="Gainsboro" BorderThickness="2" Cursor="Hand">
+                                        <Border Background="GhostWhite" BorderBrush="Gainsboro" BorderThickness="2"
+                                                Cursor="Hand">
                                             <StackPanel Margin="5" Orientation="Vertical" VerticalAlignment="Top">
                                                 <Image Source="/Ressources/images/logoCinemaWithoutText.png" />
-                                                <TextBlock Text="{Binding Titre}" TextWrapping="Wrap" FontSize="12"/>
+                                                <TextBlock Text="{Binding Titre}" TextWrapping="Wrap" FontSize="12" />
                                             </StackPanel>
                                         </Border>
                                     </ControlTemplate>

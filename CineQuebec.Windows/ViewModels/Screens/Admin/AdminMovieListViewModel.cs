@@ -17,7 +17,6 @@ public class AdminMovieListViewModel : Screen, IAdminMovieListViewModel
     private readonly IGestionnaireExceptions _gestionnaireExceptions;
     private readonly INavigationController _navigationController;
     private bool _afficherUniquementAlaffiche;
-    private bool _afficherUniquementDejaVus;
     private bool _canRefreshFilms = true;
     private BindableCollection<FilmDto> _films;
 
@@ -92,7 +91,6 @@ public class AdminMovieListViewModel : Screen, IAdminMovieListViewModel
         }
 
         _afficherUniquementAlaffiche = true;
-        _afficherUniquementDejaVus = false;
         _ = RefreshFilms();
     }
 
@@ -100,18 +98,6 @@ public class AdminMovieListViewModel : Screen, IAdminMovieListViewModel
     {
         DesactiverInterface();
         _navigationController.NavigateTo<IAdminMovieDetailsViewModel>(id);
-    }
-
-    public void AfficherDejavus()
-    {
-        if (_afficherUniquementDejaVus)
-        {
-            return;
-        }
-
-        _afficherUniquementDejaVus = true;
-        _afficherUniquementAlaffiche = false;
-        _ = RefreshFilms();
     }
 
     private void DesactiverInterface()

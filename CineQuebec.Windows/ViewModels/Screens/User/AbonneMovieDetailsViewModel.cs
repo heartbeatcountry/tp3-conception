@@ -1,19 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 using CineQuebec.Application.Interfaces.Services.Films;
 using CineQuebec.Application.Interfaces.Services.Preferences;
 using CineQuebec.Application.Interfaces.Services.Projections;
 using CineQuebec.Application.Records.Films;
 using CineQuebec.Application.Records.Projections;
-using CineQuebec.Application.Services.Films;
-using CineQuebec.Application.Services.Identity;
-using CineQuebec.Domain.Entities.Utilisateurs;
 using CineQuebec.Windows.Interfaces;
 using CineQuebec.Windows.Interfaces.ViewModels.Components;
 using CineQuebec.Windows.Interfaces.ViewModels.Dialogs;
-using CineQuebec.Windows.Interfaces.ViewModels.Screens;
+using CineQuebec.Windows.Interfaces.ViewModels.Screens.User;
 
 using Stylet;
 
@@ -21,77 +16,46 @@ namespace CineQuebec.Windows.ViewModels.Screens.User;
 
 public class AbonneMovieDetailsViewModel : Screen, IScreenWithData, IAbonneMovieDetailsViewModel
 {
-    private readonly IFilmDeletionService _filmDeletionService;
+    private readonly IDialogFactory _dialogFactory;
     private readonly IFilmQueryService _filmQueryService;
     private readonly IGestionnaireExceptions _gestionnaireExceptions;
-    private readonly INavigationController _navigationController;
     private readonly INoteFilmCreationService _noteFilmCreationService;
-    private readonly IProjectionDeletionService _projectionDeletionService;
+    private readonly INoteFilmQueryService _noteFilmQueryService;
     private readonly IProjectionQueryService _projectionQueryService;
-    private readonly IDialogFactory _dialogFactory;
     private readonly IWindowManager _windowManager;
     private BindableCollection<ActeurDto> _acteurs = [];
-    private bool _canRafraichirTout = true;
+    private FilmDto? _film;
     private Guid _filmId;
-    private NoteFilmDto _noteFilm;
+    private byte? _maNote;
     private BindableCollection<ProjectionDto> _projections = [];
     private BindableCollection<RealisateurDto> _realisateurs = [];
 
-    public AbonneMovieDetailsViewModel(INavigationController navigationController, IHeaderViewModel headerViewModel,
-        IFilmQueryService filmQueryService, IWindowManager windowManager, IFilmDeletionService filmDeletionService,
-        IProjectionDeletionService projectionDeletionService, IProjectionQueryService projectionQueryService,
-        INoteFilmCreationService noteFilmCreationService, IGestionnaireExceptions gestionnaireExceptions, IDialogFactory dialogFactory)
+    public AbonneMovieDetailsViewModel(IHeaderViewModel headerViewModel, IFilmQueryService filmQueryService,
+        IWindowManager windowManager, IProjectionQueryService projectionQueryService,
+        INoteFilmCreationService noteFilmCreationService, IGestionnaireExceptions gestionnaireExceptions,
+        IDialogFactory dialogFactory, INoteFilmQueryService noteFilmQueryService)
     {
-        _navigationController = navigationController;
         _filmQueryService = filmQueryService;
-        _filmDeletionService = filmDeletionService;
-        _noteFilmCreationService = noteFilmCreationService;
         _windowManager = windowManager;
-        _projectionDeletionService = projectionDeletionService;
         _projectionQueryService = projectionQueryService;
         _gestionnaireExceptions = gestionnaireExceptions;
+        _noteFilmCreationService = noteFilmCreationService;
+        _noteFilmQueryService = noteFilmQueryService;
         _dialogFactory = dialogFactory;
         headerViewModel.PreviousView = typeof(AbonneMovieListViewModel);
         HeaderViewModel = headerViewModel;
     }
 
-    public async Task<bool> UtilisateurAAssisteAuFilm(Guid idFilm)
+    public FilmDto? Film
     {
-
-        IEnumerable < FilmDto > filmsAssistes = await _filmQueryService.ObtenirFilmsAssistesParUtilisateur();
-
-    return filmsAssistes.Any(film => film.Id == idFilm);}
-
-
-    private bool _filmDejaVu ;
-
-
-    public Visibility VisibilityDejaVu => _filmDejaVu ? Visibility.Visible : Visibility.Collapsed;
-
-
-  
-
-    public FilmDto? Film { get; private set; }
-
-    public NoteFilmDto NoteFilm
-    {
-        get => _noteFilm;
-
-        set
-        {
-            if (_noteFilm != value)
-            {
-                _noteFilm = value;
-                SetAndNotify(ref _noteFilm, value);
-            }
-        }
+        get => _film;
+        private set => SetAndNotify(ref _film, value);
     }
 
-
-    public bool CanRafraichirTout
+    public byte MaNote
     {
-        get => _canRafraichirTout;
-        set => SetAndNotify(ref _canRafraichirTout, value);
+        get => _maNote ?? 0;
+        private set => SetAndNotify(ref _maNote, value);
     }
 
     public BindableCollection<ActeurDto> Acteurs
@@ -114,8 +78,6 @@ public class AbonneMovieDetailsViewModel : Screen, IScreenWithData, IAbonneMovie
 
     public IHeaderViewModel HeaderViewModel { get; }
 
-
-
     public void NoterFilm()
     {
         IDialogNoterFilmViewModel dialog = _dialogFactory.CreateDialogNoterFilm();
@@ -124,29 +86,8 @@ public class AbonneMovieDetailsViewModel : Screen, IScreenWithData, IAbonneMovie
 
         if (dialog.AValide)
         {
-            MettreAJourNoteFilmPourUtilisateur(dialog.NoteFilm);
+            _ = MettreAJourNoteFilmPourUtilisateur(dialog.NoteFilm);
         }
-    }
-
-
-    private void MettreAJourNoteFilmPourUtilisateur( byte nouvelleNote)
-    {
-        if(Film is null)
-        {
-            return;
-        }
-
-        _noteFilmCreationService.NoterFilm(Film.Id, nouvelleNote);
-    }
-
-
-
-    public void RafraichirTout()
-    {
-        DesactiverInterface();
-        _ = RafraichirDetails();
-        _ = RafraichirProjections();
-        ActiverInterface();
     }
 
     public void SetData(object data)
@@ -161,15 +102,37 @@ public class AbonneMovieDetailsViewModel : Screen, IScreenWithData, IAbonneMovie
     }
 
 
-    private void DesactiverInterface()
+    public void RafraichirTout()
     {
-        CanRafraichirTout = false;
+        DesactiverInterface();
+        _ = RafraichirDetails();
+        _ = RafraichirProjections();
+        ActiverInterface();
+    }
+
+
+    private async Task MettreAJourNoteFilmPourUtilisateur(byte nouvelleNote)
+    {
+        if (Film is null)
+        {
+            return;
+        }
+
+        await _gestionnaireExceptions.GererExceptionAsync(async () =>
+        {
+            await _noteFilmCreationService.NoterFilm(Film.Id, nouvelleNote);
+        });
+        _ = RafraichirDetails();
+    }
+
+
+    private static void DesactiverInterface()
+    {
         Mouse.OverrideCursor = Cursors.Wait;
     }
 
-    private void ActiverInterface()
+    private static void ActiverInterface()
     {
-        CanRafraichirTout = true;
         Mouse.OverrideCursor = null;
     }
 
@@ -196,8 +159,7 @@ public class AbonneMovieDetailsViewModel : Screen, IScreenWithData, IAbonneMovie
         Film = film;
         Acteurs = new BindableCollection<ActeurDto>(film.Acteurs);
         Realisateurs = new BindableCollection<RealisateurDto>(film.Realisateurs);
-        _filmDejaVu = await UtilisateurAAssisteAuFilm(film.Id);
-        NotifyOfPropertyChange(nameof(VisibilityDejaVu));
+        await RafraichirMaNote();
     }
 
     private async Task RafraichirProjections()
@@ -222,25 +184,14 @@ public class AbonneMovieDetailsViewModel : Screen, IScreenWithData, IAbonneMovie
         Projections = new BindableCollection<ProjectionDto>(projections);
     }
 
-    private async Task ReserverProjectionAsync(Guid projectionId)
+    private async Task RafraichirMaNote()
     {
-        DesactiverInterface();
-        bool success = false;
-
-        try
+        if (Film is null)
         {
-            success = await _projectionDeletionService.SupprimerProjection(projectionId);
-        }
-        catch (Exception exception)
-        {
-            _gestionnaireExceptions.GererException(exception);
+            return;
         }
 
-        if (success)
-        {
-            await RafraichirProjections();
-        }
-
-        ActiverInterface();
+        await _gestionnaireExceptions.GererExceptionAsync(async () =>
+            MaNote = await _noteFilmQueryService.ObtenirMaNotePourFilm(Film.Id) ?? 0);
     }
 }

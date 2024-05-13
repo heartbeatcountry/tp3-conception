@@ -171,6 +171,13 @@ public static class ConfigureServices
                     nameof(INoteFilmCreationService.NoterFilm)
                 ]
             })
+            .AjouterProxyAuthPourService<INoteFilmQueryService>(new Dictionary<Role, IEnumerable<string>>
+            {
+                [Role.Utilisateur] =
+                [
+                    nameof(INoteFilmQueryService.ObtenirMaNotePourFilm)
+                ]
+            })
             .AjouterProxyAuthPourService<ICategoriesPrefereesQueryService>(new Dictionary<Role, IEnumerable<string>>
             {
                 [Role.Utilisateur] =

@@ -1,4 +1,6 @@
-﻿using Stylet;
+﻿using CineQuebec.Windows.Interfaces.ViewModels.Dialogs;
+
+using Stylet;
 
 namespace CineQuebec.Windows.ViewModels.Dialogs;
 

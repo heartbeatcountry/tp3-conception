@@ -39,6 +39,7 @@ public static class ConfigureServices
             .AddSingleton<IBilletCreationService, BilletCreationService>()
             .AddSingleton<ISalleCreationService, SalleCreationService>()
             .AddSingleton<INoteFilmCreationService, NoteFilmCreationService>()
+            .AddSingleton<INoteFilmQueryService, NoteFilmQueryService>()
             .AddSingleton<ISalleQueryService, SalleQueryService>()
             .AddSingleton<ICategoriesPrefereesQueryService, CategoriesPrefereesQueryService>()
             .AddSingleton<ICategoriesPrefereesUpdateService, CategoriesPrefereesUpdateService>()

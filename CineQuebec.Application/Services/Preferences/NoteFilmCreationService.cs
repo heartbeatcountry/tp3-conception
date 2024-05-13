@@ -1,78 +1,69 @@
-﻿using System.Xml.Linq;
-
-using CineQuebec.Application.Interfaces.DbContext;
+﻿using CineQuebec.Application.Interfaces.DbContext;
 using CineQuebec.Application.Interfaces.Services.Films;
 using CineQuebec.Application.Interfaces.Services.Identity;
 using CineQuebec.Application.Interfaces.Services.Preferences;
-using CineQuebec.Application.Services.Abstract;
+using CineQuebec.Application.Records.Films;
 using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Films;
-using CineQuebec.Domain.Interfaces.Entities.Utilisateur;
 
 namespace CineQuebec.Application.Services.Preferences;
 
 public class NoteFilmCreationService(
     IUnitOfWorkFactory unitOfWorkFactory,
+    IFilmQueryService filmQueryService,
     IUtilisateurAuthenticationService utilisateurAuthenticationService)
-    : ServiceAvecValidation, INoteFilmCreationService
+    : INoteFilmCreationService
 {
-    public async Task<Guid> NoterFilm(Guid pIdFilm, byte pNouvelleNote)
+    public async Task<float> NoterFilm(Guid pIdFilm, byte pNouvelleNote)
     {
+        Guid idUtilisateur = utilisateurAuthenticationService.ObtenirIdUtilisateurConnecte();
+
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
-        Guid idUtilisateur = utilisateurAuthenticationService.ObtenirIdUtilisateurConnecte();
-        EffectuerValidations(unitOfWork, pIdFilm, pNouvelleNote);
+        await ValiderUtilisateurAVisionneFilm(unitOfWork, pIdFilm);
 
-        IFilm film = await unitOfWork.FilmRepository.ObtenirParIdAsync(pIdFilm);
+        IFilm film = await unitOfWork.FilmRepository.ObtenirParIdAsync(pIdFilm) ??
+                     throw new KeyNotFoundException($"Le film {pIdFilm} est introuvable");
 
+        INoteFilm? noteActuelle =
+            await unitOfWork.NoteFilmRepository.ObtenirAsync(n =>
+                n.IdUtilisateur == idUtilisateur && n.IdFilm == pIdFilm);
 
-        if (await unitOfWork.NoteFilmRepository.ExisteAsync(n => n.IdUtilisateur == idUtilisateur && n.IdFilm == pIdFilm))
-        {
-            INoteFilm noteActuelle = await unitOfWork.NoteFilmRepository.ObtenirAsync(n => n.IdUtilisateur == idUtilisateur && n.IdFilm == pIdFilm);
-            film.ModifierNote(noteActuelle.Note, pNouvelleNote);
-            noteActuelle.SetNote(pNouvelleNote);
-            await unitOfWork.SauvegarderAsync();
-            return noteActuelle.Id;
-        }
-        else
-        {
-            NoteFilm notefilm = new(idUtilisateur, pIdFilm, pNouvelleNote);
-            INoteFilm notefilmCreee = await unitOfWork.NoteFilmRepository.AjouterAsync(notefilm);
-           film.AjouterNote(pNouvelleNote);
-            await unitOfWork.SauvegarderAsync();
-            return notefilmCreee.Id;
-        }
-
+        return noteActuelle is not null
+            ? await ModifierNoteExistante(unitOfWork, film, noteActuelle, pNouvelleNote)
+            : await CreerNouvelleNote(unitOfWork, film, idUtilisateur, pNouvelleNote);
     }
 
-
-    private static void EffectuerValidations(IUnitOfWork unitOfWork, Guid pIdFilm, byte pNote)
+    private static async Task<float> ModifierNoteExistante(IUnitOfWork unitOfWork, IFilm film, INoteFilm noteActuelle,
+        byte pNouvelleNote)
     {
-        LeverAggregateExceptionAuBesoin(
-            ValiderNoteValeurMinMax(pNote),
-            ValiderFilmExiste(unitOfWork, pIdFilm)
-        );
+        film.ModifierNote(noteActuelle.Note, pNouvelleNote);
+        noteActuelle.SetNote(pNouvelleNote);
+        unitOfWork.NoteFilmRepository.Modifier(noteActuelle);
+        unitOfWork.FilmRepository.Modifier(film);
+        await unitOfWork.SauvegarderAsync();
+        return film.NoteMoyenne ?? 0;
     }
 
-    private static IEnumerable<Exception> ValiderNoteValeurMinMax(byte pNote)
+    private static async Task<float> CreerNouvelleNote(IUnitOfWork unitOfWork, IFilm film, Guid idUtilisateur,
+        byte pNouvelleNote)
     {
-        if (pNote is < NoteFilm.NoteMinimum or > NoteFilm.NoteMaximum)
+        NoteFilm nouvelleNote = new(idUtilisateur, film.Id, pNouvelleNote);
+        INoteFilm notefilmCreee = await unitOfWork.NoteFilmRepository.AjouterAsync(nouvelleNote);
+        film.AjouterNote(pNouvelleNote);
+        unitOfWork.FilmRepository.Modifier(film);
+        await unitOfWork.SauvegarderAsync();
+        return film.NoteMoyenne ?? 0;
+    }
+
+    private async Task ValiderUtilisateurAVisionneFilm(IUnitOfWork unitOfWork, Guid idFilm)
+    {
+        IEnumerable<FilmDto> filmsVisionnes = await filmQueryService.ObtenirFilmsAssistesParUtilisateur();
+
+        if (filmsVisionnes.All(fv => fv.Id != idFilm))
         {
-            yield return new ArgumentOutOfRangeException(nameof(pNote),
-                $"La note doit être comprise entre {NoteFilm.NoteMinimum} et {NoteFilm.NoteMaximum}.");
+            throw new InvalidOperationException(
+                "Impossible de noter ce film sans avoir assisté à l'une de ses projection.");
         }
     }
-
-    private static async IAsyncEnumerable<ArgumentException> ValiderFilmExiste(IUnitOfWork unitOfWork, Guid pIdFilm)
-    {
-        if (await unitOfWork.FilmRepository.ObtenirParIdAsync(pIdFilm) is null)
-        {
-            yield return new ArgumentException($"Le film avec l'identifiant {pIdFilm} n'existe pas.",
-                nameof(pIdFilm));
-        }
-    }
-
-
-
-
 }
