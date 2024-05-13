@@ -1,9 +1,13 @@
-﻿using CineQuebec.Application.Interfaces.DbContext;
+﻿using System.Xml.Linq;
+
+using CineQuebec.Application.Interfaces.DbContext;
+using CineQuebec.Application.Interfaces.Services.Films;
 using CineQuebec.Application.Interfaces.Services.Identity;
 using CineQuebec.Application.Interfaces.Services.Preferences;
 using CineQuebec.Application.Services.Abstract;
 using CineQuebec.Domain.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Films;
+using CineQuebec.Domain.Interfaces.Entities.Utilisateur;
 
 namespace CineQuebec.Application.Services.Preferences;
 
@@ -12,21 +16,33 @@ public class NoteFilmCreationService(
     IUtilisateurAuthenticationService utilisateurAuthenticationService)
     : ServiceAvecValidation, INoteFilmCreationService
 {
-    public async Task<Guid> NoterFilm(Guid pIdFilm, byte pNote)
+    public async Task<Guid> NoterFilm(Guid pIdFilm, byte pNouvelleNote)
     {
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
         Guid idUtilisateur = utilisateurAuthenticationService.ObtenirIdUtilisateurConnecte();
+        EffectuerValidations(unitOfWork, pIdFilm, pNouvelleNote);
 
-        EffectuerValidations(unitOfWork, pIdFilm, pNote);
+        IFilm film = await unitOfWork.FilmRepository.ObtenirParIdAsync(pIdFilm);
 
 
-        NoteFilm notefilm = new(idUtilisateur, pIdFilm, pNote);
-        INoteFilm notefilmCreee = await unitOfWork.NoteFilmRepository.AjouterAsync(notefilm);
+        if (await unitOfWork.NoteFilmRepository.ExisteAsync(n => n.IdUtilisateur == idUtilisateur && n.IdFilm == pIdFilm))
+        {
+            INoteFilm noteActuelle = await unitOfWork.NoteFilmRepository.ObtenirAsync(n => n.IdUtilisateur == idUtilisateur && n.IdFilm == pIdFilm);
+            film.ModifierNote(noteActuelle.Note, pNouvelleNote);
+            noteActuelle.SetNote(pNouvelleNote);
+            await unitOfWork.SauvegarderAsync();
+            return noteActuelle.Id;
+        }
+        else
+        {
+            NoteFilm notefilm = new(idUtilisateur, pIdFilm, pNouvelleNote);
+            INoteFilm notefilmCreee = await unitOfWork.NoteFilmRepository.AjouterAsync(notefilm);
+           film.AjouterNote(pNouvelleNote);
+            await unitOfWork.SauvegarderAsync();
+            return notefilmCreee.Id;
+        }
 
-        await unitOfWork.SauvegarderAsync();
-
-        return notefilmCreee.Id;
     }
 
 
@@ -55,4 +71,8 @@ public class NoteFilmCreationService(
                 nameof(pIdFilm));
         }
     }
+
+
+
+
 }

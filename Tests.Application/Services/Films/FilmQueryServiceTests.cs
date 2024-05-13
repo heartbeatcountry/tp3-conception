@@ -210,7 +210,7 @@ public class FilmQueryServiceTests : GenericServiceTests<FilmQueryService>
 
         // Act
         IEnumerable<FilmDto> filmsDto =
-            await Service.ObtenirFilmsAssistesParUtilisateur(idUtilisateur);
+            await Service.ObtenirFilmsAssistesParUtilisateur();
 
 
         // Assert
