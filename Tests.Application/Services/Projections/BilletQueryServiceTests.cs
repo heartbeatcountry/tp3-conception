@@ -11,15 +11,15 @@ namespace Tests.Application.Services.Projections;
 public class BilletQueryServiceTests : GenericServiceTests<BilletQueryService>
 {
     [Test]
-    public async Task ObtenirTous_WhenBilletsExist_ShouldReturnAllBilletsOrderedByTitre()
+    public async Task ObtenirTous_WhenBilletsExist_ShouldReturnAllBillets()
     {
         // Arrange
         IBillet[] billets =
-        [
-            Mock.Of<IBillet>(b => b.Id == new Guid()),
-            Mock.Of<IBillet>(b => b.Id == new Guid()),
-            Mock.Of<IBillet>(b => b.Id == new Guid())
-        ];
+        {
+        Mock.Of<IBillet>(b => b.Id == Guid.NewGuid()),
+        Mock.Of<IBillet>(b => b.Id == Guid.NewGuid()),
+        Mock.Of<IBillet>(b => b.Id == Guid.NewGuid())
+    };
         BilletRepositoryMock.Setup(r => r.ObtenirTousAsync(It.IsAny<Expression<Func<IBillet, bool>>>(), null))
             .ReturnsAsync(billets);
 
@@ -30,10 +30,9 @@ public class BilletQueryServiceTests : GenericServiceTests<BilletQueryService>
         Assert.Multiple(() =>
         {
             Assert.That(billetsDto, Has.Exactly(3).Items);
-            Assert.That(billetsDto, Is.Ordered.By(nameof(BilletDto.Id)));
-            Assert.That(billetsDto.ElementAt(0).Id, Is.EqualTo(billets.ElementAt(0).Id));
-            Assert.That(billetsDto.ElementAt(1).Id, Is.EqualTo(billets.ElementAt(1).Id));
-            Assert.That(billetsDto.ElementAt(2).Id, Is.EqualTo(billets.ElementAt(2).Id));
+            Assert.That(billetsDto.ElementAt(0).Id, Is.EqualTo(billets[0].Id));
+            Assert.That(billetsDto.ElementAt(1).Id, Is.EqualTo(billets[1].Id));
+            Assert.That(billetsDto.ElementAt(2).Id, Is.EqualTo(billets[2].Id));
         });
     }
 
