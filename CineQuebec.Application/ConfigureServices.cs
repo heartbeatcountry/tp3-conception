@@ -24,7 +24,6 @@ public static class ConfigureServices
             .AddSingleton<IUtilisateurCreationService, UtilisateurCreationService>()
             .AddSingleton<IUtilisateurFideliteQueryService, UtilisateurFideliteQueryService>()
             .AddSingleton<IFilmQueryService, FilmQueryService>()
-            .AddSingleton<IBilletQueryService, BilletQueryService>()
             .AddSingleton<IFilmCreationService, FilmCreationService>()
             .AddSingleton<IFilmDeletionService, FilmDeletionService>()
             .AddSingleton<IFilmUpdateService, FilmUpdateService>()

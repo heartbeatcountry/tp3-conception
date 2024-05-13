@@ -164,10 +164,6 @@ public static class ConfigureServices
                     nameof(ISalleQueryService.ObtenirToutes)
                 ]
             })
-            .AjouterProxyAuthPourService<IBilletQueryService>(new Dictionary<Role, IEnumerable<string>>
-            {
-                [Role.Utilisateur] = [nameof(IBilletQueryService.ObtenirTous)]
-            })
             .AjouterProxyAuthPourService<INoteFilmCreationService>(new Dictionary<Role, IEnumerable<string>>
             {
                 [Role.Utilisateur] =
