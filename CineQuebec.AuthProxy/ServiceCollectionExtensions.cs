@@ -1,18 +1,26 @@
-﻿using System.Security;
+﻿using System.Runtime.CompilerServices;
+using System.Security;
 
 using CineQuebec.Domain.Entities.Utilisateurs;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
+[assembly: InternalsVisibleTo("Tests.AuthProxy")]
+
 namespace CineQuebec.AuthProxy;
 
 public static class ServiceCollectionExtensions
 {
+    internal static readonly HashSet<string> AlreadyBoundServices = [];
+
     public static IServiceCollection AjouterProxyAuthPourService<TService>(this IServiceCollection services,
         Dictionary<Role, IEnumerable<string>> methodMapping)
         where TService : class
     {
+        ValiderServiceNestPasUnDuplicat<TService>(methodMapping);
+        ValiderAucuneMethodePubliqueNonMappee<TService>(methodMapping);
+
         foreach (ServiceDescriptor descriptor in services
                      .Where(s => s.ServiceType == typeof(TService)).ToArray())
         {
@@ -35,6 +43,43 @@ public static class ServiceCollectionExtensions
         }
 
         return services;
+    }
+
+    private static void ValiderServiceNestPasUnDuplicat<TService>(Dictionary<Role, IEnumerable<string>> methodMapping)
+        where TService : class
+    {
+        if (!AlreadyBoundServices.Add(typeof(TService).FullName ?? ""))
+        {
+            throw new InvalidOperationException(
+                $"Le service {typeof(TService).Name} a déjà été ajouté au proxy d'authentification.");
+        }
+
+        string[] lstMethodes = methodMapping.SelectMany(m => m.Value).ToArray();
+
+        if (lstMethodes.Length != lstMethodes.Distinct().Count())
+        {
+            throw new InvalidOperationException(
+                "Il y a des méthodes dupliquées dans le mappage des rôles et des méthodes pour le service" +
+                $" {typeof(TService).Name}. Veuillez réviser la configuration dans la couche AuthProxy.");
+        }
+    }
+
+    private static void ValiderAucuneMethodePubliqueNonMappee<TService>(
+        Dictionary<Role, IEnumerable<string>> methodMapping)
+        where TService : class
+    {
+        IEnumerable<string> lstMethodes = typeof(TService).GetMethods()
+            .Where(m => m is { IsPublic: true, IsSpecialName: false })
+            .Select(m => m.Name);
+
+        string[] methodesNonMappees = lstMethodes.Except(methodMapping.SelectMany(m => m.Value)).ToArray();
+
+        if (methodesNonMappees.Length != 0)
+        {
+            throw new InvalidOperationException(
+                $"Il y a des méthodes publiques non mapées pour le service {typeof(TService).Name}: " +
+                $"{string.Join(", ", methodesNonMappees)}. Veuillez réviser la configuration dans la couche AuthProxy.");
+        }
     }
 
     private static ServiceDescriptor CreerNouveauServiceDescriptor<TService>(ServiceDescriptor ancienDescriptor,

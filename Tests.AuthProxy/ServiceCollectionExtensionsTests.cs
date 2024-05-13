@@ -14,6 +14,7 @@ public class ServiceCollectionExtensionsTests
     [SetUp]
     public void Setup()
     {
+        ServiceCollectionExtensions.AlreadyBoundServices.Clear();
         _services = new ServiceCollection();
         _services.AddSingleton<ITestService, TestService>();
     }
@@ -60,6 +61,14 @@ public class ServiceCollectionExtensionsTests
     }
 
     private class TestService : ITestService
+    {
+    }
+
+    private interface ITestService2
+    {
+    }
+
+    private class TestService2 : ITestService2
     {
     }
 }

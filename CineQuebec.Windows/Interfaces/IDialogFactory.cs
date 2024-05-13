@@ -8,6 +8,6 @@ public interface IDialogFactory
     IDialogNomAffichageViewModel CreateDialogNomAffichage();
     IDialogNouvelleSalleViewModel CreateDialogNouvelleSalle();
     IDialogInscriptionUtilisateurViewModel CreateDialogInscriptionUtilisateur();
-
     IDialogNoterFilmViewModel CreateDialogNoterFilm();
+    IDialogNouvelleReservationViewModel CreateDialogNouvelleReservation();
 }
