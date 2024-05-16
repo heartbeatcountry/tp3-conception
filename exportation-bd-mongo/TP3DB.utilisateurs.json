@@ -1,0 +1,159 @@
+[{
+  "_id": "89c55640-ef90-4d6c-4b6e-08dc6eac52a9",
+  "ActeursFavorisParId": {
+    "_t": "String[]",
+    "_v": [
+      "234fd610-3117-428b-fb9b-08dc6e3d36b4",
+      "9b9fc937-6405-49b4-fb99-08dc6e3d36b4"
+    ]
+  },
+  "BilletsParId": {
+    "_t": "String[]",
+    "_v": [
+      "1347ae99-6dd1-4f1d-7ff9-08dc7392fda6"
+    ]
+  },
+  "CategoriesPrefereesParId": {
+    "_t": "String[]",
+    "_v": [
+      "0426b277-9b89-445f-14d0-08dc6e3e205e",
+      "453838c8-9a88-4aec-14d2-08dc6e3e205e",
+      "c7bb61fa-783a-4fcc-14d1-08dc6e3e205e"
+    ]
+  },
+  "Courriel": "admin@gmail.com",
+  "HashMotDePasse": "$argon2id$v=19$m=64,t=3,p=1$IKZ4NUqmnZ68uQEtzs0jdg$OC8Vxa3AqQMHZqJLpecdC5KzHGjPOioaiMGJVPWDJFw\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+  "Nom": "Admin",
+  "Prenom": "Admin",
+  "RealisateursFavorisParId": {
+    "_t": "String[]",
+    "_v": [
+      "ccc3968a-abae-4765-ac23-08dc6e3d9a6e"
+    ]
+  },
+  "Roles": {
+    "_t": "String[]",
+    "_v": [
+      "Utilisateur",
+      "Administrateur"
+    ]
+  }
+},
+{
+  "_id": "7752c659-3152-4c35-f24c-08dc744e765c",
+  "ActeursFavorisParId": {
+    "_t": "String[]",
+    "_v": [
+      "07ec9512-72d7-4e5a-fb98-08dc6e3d36b4",
+      "55ee1cb9-4366-4559-fb9a-08dc6e3d36b4",
+      "8fd7199f-efd4-4d83-fb9c-08dc6e3d36b4",
+      "ba2b28d6-d11c-46be-fb9d-08dc6e3d36b4",
+      "9b9fc937-6405-49b4-fb99-08dc6e3d36b4"
+    ]
+  },
+  "BilletsParId": {
+    "_t": "String[]",
+    "_v": [
+      "48be848b-e00f-45b7-4502-08dc7455ab49"
+    ]
+  },
+  "CategoriesPrefereesParId": {
+    "_t": "String[]",
+    "_v": [
+      "0426b277-9b89-445f-14d0-08dc6e3e205e",
+      "c7bb61fa-783a-4fcc-14d1-08dc6e3e205e"
+    ]
+  },
+  "Courriel": "user1@gmail.com",
+  "HashMotDePasse": "$argon2id$v=19$m=64,t=3,p=1$8WOohuC0dBxR6saj684VCQ$o7tYiQNfzYmM6zbX7kRbjCSrXQ98CaBKqCOm7fzU8mo\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+  "Nom": "Utilisateur",
+  "Prenom": "A",
+  "RealisateursFavorisParId": {
+    "_t": "String[]",
+    "_v": [
+      "d47eea4e-a598-4089-ac24-08dc6e3d9a6e",
+      "ccc3968a-abae-4765-ac23-08dc6e3d9a6e"
+    ]
+  },
+  "Roles": {
+    "_t": "String[]",
+    "_v": [
+      "Utilisateur"
+    ]
+  }
+},
+{
+  "_id": "3854a5a4-ff17-4da4-f24d-08dc744e765c",
+  "ActeursFavorisParId": {
+    "_t": "String[]",
+    "_v": [
+      "07ec9512-72d7-4e5a-fb98-08dc6e3d36b4",
+      "55ee1cb9-4366-4559-fb9a-08dc6e3d36b4",
+      "ba2b28d6-d11c-46be-fb9d-08dc6e3d36b4"
+    ]
+  },
+  "BilletsParId": {
+    "_t": "String[]",
+    "_v": [
+      "d7d16b21-4670-4dd9-1241-08dc744e7d7c"
+    ]
+  },
+  "CategoriesPrefereesParId": {
+    "_t": "String[]",
+    "_v": [
+      "453838c8-9a88-4aec-14d2-08dc6e3e205e",
+      "6b20c636-c5f2-4813-8091-08dc744d7de0"
+    ]
+  },
+  "Courriel": "user2@gmail.com",
+  "HashMotDePasse": "$argon2id$v=19$m=64,t=3,p=1$eLu/x+SVCxkHwCTXRhLGTQ$Nt/I/eAgMWM8mpBT9h8QZWSg8cKV9qBAT0CpMFQwIVk\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+  "Nom": "Utilisateur",
+  "Prenom": "B",
+  "RealisateursFavorisParId": {
+    "_t": "String[]",
+    "_v": [
+      "eae99e58-5d5c-4366-ac25-08dc6e3d9a6e",
+      "d47eea4e-a598-4089-ac24-08dc6e3d9a6e",
+      "ccc3968a-abae-4765-ac23-08dc6e3d9a6e"
+    ]
+  },
+  "Roles": {
+    "_t": "String[]",
+    "_v": [
+      "Utilisateur"
+    ]
+  }
+},
+{
+  "_id": "091c57cf-1228-4331-a1ee-08dc74557068",
+  "ActeursFavorisParId": {
+    "_t": "String[]",
+    "_v": []
+  },
+  "BilletsParId": {
+    "_t": "String[]",
+    "_v": [
+      "84aa64bd-6515-4638-4503-08dc7455ab49"
+    ]
+  },
+  "CategoriesPrefereesParId": {
+    "_t": "String[]",
+    "_v": [
+      "6b20c636-c5f2-4813-8091-08dc744d7de0"
+    ]
+  },
+  "Courriel": "userabc@gmail.com",
+  "HashMotDePasse": "$argon2id$v=19$m=64,t=3,p=1$RaIXQxFtIZl+im/rVuff5w$dzAYzttdt7Nzad2NZV/GvE/BUNQJOpdQ9mrHyaVtQOM\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
+  "Nom": "Utilisateur",
+  "Prenom": "ABC",
+  "RealisateursFavorisParId": {
+    "_t": "String[]",
+    "_v": []
+  },
+  "Roles": {
+    "_t": "String[]",
+    "_v": [
+      "Utilisateur"
+    ]
+  }
+}]

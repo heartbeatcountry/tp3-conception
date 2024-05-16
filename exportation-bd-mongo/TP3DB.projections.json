@@ -1,0 +1,55 @@
+[{
+  "_id": "fcfceeda-7767-40bb-1f4e-08dc744ccf4b",
+  "DateHeure": {
+    "$date": {
+      "$numberLong": "1715972400000"
+    }
+  },
+  "EstAvantPremiere": true,
+  "IdFilm": "547e1914-b776-49fc-b5a0-08dc744cb393",
+  "IdSalle": "de9071bf-1b15-4523-6db6-08dc744cca36"
+},
+{
+  "_id": "86609a21-a6e7-4e24-1f4f-08dc744ccf4b",
+  "DateHeure": {
+    "$date": {
+      "$numberLong": "1716152400000"
+    }
+  },
+  "EstAvantPremiere": false,
+  "IdFilm": "547e1914-b776-49fc-b5a0-08dc744cb393",
+  "IdSalle": "f22ef16a-7e8f-4c39-ded4-08dc705210b0"
+},
+{
+  "_id": "bba59be3-012f-4488-1f50-08dc744ccf4b",
+  "DateHeure": {
+    "$date": {
+      "$numberLong": "1716555600000"
+    }
+  },
+  "EstAvantPremiere": true,
+  "IdFilm": "756d3570-f930-411c-b5a1-08dc744cb393",
+  "IdSalle": "de9071bf-1b15-4523-6db6-08dc744cca36"
+},
+{
+  "_id": "6c229f80-5d07-4ce6-1f51-08dc744ccf4b",
+  "DateHeure": {
+    "$date": {
+      "$numberLong": "1717009200000"
+    }
+  },
+  "EstAvantPremiere": false,
+  "IdFilm": "756d3570-f930-411c-b5a1-08dc744cb393",
+  "IdSalle": "f22ef16a-7e8f-4c39-ded4-08dc705210b0"
+},
+{
+  "_id": "67e21db4-2ef3-4666-bef4-08dc74561dc2",
+  "DateHeure": {
+    "$date": {
+      "$numberLong": "1715886000000"
+    }
+  },
+  "EstAvantPremiere": false,
+  "IdFilm": "756d3570-f930-411c-b5a1-08dc744cb393",
+  "IdSalle": "f22ef16a-7e8f-4c39-ded4-08dc705210b0"
+}]

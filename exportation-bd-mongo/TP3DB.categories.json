@@ -1,0 +1,20 @@
+[{
+  "_id": "0426b277-9b89-445f-14d0-08dc6e3e205e",
+  "NomAffichage": "Action"
+},
+{
+  "_id": "c7bb61fa-783a-4fcc-14d1-08dc6e3e205e",
+  "NomAffichage": "Suspense"
+},
+{
+  "_id": "453838c8-9a88-4aec-14d2-08dc6e3e205e",
+  "NomAffichage": "Comédie"
+},
+{
+  "_id": "6b20c636-c5f2-4813-8091-08dc744d7de0",
+  "NomAffichage": "Horreur"
+},
+{
+  "_id": "7a22d499-3e47-428d-9108-08dc74563543",
+  "NomAffichage": "Culinaire"
+}]

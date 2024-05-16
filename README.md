@@ -30,8 +30,10 @@ git submodule update --init --recursive
 
 ## Exportation de la Bd
 
-Vous trouverez dans le dossier [exportation-bd-mongo](./xportation-bd-mongo) une
+Vous trouverez dans le dossier [exportation-bd-mongo](./exportation-bd-mongo) une
 exportation de la base de données MongoDb.
+
+**Tous les usagers ont le même mot de passe: `Qwerty123!`**
 
 > Cette exportation n'est pas nécessaire et le projet fonctionnera même sans
 > données dans la Bd.

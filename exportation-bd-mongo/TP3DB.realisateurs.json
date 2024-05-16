@@ -1,0 +1,20 @@
+[{
+  "_id": "ccc3968a-abae-4765-ac23-08dc6e3d9a6e",
+  "Nom": "Richard",
+  "Prenom": "Nicolas"
+},
+{
+  "_id": "d47eea4e-a598-4089-ac24-08dc6e3d9a6e",
+  "Nom": "Vézina",
+  "Prenom": "Martin"
+},
+{
+  "_id": "eae99e58-5d5c-4366-ac25-08dc6e3d9a6e",
+  "Nom": "Pépin",
+  "Prenom": "Jean-François"
+},
+{
+  "_id": "c97df03d-3063-4f33-ac26-08dc6e3d9a6e",
+  "Nom": "Lapointe",
+  "Prenom": "Stéphane"
+}]

@@ -1,0 +1,111 @@
+[{
+  "_id": "547e1914-b776-49fc-b5a0-08dc744cb393",
+  "ActeursParId": {
+    "_t": "String[]",
+    "_v": [
+      "55ee1cb9-4366-4559-fb9a-08dc6e3d36b4",
+      "8fd7199f-efd4-4d83-fb9c-08dc6e3d36b4"
+    ]
+  },
+  "DateSortieInternationale": "2024-05-13",
+  "Description": "Un enseignant donne un TP énorme à réaliser. Les élèves vont-ils survivre à cette épreuve?",
+  "DureeEnMinutes": {
+    "$numberInt": "122"
+  },
+  "IdCategorie": "c7bb61fa-783a-4fcc-14d1-08dc6e3e205e",
+  "NombreDeNotes": {
+    "$numberInt": "0"
+  },
+  "NoteMoyenne": null,
+  "RealisateursParId": {
+    "_t": "String[]",
+    "_v": [
+      "d47eea4e-a598-4089-ac24-08dc6e3d9a6e"
+    ]
+  },
+  "Titre": "Le TP de la mort"
+},
+{
+  "_id": "756d3570-f930-411c-b5a1-08dc744cb393",
+  "ActeursParId": {
+    "_t": "String[]",
+    "_v": [
+      "234fd610-3117-428b-fb9b-08dc6e3d36b4",
+      "07ec9512-72d7-4e5a-fb98-08dc6e3d36b4",
+      "9b9fc937-6405-49b4-fb99-08dc6e3d36b4"
+    ]
+  },
+  "DateSortieInternationale": "2024-05-14",
+  "Description": "Une patate en cavale saute de train en train afin de rester en vie.",
+  "DureeEnMinutes": {
+    "$numberInt": "68"
+  },
+  "IdCategorie": "0426b277-9b89-445f-14d0-08dc6e3e205e",
+  "NombreDeNotes": {
+    "$numberInt": "1"
+  },
+  "NoteMoyenne": {
+    "$numberInt": "9"
+  },
+  "RealisateursParId": {
+    "_t": "String[]",
+    "_v": [
+      "eae99e58-5d5c-4366-ac25-08dc6e3d9a6e"
+    ]
+  },
+  "Titre": "La patate vagabonde"
+},
+{
+  "_id": "1845024d-b82b-4cc8-b5a2-08dc744cb393",
+  "ActeursParId": {
+    "_t": "String[]",
+    "_v": [
+      "55ee1cb9-4366-4559-fb9a-08dc6e3d36b4",
+      "ba2b28d6-d11c-46be-fb9d-08dc6e3d36b4"
+    ]
+  },
+  "DateSortieInternationale": "2024-05-14",
+  "Description": "Des élèves trouvent une pièce secrète dans le local G-4809 qui semble s'enfoncer dans les entrailles de la Terre. Leur trouvaille leur amène à découvrir la dernière demeure de l'Antéchrist.",
+  "DureeEnMinutes": {
+    "$numberInt": "200"
+  },
+  "IdCategorie": "6b20c636-c5f2-4813-8091-08dc744d7de0",
+  "NombreDeNotes": {
+    "$numberInt": "0"
+  },
+  "NoteMoyenne": null,
+  "RealisateursParId": {
+    "_t": "String[]",
+    "_v": [
+      "ccc3968a-abae-4765-ac23-08dc6e3d9a6e",
+      "c97df03d-3063-4f33-ac26-08dc6e3d9a6e"
+    ]
+  },
+  "Titre": "Le mystère du G-4809"
+},
+{
+  "_id": "b306060f-46ad-41b2-f86f-08dc745660e6",
+  "ActeursParId": {
+    "_t": "String[]",
+    "_v": [
+      "217c39a5-2a2e-439a-1692-08dc74563e51"
+    ]
+  },
+  "DateSortieInternationale": "2024-05-31",
+  "Description": "Miam",
+  "DureeEnMinutes": {
+    "$numberInt": "140"
+  },
+  "IdCategorie": "7a22d499-3e47-428d-9108-08dc74563543",
+  "NombreDeNotes": {
+    "$numberInt": "0"
+  },
+  "NoteMoyenne": null,
+  "RealisateursParId": {
+    "_t": "String[]",
+    "_v": [
+      "ccc3968a-abae-4765-ac23-08dc6e3d9a6e"
+    ]
+  },
+  "Titre": "Le merveilleux gratin dauphinois"
+}]

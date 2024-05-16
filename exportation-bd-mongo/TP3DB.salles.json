@@ -1,0 +1,18 @@
+[{
+  "_id": "f22ef16a-7e8f-4c39-ded4-08dc705210b0",
+  "NbSieges": {
+    "$numberInt": "200"
+  },
+  "Numero": {
+    "$numberInt": "33"
+  }
+},
+{
+  "_id": "de9071bf-1b15-4523-6db6-08dc744cca36",
+  "NbSieges": {
+    "$numberInt": "90"
+  },
+  "Numero": {
+    "$numberInt": "14"
+  }
+}]
