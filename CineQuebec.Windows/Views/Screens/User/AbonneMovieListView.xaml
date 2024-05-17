@@ -13,7 +13,7 @@
         <ContentControl DockPanel.Dock="Top" s:View.Model="{Binding HeaderViewModel}" />
         <DockPanel Margin="0,10,0,0">
             <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center"
-                        VerticalAlignment="Center" IsEnabled="{Binding CanRefreshFilms}" Margin="0,10,0,0">
+                        VerticalAlignment="Center" Margin="0,10,0,0">
                 <Label Content="Afficher:" VerticalAlignment="Center" />
                 <RadioButton Content="Films à l'affiche" GroupName="Filtre" VerticalAlignment="Center"
                              Margin="10, 0"
@@ -25,7 +25,7 @@
             </StackPanel>
 
             <ScrollViewer>
-                <ItemsControl ItemsSource="{Binding Films}" IsEnabled="{Binding CanRefreshFilms}">
+                <ItemsControl ItemsSource="{Binding Films}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Button Command="{s:Action ConsulterFilm}" CommandParameter="{Binding Id}" Margin="10"

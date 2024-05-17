@@ -13,7 +13,7 @@ public interface IAdminAjoutProjectionViewModel : IScreenWithData
     DateTime DateSelectionnee { get; set; }
     bool FormulairEstActive { get; set; }
     IHeaderViewModel HeaderViewModel { get; }
-    FilmDto Film { get; }
+    FilmDto? Film { get; }
     bool EstAvantPremiere { get; set; }
     void AjouterSalle();
     void EnregistrerProjection();

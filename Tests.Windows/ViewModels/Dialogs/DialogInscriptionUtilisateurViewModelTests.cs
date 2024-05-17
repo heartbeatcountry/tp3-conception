@@ -11,9 +11,9 @@ namespace Tests.Windows.ViewModels.Dialogs;
 
 public class DialogInscriptionUtilisateurViewModelTests : GenericViewModelTests<DialogInscriptionUtilisateurViewModel>
 {
-    public const string Nom = "Nom";
-    public const string Prenom = "Prenom";
-    public const string Courriel = "courriel@domaine.com";
+    private const string Nom = "Nom";
+    private const string Prenom = "Prenom";
+    private const string Courriel = "courriel@domaine.com";
     private const string MotDePasse = "MotDePasse";
     private const string AutreMotDePasse = "AutreMotDePasse";
 

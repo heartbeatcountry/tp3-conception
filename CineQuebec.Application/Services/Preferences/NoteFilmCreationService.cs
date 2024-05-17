@@ -20,7 +20,7 @@ public class NoteFilmCreationService(
 
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
-        await ValiderUtilisateurAVisionneFilm(unitOfWork, pIdFilm);
+        await ValiderUtilisateurAVisionneFilm(pIdFilm);
 
         IFilm film = await unitOfWork.FilmRepository.ObtenirParIdAsync(pIdFilm) ??
                      throw new KeyNotFoundException($"Le film {pIdFilm} est introuvable");
@@ -49,14 +49,14 @@ public class NoteFilmCreationService(
         byte pNouvelleNote)
     {
         NoteFilm nouvelleNote = new(idUtilisateur, film.Id, pNouvelleNote);
-        INoteFilm notefilmCreee = await unitOfWork.NoteFilmRepository.AjouterAsync(nouvelleNote);
+        _ = await unitOfWork.NoteFilmRepository.AjouterAsync(nouvelleNote);
         film.AjouterNote(pNouvelleNote);
         unitOfWork.FilmRepository.Modifier(film);
         await unitOfWork.SauvegarderAsync();
         return film.NoteMoyenne ?? 0;
     }
 
-    private async Task ValiderUtilisateurAVisionneFilm(IUnitOfWork unitOfWork, Guid idFilm)
+    private async Task ValiderUtilisateurAVisionneFilm(Guid idFilm)
     {
         IEnumerable<FilmDto> filmsVisionnes = await filmQueryService.ObtenirFilmsAssistesParUtilisateur();
 

@@ -22,7 +22,7 @@ public class ProjectionQueryService(IUnitOfWorkFactory unitOfWorkFactory) : IPro
             await unitOfWork.SalleRepository.ObtenirParIdsAsync(projections.Select(pf => pf.IdSalle));
 
         return projections.Select(pf =>
-                pf.VersDto(null, salles.FirstOrDefault(s => s.Id == pf.IdSalle)?.VersDto()))
+                pf.VersDto(salles.FirstOrDefault(s => s.Id == pf.IdSalle)?.VersDto()))
             .OrderBy(projection => projection.DateHeure).ThenBy(projection => projection.Salle?.Numero);
     }
 }

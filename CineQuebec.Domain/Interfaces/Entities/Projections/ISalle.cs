@@ -6,6 +6,4 @@ public interface ISalle : IEntite
 {
     byte Numero { get; }
     ushort NbSieges { get; }
-    void SetNbSieges(ushort nbSieges);
-    void SetNumero(byte numero);
 }

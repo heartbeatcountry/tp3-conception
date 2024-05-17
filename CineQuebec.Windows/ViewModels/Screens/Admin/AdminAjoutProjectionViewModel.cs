@@ -14,7 +14,7 @@ using Stylet;
 
 namespace CineQuebec.Windows.ViewModels.Screens.Admin;
 
-public class AdminAjoutProjectionViewModel : Screen, IScreenWithData, IAdminAjoutProjectionViewModel
+public class AdminAjoutProjectionViewModel : Screen, IAdminAjoutProjectionViewModel
 {
     private readonly IDialogFactory _dialogFactory;
     private readonly IFilmQueryService _filmQueryService;
@@ -26,7 +26,7 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData, IAdminAjou
 
     private DateTime _dateSelectionnee = DateTime.Now;
     private bool _estAvantPremiere;
-    private FilmDto _film;
+    private FilmDto? _film;
     private Guid? _filmId;
     private bool _formulairEstActive = true;
     private BindableCollection<SalleDto> _lstSalles = [];
@@ -78,7 +78,7 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData, IAdminAjou
 
     public IHeaderViewModel HeaderViewModel { get; }
 
-    public FilmDto Film
+    public FilmDto? Film
     {
         get => _film;
         private set => SetAndNotify(ref _film, value);
@@ -113,7 +113,7 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData, IAdminAjou
         try
         {
             if (await _projectionCreationService.CreerProjection(Film.Id, SalleSelectionnee.Id, DateSelectionnee,
-                    EstAvantPremiere) is var nouvProjection)
+                    EstAvantPremiere) is var _)
             {
                 _windowManager.ShowMessageBox("Projection ajoutée avec succès", "Succès", MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -213,7 +213,7 @@ public class AdminAjoutProjectionViewModel : Screen, IScreenWithData, IAdminAjou
     {
         try
         {
-            if (await _salleCreationService.CreerSalle(numero, capacite) is var nouvSalle)
+            if (await _salleCreationService.CreerSalle(numero, capacite) is var _)
             {
                 _windowManager.ShowMessageBox("Salle ajoutée avec succès", "Succès", MessageBoxButton.OK,
                     MessageBoxImage.Information);

@@ -12,13 +12,10 @@ public interface IFilm : IEntite
     IEnumerable<Guid> RealisateursParId { get; }
     ushort DureeEnMinutes { get; }
     float? NoteMoyenne { get; }
-    uint NombreDeNotes { get; }
     void SetTitre(string titre);
     void SetDescription(string description);
     void SetCategorie(Guid categorie);
     void SetDateSortieInternationale(DateTime dateSortieInternationale);
-    void AddActeurs(IEnumerable<Guid> acteurs);
-    void AddRealisateurs(IEnumerable<Guid> realisateurs);
     void SetDureeEnMinutes(ushort duree);
     void SetActeursParId(IEnumerable<Guid> acteurs);
     void SetRealisateursParId(IEnumerable<Guid> realisateurs);

@@ -20,18 +20,16 @@ public class CategoriesPrefereesViewModel : Screen, ICategoriesPrefereesViewMode
     private readonly ICategoriesPrefereesQueryService _categoriesPrefereesQueryService;
     private readonly ICategoriesPrefereesUpdateService _categoriesPrefereesUpdateService;
     private readonly IGestionnaireExceptions _gestionnaireExceptions;
-    private readonly IWindowManager _windowManager;
     private bool _canSauvegarder;
     private byte _nbCategoriesSelectionnes;
 
     public CategoriesPrefereesViewModel(ICategoriesPrefereesQueryService categoriesPrefereesQueryService,
-        ICategoriesPrefereesUpdateService categoriesPrefereesUpdateService, IWindowManager windowManager,
+        ICategoriesPrefereesUpdateService categoriesPrefereesUpdateService,
         IGestionnaireExceptions gestionnaireExceptions, ICategorieFilmQueryService categorieQueryService)
     {
         _categoriesPrefereesUpdateService = categoriesPrefereesUpdateService;
         _categoriesPrefereesQueryService = categoriesPrefereesQueryService;
         _categorieQueryService = categorieQueryService;
-        _windowManager = windowManager;
         _gestionnaireExceptions = gestionnaireExceptions;
 
         _ = ChargerCategoriesEtCategoriesPreferees();

@@ -9,7 +9,7 @@ using StyletIoC;
 
 namespace CineQuebec.Windows;
 
-internal class MicrosoftDiModule : StyletIoCModule
+internal sealed class MicrosoftDiModule : StyletIoCModule
 {
     protected override void Load()
     {

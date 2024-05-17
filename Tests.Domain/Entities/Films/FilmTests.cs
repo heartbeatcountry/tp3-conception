@@ -130,7 +130,7 @@ public class FilmTests : EntiteTests<Film>
     {
         // Arrange
         Entite.AjouterNote(5);
-        float moyenneAttendue = (NoteValide + 5) / 2f;
+        const float moyenneAttendue = (NoteValide + 5) / 2f;
 
         // Act
         Entite.AjouterNote(NoteValide);
@@ -155,7 +155,7 @@ public class FilmTests : EntiteTests<Film>
         // Arrange
         Entite.AjouterNote(5);
         Entite.AjouterNote(8);
-        float moyenneAttendue = (5 + 10) / 2f;
+        const float moyenneAttendue = (5 + 10) / 2f;
 
         // Act
         Entite.ModifierNote(8, 10);

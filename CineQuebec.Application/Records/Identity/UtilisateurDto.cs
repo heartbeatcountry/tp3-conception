@@ -3,7 +3,7 @@ using CineQuebec.Domain.Interfaces.Entities.Utilisateur;
 
 namespace CineQuebec.Application.Records.Identity;
 
-public record class UtilisateurDto(
+public record UtilisateurDto(
     Guid Id,
     string Prenom,
     string Nom

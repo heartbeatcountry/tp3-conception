@@ -2,6 +2,6 @@
 
 public class SelectedItemWrapper<T>(T item, bool isSelected)
 {
-    public T Item { get; init; } = item;
+    public T Item => item;
     public bool IsSelected { get; set; } = isSelected;
 }

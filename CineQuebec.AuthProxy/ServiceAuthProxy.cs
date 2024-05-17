@@ -38,7 +38,7 @@ public class ServiceAuthProxy<TService> : DispatchProxy where TService : class
 
         if (targetMethod.IsPublic)
         {
-            if (!_methodMapping!.TryGetValue(targetMethod.Name, out Role roleRequis))
+            if (!_methodMapping.TryGetValue(targetMethod.Name, out Role roleRequis))
             {
                 throw new SecurityException(
                     $"La méthode {typeof(TService).Name}.{targetMethod.Name} n'est pas présente dans le mapping de rôles.");

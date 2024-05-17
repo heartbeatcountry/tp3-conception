@@ -34,7 +34,7 @@ public static class ServiceCollectionExtensions
     {
         foreach (ServiceDescriptor descriptor in services.Where(d =>
                      !ConfigureServices.ServicesAutorisesSansProxy.Contains(d.ServiceType) &&
-                     (d.ServiceType?.Name?.EndsWith("Service") ?? false) &&
+                     (d.ServiceType.Name?.EndsWith("Service") ?? false) &&
                      d.ImplementationFactory is null))
         {
             throw new SecurityException(

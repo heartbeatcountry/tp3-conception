@@ -8,8 +8,4 @@ public interface IProjection : IEntite
     Guid IdSalle { get; }
     DateTime DateHeure { get; }
     bool EstAvantPremiere { get; }
-    void SetDateHeure(DateTime dateHeure);
-    void SetEstAvantPremiere(bool estAvantPremiere);
-    void SetFilm(Guid idFilm);
-    void SetSalle(Guid idSalle);
 }

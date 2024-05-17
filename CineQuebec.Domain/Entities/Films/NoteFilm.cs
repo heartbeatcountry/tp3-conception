@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-using CineQuebec.Domain.Entities.Abstract;
+﻿using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities.Films;
 
 namespace CineQuebec.Domain.Entities.Films;
@@ -17,7 +15,6 @@ public class NoteFilm : Entite, INoteFilm
         SetNote(note);
     }
 
-    [SuppressMessage("ReSharper", "UnusedMember.Local")]
     private NoteFilm(Guid id, Guid idUtilisateur, Guid idFilm, byte note) : this(idUtilisateur, idFilm, note)
     {
         // Constructeur avec identifiant pour Entity Framework Core

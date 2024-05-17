@@ -20,18 +20,16 @@ public class RealisateursFavorisViewModel : Screen, IRealisateursFavorisViewMode
     private readonly HashSet<Guid> _realisateursASupprimer = [];
     private readonly IRealisateursFavorisQueryService _realisateursFavorisQueryService;
     private readonly IRealisateursFavorisUpdateService _realisateursFavorisUpdateService;
-    private readonly IWindowManager _windowManager;
     private bool _canSauvegarder;
     private byte _nbRealisateursSelectionnes;
 
     public RealisateursFavorisViewModel(IRealisateursFavorisQueryService realisateursFavorisQueryService,
-        IRealisateursFavorisUpdateService realisateursFavorisUpdateService, IWindowManager windowManager,
+        IRealisateursFavorisUpdateService realisateursFavorisUpdateService,
         IGestionnaireExceptions gestionnaireExceptions, IRealisateurQueryService realisateurQueryService)
     {
         _realisateursFavorisUpdateService = realisateursFavorisUpdateService;
         _realisateursFavorisQueryService = realisateursFavorisQueryService;
         _realisateurQueryService = realisateurQueryService;
-        _windowManager = windowManager;
         _gestionnaireExceptions = gestionnaireExceptions;
 
         _ = ChargerRealisateursEtRealisateursFavoris();

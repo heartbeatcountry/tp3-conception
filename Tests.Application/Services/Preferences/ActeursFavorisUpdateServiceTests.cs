@@ -60,7 +60,7 @@ public class ActeursFavorisUpdateServiceTests : GenericServiceTests<ActeursFavor
             Assert.ThrowsAsync<AggregateException>(() => Service.AjouterActeurFavori(_acteur3.Id))!;
 
         // Assert
-        Assert.That(exception?.InnerExceptions,
+        Assert.That(exception.InnerExceptions,
             Has.One.InstanceOf<ArgumentException>().With.Message.Contains("n'existe pas"));
     }
 

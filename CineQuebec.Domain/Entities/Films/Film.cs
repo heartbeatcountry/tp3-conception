@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Exceptions.Entities.Films;
 using CineQuebec.Domain.Interfaces.Entities.Films;
@@ -35,7 +33,6 @@ public class Film : Entite, IComparable<Film>, IFilm
         SetDureeEnMinutes(dureeEnMinutes);
     }
 
-    [SuppressMessage("ReSharper", "UnusedMember.Local")]
     private Film(Guid id, string titre, string description, Guid idCategorie, DateTime dateSortieInternationale,
         IEnumerable<Guid> acteursParId, IEnumerable<Guid> realisateursParId, ushort dureeEnMinutes,
         float? noteMoyenne, uint nombreDeNotes) : this(titre,

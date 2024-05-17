@@ -14,7 +14,7 @@ using Stylet;
 
 namespace CineQuebec.Windows.ViewModels.Screens.User;
 
-public class AbonneMovieDetailsViewModel : Screen, IScreenWithData, IAbonneMovieDetailsViewModel
+public class AbonneMovieDetailsViewModel : Screen, IAbonneMovieDetailsViewModel
 {
     private readonly IDialogFactory _dialogFactory;
     private readonly IFilmQueryService _filmQueryService;

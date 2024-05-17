@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities.Projections;
 
@@ -15,7 +13,6 @@ public class Projection : Entite, IComparable<Projection>, IProjection
         SetEstAvantPremiere(estAvantPremiere);
     }
 
-    [SuppressMessage("ReSharper", "UnusedMember.Local")]
     private Projection(Guid id, Guid idFilm, Guid idSalle, DateTime dateHeure, bool estAvantPremiere) : this(idFilm,
         idSalle,
         dateHeure, estAvantPremiere)
@@ -46,11 +43,6 @@ public class Projection : Entite, IComparable<Projection>, IProjection
         DateHeure = dateHeure;
     }
 
-    public void SetEstAvantPremiere(bool estAvantPremiere)
-    {
-        EstAvantPremiere = estAvantPremiere;
-    }
-
     public void SetFilm(Guid idFilm)
     {
         if (idFilm == Guid.Empty)
@@ -75,5 +67,10 @@ public class Projection : Entite, IComparable<Projection>, IProjection
     {
         return base.Equals(autre) || (autre is Projection projection && IdSalle.Equals(projection.IdSalle) &&
                                       DateHeure == projection.DateHeure);
+    }
+
+    private void SetEstAvantPremiere(bool estAvantPremiere)
+    {
+        EstAvantPremiere = estAvantPremiere;
     }
 }

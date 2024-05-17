@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities.Projections;
 
@@ -13,7 +11,6 @@ public class Billet : Entite, IBillet
         SetProjection(idProjection);
     }
 
-    [SuppressMessage("ReSharper", "UnusedMember.Local")]
     private Billet(Guid id, Guid idProjection, Guid idUtilisateur) : this(idProjection, idUtilisateur)
     {
         // Constructeur avec identifiant pour Entity Framework Core

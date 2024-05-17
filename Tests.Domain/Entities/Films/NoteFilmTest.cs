@@ -6,10 +6,10 @@ namespace Tests.Domain.Entities.Films;
 
 internal class NoteFilmTest : EntiteTests<NoteFilm>
 {
+    private const byte Note = 4;
+    private const byte NoteInvalide = 12;
     private static readonly Guid Film1 = Guid.NewGuid();
     private static readonly Guid Utilisateur1 = Guid.NewGuid();
-    private static readonly byte Note = 4;
-    private static readonly byte NoteInvalide = 12;
 
     protected override object?[] ArgsConstructeur =>
     [

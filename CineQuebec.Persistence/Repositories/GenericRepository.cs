@@ -102,12 +102,4 @@ public class GenericRepository<TEntite, TIEntite> : IRepository<TIEntite>
 
         _dbSet.Remove((entite as TEntite)!);
     }
-
-    public void Supprimer(Guid id)
-    {
-        if (_dbSet.Find(id) is TIEntite entite)
-        {
-            Supprimer(entite);
-        }
-    }
 }

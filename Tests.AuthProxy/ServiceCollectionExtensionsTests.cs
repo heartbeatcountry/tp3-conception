@@ -56,19 +56,11 @@ public class ServiceCollectionExtensionsTests
         Assert.That(service, Is.InstanceOf<ServiceAuthProxy<ITestService>>());
     }
 
-    private interface ITestService
-    {
-    }
+    private interface ITestService;
 
-    private class TestService : ITestService
-    {
-    }
+    private class TestService : ITestService;
 
-    private interface ITestService2
-    {
-    }
+    private interface ITestService2;
 
-    private class TestService2 : ITestService2
-    {
-    }
+    private class TestService2 : ITestService2;
 }

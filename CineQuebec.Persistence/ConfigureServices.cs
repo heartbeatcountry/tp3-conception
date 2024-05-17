@@ -7,8 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using MongoDB.Driver;
-// ReSharper disable once RedundantUsingDirective
-using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace CineQuebec.Persistence;
 

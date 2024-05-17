@@ -23,5 +23,4 @@ public interface IRepository<TIEntite> where TIEntite : IEntite
     public Task<TIEntite> AjouterAsync(TIEntite entite);
     public TIEntite Modifier(TIEntite entite);
     public void Supprimer(TIEntite entite);
-    public void Supprimer(Guid id);
 }

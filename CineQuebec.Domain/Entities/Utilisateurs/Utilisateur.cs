@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities.Utilisateur;
 
@@ -26,7 +24,6 @@ public class Utilisateur : Personne, IUtilisateur
         AddRoles(roles);
     }
 
-    [SuppressMessage("ReSharper", "UnusedMember.Local")]
     private Utilisateur(Guid id, string prenom, string nom, string courriel, string hashMotDePasse,
         IEnumerable<Role> roles,
         IEnumerable<Guid> categoriesPrefereesParId, IEnumerable<Guid> acteursFavorisParId,
@@ -39,6 +36,12 @@ public class Utilisateur : Personne, IUtilisateur
         AddActeursFavoris(acteursFavorisParId);
         AddRealisateursFavoris(realisateursFavorisParId);
         AddBillets(billetsParId);
+    }
+
+    public IEnumerable<Guid> BilletsParId
+    {
+        get => [.. _billetsParId];
+        private set => SetBilletsParId(value);
     }
 
     public string Courriel { get; private set; } = string.Empty;
@@ -61,12 +64,6 @@ public class Utilisateur : Personne, IUtilisateur
     {
         get => [.. _realisateursFavorisParId];
         private set => SetRealisateursFavorisParId(value);
-    }
-
-    public IEnumerable<Guid> BilletsParId
-    {
-        get => [.. _billetsParId];
-        private set => SetBilletsParId(value);
     }
 
     public void AddActeursFavoris(IEnumerable<Guid> acteurs)
@@ -131,11 +128,6 @@ public class Utilisateur : Personne, IUtilisateur
         _realisateursFavorisParId.RemoveWhere(realisateurs.Contains);
     }
 
-    public void AddRoles(IEnumerable<Role> roles)
-    {
-        SetRoles(_roles.Union(roles).ToHashSet());
-    }
-
     public void SetHashMotDePasse(string motDePasse)
     {
         if (string.IsNullOrWhiteSpace(motDePasse))
@@ -144,6 +136,11 @@ public class Utilisateur : Personne, IUtilisateur
         }
 
         HashMotDePasse = motDePasse.Trim();
+    }
+
+    public void AddRoles(IEnumerable<Role> roles)
+    {
+        SetRoles(_roles.Union(roles).ToHashSet());
     }
 
     public new bool Equals(Entite? autre)

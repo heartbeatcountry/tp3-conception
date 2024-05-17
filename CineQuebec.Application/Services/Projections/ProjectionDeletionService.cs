@@ -16,9 +16,21 @@ public class ProjectionDeletionService(IUnitOfWorkFactory unitOfWorkFactory) : I
             return false;
         }
 
+        await SupprimerBillets(unitOfWork, id);
         unitOfWork.ProjectionRepository.Supprimer(projection);
         await unitOfWork.SauvegarderAsync();
 
         return true;
+    }
+
+    private static async Task SupprimerBillets(IUnitOfWork unitOfWork, Guid idProjection)
+    {
+        IEnumerable<IBillet> billets =
+            await unitOfWork.BilletRepository.ObtenirTousAsync(b => b.IdProjection == idProjection);
+
+        foreach (IBillet billet in billets)
+        {
+            unitOfWork.BilletRepository.Supprimer(billet);
+        }
     }
 }

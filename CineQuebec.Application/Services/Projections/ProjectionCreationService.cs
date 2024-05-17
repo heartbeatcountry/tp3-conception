@@ -13,7 +13,7 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory)
     {
         using IUnitOfWork unitOfWork = unitOfWorkFactory.Create();
 
-        EffectuerValidations(unitOfWork, pFilm, pSalle, pDateHeure);
+        EffectuerValidations(unitOfWork, pFilm, pSalle, pDateHeure, pEstAvantPremiere);
 
         IProjection projectionCreee =
             await CreerNouvProjection(unitOfWork, pFilm, pSalle, pDateHeure, pEstAvantPremiere);
@@ -25,13 +25,14 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory)
 
 
     private static void EffectuerValidations(IUnitOfWork unitOfWork, Guid pFilm,
-        Guid pSalle, DateTime pDateHeure)
+        Guid pSalle, DateTime pDateHeure, bool pEstAvantPremiere)
     {
         LeverAggregateExceptionAuBesoin(
             ValiderFilmExiste(unitOfWork, pFilm),
             ValiderSalleExiste(unitOfWork, pSalle),
             ValiderSalleDispo(unitOfWork, pSalle, pDateHeure),
             ValiderProjectionEstUnique(unitOfWork, pFilm, pSalle, pDateHeure),
+            ValiderAvantPremiereAvantAutresProjections(unitOfWork, pFilm, pDateHeure, pEstAvantPremiere),
             ValiderDateHeure(pDateHeure)
         );
     }
@@ -93,6 +94,18 @@ public class ProjectionCreationService(IUnitOfWorkFactory unitOfWorkFactory)
         {
             yield return new ArgumentException($"La salle avec l'identifiant {pSalle} n'existe pas.",
                 nameof(pSalle));
+        }
+    }
+
+    private static async IAsyncEnumerable<ArgumentException> ValiderAvantPremiereAvantAutresProjections(
+        IUnitOfWork unitOfWork, Guid pFilm, DateTime pDateHeure, bool pEstAvantPremiere)
+    {
+        if (pEstAvantPremiere && await unitOfWork.ProjectionRepository.ExisteAsync(proj =>
+                proj.IdFilm == pFilm && proj.DateHeure < pDateHeure))
+        {
+            yield return new ArgumentException(
+                "Une projection régulière du film existe déjà avant la date de la projection avant-première.",
+                nameof(pFilm));
         }
     }
 }

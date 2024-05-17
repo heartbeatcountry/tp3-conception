@@ -115,23 +115,6 @@ internal class GenericRepositoryTests
     }
 
     [Test]
-    public async Task Supprimer_WhenGivenId_ShouldRemoveEntity()
-    {
-        // Arrange
-        EntiteTest entiteTest = new();
-        entiteTest.SetId(Guid.NewGuid());
-        _ = await _repository.AjouterAsync(entiteTest);
-        _ = await _context.SaveChangesAsync();
-
-        // Act
-        _repository.Supprimer(entiteTest.Id);
-        _ = await _context.SaveChangesAsync();
-
-        // Assert
-        Assert.That(await _repository.ObtenirParIdAsync(entiteTest.Id), Is.Null);
-    }
-
-    [Test]
     public async Task ExisteAsync_WhenEntityDoesNotExist_ShouldReturnFalse()
     {
         // Act
@@ -181,7 +164,7 @@ internal class GenericRepositoryTests
 
     private interface IEntiteTest : IEntite
     {
-        internal bool Prop { get; set; }
+        internal bool Prop { get; }
     }
 
     private class EntiteTest : Entite, IEntiteTest

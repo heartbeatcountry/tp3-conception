@@ -6,10 +6,10 @@ namespace Tests.Domain.Entities.Projections;
 
 public class ProjectionTests : EntiteTests<Projection>
 {
+    private const Boolean EstAvantPremiere = true;
     private static readonly Guid Film1 = Guid.NewGuid();
     private static readonly Guid Salle1 = Guid.NewGuid();
     private static readonly DateTime DateValide = new(2024, 12, 19);
-    private static readonly Boolean estAvantPremiere = true;
 
 
     protected override object?[] ArgsConstructeur =>
@@ -17,7 +17,7 @@ public class ProjectionTests : EntiteTests<Projection>
         Film1,
         Salle1,
         DateValide,
-        estAvantPremiere
+        EstAvantPremiere
     ];
 
     [Test]

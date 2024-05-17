@@ -46,7 +46,7 @@
             </Grid>
         </ToggleButton>
 
-        <Popup IsOpen="{Binding Path=IsChecked, ElementName=PopUpCalendarButton}" x:Name="CalendarPopup"
+        <Popup Grid.Row="0" IsOpen="{Binding Path=IsChecked, ElementName=PopUpCalendarButton}" x:Name="CalendarPopup"
                PopupAnimation="Fade" StaysOpen="False" Width="180">
             <Border Padding="2" Background="White">
                 <Grid>

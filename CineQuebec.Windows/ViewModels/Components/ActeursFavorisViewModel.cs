@@ -20,18 +20,16 @@ public class ActeursFavorisViewModel : Screen, IActeursFavorisViewModel
     private readonly IActeursFavorisQueryService _acteursFavorisQueryService;
     private readonly IActeursFavorisUpdateService _acteursFavorisUpdateService;
     private readonly IGestionnaireExceptions _gestionnaireExceptions;
-    private readonly IWindowManager _windowManager;
     private bool _canSauvegarder;
     private byte _nbActeursSelectionnes;
 
     public ActeursFavorisViewModel(IActeursFavorisQueryService acteursFavorisQueryService,
-        IActeursFavorisUpdateService acteursFavorisUpdateService, IWindowManager windowManager,
-        IGestionnaireExceptions gestionnaireExceptions, IActeurQueryService acteurQueryService)
+        IActeursFavorisUpdateService acteursFavorisUpdateService, IGestionnaireExceptions gestionnaireExceptions,
+        IActeurQueryService acteurQueryService)
     {
         _acteursFavorisUpdateService = acteursFavorisUpdateService;
         _acteursFavorisQueryService = acteursFavorisQueryService;
         _acteurQueryService = acteurQueryService;
-        _windowManager = windowManager;
         _gestionnaireExceptions = gestionnaireExceptions;
 
         _ = ChargerActeursEtActeursFavoris();

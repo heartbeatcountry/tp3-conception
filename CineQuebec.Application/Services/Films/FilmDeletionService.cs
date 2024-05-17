@@ -18,6 +18,7 @@ public class FilmDeletionService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmDe
         }
 
         await SupprimerProjections(unitOfWork, id);
+        await SupprimerEvaluations(unitOfWork, id);
         SupprimerFilm(unitOfWork, film);
 
         await unitOfWork.SauvegarderAsync();
@@ -32,7 +33,30 @@ public class FilmDeletionService(IUnitOfWorkFactory unitOfWorkFactory) : IFilmDe
 
         foreach (IProjection projection in projections)
         {
+            await SupprimerBilletsDeProjection(unitOfWork, projection.Id);
             unitOfWork.ProjectionRepository.Supprimer(projection);
+        }
+    }
+
+    private static async Task SupprimerBilletsDeProjection(IUnitOfWork unitOfWork, Guid idProjection)
+    {
+        IEnumerable<IBillet> billets =
+            await unitOfWork.BilletRepository.ObtenirTousAsync(b => b.IdProjection == idProjection);
+
+        foreach (IBillet billet in billets)
+        {
+            unitOfWork.BilletRepository.Supprimer(billet);
+        }
+    }
+
+    private static async Task SupprimerEvaluations(IUnitOfWork unitOfWork, Guid idFilm)
+    {
+        IEnumerable<INoteFilm> evaluations =
+            await unitOfWork.NoteFilmRepository.ObtenirTousAsync(e => e.IdFilm == idFilm);
+
+        foreach (INoteFilm evaluation in evaluations)
+        {
+            unitOfWork.NoteFilmRepository.Supprimer(evaluation);
         }
     }
 

@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 using CineQuebec.Domain.Entities.Abstract;
 using CineQuebec.Domain.Interfaces.Entities.Projections;
 
@@ -13,7 +11,6 @@ public class Salle : Entite, IComparable<Salle>, ISalle
         SetNbSieges(nbSieges);
     }
 
-    [SuppressMessage("ReSharper", "UnusedMember.Local")]
     private Salle(Guid id, byte numero, ushort nbSieges) : this(numero, nbSieges)
     {
         // Constructeur avec identifiant pour Entity Framework Core

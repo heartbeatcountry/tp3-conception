@@ -126,12 +126,12 @@ public class FilmQueryServiceTests : GenericServiceTests<FilmQueryService>
         ObtenirTousAlAffiche_WhenFilmsAreCurrentlyPlaying_ShouldReturnAllFilmsCurrentlyPlayingOrderedByDateHeure()
     {
         // Arrange
-        IEnumerable<IFilm> films =
+        IFilm[] films =
         [
             Mock.Of<IFilm>(f => f.Id == Guid.NewGuid()), Mock.Of<IFilm>(f => f.Id == Guid.NewGuid()),
             Mock.Of<IFilm>(f => f.Id == Guid.NewGuid())
         ];
-        IEnumerable<IProjection> projections =
+        IProjection[] projections =
         [
             Mock.Of<IProjection>(p => p.DateHeure == DateTime.Now.AddDays(-1) && p.IdFilm == films.ElementAt(0).Id),
             Mock.Of<IProjection>(p => p.DateHeure == DateTime.Now && p.IdFilm == films.ElementAt(1).Id),
@@ -142,7 +142,7 @@ public class FilmQueryServiceTests : GenericServiceTests<FilmQueryService>
         FilmRepositoryMock.Setup(r => r.ObtenirParIdsAsync(It.IsAny<IEnumerable<Guid>>())).ReturnsAsync(films);
 
         // Act
-        IEnumerable<FilmDto> filmsDto = (await Service.ObtenirTousAlAffiche()).ToArray();
+        FilmDto[] filmsDto = (await Service.ObtenirTousAlAffiche()).ToArray();
 
         // Assert
         Assert.Multiple(() =>
@@ -158,9 +158,8 @@ public class FilmQueryServiceTests : GenericServiceTests<FilmQueryService>
     public async Task ObtenirTousAlAffiche_WhenNoFilmIsCurrentlyPlaying_ShouldReturnEmptyList()
     {
         // Arrange
-        IEnumerable<IProjection> projections = [];
         ProjectionRepositoryMock.Setup(r => r.ObtenirTousAsync(It.IsAny<Expression<Func<IProjection, bool>>>(),
-            It.IsAny<Func<IQueryable<IProjection>, IOrderedQueryable<IProjection>>>())).ReturnsAsync(projections);
+            It.IsAny<Func<IQueryable<IProjection>, IOrderedQueryable<IProjection>>>())).ReturnsAsync([]);
 
         // Act
         IEnumerable<FilmDto> filmsDto = await Service.ObtenirTousAlAffiche();

@@ -23,12 +23,8 @@ public class UtilisateurAuthenticationService(
 
     public Guid ObtenirIdUtilisateurConnecte()
     {
-        ClaimsPrincipal? utilisateur = ObtenirAutorisation();
-
-        if (utilisateur == null)
-        {
-            throw new SecurityException("L'utilisateur doit être authentifié");
-        }
+        ClaimsPrincipal utilisateur = ObtenirAutorisation()
+                                      ?? throw new SecurityException("L'utilisateur doit être authentifié");
 
         return Guid.Parse(utilisateur.Claims.First(c => c.Type == ClaimTypes.PrimarySid).Value);
     }

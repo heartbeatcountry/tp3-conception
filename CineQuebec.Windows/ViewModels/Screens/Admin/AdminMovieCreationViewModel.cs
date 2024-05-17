@@ -25,7 +25,6 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
     private readonly IFilmQueryService _filmQueryService;
     private readonly IFilmUpdateService _filmUpdateService;
     private readonly IGestionnaireExceptions _gestionnaireExceptions;
-    private readonly INavigationController _navigationController;
     private readonly IRealisateurCreationService _realisateurCreationService;
     private readonly IRealisateurQueryService _realisateurQueryService;
     private readonly IWindowManager _windowManager;
@@ -36,22 +35,18 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
     private FilmDto? _film;
     private bool _formulairEstActive = true;
     private Guid? _idFilm;
-    private BindableCollection<SelectedItemWrapper<ActeurDto>> _lstActeurs = [];
     private BindableCollection<CategorieFilmDto> _lstCategories = [];
-    private BindableCollection<SelectedItemWrapper<RealisateurDto>> _lstRealisateurs = [];
     private string _texteBoutonPrincipal = "Créer le film";
     private string _titreFilm = string.Empty;
 
-    public AdminMovieCreationViewModel(INavigationController navigationController,
-        IFilmCreationService filmCreationService,
+    public AdminMovieCreationViewModel(IFilmCreationService filmCreationService,
         IHeaderViewModel headerViewModel, IActeurQueryService acteurQueryService, IDialogFactory dialogFactory,
         IRealisateurQueryService realisateurQueryService, ICategorieFilmQueryService categorieFilmQueryService,
         IWindowManager windowManager, IActeurCreationService acteurCreationService,
-        IFilmUpdateService filmUpdateService,
-        IRealisateurCreationService realisateurCreationService, IFilmQueryService filmQueryService,
-        ICategorieFilmCreationService categorieFilmCreationService, IGestionnaireExceptions gestionnaireExceptions)
+        IFilmUpdateService filmUpdateService, IRealisateurCreationService realisateurCreationService,
+        IFilmQueryService filmQueryService, ICategorieFilmCreationService categorieFilmCreationService,
+        IGestionnaireExceptions gestionnaireExceptions)
     {
-        _navigationController = navigationController;
         _filmCreationService = filmCreationService;
         _acteurQueryService = acteurQueryService;
         _realisateurQueryService = realisateurQueryService;
@@ -97,17 +92,9 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
         private set => SetAndNotify(ref _lstCategories, value);
     }
 
-    public BindableCollection<SelectedItemWrapper<ActeurDto>> LstActeurs
-    {
-        get => _lstActeurs;
-        private set => SetAndNotify(ref _lstActeurs, value);
-    }
+    public BindableCollection<SelectedItemWrapper<ActeurDto>> LstActeurs => [];
 
-    public BindableCollection<SelectedItemWrapper<RealisateurDto>> LstRealisateurs
-    {
-        get => _lstRealisateurs;
-        private set => SetAndNotify(ref _lstRealisateurs, value);
-    }
+    public BindableCollection<SelectedItemWrapper<RealisateurDto>> LstRealisateurs => [];
 
     public CategorieFilmDto? CategorieSelectionnee
     {
@@ -189,7 +176,13 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
         HashSet<Guid> realisateursSelectionnes =
             LstRealisateurs.Where(r => r.IsSelected).Select(r => r.Item.Id).ToHashSet();
         Guid? guidCategorie = CategorieSelectionnee?.Id;
-        _ = ushort.TryParse(DureeFilm, out ushort duree);
+
+        if (!ushort.TryParse(DureeFilm, out ushort duree))
+        {
+            AfficherErreur(
+                "La durée du film doit être un nombre entier positif correspondant au nombre total de minutes");
+            return;
+        }
 
         if (guidCategorie is null)
         {
@@ -201,7 +194,7 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
         {
             if (_idFilm is { } id)
             {
-                await _filmUpdateService.ModifierFilm(id, TitreFilm, DescriptionFilm, (Guid)guidCategorie!,
+                await _filmUpdateService.ModifierFilm(id, TitreFilm, DescriptionFilm, (Guid)guidCategorie,
                     DateSelectionnee, acteursSelectionnes, realisateursSelectionnes, duree);
 
                 _windowManager.ShowMessageBox("Film modifié avec succès", "Succès", MessageBoxButton.OK,
@@ -209,9 +202,9 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
                 HeaderViewModel.GoBack();
             }
 
-            else if (await _filmCreationService.CreerFilm(TitreFilm, DescriptionFilm, (Guid)guidCategorie!,
+            else if (await _filmCreationService.CreerFilm(TitreFilm, DescriptionFilm, (Guid)guidCategorie,
                          DateSelectionnee,
-                         acteursSelectionnes, realisateursSelectionnes, duree) is var nouvFilm)
+                         acteursSelectionnes, realisateursSelectionnes, duree) is var _)
             {
                 _windowManager.ShowMessageBox("Film ajouté avec succès", "Succès", MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -321,7 +314,7 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
     {
         try
         {
-            if (await _acteurCreationService.CreerActeur(prenom, nom) is var nouvActeur)
+            if (await _acteurCreationService.CreerActeur(prenom, nom) is var _)
             {
                 _windowManager.ShowMessageBox("Acteur ajouté avec succès", "Succès", MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -338,7 +331,7 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
     {
         try
         {
-            if (await _realisateurCreationService.CreerRealisateur(prenom, nom) is var nouvRealisateur)
+            if (await _realisateurCreationService.CreerRealisateur(prenom, nom) is var _)
             {
                 _windowManager.ShowMessageBox("Réalisateur ajouté avec succès", "Succès", MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -355,7 +348,7 @@ public class AdminMovieCreationViewModel : Screen, IAdminMovieCreationViewModel
     {
         try
         {
-            if (await _categorieFilmCreationService.CreerCategorie(nom) is var nouvCategorie)
+            if (await _categorieFilmCreationService.CreerCategorie(nom) is var _)
             {
                 _windowManager.ShowMessageBox("Catégorie ajoutée avec succès", "Succès", MessageBoxButton.OK,
                     MessageBoxImage.Information);
