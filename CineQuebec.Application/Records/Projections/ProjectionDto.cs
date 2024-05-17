@@ -11,6 +11,7 @@ internal static class ProjectionExtensions
 {
     internal static ProjectionDto VersDto(this IProjection projection, FilmDto? filmDto, SalleDto? salleDto)
     {
-        return new ProjectionDto(projection.Id, filmDto, salleDto, projection.DateHeure, projection.EstAvantPremiere);
+        return new ProjectionDto(projection.Id, filmDto, salleDto, projection.DateHeure.ToLocalTime(),
+            projection.EstAvantPremiere);
     }
 }
